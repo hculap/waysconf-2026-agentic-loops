@@ -83,7 +83,7 @@ Start with [`docs/CANON.md`](docs/CANON.md) for what is being built, then
 | `brief/` | The client brief, every word of copy, and the acceptance criteria |
 | `design/` | Figma spec, exported frames, design tokens, measured contrast matrix, generated imagery |
 | `figma-plugin/` | A Figma plugin that builds the entire TURBINE design file from those tokens |
-| `checks/` | **The verifier.** Nine gates, no model in any decision |
+| `checks/` | **The verifier.** Nine gates locally, a tenth when you deploy. No model in any decision |
 | `loop/` | The loop itself, every prompt used on stage, and two Workflow scripts |
 | `src/` | The Astro site. In the starter it is empty on purpose |
 | `deck/` | The slides, as markdown |
@@ -97,7 +97,7 @@ Start with [`docs/CANON.md`](docs/CANON.md) for what is being built, then
 A loop is only worth building if something in it can tell you **no** without asking
 a language model for an opinion.
 
-`npm run check` runs nine gates against the real rendered page in a real browser.
+`npm run check` runs nine gates against the real rendered page in a real browser, and a tenth against the published one when you pass `--deploy`.
 Every one of them returns pass or fail the same way every time. The agent never
 grades its own homework; it reads `checks/report.md` and fixes what the report says
 is broken.

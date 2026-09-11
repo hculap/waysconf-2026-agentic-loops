@@ -570,7 +570,7 @@ Top tier: catches what the others cannot, least reliable, never the only gate.
 
 ---
 
-# Nine gates, 55 criteria, no opinions
+# Nine gates, sixty criteria, no opinions
 
 <div class="mt-4">
 
@@ -935,7 +935,7 @@ class: section
 | The a11y gate is green | Automated rules reach maybe 30–40% of real WCAG failures |
 | The pixel diff passes | It saw no change. It has no idea whether a change would be better |
 | Adversarial review found nothing | Models checking models. Least reliable tier, never the only one |
-| All 55 criteria pass | Nothing here has an opinion about whether the design is good |
+| All sixty criteria pass | Nothing here has an opinion about whether the design is good |
 
 </div>
 
