@@ -78,6 +78,7 @@ for i in $(seq 1 "$MAX"); do
     claude)
       claude -p "$(cat loop/PROMPT.md)" \
         --permission-mode acceptEdits \
+        < /dev/null \
         > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
     codex)
@@ -85,11 +86,14 @@ for i in $(seq 1 "$MAX"); do
       # you want. On a host where Codex's sandbox cannot initialise, every write fails
       # with "the execution sandbox failed" — set CODEX_SANDBOX=danger-full-access, and
       # only inside a worktree you are willing to throw away.
+      # </dev/null is load-bearing. Codex reads instructions from stdin when stdin is a
+      # pipe, so an inherited-but-silent stdin makes it wait for an EOF that never
+      # arrives — alive, busy-looking, and doing nothing at all.
       codex exec -s "${CODEX_SANDBOX:-workspace-write}" "$(cat loop/PROMPT.md)" \
-        > "$RUN_DIR/agent-$i.log" 2>&1
+        < /dev/null > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
     *)
-      "$AGENT" "$(cat loop/PROMPT.md)" > "$RUN_DIR/agent-$i.log" 2>&1
+      "$AGENT" "$(cat loop/PROMPT.md)" < /dev/null > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
   esac
 

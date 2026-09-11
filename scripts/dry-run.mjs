@@ -81,8 +81,18 @@ function failingCriteria(report) {
   return out
 }
 
+/**
+ * Counts for one iteration — or null, when there is no report to count.
+ *
+ * The first version of this returned zeros for a missing report. A run that was killed
+ * then produced evidence claiming four clean iterations and fourteen criteria cleared,
+ * because "no failures found" and "nothing looked" came out of this function
+ * identically. An evidence harness that reads absence as success is worse than no
+ * harness, and this is the fourth time this project has hit that shape — see
+ * evidence/INCIDENTS.md.
+ */
 function gateCounts(report) {
-  if (!report) return { pass: 0, fail: 0, skip: 0, failures: 0 }
+  if (!report) return null
   const gates = report.gates ?? []
   return {
     pass: gates.filter((g) => g.status === 'pass').length,
@@ -107,6 +117,13 @@ function gateCounts(report) {
  * Only do that inside a throwaway worktree, which is exactly what this script creates.
  */
 const CODEX_SANDBOX = process.env.CODEX_SANDBOX || 'workspace-write'
+
+/**
+ * Hard ceiling on one agent pass. A trial that runs overnight is not a trial, and an
+ * agent that has gone quiet is indistinguishable from one that is thinking unless
+ * something is counting.
+ */
+const AGENT_TIMEOUT_MS = Number(process.env.AGENT_TIMEOUT_MS || 30 * 60 * 1000)
 
 const AGENT_INVOCATION = {
   claude: (prompt) => ['claude', ['-p', prompt, '--permission-mode', 'acceptEdits']],
@@ -160,6 +177,22 @@ async function main() {
     const checkSeconds = (Date.now() - checkStart) / 1000
     const report = await readReport(WORKTREE)
     const counts = gateCounts(report)
+
+    if (!counts) {
+      // No report means the verifier did not finish — killed, crashed, or never started.
+      // Stop. Continuing would compare this iteration against nothing and call the
+      // difference progress.
+      console.log(`  no report written; the verifier did not complete. Stopping.`)
+      iterations.push({
+        n: i,
+        unmeasured: true,
+        checkSeconds,
+        checkExit: check.code,
+        tail: (check.stdout + check.stderr).trim().split('\n').slice(-12).join('\n'),
+      })
+      break
+    }
+
     const failing = failingCriteria(report)
 
     const cleared = previousFailing ? [...previousFailing].filter((c) => !failing.has(c)) : []
@@ -188,9 +221,22 @@ async function main() {
     }
 
     // Hand the report back, unchanged. This is the whole mechanism.
+    //
+    // stdio's first slot is 'ignore' on purpose. Left as a pipe, the child gets an open
+    // stdin that nothing ever writes to and nothing ever closes — and Codex, which reads
+    // instructions from stdin when they are piped, waits for an EOF that never comes.
+    // The symptom is a process that is alive, busy-looking, and has done nothing for an
+    // hour. Third time this project has lost time to an unbounded wait; see
+    // evidence/INCIDENTS.md.
     const [cmd, args] = AGENT_INVOCATION[AGENT](prompt)
     const agentStart = Date.now()
-    const res = await run(cmd, args, { cwd: WORKTREE, env: { ...process.env } })
+    const res = await run(cmd, args, {
+      cwd: WORKTREE,
+      env: { ...process.env },
+      stdio: ['ignore', 'pipe', 'pipe'],
+      timeout: AGENT_TIMEOUT_MS,
+      killSignal: 'SIGTERM',
+    })
     const agentSeconds = (Date.now() - agentStart) / 1000
     console.log(`  agent ran ${agentSeconds.toFixed(0)}s, exit ${res.code}`)
 
@@ -289,6 +335,12 @@ function renderMarkdown(e) {
   L.push('| # | gates pass/fail/skip | failures | check | agent | cleared | regressed | diff |')
   L.push('|---|---|---|---|---|---|---|---|')
   for (const it of e.iterations) {
+    if (it.unmeasured) {
+      L.push(
+        `| ${it.n} | **not measured** | — | ${(it.checkSeconds ?? 0).toFixed(0)}s | — | — | — | verifier exited ${it.checkExit} without writing a report |`,
+      )
+      continue
+    }
     L.push(
       `| ${it.n} | ${it.counts.pass}/${it.counts.fail}/${it.counts.skip} | ${it.counts.failures} | ` +
         `${(it.checkSeconds ?? 0).toFixed(0)}s | ${it.agentSeconds ? it.agentSeconds.toFixed(0) + 's' : '—'} | ` +
