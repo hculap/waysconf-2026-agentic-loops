@@ -810,7 +810,7 @@ the lines, no vertical lines, no dot mask, no colour, no text, no watermark.
 
 ## 6. Social card
 
-<!-- gen:begin id="og-card" file="og-card.jpg" width="1200" height="630" aspect="1.905:1" tier="2K" crop="center 2048x1075" format="jpg" quality="85" -->
+<!-- gen:begin id="og-card" file="og-card.jpg" width="1200" height="630" aspect="16:9" tier="2K" crop="centre:2048x1075" format="jpg" quality="85" -->
 
 ### `og-card.jpg`
 
