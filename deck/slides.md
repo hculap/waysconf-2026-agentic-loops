@@ -707,6 +707,76 @@ along, not with an opinion.
 -->
 
 ---
+
+# Here is what actually happened
+
+<div class="mt-6">
+
+I ran this before the conference, twice, in a fresh worktree with nothing shared — no
+`node_modules`, no `dist`, no notes. One agent, pointed at `step-3`, which ships with two
+deliberate mistakes.
+
+</div>
+
+<div class="mt-8">
+
+| | Codex CLI | Claude Code |
+|---|---|---|
+| Failures at the start | 86 | 86 |
+| Agent passes to green | **1** | *see repo* |
+| Time in the agent | 520s | *see repo* |
+| Time in the verifier | 172s + 205s | *see repo* |
+| Criteria cleared | AC-15, AC-23, AC-28, AC-29, AC-52, AC-53 | *see repo* |
+| Anything regressed | none | *see repo* |
+| **Verifier modified** | **no** | *see repo* |
+
+</div>
+
+<p class="mt-6" style="color: var(--turbine-muted)">
+evidence/dry-run-codex.md · evidence/dry-run-claude.md · measured by a program, not reported by the agent
+</p>
+
+<!--
+Numbers come from evidence/. Update this table from those files before the talk rather
+than from memory — the whole point of the slide is that it is measured.
+
+The row that matters is the last one. Somebody always asks whether the agent cheats.
+-->
+
+---
+
+# And here is what went wrong
+
+<div class="mt-6 text-lg">
+
+Eleven incidents while building this. **Eight of them were failures of the verifier, not of the page.**
+
+</div>
+
+<div class="mt-6">
+
+| What | Why it is in the deck |
+|---|---|
+| Nine gates ran against **somebody else's website** for a whole run — 427 confident, correctly-formatted failures | A verifier that is confident and wrong is worse than none |
+| **axe passed a blank page.** Zero violations, three breakpoints, green | A measurement of nothing looks exactly like a measurement of perfection |
+| The loop hung for an hour on a stdin nobody closed | Third unbounded wait in one project |
+| The **evidence harness fabricated** four clean iterations out of a killed run | Absence read as success — fourth time, and the only one that invented a table |
+
+</div>
+
+<p class="mt-6" style="color: var(--turbine-muted)">
+evidence/INCIDENTS.md — all eleven, written down at the time
+</p>
+
+<!--
+Do not rush this slide and do not apologise for it. It is the most credible thing in
+the deck, and the "427 failures about someone else's site" story lands every time.
+
+The punchline, if you want one: the guideline page we sent participants was quoting
+that 427 as their expected output, until somebody noticed where the number came from.
+-->
+
+---
 layout: section
 class: section
 ---
