@@ -339,6 +339,35 @@ nothing else, and no run of it can publish anything.
 | AC-59 | The deployed page is the build that passed the gates: its `<body>` is identical, and every `<head>` element the build wrote is present | sha256 of the normalised `<body>` on both sides, plus containment of each built `<head>` element in the served `<head>`. Whole-document hashes are recorded alongside | `AC-59 DEPLOY: deployed index.html sha256 {remote} does not match local dist/index.html {local}` |
 | AC-60 | A smoke run against the live URL finds zero axe violations and zero broken internal anchors | `npm run check -- --url {deploy-url}` re-runs axe and the link check against the public URL at 1440 | `AC-60 DEPLOY: live smoke failed at {url} — {n} axe violation(s), {m} broken anchor(s). First: {detail}` |
 
+---
+
+## Text over images — AC-61
+
+| ID | Criterion | Gate | Failure message |
+|---|---|---|---|
+| AC-61 | Every text element drawn over a background image clears 4.5:1 against the brightest patch behind it, or 3:1 when it is large text | `checks/gates/image-contrast.mjs`: records each element's colour and box, makes the section's text transparent, screenshots, and takes the worst 4×4 tile of the real composited background at 390, 768 and 1440 | `AC-61: Text over an image is below AA: "{text}" measures {ratio}:1 at {width}px, minimum {required}:1` |
+
+**This criterion exists because AC-15 cannot cover it, and that is worth understanding.**
+
+axe-core does not evaluate the contrast of text over a background image. It does not report
+a violation — it reports the pair as *incomplete* and moves on, which in a zero-violations
+gate is indistinguishable from a pass.
+
+So the accessibility gate was green while five of the nine text elements in the hero sat
+below AA against the photograph behind them: the eyebrow at 2.94:1, the secondary line at
+3.02:1, the venue line at 4.25:1, the dates at 4.41:1. The largest, first, most-read text
+on the page, on a page whose own palette is built around a contrast trap.
+
+Reading the CSS cannot find this either: the effective background of hero text is a
+photograph, two translucent scrims and a gradient composited together, and no computed
+style says what colour that is. The only way to know is to look at the pixels with the
+glyphs removed, which is what this gate does.
+
+Elements with their own opaque background are skipped and counted — a button's fill *is*
+the thing behind its label, axe measures that correctly, and sampling a rounded corner
+otherwise puts the page background inside the box and reports a false failure.
+
+
 AC-59 originally said **byte-identical**, and it was wrong — twice, which is the interesting part.
 
 The first correction: Netlify injects an HTML comment into every page it serves, so the served bytes

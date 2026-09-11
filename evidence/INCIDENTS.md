@@ -308,3 +308,61 @@ instructive, because this time the failure was *upstream of the agent entirely*.
 means the process ended, nothing more. A loop needs to know the difference between an
 agent that considered the problem and declined to act, and an agent that was never
 allowed to read the prompt. Only one of those is worth iterating on.
+
+
+---
+
+## 13. The accessibility gate was green, and the hero was illegible
+
+**The best one. If you only read one entry in this file, read this one.**
+
+**Caught by:** `scripts/check-assets.mjs`, the repository's own asset checker, reporting
+that 4.47% of the tiles in the lower half of `hero-hall.jpg` were too bright for white
+text — and then by measuring the rendered page to find out whether that mattered.
+
+**What happened.** The accessibility gate was passing. Zero axe violations, three
+breakpoints, six page states, twice in a row. Lighthouse accessibility 100.
+
+Then the hero text was measured directly: screenshot the page with every glyph made
+transparent, sample the brightest 4×4 patch behind each text element, compute the real
+WCAG ratio. Five of the nine text elements in the hero were below AA:
+
+| Element | Measured | Required |
+|---|---|---|
+| "Fourth edition" | 2.94:1 | 4.5:1 |
+| "Ambient, techno and modular sound…" | 3.02:1 | 4.5:1 |
+| "Three nights inside the machine" (1440) | 3.92:1 | 4.5:1 |
+| "The Powerhouse, Hall E · Kraków" | 4.25:1 | 4.5:1 |
+| "Friday 12 – Sunday 14 June 2027" | 4.41:1 | 4.5:1 |
+
+The largest, first, most-read text on the page. On a page whose entire palette was
+designed around a contrast trap, in a repository built to argue that verification is the
+hard part.
+
+**Why axe said nothing.** axe-core does not evaluate contrast for text over a background
+image. It does not fail such a pair — it marks it **incomplete** and moves on. In a gate
+whose threshold is "zero violations", incomplete is indistinguishable from correct.
+
+Reading the CSS would not have found it either. The effective background of that text is a
+photograph, two translucent scrims and a gradient composited together, and no computed
+style anywhere says what colour that is. The only way to know is to look at the pixels.
+
+**Fix, in two attempts, and the first one was worse.** Darkening the whole frame bought the
+contrast and erased the photograph — a hero of a turbine hall in which you could no longer
+see the turbine hall. The second attempt puts a flat wash under the text at 390, where the
+copy spans the frame, and a left-to-right gradient above 768, where the copy occupies the
+left half and the crowd occupies the right. Worst measured ratio is now 5.26:1, and the
+hall is still there.
+
+**And then it became a gate.** `checks/gates/image-contrast.mjs`, AC-61, runs on every
+build: it measures 21 text elements over images at three breakpoints and skips the 3 that
+have their own opaque background. The repository has sixty-one criteria now instead of
+sixty, because a review found a hole in the contract rather than in the code.
+
+**The lesson, and it is the whole talk.** *Green means no known defect.* This gate was
+green, twice, deterministically, on a page with five real accessibility failures in its
+most prominent element — and it was not lying. It was answering a narrower question than
+anyone reading the word PASS would assume it was answering.
+
+Every gate has an edge. The work is knowing where yours is, and writing that down next to
+the number.

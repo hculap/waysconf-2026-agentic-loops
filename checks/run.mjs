@@ -355,6 +355,37 @@ async function main() {
       )
     }
 
+    // AC-61 — the gap axe leaves. It marks text over a background image as
+    // "incomplete" rather than failing it, so this gate samples the rendered
+    // background with the glyphs hidden and measures the real ratio. It found five
+    // failures in the hero on a page axe had just called clean.
+    if (shouldRun('imagecontrast')) {
+      console.log('› text over images')
+      const res = await run('node', ['checks/gates/image-contrast.mjs', baseUrl])
+      if (!res.stdout.trim().startsWith('{')) {
+        const tail = (res.stderr || res.stdout).trim().split('\n').slice(-15).join('\n')
+        gates.push(
+          gateResult({
+            id: 'imagecontrast',
+            title: 'Text over images',
+            status: STATUS.FAIL,
+            criteria: ['AC-61'],
+            failures: [
+              {
+                criterion: 'AC-61',
+                message: 'The gate did not run, so nothing is known about text over images.',
+                where: 'checks/gates/image-contrast.mjs',
+                actual: 'exit code ' + res.code,
+                hint: tail,
+              },
+            ],
+          }),
+        )
+      } else {
+        gates.push(gateResult(JSON.parse(res.stdout.slice(res.stdout.indexOf('{')))))
+      }
+    }
+
     if (!SKIP_PERF && shouldRun('perf')) {
       gates.push(await perfGate(baseUrl))
     }
