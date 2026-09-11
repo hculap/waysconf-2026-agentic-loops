@@ -202,6 +202,75 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
   await context.close()
 }
 
+// ── the section rail, on both tabs ───────────────────────────────────────────
+for (const path of ['/', '/workshop/']) {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+  const page = await context.newPage()
+  await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.waitForTimeout(400)
+
+  const links = await page.locator('.toc a').all()
+  if (links.length < 3) {
+    fail(`${path}: the section rail has ${links.length} entries`)
+    await context.close()
+    continue
+  }
+
+  // every entry must point at a heading that exists, in document order
+  const targets = await page.evaluate(() =>
+    [...document.querySelectorAll('.toc a')].map((a) => {
+      const el = document.getElementById(decodeURIComponent(a.hash.slice(1)))
+      return { hash: a.hash, found: !!el, top: el ? el.getBoundingClientRect().top + window.scrollY : -1, text: a.textContent.trim() }
+    }),
+  )
+  const missing = targets.filter((t) => !t.found)
+  if (missing.length) fail(`${path}: ${missing.length} rail entries point at headings that do not exist`)
+  const ordered = targets.every((t, i) => i === 0 || t.top >= targets[i - 1].top)
+  if (!ordered) fail(`${path}: the rail is not in document order`)
+
+  if (!missing.length && ordered) ok(`${path}: ${targets.length} rail entries, all real and in order`)
+
+  // the mark must follow the scroll — check it at several depths, not one
+  const probes = [0.25, 0.5, 0.8]
+  const wrong = []
+  for (const fraction of probes) {
+    const expected = await page.evaluate((f) => {
+      const y = (document.body.scrollHeight - window.innerHeight) * f
+      window.scrollTo(0, y)
+      return new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(() => {
+        const line = window.innerHeight / 3
+        const heads = [...document.querySelectorAll('main h2[id]')]
+        let want = heads[0]
+        for (const h of heads) if (h.getBoundingClientRect().top <= line) want = h
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) want = heads[heads.length - 1]
+        const current = document.querySelector('.toc a[aria-current]')
+        r({ want: want ? want.id : null, got: current ? decodeURIComponent(current.hash.slice(1)) : null })
+      })))
+    }, fraction)
+    if (expected.want !== expected.got) wrong.push(`at ${Math.round(fraction * 100)}% down: marked ${expected.got}, reading ${expected.want}`)
+  }
+  if (wrong.length) for (const w of wrong) fail(`${path}: the rail marks the wrong section — ${w}`)
+  else ok(`${path}: the mark follows the scroll at ${probes.length} depths`)
+
+  // exactly one marked, always
+  const marked = await page.locator('.toc a[aria-current]').count()
+  if (marked !== 1) fail(`${path}: ${marked} rail entries are marked current; exactly one should be`)
+
+  // and clicking one goes there
+  const third = page.locator('.toc a').nth(2)
+  const hash = await third.getAttribute('href')
+  await third.click()
+  await page.waitForTimeout(500)
+  const landed = await page.evaluate((h) => {
+    const el = document.getElementById(decodeURIComponent(h.slice(1)))
+    return el ? Math.abs(el.getBoundingClientRect().top) : Infinity
+  }, hash)
+  if (landed < 140) ok(`${path}: clicking an entry scrolls to its section`)
+  else fail(`${path}: clicking ${hash} left its heading ${Math.round(landed)}px from the top`)
+
+  await context.close()
+}
+
 // ── the picker, without JavaScript ───────────────────────────────────────────
 {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } })

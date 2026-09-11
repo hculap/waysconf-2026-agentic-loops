@@ -11,51 +11,56 @@ No script. No tool. It is a message.
 ---
 
 ```text
-I want you to do a whole job, in phases I define. Work through them in order, on your own,
-and do not skip ahead.
+ultracode. I want you to do a whole job, in phases I define. Work through them in order,
+on your own, and do not skip ahead.
+
+Use a dynamic workflow: inside a phase, spawn as many subagents as the work needs and run
+them in parallel, deciding how many from what you find rather than from a number I gave
+you. One per section, one per review lens, one per finding — whatever the phase calls for.
+Merge their results before you leave the phase.
 
 PHASE 1 — LOOK
-Read the design: design/tokens.json, design/content.md, and the three PNGs in design/.
-Write what you found into notes.md: every section in order, every colour by name, every
-text size, and a list of anything the design does not tell you.
+Read the design. Write what you found into notes.md: every section in order, every colour
+by name, every text size, and a list of anything the design does not tell you.
 Do not write any code in this phase.
 Before moving on: show me notes.md and wait for me to say "go".
 
 PHASE 2 — BUILD
-Build the page section by section, in the order from notes.md. Colours and sizes only
-from tokens.json. Words only from content.md. No new packages except the two named in
-phase 3.
-Before moving on: the site builds with no errors.
+Build the page section by section, in the order from notes.md. One subagent per section,
+in parallel. Colours, sizes and words only from the design — invent nothing.
+Before moving on: the project builds with no errors.
 
 PHASE 3 — ARM
-Write check.mjs: a program that opens the real page in a real browser and exits 0 or
-non-zero. It must check the sections, zero axe violations at 390/768/1440, that every
-colour is one from tokens.json, that every string from content.md is on the page, and
-that nothing overflows sideways at 390. Wire it to "npm run check". You may install
-Playwright and @axe-core/playwright here.
+Write a program that opens the real page in a real browser and exits 0 or non-zero,
+checking everything the design defines: the sections and their order, accessibility at
+every width the design specifies, that every painted colour is one the design defines,
+that every piece of copy is present, and that nothing overflows sideways at the narrowest
+width. Wire it to "npm run check". Install whatever you need to drive a browser.
 A check that cannot run is a failure, never a skip.
 Before moving on: npm run check runs and reports something. It will be red. Good.
 
 PHASE 4 — REPAIR
-Loop: run npm run check, read check-report.md, fix what it names, run it again. Repeat
-until it exits 0.
-NEVER edit check.mjs to make a check pass. If you believe a check is wrong, stop and tell
-me which and why.
+Loop: run npm run check, read the report, fix what it names, run it again. Repeat until it
+exits 0.
+NEVER edit the checker to make a check pass. If you believe a check is wrong, stop and
+tell me which and why.
 Before moving on: npm run check exits 0.
 
 PHASE 5 — SHIP
-Build and deploy to Netlify. Then fetch the live URL and prove the page it serves is the
-page that passed phase 4.
+Build and deploy. Then fetch the live URL and prove the page it serves is the page that
+passed phase 4.
 Before moving on: the live URL returns 200 and serves what you built.
 
 PHASE 6 — ATTACK
-Find five things wrong with the page that check.mjs cannot see. For each one, argue
-against it yourself from three angles before you tell me — is it true, does it matter, is
-it already handled — and only report the ones that survive your own argument.
+Spawn several subagents with different lenses — design, accessibility, copy, whatever else
+you judge worth a pass — and have each look for what the checker structurally cannot see.
+Then send every candidate finding to a separate subagent whose only instruction is to
+argue that it is wrong. Report only the findings that survive that argument, and tell me
+how many you discarded.
 Do not fix anything. Give me the list.
 
 Rules for the whole run:
-- Announce each phase as you enter it.
+- Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
 - Keep notes.md current as you go. If you run out of room and we have to start fresh,
@@ -66,6 +71,36 @@ Rules for the whole run:
 
 **What you should see.** `PHASE 1 — LOOK` and then work, unattended, for a long time. It
 will stop at the two places you told it to stop, and nowhere else.
+
+---
+
+## The two words at the top
+
+**`ultracode`** is a keyword Claude Code recognises: it signals that the request is large
+and structural, and it is what unlocks multi-agent orchestration for the run. **Codex has
+no equivalent** — no keyword, no flag. Leave the word in anyway. On Codex it is one
+harmless token at the start of a long instruction, and the sentence after it does the real
+work on both tools:
+
+> spawn as many subagents as the work needs and run them in parallel, deciding how many
+> from what you find
+
+That is the instruction. The keyword is a shortcut on one tool, not the mechanism.
+
+**Why fan out at all.** Six sections built one after another is six times the wall-clock of
+six built at once, and the sections do not depend on each other. The same is true of review
+lenses: a pass looking for accessibility problems and a pass looking for copy drift share
+nothing, and running them in one context means each one carries the other's noise.
+
+**Where it earns its keep is phase 6.** A single agent asked "is this page good?" will say
+yes. Several agents with different lenses produce candidates, and a separate agent whose
+only job is to *refute* each candidate removes the ones that do not survive. Find, then
+attack, then keep what is left. That is a different shape from asking once and believing
+the answer, and it is the only part of this pack where a model checks a model.
+
+**It is also the least reliable part of the run.** More agents is more confident output,
+not more correct output. The deterministic checker in phase 3 is what decides; phase 6
+opens items for a person to judge.
 
 ---
 
@@ -95,12 +130,13 @@ line of anything:
 
 > Phase 2 builds only the hero and the lineup. Leave the rest.
 
-> Between phase 2 and 3, add a phase: show me each section as a screenshot at 390 and
-> wait for my approval.
+> Between phase 2 and 3, add a phase: show me each section as a screenshot at the
+> narrowest width and wait for my approval.
 
 > Skip phase 5. I am not deploying today.
 
-> In phase 6, look only at what happens between 480 and 620 pixels wide.
+> In phase 6, use six lenses instead of three, and look only at widths the design does
+> not specify.
 
 That is what "no script needed" means in practice. A script would have to be edited,
 tested and re-run. This gets edited in the sentence you were about to say anyway.
@@ -130,3 +166,6 @@ phases are.
 | It gets vaguer around phase 4 | `Summarise the state into notes.md.` Then start a fresh session, paste notes.md, and say `Continue from phase 4.` |
 | It declares the whole thing done | `Run npm run check and paste the last five lines, unedited.` |
 | A phase fails and it continues anyway | `You were told to stop on a failed phase. What failed, and why did you continue?` |
+| It works through everything one at a time | `Phase 2 is six independent sections. Run them in parallel, one subagent each.` |
+| Phase 6 reports five findings and all five are real | Good, and suspicious. `How many candidates did you discard, and why?` A refutation round that refutes nothing did not happen. |
+| It spawns twenty subagents for a small page | `Use as many as the work needs. Tell me the number and your reason before you start.` |

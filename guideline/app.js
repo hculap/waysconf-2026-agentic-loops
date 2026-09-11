@@ -50,9 +50,56 @@ function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttrib
   radios.forEach(function(r){
     r.addEventListener('change',function(){ if(r.checked){ store(r.value); apply(r.value,false) } });
   });
-
-  /* A flag the gate can read. "No console errors" is an inference; this is a measurement.
-     If a Content-Security-Policy, a 404 or a syntax error stops this file, the attribute
-     is absent and checks/guideline-behaviour.mjs says so by name. */
-  document.documentElement.setAttribute('data-sp-ready','1');
 })();
+
+/* Mark the section being read.
+
+     Which heading is "current" is a judgement, not a fact: several are on screen at once.
+     The rule here is the last heading whose top has passed a line a third of the way down
+     the viewport — the same rule a reader uses, and stable while scrolling in either
+     direction. IntersectionObserver alone flickers at section boundaries. */
+(function(){
+  var links = [].slice.call(document.querySelectorAll('.toc a'));
+    if(!links.length) return;
+  var targets = links.map(function(a){
+      return { link: a, el: document.getElementById(decodeURIComponent(a.hash.slice(1))) };
+    }).filter(function(t){ return t.el });
+  if(!targets.length) return;
+
+  var active = null;
+  function mark(){
+      var line = window.innerHeight / 3;
+      var found = targets[0];
+      for (var i = 0; i < targets.length; i++) {
+        if (targets[i].el.getBoundingClientRect().top <= line) found = targets[i];
+      }
+      /* At the very bottom the last section may never cross the line. */
+      if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 4) {
+        found = targets[targets.length - 1];
+      }
+      if (found === active) return;
+      if (active) active.link.removeAttribute('aria-current');
+      found.link.setAttribute('aria-current', 'true');
+      active = found;
+    }
+
+  var ticking = false;
+  function onScroll(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){ mark(); ticking = false });
+    }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('load', onScroll);
+  mark();
+})();
+
+/* A flag the gate can read. "No console errors" is an inference; this is a measurement.
+   If a Content-Security-Policy, a 404 or a syntax error stops this file, the attribute is
+   absent and checks/guideline-behaviour.mjs says so by name.
+
+   It is set at the very end, outside every other block, on purpose: nested inside the
+   picker's IIFE it was never reached on the During tab, which has no picker — so the rail
+   was dead there and the flag said nothing about it. */
+document.documentElement.setAttribute('data-sp-ready','1');

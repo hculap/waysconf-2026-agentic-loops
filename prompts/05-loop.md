@@ -12,7 +12,7 @@ Run npm run check.
 
 If it exits 0, stop and tell me — we are finished.
 
-If it does not, read check-report.md and fix what it names. Then run npm run check again.
+If it does not, read the report it wrote and fix what it names. Then run npm run check again.
 Repeat until it exits 0.
 
 Work in the order the report lists things. Fix the cause, not the symptom: if a colour is
@@ -22,7 +22,7 @@ passing.
 
 Three rules, and the first one matters more than the other two:
 
-1. NEVER change check.mjs to make a check pass. Not a threshold, not a skipped assertion,
+1. NEVER change the checker to make a check pass. Not a threshold, not a skipped assertion,
    not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
    one and why, and change nothing.
 2. Do not add packages, and do not invent text.
@@ -72,7 +72,7 @@ Nobody decided that. A program exited 0.
 
 | What you see | Say this |
 |---|---|
-| **It edited `check.mjs`** | `Put the checker back exactly as it was, and fix the page instead.` Then look at what it changed — that is the most instructive thing that will happen to you today. |
+| **It edited the checker** | `Put the checker back exactly as it was, and fix the page instead.` Then look at what it changed — that is the most instructive thing that will happen to you today. |
 | It stops after one round | `Keep going. Do not stop until npm run check exits 0.` Or use `/goal`. |
 | The same failure keeps coming back | `You have tried that three times. Stop. Tell me what you tried and what happened each time.` |
 | It says it is done but the check is red | `Run npm run check and paste the last five lines, unedited.` |

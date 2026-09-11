@@ -12,7 +12,7 @@ still worth doing, because the alternative is not looking.
 The checks pass. Now try to prove the page is still wrong.
 
 Your job in this message is to attack, not to defend and not to fix. Find five things that
-are wrong with this page that check.mjs cannot catch, and for each one tell me:
+are wrong with this page that your checker cannot catch, and for each one tell me:
 
 - exactly which element, by what I would see on screen
 - what is wrong with it
@@ -20,14 +20,14 @@ are wrong with this page that check.mjs cannot catch, and for each one tell me:
 
 Look specifically where an automated check has no reach:
 
-- text over a photograph: axe does not judge that contrast at all, it marks it
-  "incomplete" and moves on
+- text over a photograph or a gradient: an automated contrast check cannot compute that
+  pair at all, and reports it as inconclusive rather than as a failure
 - reading order for someone using a keyboard or a screen reader: technically valid and
   incoherent is a thing that exists
 - alt text that is present, and useless
 - a heading structure that looks like a hierarchy and is not one
 - copy that passes every rule and still does not sound like the brand
-- what happens at 500 pixels wide — a width nobody screenshotted
+- what happens at a width between the ones the design specifies — one nobody screenshotted
 - anything that only breaks on the second visit, or with a slow connection
 
 Before you tell me any of them, argue against each one yourself, from three angles:

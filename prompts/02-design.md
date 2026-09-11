@@ -40,17 +40,18 @@ and unzip it, so that there is a `design` folder next to your `src` folder.
 ```text
 There is a folder called design next to this project. It contains:
 
-- three PNGs: the page as it should look at 390, 768 and 1440 pixels wide
-- tokens.json: every colour, text size, spacing value and radius, by name
-- content.md: every word that appears on the page
+- images of the page as it should look, at each width the design covers
+- a file of named design values: colours, text sizes, spacing, radii
+- a file with every word that appears on the page
 
-Read all three. Do not write any code yet. Tell me what you found, as a list:
+Read all of it. Do not write any code yet. Tell me what you found, as a list:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from tokens.json, and what it is used for.
+2. Every colour, by its name from the design, and what it is used for.
 3. Every text size, and which one is used where.
-4. Anything the three files disagree about, or do not tell you, and that you would
-   otherwise have to guess.
+4. Every width the design covers.
+5. Anything the files disagree about, or do not tell you, and that you would otherwise
+   have to guess.
 
 Point 4 is the one I care about most. Be specific and be honest: "the PNG shows a hover
 state I have no values for" is more useful to me than a confident guess.

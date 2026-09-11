@@ -6,45 +6,49 @@ after it depends on what happens here.
 You are about to ask the agent to build the thing that will judge its own work — and then,
 in the next prompt, forbid it from ever touching that thing again.
 
+Notice what this prompt does *not* say. It does not name a colour, a width, a font size or
+a section. All of that is in the design, and the agent read the design in prompt 02. A
+prompt that repeats the design has two copies of the truth, and the day they disagree is
+the day the checker starts lying.
+
 ---
 
 ```text
-Now write a program that checks your own work.
+Now write a program that checks your own work against the design.
 
 It must be a program, not an opinion. It runs, it looks at the real page in a real
 browser, and it exits with code 0 if everything is right and a non-zero code if anything
 is wrong. It never asks a language model anything, it never asks me anything, and it
 gives the same answer twice on the same page.
 
-Put it in check.mjs, and make "npm run check" run it. You may install Playwright and
-@axe-core/playwright for this — that is the one exception to the no-new-packages rule.
+Make "npm run check" run it. Install whatever you need to drive a real browser and to
+test accessibility — that is the one exception to the no-new-packages rule.
 
-It must check at least these, and it must check them against the page as a browser
-actually renders it, not against the source code:
+Derive what to check from the design, not from me. At minimum it must decide, against the
+page as a browser actually renders it rather than against the source:
 
-1. The site builds with no errors.
-2. Loading the page produces no errors in the browser console.
-3. Every section from the design is present, and in the right order.
-4. Accessibility: zero axe-core violations, at 390, 768 and 1440 pixels wide.
-5. Every colour the page paints is one of the colours in the design. Anything else is a
-   failure, and the report says which colour and which element.
-6. Every piece of text from the content file appears on the page.
-7. Nothing sticks out sideways at 390 pixels — no horizontal scrollbar.
-8. Every image has alt text, and it is not the filename.
+1. that the project builds, with no errors
+2. that loading the page produces no errors in the browser console
+3. that every section the design defines is present, and in the order the design gives
+4. that it is accessible, at every width the design specifies
+5. that every colour the page paints is one the design defines — anything else fails
+6. that every piece of copy in the design appears on the page
+7. that nothing overflows sideways at the narrowest width the design specifies
+8. that every image has alt text, and that it is not the filename
 
 When something fails, the report must say four things: what failed, where on the page,
-what it expected, and what it found. "Contrast issue on the page" is useless. "The date
-line in the hero is #6B7280 on #0A0B0D, which is 4.07 to 1, and body text needs 4.5" is
-the whole job.
+what the design says it should be, and what was actually there. "Contrast issue on the
+page" is useless. Naming the element, the expected value, the measured value and the
+threshold is the whole job.
 
-Write the report to check-report.md as well as printing it, because in the next step I am
-going to hand that file straight back to you.
+Write the report to a file as well as printing it, because in the next step I am going to
+hand that file straight back to you. Tell me what you called it.
 
 Two rules about the checker itself:
 
-- If a check cannot run — the browser will not start, the page will not load — that is a
-  FAILURE, never a pass and never a silent skip. A check that did not happen must not look
-  like a check that succeeded.
+- If a check cannot run — the browser will not start, the page will not load, a design
+  file is missing — that is a FAILURE, never a pass and never a silent skip. A check that
+  did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.
 
@@ -59,39 +63,33 @@ That is the correct outcome and it is worth sitting with for a second. A page yo
 fairly happy with two minutes ago has just been told, by a program, exactly what is wrong
 with it — with element names and measured numbers.
 
-Read three or four of the failures. Not to fix them; just to see what the report sounds
-like when it is written well.
+You did not tell it which numbers. It went and got them from the design.
 
 ---
 
-### If it goes wrong
+### Why this prompt names nothing specific
 
-| What you see | Say this |
-|---|---|
-| It passes first time | `I do not believe it. Show me what each check actually asserts, and prove one of them can fail — break something on purpose and run it again.` |
-| Failures like "improve accessibility" | `That is advice, not a measurement. Every failure must name an element and give a number.` |
-| It checks the source code instead of the page | `Check the rendered page in a browser, not the files. A class name in the source is not proof of a colour on the screen.` |
-| It skips a check it could not run | `A check that did not run is a failure, not a skip. Change it so that anything unverified comes out red.` |
-| It goes quiet for a long time | Installing a browser takes a few minutes on a first run. |
+Every check in that list is a *question*, and the answer lives in the design file. Ask for
+"zero accessibility violations at every width the design specifies" and the agent has to go
+and find out what those widths are. Ask for them by number and you have quietly moved the
+design into the prompt, where nobody will remember to update it.
 
----
+This is the same reason the prompt does not name a testing library or a file name. Those
+are the agent's decisions, and the agent is better at them than a message written in
+advance for a machine that might be either of two different tools.
 
-## Why this is the whole point
+What the prompt *does* fix is the part no tool can decide for you:
 
-Ask a model whether its work is good and it will tell you. It will be articulate, specific,
-and it will sound exactly the same whether the answer is true or not. You have no way of
-knowing which time you got.
+- it must be a program, and its answer must not come from a model
+- the report is for a reader who was not there — element, expected, actual, threshold
+- a check that cannot run is a failure
+- lenient checks are worse than no checks
 
-`check.mjs` cannot do that. It is a few hundred lines that open a browser, measure things,
-and return a number. It has no opinion about whether you will like the page, it does not
-know that the agent worked hard, and it will not be talked round.
+### The sentence that does the most work
 
-That is what makes the next prompt work.
+> A check that cannot run is a FAILURE, never a pass and never a silent skip.
 
-> **A loop is only worth building if something in it can say no without asking a language
-> model for permission.**
-
-One honest warning, because the checker will shortly start telling you the page is fine:
-it is answering a narrower question than "is this page good". Automated accessibility
-rules reach roughly 30–40% of what the standard actually requires. A colour check knows
-nothing about whether the design works. Prompt 07 goes looking for the rest.
+In a trial run of these prompts, an agent given that one line decided on its own to treat
+its accessibility tool's *inconclusive* results as failures rather than passes. That
+decision catches a whole class of defect that a "zero violations" gate cannot see, and
+nobody asked for it. It fell out of one sentence about what absence means.

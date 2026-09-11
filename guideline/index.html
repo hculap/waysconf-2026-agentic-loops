@@ -142,6 +142,28 @@ pre.plain{background:var(--raised);border:1px solid var(--line);border-radius:12
 .need span{display:block;color:var(--fg-2);font-size:15px}
 .need em{display:block;margin-top:9px;color:var(--accent);font-style:normal;font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
 
+/* The section rail. Fixed rather than a grid column, so the page itself is untouched and
+   the long-form measure stays at 880px. Below 1280px there is no room beside the text and
+   it is not shown — the page is linear and reads fine without it. */
+.toc{display:none}
+@media(min-width:1280px){
+  .toc{display:block;position:fixed;top:88px;right:max(20px,calc(50% - 620px));width:210px;
+    max-height:calc(100vh - 130px);overflow-y:auto;overscroll-behavior:contain;z-index:5}
+  .toc__t{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11px;
+    letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+  .toc__t::before{content:'// ';opacity:.75}
+  .toc ol{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+  .toc li{margin:0}
+  .toc a{display:block;padding:5px 0 5px 13px;margin-left:-1px;border-left:2px solid transparent;
+    color:var(--fg-3);text-decoration:none;font-size:13px;line-height:1.4}
+  .toc a:hover{color:var(--fg)}
+  .toc a[aria-current]{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+}
+@media(prefers-reduced-motion:no-preference){.toc a{transition:color .12s,border-color .12s}}
+
+.need__alt{font-size:14.5px;color:var(--fg-3);margin:14px 0 0}
+.need__alt em{font-style:normal;color:var(--fg-2)}
+
 footer{border-top:1px solid var(--line);margin-top:64px;padding-block:32px 52px}
 footer p{font-size:14px;color:var(--fg-3)}
 </style>
@@ -157,6 +179,19 @@ footer p{font-size:14px;color:var(--fg-3)}
     </nav>
   </div>
 </header>
+<nav class="toc" aria-label="On this page">
+  <p class="toc__t">On this page</p>
+  <ol>
+    <li><a href="#what-we-are-going-to-build">What we are going to build</a></li>
+    <li><a href="#what-you-need">What you need</a></li>
+    <li><a href="#first-pick-your-computer">First, pick your computer</a></li>
+    <li><a href="#how-to-open-a-terminal">How to open a terminal</a></li>
+    <li><a href="#install-one-thing">Install one thing</a></li>
+    <li><a href="#if-installing-is-not-an-option">If installing is not an option</a></li>
+    <li><a href="#questions-people-ask">Questions people ask</a></li>
+    <li><a href="#on-the-day">On the day</a></li>
+  </ol>
+</nav>
 <main id="main" tabindex="-1"><div class="wrap">
 <h1>Before you come</h1>
 <p class="lede">Ninety minutes, thirty people, one loop. A coding agent is handed a design,
@@ -167,12 +202,12 @@ better at home than on conference wifi.</p>
 <p>Fifteen minutes, four free accounts, one install. Do it at home — the room has thirty people and one wifi network, and sign-up forms are a miserable way to spend the first twenty minutes of a workshop.</p>
 <p><strong>You do not need to know how to code.</strong> This session is built for designers and product people. You will type a handful of commands and say a lot of things in English.</p>
 <hr>
-<h2>What we are going to build</h2>
+<h2 id="what-we-are-going-to-build">What we are going to build</h2>
 <figure class="fig"><img src="diagrams/01-the-loop.svg" alt="The loop: generate, verify, repair, with a deploy exit" loading="lazy" width="1600" height="900"></figure>
 <p>An agent writes a page. A <strong>program</strong> — not the agent — checks it against the design, the contrast rules and the copy, and writes down what is wrong. The agent reads that and fixes it. Round and round until the program says nothing is wrong, and then it goes live.</p>
 <p>The interesting box is the one that refuses. Everything below is what you need installed so you can build one of those on Wednesday.</p>
 <hr>
-<h2>What you need</h2>
+<h2 id="what-you-need">What you need</h2>
 
 <div class="cards">
   <div class="card">
@@ -205,7 +240,7 @@ better at home than on conference wifi.</p>
   </div>
 </div>
 <hr>
-<h2>First, pick your computer</h2>
+<h2 id="first-pick-your-computer">First, pick your computer</h2>
 
 <fieldset class="ospick">
   <legend>Which computer are you on?</legend>
@@ -220,7 +255,7 @@ better at home than on conference wifi.</p>
   <p class="ospick__hint" data-os-hint>Everything below changes to match.</p>
 </fieldset>
 <hr>
-<h2>How to open a terminal</h2>
+<h2 id="how-to-open-a-terminal">How to open a terminal</h2>
 <p>If you have never opened one, this is the part that stops people, and it stops them before they have started. It is two steps and it is not dangerous.</p>
 <p>A terminal is a window where you type the name of a program, press Enter, and it prints the answer back as text. <code>npm install</code> and a button labelled <strong>Install</strong> do the same work — one is addressed by name, the other by clicking.</p>
 
@@ -271,7 +306,7 @@ better at home than on conference wifi.</p>
   installs something or prints a version number.</div>
 </div>
 <hr>
-<h2>Install one thing</h2>
+<h2 id="install-one-thing">Install one thing</h2>
 <p>You need <strong>Node</strong> on your machine, and then <strong>one</strong> of the two agent command-line tools — whichever matches the subscription you already have. Copy each command, paste it into the terminal you just opened, press Enter, and wait for the prompt to come back before the next one.</p>
 
 <div data-os="mac">
@@ -341,15 +376,15 @@ first; if you have ChatGPT Plus take the second.</p>
 </div>
 <p>If one says <code>command not found</code>, that thing is not installed. Go back a step — or bring it to the room fifteen minutes early and someone will sort it out.</p>
 <hr>
-<h2>If installing is not an option</h2>
+<h2 id="if-installing-is-not-an-option">If installing is not an option</h2>
 <p>Some work laptops will not let you install anything, and that is fine.</p>
 <p>Open the workshop repository on GitHub, click the green <strong>Code</strong> button, choose <strong>Codespaces</strong>, and create one. You get a full machine in your browser with Node and both agents already on it. Make an empty folder inside it and start there — the workshop itself never touches the repository's contents.</p>
 <p>GitHub's free tier includes 120 core-hours a month. This session uses about two.</p>
 <hr>
-<h2>Questions people ask</h2>
+<h2 id="questions-people-ask">Questions people ask</h2>
 <div class="faq"><details><summary>I have never used a terminal.</summary><p>Good — a third of the room has not either. There is a page of it in the workshop tab, and the first thing your agent is asked to do is explain each command as it goes.</p></details><details><summary>Do I need to know how to code?</summary><p>No. You will read code and say what is wrong with the result in plain English. That is the job the session is about.</p></details><details><summary>I do not want to pay for an AI subscription.</summary><p>The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.</p></details><details><summary>My Figma is free.</summary><p>Then the Figma-to-agent connection will refuse, and nothing else changes. The design also ships as three PNGs, a file of every colour and size, and a file of every word. That route is what the checks compare against.</p></details><details><summary>My work laptop will not let me install things.</summary><p>Use the browser option. You get a full machine with everything on it and you install nothing.</p></details><details><summary>Will this work on Windows?</summary><p>Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.</p></details><details><summary>What if I fall behind?</summary><p>You cannot, in a way that matters. Every prompt stands alone — if one is going badly, tell your agent to stop and paste the next. A half-built page with a working checker teaches more than a finished page with none.</p></details><details><summary>What do I take home?</summary><p>A live URL, the page of prompts, and the design pack. All of it stays online after the conference.</p></details></div>
 <hr>
-<h2>On the day</h2>
+<h2 id="on-the-day">On the day</h2>
 <p><strong>Bring:</strong> your laptop, your charger, and headphones if you like working with them.</p>
 <p><strong>Arrive:</strong> a few minutes early if anything above did not work.</p>
 <p><strong>You will leave with:</strong> a live URL, a page of prompts you can reuse on Monday, and a fairly specific opinion about when to trust a language model.</p>

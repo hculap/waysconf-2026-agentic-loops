@@ -666,12 +666,13 @@ recording is at evidence/loop-repair.mp4.
 # The failure report is the interface
 
 ```md
-**3. [AC-28] color.text.muted (#6B7280) used outside the footer legal block**
+**3. [check 07] a colour on the page is not in the design**
 
-- Where: `section[data-section="lineup"] .artist-card p`
-- Expected: `color.text.secondary (#A7AEBB)`
-- Actual: `#6B7280` — 4.07:1 against #0A0B0D, minimum 4.5:1
-- Hint: supporting copy uses text.secondary; muted is legal text only
+- Where: the supporting line inside each card in the lineup section
+- Expected: the design's "text / secondary"
+- Actual: the design's "text / muted" — measured 4.07:1 against the page background,
+          and body text needs 4.5:1
+- Hint: muted is defined for legal and footer text only
 ```
 
 <div class="mt-8 text-xl">
