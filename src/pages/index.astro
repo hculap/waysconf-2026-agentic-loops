@@ -1,60 +1,65 @@
 ---
 /**
- * The TURBINE landing page.
+ * STARTER STATE.
  *
- * This file is deliberately thin. Every section owns its own <Section>, which
- * is what emits `data-section` and the matching `id`, so the canonical order in
- * docs/CANON.md §7 is expressed here as nothing more than the order of the
- * elements below — AC-06 reads it straight out of the DOM.
+ * There is no festival page here yet. That is the point — building it is the
+ * workshop. Your agent reads brief/BRIEF.md, brief/CONTENT.md and
+ * brief/ACCEPTANCE.md, plus the design (Figma, or design/export/ if you have no
+ * paid Figma seat), and fills this file in with the sections listed in
+ * docs/CANON.md section 7.
  *
- * Nav and Footer go into Base's named slots rather than the default one. Base
- * renders those slots outside <main>, which is the only reason the banner and
- * contentinfo landmarks are distinct from the main landmark (AC-09). Moving
- * either into the default slot nests it inside <main> and breaks that.
- *
- * The head strings are the four verbatim blocks of brief/CONTENT.md §1. They live
- * here rather than in Base because they are page copy, and CONTENT.md is the only
- * place that decides copy.
+ * Run `npm run check` right now. Every gate will fail, and the report it writes
+ * is your task list.
  */
 import Base from '../layouts/Base.astro'
-import Nav from '../sections/Nav.astro'
-import Hero from '../sections/Hero.astro'
-import Ticker from '../sections/Ticker.astro'
-import Lineup from '../sections/Lineup.astro'
-import Programme from '../sections/Programme.astro'
-import Venue from '../sections/Venue.astro'
-import Tickets from '../sections/Tickets.astro'
-import Faq from '../sections/Faq.astro'
-import Newsletter from '../sections/Newsletter.astro'
-import Footer from '../sections/Footer.astro'
 
-const title = 'TURBINE — 12–14 June 2027 — Hall E, Kraków'
-const description =
-  'Three nights of ambient, techno and modular sound in a power station that stopped making electricity in 1998. Kraków, 12–14 June 2027.'
-const ogTitle = 'TURBINE — Three nights inside the machine'
-const ogDescription =
-  'Ambient, techno and modular sound in a hall built for power. Twelve artists, three stages, three nights. Kraków, 12–14 June 2027.'
-const ogImageAlt =
-  'The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness.'
+const sections = [
+  'nav',
+  'hero',
+  'ticker',
+  'lineup',
+  'programme',
+  'venue',
+  'tickets',
+  'faq',
+  'newsletter',
+  'footer',
+]
 ---
 
 <Base
-  title={title}
-  description={description}
-  ogTitle={ogTitle}
-  ogDescription={ogDescription}
-  ogImageAlt={ogImageAlt}
+  title="TURBINE — starter"
+  description="Starter state for the TURBINE festival landing page. Nothing is built yet; run npm run check to see what is missing."
+  ogTitle="TURBINE — starter"
+  ogDescription="Starter state for the TURBINE festival landing page."
+  ogImageAlt="The TURBINE workshop starter page."
 >
-  <Nav slot="header" />
+  <section class="container-turbine py-24">
+    <p class="font-mono text-sm text-accent-coolant">starter state</p>
+    <h1 class="mt-4 font-display text-5xl font-bold tracking-[-0.02em]">Nothing is built yet.</h1>
 
-  <Hero />
-  <Ticker />
-  <Lineup />
-  <Programme />
-  <Venue />
-  <Tickets />
-  <Faq />
-  <Newsletter />
+    <p class="mt-6 max-w-[60ch] text-lg text-text-secondary">
+      This page is the starting line. The ten sections below do not exist. Your job, and your
+      agent's job, is to build them from the brief and the design until every gate passes.
+    </p>
 
-  <Footer slot="footer" />
+    <ol class="mt-10 grid max-w-[60ch] gap-2 font-mono text-sm text-text-secondary">
+      {
+        sections.map((name, i) => (
+          <li class="flex items-center gap-3 rounded-md border border-border-subtle bg-bg-surface px-4 py-3">
+            <span class="text-text-secondary">{String(i + 1).padStart(2, '0')}</span>
+            <span class="text-text-primary">{name}</span>
+            <span class="ml-auto text-state-danger">missing</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="mt-10 max-w-[60ch] text-text-secondary">
+      Start here:
+      <code class="rounded-sm bg-bg-raised px-2 py-1 font-mono text-text-primary">npm run check</code>
+      — then read
+      <code class="rounded-sm bg-bg-raised px-2 py-1 font-mono text-text-primary">checks/report.md</code>.
+    </p>
+  </section>
 </Base>
