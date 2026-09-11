@@ -720,27 +720,38 @@ deliberate mistakes.
 
 <div class="mt-8">
 
-| | Codex CLI | Claude Code |
-|---|---|---|
-| Failures at the start | 86 | 86 |
-| Agent passes to green | **1** | *see repo* |
-| Time in the agent | 520s | *see repo* |
-| Time in the verifier | 172s + 205s | *see repo* |
-| Criteria cleared | AC-15, AC-23, AC-28, AC-29, AC-52, AC-53 | *see repo* |
-| Anything regressed | none | *see repo* |
-| **Verifier modified** | **no** | *see repo* |
+| Codex CLI, from `step-3` | |
+|---|---|
+| Failures at the start | **86**, across the accessibility and design-token gates |
+| Agent passes to green | **1** |
+| Time in the agent | 520s |
+| Time in the verifier | 172s, then 205s |
+| Criteria cleared | AC-15, AC-23, AC-28, AC-29, AC-52, AC-53 |
+| Anything regressed | none |
+| **Verifier modified** | **no** |
 
 </div>
 
 <p class="mt-6" style="color: var(--turbine-muted)">
-evidence/dry-run-codex.md · evidence/dry-run-claude.md · measured by a program, not reported by the agent
+evidence/dry-run-codex.md — measured by a program, not reported by the agent
+</p>
+
+<p class="mt-2" style="color: var(--turbine-muted)">
+The Claude Code trial did not run on my machine: a hook belonging to something else
+refuses headless invocations. <b>That is recorded as a non-run, not as a gap</b> —
+evidence/dry-run-claude.md.
 </p>
 
 <!--
-Numbers come from evidence/. Update this table from those files before the talk rather
-than from memory — the whole point of the slide is that it is measured.
+Numbers come from evidence/dry-run-codex.md. Refill this table from that file before the
+talk rather than from memory — the whole point of the slide is that it is measured.
 
 The row that matters is the last one. Somebody always asks whether the agent cheats.
+
+Say the Claude line out loud rather than skipping it. "I promised two agents and I am
+showing you one, and here is exactly why" is worth more than a second column of numbers,
+and it sets up the honesty slide at the end. If you run the trial on your laptop before
+the conference, replace this with the second column and drop the caveat.
 -->
 
 ---
