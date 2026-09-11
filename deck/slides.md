@@ -760,7 +760,7 @@ the conference, replace this with the second column and drop the caveat.
 
 <div class="mt-6 text-lg">
 
-Eleven incidents while building this. **Eight of them were failures of the verifier, not of the page.**
+Twelve incidents while building this. **Eight were failures of the verifier or the harness, not of the page.**
 
 </div>
 
@@ -776,7 +776,7 @@ Eleven incidents while building this. **Eight of them were failures of the verif
 </div>
 
 <p class="mt-6" style="color: var(--turbine-muted)">
-evidence/INCIDENTS.md — all eleven, written down at the time
+evidence/INCIDENTS.md — all twelve, written down at the time
 </p>
 
 <!--
