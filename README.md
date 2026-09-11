@@ -128,6 +128,30 @@ See [`CHECKPOINTS.md`](CHECKPOINTS.md). Nobody gets stuck for more than one sect
 
 ---
 
+## One thing a person has to do
+
+The visual gate compares your build against PNGs in `design/export/`. That directory ships
+with a README and no images, so AC-34 and AC-35 report **SKIP — no baseline** rather than
+passing or failing.
+
+That is deliberate. `checks/baseline.mjs` refuses to run when nobody is at a keyboard,
+because an agent that can move the target always hits it, and recording a baseline is a
+decision someone makes *after looking at the page*. While this repository was being built
+that guard fired, and the wrong baselines were deleted rather than the guard bypassed —
+see `evidence/INCIDENTS.md` #8.
+
+So, once, from a terminal:
+
+```bash
+git checkout solution
+npm run build
+node checks/baseline.mjs --yes --reason "first capture from the reference implementation"
+```
+
+Better still, export the frames from the Figma file instead — then the gate is comparing
+your build against *the design* rather than against another build. `design/export/README.md`
+explains the difference and why it matters.
+
 ## Honesty section
 
 Things this repository does **not** claim:
