@@ -443,6 +443,42 @@ async function openPage(page: Page, width: number, height: number, options: Open
     }
   })
 
+  // Is there a page here at all?
+  //
+  // axe reports zero violations on a blank document, and zero violations is a pass. A
+  // gate that says PASS because there was nothing to check is the purest form of the
+  // failure this repository is about, and it happened: under load, `goto` returned a
+  // document with nothing in it, AC-15 went green at all three breakpoints, and only the
+  // criteria that assert *presence* noticed.
+  //
+  // So presence is now checked before anything is audited, and a page that is not there
+  // is a loud failure rather than a quiet pass.
+  const present = await page.evaluate(() => ({
+    bodyChildren: document.body?.childElementCount ?? 0,
+    text: (document.body?.innerText ?? '').trim().length,
+    focusable: document.querySelectorAll(
+      'a[href], button, input, select, textarea, [tabindex]:not([tabindex="-1"])',
+    ).length,
+    url: location.href,
+    title: document.title,
+  }))
+
+  if (present.bodyChildren === 0 || present.focusable === 0) {
+    gate.fail({
+      criterion: 'AC-15',
+      message:
+        `The page served at ${width}px is empty, so nothing below this point was measured. ` +
+        `An audit of a blank document reports no violations, which is not the same as passing.`,
+      where: present.url,
+      expected: 'a rendered page with at least one focusable element',
+      actual: `${present.bodyChildren} body children, ${present.text} characters of text, ${present.focusable} focusable elements, title "${present.title}"`,
+      hint:
+        'Usually the preview server was not ready, was overloaded, or another run was competing ' +
+        'for it. Re-run on an idle machine before believing anything else in this gate.',
+    })
+    throw new Error(`blank page at ${width}px — refusing to audit it`)
+  }
+
   if (!settle.fontsReady) {
     gate.note(`AC-15 at ${width}px: document.fonts.ready did not resolve within 5s; the audit ran anyway.`)
   }
