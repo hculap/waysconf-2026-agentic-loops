@@ -11,6 +11,7 @@ does is a promise, not a demonstration. This directory is the difference.
 | `dry-run-codex.md` / `.json` | A clean-room trial: the repository exactly as a participant receives it, in a fresh worktree, with Codex CLI pointed at it. Per-iteration timings, gate counts, which criteria each pass cleared, and whether the agent touched the verifier. |
 | `dry-run-claude.md` / `.json` | The same trial with Claude Code, so the two are comparable. |
 | `loop-run.md` | `loop/ralph.sh` executed end to end from `step-3`: 85 failures, one agent pass, all gates green, and the three files it was supposed to touch. |
+| `determinism.md` | The same build checked twice. Identical verdicts; individual Lighthouse samples 14 points apart. Why the median of three exists. |
 | `asset-generation.log` | One line per generated image: timestamp, model id, prompt hash, tier, output size, wall time, cost. What makes the image pack reproducible rather than merely repeatable. |
 
 ## How the trials are run
