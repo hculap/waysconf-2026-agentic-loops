@@ -41,12 +41,14 @@ type and finds the program you asked for. In a Codespace and on a Mac the shell 
 
 ## 2. Opening one
 
-### 2.1 Inside a Codespace — what most of the room will use
+### 2.1 Inside a Codespace — the fallback when a laptop will not let you install
 
-A Codespace is a computer running in GitHub's cloud that you drive from a browser tab. It arrives
-with Node, both agents, the browser the gates need and every dependency already installed, which is
-why the workshop uses it. The click path to get one is in
-[`GITHUB-FOR-DESIGNERS.md`](GITHUB-FOR-DESIGNERS.md) §6.
+A Codespace is a computer running in GitHub's cloud that you drive from a browser tab. It arrives with
+Node and both agents already installed, which makes it the answer for a locked-down work machine. Open
+any repository on GitHub, click the green **Code** button, choose **Codespaces**, and create one.
+
+Most of the room will not need this. The setup page — https://waysconf.szymonpaluch.com — has the
+click path for opening a terminal on macOS, Windows and Linux, with the commands to copy.
 
 The **gates**, since the word is about to come up constantly: the programs that read the finished page
 and decide, without asking a model, whether it passed. There are nine of them and they are the subject

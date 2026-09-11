@@ -73,15 +73,49 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;color:var(--fg-2);vertic
 .btn--ghost{background:transparent;color:var(--fg);border:1px solid var(--line-2)}
 .btn--ghost:hover{background:var(--raised);color:var(--fg)}
 
-.os{display:grid;gap:16px;margin:20px 0}
-@media(min-width:860px){.os{grid-template-columns:repeat(3,1fr)}}
-.os__col{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px}
-.os__col h3{margin-top:0}
-.os__col p{font-size:14.5px}
+/* Pick your system once. The radios themselves are off-screen rather than display:none,
+   so they stay focusable and keep their native keyboard behaviour; the labels are the
+   visible control and :checked + label paints the selected one. */
+.ospick{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px 18px;margin:24px 0}
+.ospick legend{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:0 6px}
+.ospick legend::before{content:'// ';opacity:.75}
+.ospick__row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.ospick input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.ospick label{display:inline-flex;align-items:center;min-height:42px;padding:9px 20px;border-radius:999px;border:1px solid var(--line-2);color:var(--fg-2);font-weight:600;font-size:15px;cursor:pointer}
+.ospick label:hover{color:var(--fg);border-color:var(--fg-3)}
+.ospick input:checked + label{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ospick input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.ospick__hint{font-size:13.5px;color:var(--fg-3);margin:12px 0 0}
 
-.check{display:grid;gap:8px;margin:18px 0}
-.check>div{display:flex;gap:14px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 14px;flex-wrap:wrap}
-.check span{color:var(--fg-3);font-size:14px}
+/* A command, and the button that copies it. The button sits at the top right so a
+   multi-line block does not push it down the page. */
+.cmd{position:relative;margin:12px 0}
+.cmd pre{background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:14px 84px 14px 15px;overflow-x:auto}
+.cmd pre code{background:none;padding:0;font-size:14px;line-height:1.6;color:var(--fg);white-space:pre-wrap;word-break:break-word}
+.cmd .copy{position:absolute;top:9px;right:9px}
+.cmd__note{font-size:13.5px;color:var(--fg-3);margin:6px 0 0}
+.copy--sm{font-size:12px;padding:7px 13px;min-height:30px}
+
+/* The six things nobody tells you about a terminal window. */
+.rules{display:grid;gap:8px;margin:18px 0}
+.rules>div{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 15px;font-size:15px;color:var(--fg-2)}
+.rules b{color:var(--fg)}
+kbd{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;background:var(--raised);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--fg);white-space:nowrap}
+
+.picktwo{display:grid;gap:14px;margin:16px 0}
+@media(min-width:700px){.picktwo{grid-template-columns:1fr 1fr}}
+.picktwo__col{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 16px}
+.picktwo__t{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0}
+.picktwo .cmd{margin-bottom:0}
+
+/* What you type, what it should say, and the button — in that order, so the eye reads the
+   pair before it reaches the control. */
+.check{display:grid;gap:10px;margin:18px 0}
+.check__row{display:flex;gap:14px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px 9px 15px;flex-wrap:wrap}
+.check__row pre{margin:0;padding:0;background:none;border:0;flex:0 1 auto}
+.check__row pre code{background:none;padding:0;font-size:14px;color:var(--fg)}
+.check__row span{color:var(--fg-3);font-size:14px;flex:1 1 auto}
+.check__row .copy{flex:0 0 auto;margin-left:auto}
 
 .faq details{border:1px solid var(--line);background:var(--surface);border-radius:12px;margin-bottom:8px}
 .faq summary{cursor:pointer;padding:14px 16px;font-weight:600;color:var(--fg);min-height:44px;display:flex;align-items:center}
@@ -679,6 +713,48 @@ document.querySelectorAll('.copy').forEach(function(b){
 function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');
   a.style.position='absolute';a.style.left='-9999px';document.body.appendChild(a);a.select();
   try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+
+/* Pick your system once and every [data-os] block on the page follows. The markup ships
+   with all three visible, so a reader with JavaScript off loses nothing — the page is just
+   longer. The stored choice is a convenience; every read and write is wrapped, because
+   localStorage throws in a private window rather than returning nothing. */
+(function(){
+  var LABELS={mac:'macOS',windows:'Windows',linux:'Linux'};
+  var radios=document.querySelectorAll('.ospick input[name="os"]');
+  if(!radios.length) return;
+  var hint=document.querySelector('[data-os-hint]');
+
+  function stored(){try{return localStorage.getItem('sp-os')}catch(e){return null}}
+  function store(v){try{localStorage.setItem('sp-os',v)}catch(e){}}
+
+  function guess(){
+    var p=(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||navigator.userAgent||'';
+    if(/mac|iphone|ipad|ipod/i.test(p)) return 'mac';
+    if(/win/i.test(p)) return 'windows';
+    return 'linux';
+  }
+
+  function apply(os,guessed){
+    document.querySelectorAll('[data-os]').forEach(function(el){
+      el.hidden = el.getAttribute('data-os')!==os;
+    });
+    document.querySelectorAll('.ospick input[name="os"]').forEach(function(r){
+      r.checked = r.value===os;
+    });
+    if(hint){
+      hint.textContent = guessed
+        ? 'We guessed ' + LABELS[os] + ' from your browser. Not right? Pick another — everything below changes to match.'
+        : 'Everything below is for ' + LABELS[os] + '.';
+    }
+  }
+
+  var saved=stored();
+  apply(saved||guess(), !saved);
+
+  radios.forEach(function(r){
+    r.addEventListener('change',function(){ if(r.checked){ store(r.value); apply(r.value,false) } });
+  });
+})();
 </script>
 </body>
 </html>

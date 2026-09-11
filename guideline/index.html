@@ -73,15 +73,49 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;color:var(--fg-2);vertic
 .btn--ghost{background:transparent;color:var(--fg);border:1px solid var(--line-2)}
 .btn--ghost:hover{background:var(--raised);color:var(--fg)}
 
-.os{display:grid;gap:16px;margin:20px 0}
-@media(min-width:860px){.os{grid-template-columns:repeat(3,1fr)}}
-.os__col{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px}
-.os__col h3{margin-top:0}
-.os__col p{font-size:14.5px}
+/* Pick your system once. The radios themselves are off-screen rather than display:none,
+   so they stay focusable and keep their native keyboard behaviour; the labels are the
+   visible control and :checked + label paints the selected one. */
+.ospick{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:16px 18px;margin:24px 0}
+.ospick legend{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);padding:0 6px}
+.ospick legend::before{content:'// ';opacity:.75}
+.ospick__row{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.ospick input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.ospick label{display:inline-flex;align-items:center;min-height:42px;padding:9px 20px;border-radius:999px;border:1px solid var(--line-2);color:var(--fg-2);font-weight:600;font-size:15px;cursor:pointer}
+.ospick label:hover{color:var(--fg);border-color:var(--fg-3)}
+.ospick input:checked + label{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.ospick input:focus-visible + label{outline:2px solid var(--accent);outline-offset:2px}
+.ospick__hint{font-size:13.5px;color:var(--fg-3);margin:12px 0 0}
 
-.check{display:grid;gap:8px;margin:18px 0}
-.check>div{display:flex;gap:14px;align-items:center;justify-content:space-between;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:10px 14px;flex-wrap:wrap}
-.check span{color:var(--fg-3);font-size:14px}
+/* A command, and the button that copies it. The button sits at the top right so a
+   multi-line block does not push it down the page. */
+.cmd{position:relative;margin:12px 0}
+.cmd pre{background:var(--raised);border:1px solid var(--line);border-radius:12px;padding:14px 84px 14px 15px;overflow-x:auto}
+.cmd pre code{background:none;padding:0;font-size:14px;line-height:1.6;color:var(--fg);white-space:pre-wrap;word-break:break-word}
+.cmd .copy{position:absolute;top:9px;right:9px}
+.cmd__note{font-size:13.5px;color:var(--fg-3);margin:6px 0 0}
+.copy--sm{font-size:12px;padding:7px 13px;min-height:30px}
+
+/* The six things nobody tells you about a terminal window. */
+.rules{display:grid;gap:8px;margin:18px 0}
+.rules>div{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:12px 15px;font-size:15px;color:var(--fg-2)}
+.rules b{color:var(--fg)}
+kbd{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;background:var(--raised);border:1px solid var(--line-2);border-bottom-width:2px;border-radius:6px;padding:2px 7px;color:var(--fg);white-space:nowrap}
+
+.picktwo{display:grid;gap:14px;margin:16px 0}
+@media(min-width:700px){.picktwo{grid-template-columns:1fr 1fr}}
+.picktwo__col{border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:14px 16px}
+.picktwo__t{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0}
+.picktwo .cmd{margin-bottom:0}
+
+/* What you type, what it should say, and the button — in that order, so the eye reads the
+   pair before it reaches the control. */
+.check{display:grid;gap:10px;margin:18px 0}
+.check__row{display:flex;gap:14px;align-items:center;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 12px 9px 15px;flex-wrap:wrap}
+.check__row pre{margin:0;padding:0;background:none;border:0;flex:0 1 auto}
+.check__row pre code{background:none;padding:0;font-size:14px;color:var(--fg)}
+.check__row span{color:var(--fg-3);font-size:14px;flex:1 1 auto}
+.check__row .copy{flex:0 0 auto;margin-left:auto}
 
 .faq details{border:1px solid var(--line);background:var(--surface);border-radius:12px;margin-bottom:8px}
 .faq summary{cursor:pointer;padding:14px 16px;font-weight:600;color:var(--fg);min-height:44px;display:flex;align-items:center}
@@ -171,45 +205,141 @@ better at home than on conference wifi.</p>
   </div>
 </div>
 <hr>
-<h2>Install one thing</h2>
-<p>You need <strong>Node</strong> on your machine, and then <strong>one</strong> of the two agent command-line tools — whichever matches the subscription you already have.</p>
+<h2>First, pick your computer</h2>
 
-<div class="os">
-  <div class="os__col">
-    <h3>macOS</h3>
-    <pre class="plain"><code>brew install node</code></pre>
-    <p>No Homebrew? Download the LTS installer from <a href="https://nodejs.org">nodejs.org</a>.</p>
-    <p>Then one of:</p>
-    <pre class="plain"><code>npm install -g @anthropic-ai/claude-code
-npm install -g @openai/codex</code></pre>
+<fieldset class="ospick">
+  <legend>Which computer are you on?</legend>
+  <div class="ospick__row">
+    <input type="radio" name="os" id="os-mac" value="mac" checked>
+    <label for="os-mac">macOS</label>
+    <input type="radio" name="os" id="os-windows" value="windows">
+    <label for="os-windows">Windows</label>
+    <input type="radio" name="os" id="os-linux" value="linux">
+    <label for="os-linux">Linux</label>
   </div>
-  <div class="os__col">
-    <h3>Windows</h3>
-    <pre class="plain"><code>winget install OpenJS.NodeJS.LTS</code></pre>
-    <p>Or the installer from <a href="https://nodejs.org">nodejs.org</a>. Use <strong>PowerShell</strong>, not the old Command Prompt.</p>
-    <p>Then one of:</p>
-    <pre class="plain"><code>npm install -g @anthropic-ai/claude-code
-npm install -g @openai/codex</code></pre>
+  <p class="ospick__hint" data-os-hint>Everything below changes to match.</p>
+</fieldset>
+<hr>
+<h2>How to open a terminal</h2>
+<p>If you have never opened one, this is the part that stops people, and it stops them before they have started. It is two steps and it is not dangerous.</p>
+<p>A terminal is a window where you type the name of a program, press Enter, and it prints the answer back as text. <code>npm install</code> and a button labelled <strong>Install</strong> do the same work — one is addressed by name, the other by clicking.</p>
+
+<div data-os="mac">
+  <h3>Opening a terminal on macOS</h3>
+  <ol>
+    <li>Press <kbd>Cmd</kbd> + <kbd>Space</kbd>.</li>
+    <li>Type <code>Terminal</code>.</li>
+    <li>Press <kbd>Enter</kbd>.</li>
+  </ol>
+  <p>A window opens with a line of text and a blinking cursor. That is it. Paste into it with
+  <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
+</div>
+
+<div data-os="windows">
+  <h3>Opening a terminal on Windows</h3>
+  <ol>
+    <li>Press the <kbd>Windows</kbd> key.</li>
+    <li>Type <code>PowerShell</code>.</li>
+    <li>Click <strong>Windows PowerShell</strong> — <em>not</em> "Command Prompt", which looks
+    similar and behaves differently.</li>
+  </ol>
+  <p>A blue window opens with a line of text and a blinking cursor. That is it. Paste into it with
+  <kbd>Ctrl</kbd> + <kbd>V</kbd>, or by right-clicking.</p>
+</div>
+
+<div data-os="linux">
+  <h3>Opening a terminal on Linux</h3>
+  <ol>
+    <li>Press <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>.</li>
+    <li>If nothing happens, open your applications menu and search for <code>Terminal</code>.</li>
+  </ol>
+  <p>Paste into it with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> — the plain
+  <kbd>Ctrl</kbd> + <kbd>V</kbd> means something else in a terminal.</p>
+</div>
+<h3>Six things nobody tells you</h3>
+
+<div class="rules">
+  <div><b>The line with the cursor is the prompt.</b> It ends in <code>$</code>, <code>%</code> or
+  <code>&gt;</code>, and it means the terminal is waiting for you.</div>
+  <div><b>Paste, then press <kbd>Enter</kbd>.</b> Nothing runs until you do.</div>
+  <div><b>Silence is normal.</b> A command can sit there for a minute printing nothing. It has not
+  frozen — it is working. You will learn to wait.</div>
+  <div><b>It is finished when the prompt comes back.</b> That is the only signal there is.</div>
+  <div><b>What has scrolled past is a transcript.</b> You cannot click into an old line and fix it.
+  Only the line you are typing now is live.</div>
+  <div><b>You cannot break your computer with anything on this page.</b> Every command here either
+  installs something or prints a version number.</div>
+</div>
+<hr>
+<h2>Install one thing</h2>
+<p>You need <strong>Node</strong> on your machine, and then <strong>one</strong> of the two agent command-line tools — whichever matches the subscription you already have. Copy each command, paste it into the terminal you just opened, press Enter, and wait for the prompt to come back before the next one.</p>
+
+<div data-os="mac">
+  <h3>Node, on macOS</h3>
+  <div class="cmd">
+  <pre id="cmd-1"><code>brew install node</code></pre>
+  <button class="copy copy--sm" data-for="cmd-1" aria-label="Copy the command: brew install node">Copy</button>
+  
+</div>
+  <p>No Homebrew? Download the LTS installer from <a href="https://nodejs.org">nodejs.org</a>, open it,
+  and click through. Then close the terminal and open a new one.</p>
+</div>
+
+<div data-os="windows">
+  <h3>Node, on Windows</h3>
+  <div class="cmd">
+  <pre id="cmd-2"><code>winget install OpenJS.NodeJS.LTS</code></pre>
+  <button class="copy copy--sm" data-for="cmd-2" aria-label="Copy the command: winget install OpenJS.NodeJS.LTS">Copy</button>
+  
+</div>
+  <p>Or the installer from <a href="https://nodejs.org">nodejs.org</a>. Either way, close PowerShell
+  and open a new one afterwards — it only notices new programs when it starts.</p>
+</div>
+
+<div data-os="linux">
+  <h3>Node, on Linux</h3>
+  <div class="cmd">
+  <pre id="cmd-3"><code>sudo apt install -y nodejs npm</code></pre>
+  <button class="copy copy--sm" data-for="cmd-3" aria-label="Copy the command: sudo apt install -y nodejs npm">Copy</button>
+  
+</div>
+  <p>It will ask for your password; nothing appears as you type it, which is normal. Node 20.11 or
+  newer is required — if your distribution ships something older, use
+  <a href="https://github.com/nvm-sh/nvm">nvm</a>.</p>
+</div>
+
+<h3>Then one agent — whichever you already pay for</h3>
+<p>You need <strong>one</strong> of these two, not both. If you have a Claude subscription take the
+first; if you have ChatGPT Plus take the second.</p>
+
+<div class="picktwo">
+  <div class="picktwo__col">
+    <p class="picktwo__t">Claude Pro or Max</p>
+    <div class="cmd">
+  <pre id="cmd-4"><code>npm install -g @anthropic-ai/claude-code</code></pre>
+  <button class="copy copy--sm" data-for="cmd-4" aria-label="Copy the command: npm install -g @anthropic-ai/claude-code">Copy</button>
+  
+</div>
   </div>
-  <div class="os__col">
-    <h3>Linux</h3>
-    <pre class="plain"><code>sudo apt install -y nodejs npm</code></pre>
-    <p>Node 20.11 or newer. If your distribution ships something older, use <a href="https://github.com/nvm-sh/nvm">nvm</a>.</p>
-    <p>Then one of:</p>
-    <pre class="plain"><code>npm install -g @anthropic-ai/claude-code
-npm install -g @openai/codex</code></pre>
+  <div class="picktwo__col">
+    <p class="picktwo__t">ChatGPT Plus</p>
+    <div class="cmd">
+  <pre id="cmd-5"><code>npm install -g @openai/codex</code></pre>
+  <button class="copy copy--sm" data-for="cmd-5" aria-label="Copy the command: npm install -g @openai/codex">Copy</button>
+  
+</div>
   </div>
 </div>
 <h3>Am I ready?</h3>
-<p>Open a terminal and run these. Each one should print a version number.</p>
+<p>Run these four in the terminal. The first two must print a version number; of the last two, only the one you installed needs to.</p>
 
 <div class="check">
-  <div><code>node -v</code><span>v20.11.0 or higher</span></div>
-  <div><code>npm -v</code><span>any version</span></div>
-  <div><code>claude --version</code><span>if you chose Claude</span></div>
-  <div><code>codex --version</code><span>if you chose ChatGPT</span></div>
+  <div class="check__row"><pre id="cmd-6"><code>node -v</code></pre><span>prints v20.11.0 or higher</span><button class="copy copy--sm" data-for="cmd-6" aria-label="Copy the command: node -v">Copy</button></div>
+  <div class="check__row"><pre id="cmd-7"><code>npm -v</code></pre><span>prints any version</span><button class="copy copy--sm" data-for="cmd-7" aria-label="Copy the command: npm -v">Copy</button></div>
+  <div class="check__row"><pre id="cmd-8"><code>claude --version</code></pre><span>only if you chose Claude</span><button class="copy copy--sm" data-for="cmd-8" aria-label="Copy the command: claude --version">Copy</button></div>
+  <div class="check__row"><pre id="cmd-9"><code>codex --version</code></pre><span>only if you chose ChatGPT</span><button class="copy copy--sm" data-for="cmd-9" aria-label="Copy the command: codex --version">Copy</button></div>
 </div>
-<p>If any of them says <code>command not found</code>, that thing is not installed. Go back a step, or bring it to the room fifteen minutes early and someone will sort it out.</p>
+<p>If one says <code>command not found</code>, that thing is not installed. Go back a step — or bring it to the room fifteen minutes early and someone will sort it out.</p>
 <hr>
 <h2>If installing is not an option</h2>
 <p>Some work laptops will not let you install anything, and that is fine.</p>
@@ -244,6 +374,48 @@ document.querySelectorAll('.copy').forEach(function(b){
 function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');
   a.style.position='absolute';a.style.left='-9999px';document.body.appendChild(a);a.select();
   try{document.execCommand('copy');ok()}catch(e){}document.body.removeChild(a)}
+
+/* Pick your system once and every [data-os] block on the page follows. The markup ships
+   with all three visible, so a reader with JavaScript off loses nothing — the page is just
+   longer. The stored choice is a convenience; every read and write is wrapped, because
+   localStorage throws in a private window rather than returning nothing. */
+(function(){
+  var LABELS={mac:'macOS',windows:'Windows',linux:'Linux'};
+  var radios=document.querySelectorAll('.ospick input[name="os"]');
+  if(!radios.length) return;
+  var hint=document.querySelector('[data-os-hint]');
+
+  function stored(){try{return localStorage.getItem('sp-os')}catch(e){return null}}
+  function store(v){try{localStorage.setItem('sp-os',v)}catch(e){}}
+
+  function guess(){
+    var p=(navigator.userAgentData&&navigator.userAgentData.platform)||navigator.platform||navigator.userAgent||'';
+    if(/mac|iphone|ipad|ipod/i.test(p)) return 'mac';
+    if(/win/i.test(p)) return 'windows';
+    return 'linux';
+  }
+
+  function apply(os,guessed){
+    document.querySelectorAll('[data-os]').forEach(function(el){
+      el.hidden = el.getAttribute('data-os')!==os;
+    });
+    document.querySelectorAll('.ospick input[name="os"]').forEach(function(r){
+      r.checked = r.value===os;
+    });
+    if(hint){
+      hint.textContent = guessed
+        ? 'We guessed ' + LABELS[os] + ' from your browser. Not right? Pick another — everything below changes to match.'
+        : 'Everything below is for ' + LABELS[os] + '.';
+    }
+  }
+
+  var saved=stored();
+  apply(saved||guess(), !saved);
+
+  radios.forEach(function(r){
+    r.addEventListener('change',function(){ if(r.checked){ store(r.value); apply(r.value,false) } });
+  });
+})();
 </script>
 </body>
 </html>

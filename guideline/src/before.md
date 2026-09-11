@@ -28,21 +28,47 @@ you can build one of those on Wednesday.
 
 ---
 
+## First, pick your computer
+
+::ospick::
+
+---
+
+## How to open a terminal
+
+If you have never opened one, this is the part that stops people, and it stops them before
+they have started. It is two steps and it is not dangerous.
+
+A terminal is a window where you type the name of a program, press Enter, and it prints the
+answer back as text. `npm install` and a button labelled **Install** do the same work — one
+is addressed by name, the other by clicking.
+
+::terminal::
+
+### Six things nobody tells you
+
+::terminal-rules::
+
+---
+
 ## Install one thing
 
 You need **Node** on your machine, and then **one** of the two agent command-line tools —
-whichever matches the subscription you already have.
+whichever matches the subscription you already have. Copy each command, paste it into the
+terminal you just opened, press Enter, and wait for the prompt to come back before the next
+one.
 
 ::install::
 
 ### Am I ready?
 
-Open a terminal and run these. Each one should print a version number.
+Run these four in the terminal. The first two must print a version number; of the last two,
+only the one you installed needs to.
 
 ::selftest::
 
-If any of them says `command not found`, that thing is not installed. Go back a step, or
-bring it to the room fifteen minutes early and someone will sort it out.
+If one says `command not found`, that thing is not installed. Go back a step — or bring it
+to the room fifteen minutes early and someone will sort it out.
 
 ---
 
