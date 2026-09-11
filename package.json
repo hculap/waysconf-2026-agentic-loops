@@ -26,6 +26,7 @@
     "check:guideline": "node checks/guideline.mjs",
     "check:guideline:behaviour": "node checks/guideline-behaviour.mjs",
     "check:guideline:live": "node checks/guideline-behaviour.mjs --url https://waysconf.szymonpaluch.com",
+    "check:handoff": "node checks/handoff.mjs",
     "check:deck": "node checks/deck.mjs",
     "gen:images": "node scripts/generate-images.mjs --all",
     "baseline": "node checks/baseline.mjs",

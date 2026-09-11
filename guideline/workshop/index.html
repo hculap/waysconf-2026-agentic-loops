@@ -161,6 +161,11 @@ pre.plain{background:var(--raised);border:1px solid var(--line);border-radius:12
 }
 @media(prefers-reduced-motion:no-preference){.toc a{transition:color .12s,border-color .12s}}
 
+.steps{list-style:none;counter-reset:s;margin:18px 0;padding:0;display:grid;gap:10px}
+.steps li{counter-increment:s;position:relative;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:13px 16px 13px 52px;color:var(--fg-2);font-size:15.5px}
+.steps li::before{content:counter(s);position:absolute;left:15px;top:12px;width:24px;height:24px;border-radius:999px;background:var(--accent);color:var(--on-accent);font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:13px;display:grid;place-items:center}
+.steps b{color:var(--fg)}
+
 .need__alt{font-size:14.5px;color:var(--fg-3);margin:14px 0 0}
 .need__alt em{font-style:normal;color:var(--fg-2)}
 
@@ -182,6 +187,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <nav class="toc" aria-label="On this page">
   <p class="toc__t">On this page</p>
   <ol>
+    <li><a href="#getting-the-design-out-of-figma">Getting the design out of Figma</a></li>
     <li><a href="#the-ninety-minutes">The ninety minutes</a></li>
     <li><a href="#most-ai-demos-stop-at-wow">Most AI demos stop at wow</a></li>
     <li><a href="#the-loop">The loop</a></li>
@@ -204,8 +210,9 @@ footer p{font-size:14px;color:var(--fg-3)}
     <li><a href="#the-eight-prompts">The eight prompts</a></li>
     <li><a href="#start">Start</a></li>
     <li><a href="#look-at-the-design">Look at the design</a></li>
-    <li><a href="#route-a-you-connected-figma">Route A — you connected Figma</a></li>
-    <li><a href="#route-b-figma-is-free-or-the-connection-refuses">Route B — Figma is free, or the connection refuses</a></li>
+    <li><a href="#figma-zip-agent">Figma → zip → agent</a></li>
+    <li><a href="#route-a-you-connected-figma-to-the-agent">Route A — you connected Figma to the agent</a></li>
+    <li><a href="#route-b-you-exported-it-yourself">Route B — you exported it yourself</a></li>
     <li><a href="#build-it">Build it</a></li>
     <li><a href="#write-the-checker">Write the checker</a></li>
     <li><a href="#the-loop-2">The loop</a></li>
@@ -224,14 +231,43 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p class="lede">You need the design and this page. There is nothing to clone and no code to
 read — everything else, your agent makes for itself.</p>
 <div class="need">
-  <a href="https://github.com/hculap/waysconf-2026-agentic-loops/tree/main/figma-plugin"><b>The design, in Figma</b><span>Build the file in your own Figma: download the plugin below, import it, press one button. The shareable link goes here once the file is published.</span><em>Build it yourself · one button</em></a>
-  <a href="../turbine-figma-plugin.zip" download><b>Build the Figma file</b><span>A Figma plugin that draws the whole design from the same values the code reads. Desktop Figma: <strong>Plugins → Development → Import plugin from manifest</strong>, then press <strong>Build design file</strong>.</span><em>Download · plugin</em></a>
+  <a href="https://github.com/hculap/waysconf-2026-agentic-loops"><b>The design, in Figma</b><span>The link goes here on the day. You will duplicate it to your own drafts and export from there.</span><em>Link on the day</em></a>
+  <a href="#getting-the-design-out-of-figma"><b>Then export it</b><span>Select the frames, Export as SVG, and Figma hands you a zip. That zip is what your agent reads.</span><em>Three clicks · below</em></a>
 </div>
 
-<p class="need__alt">Neither of those working for you? The <a href="../design-pack.zip" download>design pack</a>
-(7&nbsp;MB) is the same design as images, a file of named values and a file of copy —
-<em>optional</em>, and enough to do the whole workshop. Put it beside your project and point your
-agent at it.</p>
+<p class="need__alt">No Figma account, or it is being difficult? The
+<a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design already
+exported — <em>optional</em>, and enough to do the whole workshop.</p>
+
+<h2 id="getting-the-design-out-of-figma">Getting the design out of Figma</h2>
+
+<p>Your agent cannot see your screen. It needs the design as files, and the three clicks that
+produce them are ones you already know.</p>
+
+
+<ol class="steps">
+  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. You cannot
+  export from a file you only have read access to.</li>
+  <li><b>Select the frames.</b> Click the first frame on the canvas, then shift-click the rest.
+  Select the frames themselves, not the page — selecting the page gives you one enormous file.</li>
+  <li><b>Export as SVG.</b> Right-hand panel, bottom, <strong>Export</strong> → the format dropdown
+  → <strong>SVG</strong> → <strong>Export</strong>.</li>
+  <li><b>Figma gives you a zip.</b> More than one layer at a time always comes down zipped. Unzip it
+  next to your project, in a folder called <code>design</code>.</li>
+</ol>
+
+<div class="rules">
+  <div><b>SVG, not PNG.</b> An SVG keeps every string as text and every fill as a value, so the agent
+  reads the design instead of guessing at a photograph of it. Take the PNGs as well if you want
+  something to look at — they cost nothing.</div>
+  <div><b>Do not tick "outline text".</b> It turns every word into shapes, and the copy stops being
+  readable to anything but an eye.</div>
+  <div><b>The folder goes beside your project, not inside it.</b> Your agent will be told where to
+  look in prompt 02.</div>
+</div>
+
+<p class="need__alt">If your agent is connected to Figma directly — <code>figma</code> shows up in
+<code>/mcp</code> — you can skip all of this. Prompt 02 has that route too.</p>
 <p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a
 prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
 <hr>
@@ -393,11 +429,16 @@ before and I would like to follow along.</code></pre></div>
   <p class="step__no">Prompt 02</p>
   <h2 id="look-at-the-design">Look at the design</h2>
   <p>The agent reads the design and tells you what it found. It writes nothing. This is the cheapest correction you will get all day: a wrong assumption costs one sentence to fix here, and twenty minutes of generated code to fix later.</p>
-<p>Two routes, depending on whether your Figma account can talk to the agent. <strong>Neither is better.</strong> The second one is what the gates compare against.</p>
+<p><strong>First get the design out of Figma and next to your project.</strong> Three clicks, and Figma does the zipping for you.</p>
 <hr>
-<h2 id="route-a-you-connected-figma">Route A — you connected Figma</h2>
-<p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex, and the workshop file opens in your browser.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>Read the TURBINE design file through the Figma MCP server:
+<h2 id="figma-zip-agent">Figma → zip → agent</h2>
+<ol><li>Open the TURBINE file and <strong>Duplicate to your drafts</strong>. It is yours now; poke at it.</li><li>Select the frames on the canvas.</li><li>Right-hand panel → <strong>Export</strong> → choose <strong>SVG</strong> → <strong>Export</strong>.</li><li>Figma hands you a <strong>zip</strong>. Unzip it beside your project, into a folder called <code>design</code>.</li></ol>
+<p><strong>Export SVG, not PNG.</strong> A PNG is a picture of the design: the agent has to infer every colour and every measurement from pixels, and it will be <em>nearly</em> right — which is exactly what fails a contrast check and looks subtly wrong next to the real thing. An SVG carries the text as text and the fills as values, so there is nothing left to infer.</p>
+<p>Take the PNGs too if you like. They cost nothing and they are useful to look at.</p>
+<hr>
+<h2 id="route-a-you-connected-figma-to-the-agent">Route A — you connected Figma to the agent</h2>
+<p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex. The agent reads the live file and you can skip the export.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>Read the design file through the Figma MCP server:
 &lt;paste the Figma link here&gt;
 
 Do not write any code yet. Tell me what you found, as a list:
@@ -405,40 +446,40 @@ Do not write any code yet. Tell me what you found, as a list:
 1. Every section, in the order they appear down the page, with the name of each.
 2. Every colour, as an exact value, and what it is used for.
 3. Every text size, and which one is used where.
-4. The spacing values you can see — the gaps between things.
-5. Anything the design does not tell you, and that you would otherwise have to guess.
+4. Every width the design covers.
+5. The spacing values you can see — the gaps between things.
+6. Anything the design does not tell you, and that you would otherwise have to guess.
 
-Point 5 is the one I care about most. Be specific and be honest: &quot;I cannot tell what
+Point 6 is the one I care about most. Be specific and be honest: &quot;I cannot tell what
 happens to the lineup grid below 500px&quot; is more useful to me than a confident guess.</code></pre></div>
 <hr>
-<h2 id="route-b-figma-is-free-or-the-connection-refuses">Route B — Figma is free, or the connection refuses</h2>
-<p>The design pack is a folder you downloaded from the setup page. Put it beside your project and unzip it, so that there is a <code>design</code> folder next to your <code>src</code> folder.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>There is a folder called design next to this project. It contains:
+<h2 id="route-b-you-exported-it-yourself">Route B — you exported it yourself</h2>
+<p>The ordinary route, and what the rest of this pack assumes.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>There is a folder called design next to this project. It is what I exported out of Figma.
 
-- images of the page as it should look, at each width the design covers
-- a file of named design values: colours, text sizes, spacing, radii
-- a file with every word that appears on the page
-
-Read all of it. Do not write any code yet. Tell me what you found, as a list:
+Read all of it. The SVG files carry the real text and the real fill values — read those
+rather than guessing from any images. Do not write any code yet. Tell me what you found,
+as a list:
 
 1. Every section, in the order they appear down the page.
 2. Every colour, by its name from the design, and what it is used for.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Anything the files disagree about, or do not tell you, and that you would otherwise
+5. Every piece of copy, section by section.
+6. Anything the files disagree about, or do not tell you, and that you would otherwise
    have to guess.
 
-Point 4 is the one I care about most. Be specific and be honest: &quot;the PNG shows a hover
+Point 6 is the one I care about most. Be specific and be honest: &quot;the export shows a hover
 state I have no values for&quot; is more useful to me than a confident guess.</code></pre></div>
 <hr>
 <p><strong>What you should see.</strong> A list. Read it. Two things are worth your attention:</p>
 <ul><li><strong>Does it describe your design?</strong> If it says &quot;a hero, three feature cards and a pricing</li></ul>
 <p>  table&quot; and your design has a lineup of twelve artists, it is looking at something else,   or at nothing.</p>
-<ul><li><strong>What is in point 4 or 5?</strong> That list is the brief you forgot to write. Answer it now,</li></ul>
-<p>  in your own words, before moving on.</p>
+<ul><li><strong>What is in point 6?</strong> That list is the brief you forgot to write. Answer it now, in</li></ul>
+<p>  your own words, before moving on. If point 6 is empty, the agent is guessing and has not   said so — ask it <code>which of those did you read, and which did you infer?</code></p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>Figma returns an error or 401</td><td>Your account does not include Dev Mode. Switch to Route B — nothing downstream changes.</td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>It describes a page you do not recognise</td><td>It is not reading your file. Check the link, or switch to Route B.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>Figma returns an error or 401</td><td>Your account does not include Dev Mode. Export it yourself instead — Route B, nothing downstream changes.</td></tr><tr><td>It read only the pictures</td><td><code>Where did you get those colour values? If you sampled them from an image, say so.</code> Sampled values fail a token check: &quot;close to the brand orange&quot; is not the brand orange. Export SVG as well.</td></tr><tr><td>The export is one enormous file</td><td>You selected the page rather than the frames. Select the frames themselves and export again.</td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>It describes a page you do not recognise</td><td>It is not reading your file. Check the link, or switch to Route B.</td></tr></tbody></table></div>
 <hr>
 <h3>Why this prompt exists at all</h3>
 <p>It produces nothing. That is the point.</p>

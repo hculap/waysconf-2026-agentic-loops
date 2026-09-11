@@ -1118,6 +1118,44 @@ screenshotted and diffed, and a frame at any other width produces a diff that ca
 
 ## 8. Exports
 
+### 8.0 The participant's export, and why it is SVG
+
+A workshop participant does not receive this file's exports. They **duplicate the published file to
+their own drafts, select the frames, export, and hand their agent the zip Figma gives them.** Three
+clicks, all of them ones a designer already knows, and no plugin.
+
+For that zip to be worth anything it has to come out as **SVG as well as PNG**, and the export
+settings saved on the layers are what decides that for them.
+
+A PNG is a picture of the design. An agent reading one infers every colour from pixels and every
+measurement from edges, and it will be *nearly* right — an orange, some spacing — which is precisely
+what fails a token check and looks subtly wrong beside the real thing. A Figma SVG export keeps every
+string as a `<text>` node and every fill as a literal value. There is nothing left to infer, and no
+plugin, no Dev Mode seat and no MCP connection is involved.
+
+Two consequences for this file:
+
+- **Every layer that carries a persistent PNG export setting also carries an SVG one.** Same layers,
+  same names, two formats. A participant selecting the frames and pressing Export gets both.
+- **"Outline text" must be off** on every SVG export setting. It turns each word into a path, which
+  looks identical and leaves the copy unreadable to anything without eyes. It is the single failure
+  of this route and it is silent.
+
+The `Design system` page matters here as much as the viewport pages. Exported as SVG, the variable
+proof sheet (§2.6) and the type specimens (§3.1) carry every token name beside its value as real
+text — which is how the agent gets the palette without anyone shipping a `tokens.json`.
+
+**Verify the export once, with a program, before the link goes to thirty people:**
+
+```bash
+node checks/handoff.mjs ~/Downloads/turbine-export.zip
+```
+
+It reports how much of the export is readable as data and exits non-zero if an agent would have to
+guess: no SVG at all, text flattened to outlines, too few distinct colours, or no copy. A zip that
+looks fine in Finder and is useless to an agent looks exactly like one that is not, which is the
+reason this is a program and not a glance.
+
 ### 8.1 Naming convention
 
 Two patterns, no others:
