@@ -192,3 +192,83 @@ easy to do it and never mention it.
 
 **Someone has to run `npm run baseline` at a keyboard, look at the page, and say why.**
 That is the design, not a limitation.
+
+
+---
+
+## 9. The accessibility gate passed a blank page
+
+**Caught by:** the criteria that assert *presence*. Not by axe.
+
+**What happened.** A gate run under load produced five failures with a strange shape:
+"there is no `[data-section="lineup"]` on the page", "no `[data-section="faq"]`", "the
+page exposes no tabbable element at all". The structure and content gates in the same run
+had just confirmed all ten sections were present.
+
+The page had failed to load in those tests — an empty document. And **axe reported zero
+violations on it, at all three breakpoints, which is a pass.**
+
+**Why it matters.** This is the failure this repository exists to argue about, sitting
+inside this repository's own verifier. Zero violations is not the same as passing when
+there was nothing to violate. Had the a11y gate contained only the axe check, the run
+would have gone green over nothing.
+
+**Fix.** Before auditing, the gate now asserts that a page exists — body children, text,
+at least one focusable element — and refuses to audit a blank one, loudly.
+
+**The lesson.** Every gate needs to answer "did I actually look at something?" before it
+answers "was it correct?". A measurement of nothing reads exactly like a measurement of
+something perfect.
+
+---
+
+## 10. The loop hung for an hour on an open stdin
+
+**Caught by:** noticing that a process alive for an hour had not written a single file,
+and that Codex had not even opened a session log.
+
+**What happened.** `codex exec` reads its instructions from stdin when stdin is a pipe.
+Node's `spawn` gives a child an open stdin pipe by default. Nothing ever wrote to it and
+nothing ever closed it, so Codex waited for an EOF that never arrived — alive, consuming
+no CPU, producing no output, no error, and no session file.
+
+**Fix.** `stdio: ['ignore', …]` in the harness, `< /dev/null` in `loop/ralph.sh`, for
+every agent, and a thirty-minute ceiling on any single agent pass.
+
+**The lesson.** This is the third unbounded wait in this project, after the image-generation
+fetch and the accessibility gate's image decode. Three different files, three different
+authors, three different languages, one shape. **Anything that waits needs a deadline**, and
+the reason it keeps happening is that a hang is the one failure that produces no evidence
+of itself.
+
+---
+
+## 11. The evidence harness manufactured evidence
+
+**The worst one, and it is in the tool whose entire job is honesty.**
+
+**Caught by:** reading the output and not believing it.
+
+**What happened.** A trial was killed part-way through. `evidence/dry-run-codex.md` was
+written anyway, and it said:
+
+    | 2 | 0/0/0 | 0 | 4s | 11s | AC-18 AC-19 AC-24 AC-38 AC-39 AC-41 AC-42 AC-43 AC-44 AC-47 … |
+
+Four clean iterations. Zero failures. Fourteen acceptance criteria cleared in one pass.
+
+None of it happened. `npm run check` had not run, so there was no report; `gateCounts()`
+returned zeros for a missing report; and the harness computed "criteria that were failing
+before and are not failing now" by diffing one absence against another. Every number in
+that table was the shape of nothing.
+
+**Fix.** A missing report is now an explicit `not measured` row and stops the run. The
+fabricated file was deleted rather than kept with a caveat attached.
+
+**The lesson.** Fourth instance in this project of **absence being read as success**, and
+the only one where the output was not merely wrong but *fabricated in the format of
+evidence* — a table, a unit, a criterion id, a trend. Everything that makes a number
+believable was present except the measurement.
+
+If a single sentence survives this whole workshop, it should probably be this one: a system
+that cannot distinguish "it passed" from "I did not look" will eventually tell you it
+passed.
