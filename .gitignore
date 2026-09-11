@@ -22,3 +22,6 @@ deck/node_modules/
 deck/public/diagrams/
 evidence/**/node_modules/
 .scratch/
+
+# Clean-room dry-run worktrees, created by scripts/dry-run.mjs
+.dry-run/
