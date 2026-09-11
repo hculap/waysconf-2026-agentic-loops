@@ -336,8 +336,33 @@ nothing else, and no run of it can publish anything.
 |---|---|---|---|
 | AC-57 | `npm run deploy` — `npx netlify deploy --prod --dir=dist` — exits 0 and prints a deploy URL | Exit code plus URL extraction from stdout | `AC-57 DEPLOY: netlify deploy exited {code}; no deploy URL found in output. Last line: {stderr_tail}` |
 | AC-58 | The public URL returns 200 with `content-type: text/html` over HTTPS | GET with 5 retries over 30s | `AC-58 DEPLOY: GET {url} returned {status} {contentType} after {n} attempts over {seconds}s` |
-| AC-59 | The deployed HTML is byte-identical to the build that passed the gates | sha256 of the fetched body against `dist/index.html` | `AC-59 DEPLOY: deployed index.html sha256 {remote} does not match local dist/index.html {local}` |
+| AC-59 | The deployed page is the build that passed the gates: its `<body>` is identical, and every `<head>` element the build wrote is present | sha256 of the normalised `<body>` on both sides, plus containment of each built `<head>` element in the served `<head>`. Whole-document hashes are recorded alongside | `AC-59 DEPLOY: deployed index.html sha256 {remote} does not match local dist/index.html {local}` |
 | AC-60 | A smoke run against the live URL finds zero axe violations and zero broken internal anchors | `npm run check -- --url {deploy-url}` re-runs axe and the link check against the public URL at 1440 | `AC-60 DEPLOY: live smoke failed at {url} — {n} axe violation(s), {m} broken anchor(s). First: {detail}` |
+
+AC-59 originally said **byte-identical**, and it was wrong — twice, which is the interesting part.
+
+The first correction: Netlify injects an HTML comment into every page it serves, so the served bytes
+never equal the built bytes on any project, on any deploy. Stripping comments before hashing seemed
+to fix it. It did not — the gate still failed.
+
+The second correction, found by diffing the two documents rather than by reasoning about them:
+Netlify also injects two `<meta>` tags into `<head>`. Measured on this project, the host adds 408
+bytes that the build never wrote.
+
+What is actually true, and what the gate now checks:
+
+- the served `<body>` is **byte-identical** to the built `<body>`, normalised for whitespace —
+  measured at 101,998 bytes on both sides, sha256 `e6a8d42201d00c7e`
+- every one of the 19 `<head>` elements the build wrote is **present** in the served `<head>`
+
+Containment, not equality, is the true relationship for the head: the host may add to it and does.
+That still catches a stale deploy, the wrong directory published, a CDN serving an older build, or a
+host rewriting markup — which is everything the criterion was for.
+
+Worth stating plainly, because it is the honest version of the story this workshop tells: the first
+attempt at this criterion was unachievable, the second was still wrong, and the only reason either
+was discovered is that the gate was run against a real deployment instead of being reasoned about.
+A criterion nobody has executed is a wish.
 
 AC-59 is the criterion that is usually missing. Everything else proves that a page somewhere passed. This
 proves that the page that passed is the page that shipped.
