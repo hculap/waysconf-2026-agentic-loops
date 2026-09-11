@@ -1,0 +1,20 @@
+{
+  "name": "turbine-deck",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Slides for the WaysConf 2026 masterclass. Markdown in, a hostable web app out.",
+  "scripts": {
+    "dev": "slidev slides.md --open",
+    "present": "slidev slides.md --remote",
+    "build": "slidev build slides.md --base /",
+    "export": "slidev export slides.md --output ../evidence/deck.pdf --dark",
+    "export:notes": "slidev export-notes slides.md --output notes.pdf"
+  },
+  "dependencies": {
+    "@slidev/cli": "^52.19.1",
+    "@slidev/theme-default": "^0.25.0",
+    "playwright-chromium": "^1.56.0",
+    "vue": "^3.5.0"
+  }
+}

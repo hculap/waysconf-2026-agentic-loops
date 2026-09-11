@@ -1,0 +1,49 @@
+# Netlify configuration for the TURBINE site.
+#
+# Two ways to get this live, and the workshop uses both:
+#
+#   npx netlify deploy --prod --dir=dist     one command, no GitHub connection needed
+#   connect the repository in the Netlify UI  every push to main rebuilds and redeploys
+#
+# The second is the one worth showing people, because it closes the loop: the agent
+# commits, and the site updates without anyone touching a deploy button.
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--no-audit --no-fund"
+
+# Long cache for fingerprinted assets, none for HTML. Astro fingerprints everything
+# under /_astro/, so those are safe to cache for a year.
+[[headers]]
+  for = "/_astro/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/fonts/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# The page loads nothing from anywhere else — no CDN, no analytics, no fonts from a
+# third party. The policy below says so, and Lighthouse's best-practices audit reads it.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    X-Frame-Options = "DENY"
+    Content-Security-Policy = "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'"

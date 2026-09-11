@@ -1,0 +1,210 @@
+/* ==========================================================================
+   TURBINE deck theme
+
+   Not a theme package — just a stylesheet layered over Slidev's default, using
+   the same design tokens as the site. The slides and the thing being built on
+   stage should not look like they came from different projects.
+
+   Tokens are duplicated here rather than imported because the deck is a separate
+   npm package that must build without the site's toolchain. They are checked
+   against design/tokens/tokens.json by scripts/check-deck-tokens.mjs.
+   ========================================================================== */
+
+:root {
+  --turbine-bg: #0a0b0d;
+  --turbine-surface: #131519;
+  --turbine-raised: #1c1f25;
+  --turbine-border: #2a2e36;
+  --turbine-border-strong: #3d434e;
+  --turbine-text: #f2f4f7;
+  --turbine-text-2: #a7aebb;
+  --turbine-muted: #6b7280;
+  --turbine-sodium: #ff6a1a;
+  --turbine-coolant: #2fe6d6;
+  --turbine-arc: #7c5cff;
+  --turbine-danger: #ff4d4d;
+  --turbine-success: #3ddc84;
+
+  --slidev-theme-primary: var(--turbine-sodium);
+}
+
+@font-face {
+  font-family: 'Space Grotesk';
+  src: url('/fonts/space-grotesk.woff2') format('woff2');
+  font-weight: 500 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter.woff2') format('woff2');
+  font-weight: 400 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+.slidev-layout {
+  background-color: var(--turbine-bg);
+  color: var(--turbine-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  padding: 3rem 4rem;
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  color: var(--turbine-text);
+  letter-spacing: -0.02em;
+  font-weight: 700;
+}
+
+.slidev-layout h1 {
+  font-size: 3.25rem;
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+}
+
+.slidev-layout h2 {
+  font-size: 2rem;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+}
+
+.slidev-layout h3 {
+  font-size: 1.25rem;
+  color: var(--turbine-coolant);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.slidev-layout p,
+.slidev-layout li {
+  color: var(--turbine-text-2);
+  font-size: 1.25rem;
+  line-height: 1.55;
+}
+
+.slidev-layout strong {
+  color: var(--turbine-text);
+  font-weight: 600;
+}
+
+/* The wordmark lockup, used on the cover and section dividers. */
+.wordmark {
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--turbine-sodium);
+  text-transform: uppercase;
+}
+
+/* A label above a heading — the same device the site uses above each section. */
+.kicker {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  color: var(--turbine-coolant);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+/* Verdict chips. Green and red are the two states the whole talk is about, so
+   they get to be loud. */
+.verdict {
+  display: inline-block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  letter-spacing: 0.06em;
+}
+.verdict.pass {
+  background: var(--turbine-success);
+  color: var(--turbine-bg);
+}
+.verdict.fail {
+  background: var(--turbine-danger);
+  color: var(--turbine-bg);
+}
+
+.slidev-layout code {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  background: var(--turbine-raised);
+  color: var(--turbine-text);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.slidev-layout pre {
+  background: var(--turbine-surface) !important;
+  border: 1px solid var(--turbine-border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem !important;
+  font-size: 1rem;
+}
+
+.slidev-layout blockquote {
+  border-left: 3px solid var(--turbine-sodium);
+  background: var(--turbine-surface);
+  padding: 1rem 1.5rem;
+  color: var(--turbine-text);
+  font-style: normal;
+}
+
+.slidev-layout table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.05rem;
+}
+.slidev-layout th {
+  text-align: left;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--turbine-coolant);
+  border-bottom: 1px solid var(--turbine-border-strong);
+  padding: 0.5rem 0.75rem;
+}
+.slidev-layout td {
+  border-bottom: 1px solid var(--turbine-border);
+  padding: 0.55rem 0.75rem;
+  color: var(--turbine-text-2);
+}
+
+/* Two-column body, used for before/after and design/code comparisons. */
+.cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+}
+
+.slidev-layout a {
+  color: var(--turbine-coolant);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Footer rule on content slides, so the deck has a spine. */
+.slidev-layout::after {
+  content: '';
+  position: absolute;
+  left: 4rem;
+  right: 4rem;
+  bottom: 1.75rem;
+  height: 1px;
+  background: var(--turbine-border);
+}
+
+.slidev-layout.cover::after,
+.slidev-layout.section::after {
+  display: none;
+}

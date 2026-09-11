@@ -1,0 +1,185 @@
+{
+  "model": "gemini-3-pro-image",
+  "images": {
+    "hero-hall": {
+      "file": "hero-hall.jpg",
+      "width": 2400,
+      "height": 1350,
+      "aspect": "16:9",
+      "tier": "4K",
+      "format": "jpg",
+      "promptHash": "18cd54ac6c3aed6950f6a1c1d4b64513336a6126e241b749d8988e1a6d21a2b8",
+      "present": true
+    },
+    "venue-exterior": {
+      "file": "venue-exterior.jpg",
+      "width": 1600,
+      "height": 1200,
+      "aspect": "4:3",
+      "tier": "2K",
+      "format": "jpg",
+      "promptHash": "5f130f891c46027b591459c22ab38c627041f7def21f864a9d46c16cd4bd63bc",
+      "present": true
+    },
+    "venue-detail": {
+      "file": "venue-detail.jpg",
+      "width": 1600,
+      "height": 1200,
+      "aspect": "4:3",
+      "tier": "2K",
+      "format": "jpg",
+      "promptHash": "153856a961b4499cdd683356b406c825b678c35e3ef1686d297724f2110e2395",
+      "present": true
+    },
+    "artist-01-kasimir-volt": {
+      "file": "artist-01-kasimir-volt.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "f3294511b456ad059fca8eae43b5dcd568a9b2c4c91e36584c4b9737d194a9fd",
+      "present": true
+    },
+    "artist-02-lena-orbis": {
+      "file": "artist-02-lena-orbis.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "fa73a191b728de610182e6cd4e337196ef05f3e00c3c08142c793c206678a97e",
+      "present": true
+    },
+    "artist-03-nullset": {
+      "file": "artist-03-nullset.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "9685948f8a9a5ac6bc471c3b85ac34a0930a92c15fadd51cfbba8705384bd3a9",
+      "present": true
+    },
+    "artist-04-auric-drift": {
+      "file": "artist-04-auric-drift.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "b66e89a16e8b144b75a5702f92ff4adb5f933f5abeffa8c6f8c3787902199091",
+      "present": true
+    },
+    "artist-05-mara-teschke": {
+      "file": "artist-05-mara-teschke.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "3d9c138947ded97635eea15fca43949c515ed90dfbbd58ffb6d221f101bf357d",
+      "present": true
+    },
+    "artist-06-substation-9": {
+      "file": "artist-06-substation-9.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "216076e8b767f1fa641bb093840142f2d8023239aa17e2f849aaf03d9b8772f5",
+      "present": true
+    },
+    "artist-07-hiroko-vane": {
+      "file": "artist-07-hiroko-vane.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "5843a7a8c78d0c642085a84d263e9ddc8132020ca54baf51e2854579c04f4846",
+      "present": true
+    },
+    "artist-08-cold-cathode": {
+      "file": "artist-08-cold-cathode.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "ebd05e9d8a12411d3f8bb95e70f9c3aef33d4a05c0dbd612f1a91f24f35549bd",
+      "present": true
+    },
+    "artist-09-ilse-rum": {
+      "file": "artist-09-ilse-rum.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "4c5c49fc709221390b0e7b1857bf5370dd464be7e6946df9bcad0686ccea6745",
+      "present": true
+    },
+    "artist-10-tape-decay": {
+      "file": "artist-10-tape-decay.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "c5045e66b71f5367c92d7a0084b955832b4f2ea48967f58943489bdde64d1d1b",
+      "present": true
+    },
+    "artist-11-odalys-ferrer": {
+      "file": "artist-11-odalys-ferrer.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "3d109a045b7955d37e3665dd1012bdb9cee3d74ca98d4888723078cfb63620e2",
+      "present": false
+    },
+    "artist-12-vitrine": {
+      "file": "artist-12-vitrine.jpg",
+      "width": 800,
+      "height": 800,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "jpg",
+      "promptHash": "d40eba89b098ee470eaaa44b7c39ba09c5c27b4ae1630a48564f7008a0666366",
+      "present": false
+    },
+    "texture-grain": {
+      "file": "texture-grain.png",
+      "width": 1024,
+      "height": 1024,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "png",
+      "promptHash": "33bed68d0c7c3d1e7e0ed653334d79238a3e0c979f1e0cdece9ae32de89ed3f1",
+      "present": false
+    },
+    "texture-scanline": {
+      "file": "texture-scanline.png",
+      "width": 1024,
+      "height": 1024,
+      "aspect": "1:1",
+      "tier": "1K",
+      "format": "png",
+      "promptHash": "e2f7969f1eb4c631eb0502993cca141770a4519cba5195b472b2a83fc1e0e9a1",
+      "present": false
+    },
+    "og-card": {
+      "file": "og-card.jpg",
+      "width": 1200,
+      "height": 630,
+      "aspect": "16:9",
+      "tier": "2K",
+      "format": "jpg",
+      "promptHash": "44fa1546965009287f52375eab5f179c3b19e4e14c78563905d87d7373daeaa5",
+      "present": false
+    }
+  }
+}
