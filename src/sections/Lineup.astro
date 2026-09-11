@@ -1,0 +1,364 @@
+---
+/**
+ * Lineup — twelve artist cards behind a day filter.
+ *
+ * The filter is an enhancement, not the content. The page ships with the tab list
+ * carrying `hidden`, all twelve cards rendered and the status line already reading
+ * the "all" string from CONTENT 6; src/scripts/tabs.ts unhides the list and takes
+ * over from there. With scripting off nothing is unreachable, which is the whole
+ * requirement — a filter that hides eight artists before the reader has asked is a
+ * worse page than no filter at all.
+ *
+ * One tabpanel, not four. Four panels would mean four copies of the twelve cards,
+ * and duplicate `data-artist` values and duplicate ids fail AC-39 and AC-14. The
+ * script repoints the panel's `aria-labelledby` at whichever tab is selected, so
+ * the panel is always named by the filter that produced it (AC-18).
+ *
+ * Gates this section answers directly:
+ *
+ *   AC-06  `data-section="lineup"` and the matching id, both set by Section.
+ *   AC-08  h2 from Section, then one h3 per card. Nothing deeper.
+ *   AC-39  every card carries `data-artist`, `data-day` and `data-stage` from
+ *          CANON 2, and repeats the name and the genre in its own text, because a
+ *          fact that only exists in an attribute is not on the page.
+ *   AC-22  each portrait takes the alt text from CONTENT 13 verbatim. None of
+ *          these images is decorative; the hover wash is a div, not an <img>.
+ *          No alt repeats the artist's name: the card h3 already carries it, and a
+ *          screen reader would otherwise announce the same name twice (CONTENT 13).
+ *
+ * Two readings of an ambiguous brief, recorded rather than hidden:
+ *
+ * 1. CONTENT 6 says every card carries a billing badge and that the badges read
+ *    "Headliner", "Main" and "Support". FIGMA-SPEC 4.5 shows the badge on the
+ *    `headliner` variant only. CONTENT owns the copy, so all twelve cards get one,
+ *    and the visual hierarchy FIGMA-SPEC asks for is carried by tone instead:
+ *    accent.arc for a headliner, the neutral fill for the rest.
+ * 2. FIGMA-SPEC 5.4 gives this section the eyebrow "Twelve artists" and an intro
+ *    that CONTENT 6 has since replaced. The replacement intro opens with those same
+ *    two words, so the eyebrow would now repeat the line directly beneath it, and
+ *    CONTENT 14 is explicit that it holds every remaining user-facing string. No
+ *    kicker, and the discrepancy is worth raising against the Figma file.
+ */
+import Section from '../components/Section.astro'
+import Tag from '../components/Tag.astro'
+
+interface Artist {
+  /** CANON 2 spelling, exactly. It is both the `data-artist` value and the h3. */
+  name: string
+  billing: 'Headliner' | 'Main' | 'Support'
+  /** Matches the tabs' `data-tab-value`; tabs.ts compares the two directly. */
+  day: 'fri' | 'sat' | 'sun'
+  /** The day as the reader sees it in the meta line (CONTENT 6). */
+  dayLabel: string
+  stage: string
+  genre: string
+  blurb: string
+  image: string
+  alt: string
+}
+
+/** CANON 2, rows 1 to 12, in that order. Copy from CONTENT 6 and CONTENT 13. */
+const artists: Artist[] = [
+  {
+    name: 'KASIMIR VOLT',
+    billing: 'Headliner',
+    day: 'fri',
+    dayLabel: 'Friday',
+    stage: 'Turbine Hall',
+    genre: 'Industrial techno',
+    blurb:
+      'Kick drums built to move the air in a room this size, played loud enough that the roof trusses answer back.',
+    image: 'artist-01-kasimir-volt.jpg',
+    alt: 'A figure in hard silhouette against dense smoke, rimmed by a single orange lamp directly behind the head.',
+  },
+  {
+    name: 'Lena Orbis',
+    billing: 'Headliner',
+    day: 'sat',
+    dayLabel: 'Saturday',
+    stage: 'Turbine Hall',
+    genre: 'Deep ambient',
+    blurb: "Chords held until the hall's eight-second reverb becomes part of the chord.",
+    image: 'artist-02-lena-orbis.jpg',
+    alt: 'A standing figure almost entirely dissolved into cold cyan fog, low and small in an otherwise empty frame.',
+  },
+  {
+    name: 'NULLSET',
+    billing: 'Headliner',
+    day: 'sun',
+    dayLabel: 'Sunday',
+    stage: 'Turbine Hall',
+    genre: 'Generative',
+    blurb:
+      'A patch that writes the set while it plays, so nobody in the hall has heard it before, including NULLSET.',
+    image: 'artist-03-nullset.jpg',
+    alt: 'A fine lattice of cyan and violet light lines drawn in empty black space, fraying toward the edges.',
+  },
+  {
+    name: 'Auric Drift',
+    billing: 'Main',
+    day: 'fri',
+    dayLabel: 'Friday',
+    stage: 'Boiler Room',
+    genre: 'Drone',
+    blurb: 'Sustained low end that arrives through the floor and reaches your ears second.',
+    image: 'artist-04-auric-drift.jpg',
+    alt: 'A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering from the left.',
+  },
+  {
+    name: 'Mara Teschke',
+    billing: 'Main',
+    day: 'sat',
+    dayLabel: 'Saturday',
+    stage: 'Boiler Room',
+    genre: 'Modular live',
+    blurb: 'Everything patched on stage, with the cables, the mistakes and the recoveries all audible.',
+    image: 'artist-05-mara-teschke.jpg',
+    alt: 'Two hands patching cables into a dark modular synthesiser panel under a single orange lamp.',
+  },
+  {
+    name: 'SUBSTATION 9',
+    billing: 'Main',
+    day: 'sun',
+    dayLabel: 'Sunday',
+    stage: 'Boiler Room',
+    genre: 'Hardware techno',
+    blurb:
+      'Three drum machines, no laptop, and a hi-hat that cuts through brick like a spanner dropped on pipework.',
+    image: 'artist-06-substation-9.jpg',
+    alt: 'A figure seen from behind facing a wall of old electrical switchgear, edged by a single orange rim light.',
+  },
+  {
+    name: 'Hiroko Vane',
+    billing: 'Support',
+    day: 'fri',
+    dayLabel: 'Friday',
+    stage: 'Cooling Tower',
+    genre: 'Field recording',
+    blurb:
+      'Tape of harbours, lifts and transformer hum, mixed until the recordings and the tower sound like one place.',
+    image: 'artist-07-hiroko-vane.jpg',
+    alt: 'A small silhouetted figure holding a pole aloft against a large, evenly glowing pale cyan window panel.',
+  },
+  {
+    name: 'Cold Cathode',
+    billing: 'Support',
+    day: 'sat',
+    dayLabel: 'Saturday',
+    stage: 'Cooling Tower',
+    genre: 'Dub techno',
+    blurb: 'One chord, a spring reverb and a long delay; the concrete does the rest of the work.',
+    image: 'artist-08-cold-cathode.jpg',
+    alt: 'A figure smeared and abstracted behind fogged wired safety glass, backlit by a cyan tube light.',
+  },
+  {
+    name: 'Ilse Rüm',
+    billing: 'Support',
+    day: 'sun',
+    dayLabel: 'Sunday',
+    stage: 'Cooling Tower',
+    genre: 'Neoclassical electronic',
+    blurb: 'Piano and cello through tape delay, played at the volume of a conversation.',
+    image: 'artist-09-ilse-rum.jpg',
+    alt: 'A single hand resting still on the keys of an old piano keyboard, lit warmly from one side, the rest in darkness.',
+  },
+  {
+    name: 'TAPE DECAY',
+    billing: 'Support',
+    day: 'fri',
+    dayLabel: 'Friday',
+    stage: 'Boiler Room',
+    genre: 'Tape loops',
+    blurb: 'Four reel-to-reel machines running spliced loops that wear out audibly before the set ends.',
+    image: 'artist-10-tape-decay.jpg',
+    alt: 'A loop of magnetic tape running diagonally between spools, its edge catching an orange highlight, one spool blurred by motion.',
+  },
+  {
+    name: 'Odalys Ferrer',
+    billing: 'Support',
+    day: 'sat',
+    dayLabel: 'Saturday',
+    stage: 'Cooling Tower',
+    genre: 'Percussive ambient',
+    blurb: 'Drums and metal bowls recorded in the room, then played back into it until the two blur.',
+    image: 'artist-11-odalys-ferrer.jpg',
+    alt: 'A long-exposure frame of a figure mid-strike, one arm smeared into an orange trail above the lit rims of metal percussion.',
+  },
+  {
+    name: 'VITRINE',
+    billing: 'Support',
+    day: 'sun',
+    dayLabel: 'Sunday',
+    stage: 'Boiler Room',
+    genre: 'Glassy IDM',
+    blurb: 'Brittle high-register rhythms that sound like something small breaking, slowed down.',
+    image: 'artist-12-vitrine.jpg',
+    alt: 'The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction.',
+  },
+]
+
+/**
+ * CONTENT 6. The visible label is short because the tab row has to survive 342px;
+ * the accessible name is the one that says which day, because "Fri" on its own says
+ * too little. The status strings live here, on `data-tab-status`, so that tabs.ts
+ * never becomes a second place the copy is written down.
+ */
+const tabs = [
+  { value: 'all', label: 'All', name: 'All twelve artists', status: 'Showing all twelve artists.' },
+  {
+    value: 'fri',
+    label: 'Fri',
+    name: 'Friday 12 June',
+    status: 'Showing four artists playing Friday 12 June.',
+  },
+  {
+    value: 'sat',
+    label: 'Sat',
+    name: 'Saturday 13 June',
+    status: 'Showing four artists playing Saturday 13 June.',
+  },
+  {
+    value: 'sun',
+    label: 'Sun',
+    name: 'Sunday 14 June',
+    status: 'Showing four artists playing Sunday 14 June.',
+  },
+]
+
+/**
+ * FIGMA-SPEC 4.5: the headliner name is 24, everything else 20, and at 390 all of
+ * them drop to 16 because the card is 163px wide there and a 20px name breaks into
+ * three lines. Every step is on the CANON 5 scale (AC-31).
+ */
+const nameSize = {
+  Headliner: 'text-base tablet:text-2xl',
+  Main: 'text-base tablet:text-xl',
+  Support: 'text-base tablet:text-xl',
+}
+
+/** Headliners take the arc fill; bg.base ink on arc is 4.53:1, the only pairing
+    that passes there. The rest take the neutral fill, which keeps light ink. */
+const badgeTone = { Headliner: 'arc', Main: 'neutral', Support: 'neutral' } as const
+
+/** FIGMA-SPEC 4.5 drops the genre to text.secondary on the support variant. */
+const genreTone = { Headliner: 'coolant', Main: 'coolant', Support: 'neutral' } as const
+---
+
+<Section
+  name="lineup"
+  heading="Lineup"
+  intro="Twelve artists over three nights. Four a night, one stage at a time. Nothing you want to hear runs against anything else you want to hear."
+>
+  <div data-tabs class="flex flex-col gap-12">
+    <div class="flex flex-col gap-3">
+      {/* Ships hidden. tabs.ts is the one thing that reveals it, so the control can
+          never appear without the behaviour behind it. */}
+      <div
+        data-tabs-list
+        role="tablist"
+        aria-label="Filter the lineup by day"
+        hidden
+        class="flex w-fit max-w-full flex-wrap gap-2 rounded-pill bg-bg-surface p-1"
+      >
+        {
+          tabs.map((tab) => (
+            <button
+              data-tab
+              data-tab-value={tab.value}
+              data-tab-status={tab.status}
+              type="button"
+              role="tab"
+              id={`lineup-tab-${tab.value}`}
+              aria-controls="lineup-panel"
+              aria-selected={tab.value === 'all' ? 'true' : 'false'}
+              aria-label={tab.name}
+              class="inline-flex items-center justify-center rounded-pill px-6 py-2 font-body text-sm font-semibold leading-6 text-text-secondary transition-colors duration-150 aria-[selected=false]:hover:bg-bg-raised aria-[selected=false]:hover:text-text-primary aria-selected:bg-accent-coolant aria-selected:text-text-on-accent"
+            >
+              {tab.label}
+            </button>
+          ))
+        }
+      </div>
+
+      {/* The live region is what tells a screen reader user that twelve cards just
+          became four. It ships with the "all" string because that is the state the
+          page loads in, with or without scripting. */}
+      <p data-tabs-status aria-live="polite" class="text-sm leading-normal text-text-secondary">
+        Showing all twelve artists.
+      </p>
+    </div>
+
+    <div
+      data-tabs-panel
+      id="lineup-panel"
+      role="tabpanel"
+      aria-labelledby="lineup-tab-all"
+      class="grid grid-cols-2 gap-4 tablet:grid-cols-3 tablet:gap-6 desktop:grid-cols-4"
+    >
+      {
+        artists.map((artist) => (
+          <article
+            data-tab-item
+            data-artist={artist.name}
+            data-day={artist.day}
+            data-stage={artist.stage}
+            class="group flex flex-col gap-3 overflow-hidden rounded-md border border-border-subtle bg-bg-surface transition-colors duration-150 hover:border-border-strong"
+          >
+            <div class="relative">
+              <img
+                src={`/images/${artist.image}`}
+                alt={artist.alt}
+                width="512"
+                height="512"
+                loading="lazy"
+                decoding="async"
+                class="aspect-[4/5] w-full object-cover"
+              />
+
+              {/* The hover wash is text.primary at 10%, the one overlay the palette
+                  allows. It ships at opacity 0 so the colour the page actually
+                  paints at rest is still an on-palette one (AC-26). */}
+              <div
+                class="pointer-events-none absolute inset-0 bg-text-primary opacity-0 transition-opacity duration-150 group-hover:opacity-10"
+                aria-hidden="true"
+              ></div>
+
+              <Tag tone={badgeTone[artist.billing]} variant="solid" class="absolute left-3 top-3">
+                {artist.billing}
+              </Tag>
+            </div>
+
+            <div class="flex flex-col gap-2 p-4">
+              <h3
+                class:list={[
+                  'font-display font-medium leading-[1.3] tracking-display text-text-primary',
+                  nameSize[artist.billing],
+                ]}
+              >
+                {artist.name}
+              </h3>
+
+              {/* Day and stage stack at 390 and sit on one line from 768 up, so the
+                  separator is decoration that only exists in the row layout. */}
+              <p class="flex flex-col gap-2 text-sm leading-normal text-text-secondary tablet:flex-row">
+                <span>{artist.dayLabel}</span>
+                <span aria-hidden="true" class="hidden tablet:inline">
+                  ·
+                </span>
+                <span>{artist.stage}</span>
+              </p>
+
+              <Tag tone={genreTone[artist.billing]}>{artist.genre}</Tag>
+
+              <p class="text-sm leading-normal text-text-secondary">{artist.blurb}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</Section>
+
+<script>
+  import '../scripts/tabs'
+</script>

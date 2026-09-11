@@ -1,0 +1,166 @@
+---
+/**
+ * Hero — the first screen, and the only h1 on the page (AC-07).
+ *
+ * The scrim is not decoration. FIGMA-SPEC 5.2 puts a bg.base gradient between the
+ * photograph and the type — 90% at the bottom where the copy sits, 20% at the top —
+ * so the contrast of the h1 is a property of the page rather than a property of
+ * whichever frame the hero image came back as. design/assets/PROMPTS.md 1.7 keeps
+ * the lower half of the photograph dark enough for text.primary to clear 4.5:1
+ * before the scrim is applied; the scrim is the second guarantee, not the first.
+ *
+ * Two departures from FIGMA-SPEC 5.2, recorded here rather than made silently:
+ *
+ *   1. Horizontal placement comes from `.container-turbine`, not from the frame's
+ *      120px inline padding. 120 is not on the spacing scale (AC-32), and the
+ *      container is what every other section aligns to — so the wordmark lines up
+ *      with the headings below it at all three widths instead of sitting 48px
+ *      outside them. Vertical padding rounds the frame's 160 at 1440 and 120 at 768
+ *      to 128 for the same reason Button rounds its 28px inline padding to 32: where
+ *      a Figma number is off the scale the scale wins.
+ *   2. The scroll cue sits in the flow under the CTAs, where CONTENT 4 puts it
+ *      ("visible text under the CTAs, beside a downward chevron"), rather than
+ *      absolutely centred on the bottom edge. Centred and absolute, it lands on top
+ *      of the full-width mobile CTAs at 390.
+ *
+ * The cue is also one of the two elements AC-21 names by selector, which is why the
+ * bounce carries `motion-safe:`. Under prefers-reduced-motion the animation is never
+ * declared at all, rather than declared and then shortened by the global reset.
+ */
+import Button from '../components/Button.astro'
+import Section from '../components/Section.astro'
+
+/** Path, intrinsic size and alt text all from brief/CONTENT.md 13, verbatim. */
+const hero = {
+  src: '/images/hero-hall.jpg',
+  width: 2400,
+  height: 1350,
+  srcset: '/images/hero-hall-800.jpg 800w, /images/hero-hall-1440.jpg 1440w, /images/hero-hall-2400.jpg 2400w',
+  alt: 'The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze.',
+}
+---
+
+<Section
+  name="hero"
+  labelledBy="hero-title"
+  bleed
+  flush
+  class="relative isolate flex min-h-[600px] flex-col justify-end overflow-hidden pt-24 pb-16 tablet:min-h-[700px] tablet:pt-32 desktop:min-h-[780px] desktop:pb-24"
+>
+  {/* The LCP element at every width, so it is priority-hinted rather than left to queue. */}
+  {/* Three widths, because this image is full-bleed: it paints 390 CSS px on a phone
+      and 1440 on a laptop, and shipping the 2400px master to the phone was most of the
+      distance between this page and a passing performance gate. The variants are cut by
+      scripts/copy-assets.mjs; the unsuffixed file stays as the src fallback. */}
+  <img
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+    src={hero.src}
+    srcset={hero.srcset}
+    sizes="100vw"
+    width={hero.width}
+    height={hero.height}
+    alt={hero.alt}
+    fetchpriority="high"
+    decoding="async"
+  />
+
+  {/*
+    Two scrims, not one, and the reason is measured rather than aesthetic.
+
+    axe cannot evaluate text over a background image — it reports such pairs as
+    "incomplete" rather than as violations — so the accessibility gate was green while
+    five of the nine text elements in this hero sat below AA against the photograph
+    underneath them. Measured at 390 and 1440 by sampling the rendered background with
+    the text hidden: the eyebrow at 2.94:1, the secondary line at 3.02:1, the venue line
+    at 4.25:1, the dates at 4.41:1, against a 4.5:1 requirement.
+
+    Three layers, each doing one job. The vertical gradient shapes the image as FIGMA-SPEC
+    5.2 intends. Below 768 a flat wash covers the frame, because at 390 the text spans it.
+    Above 768 the wash becomes a left-to-right gradient instead: the copy occupies the left
+    half and the crowd and the cyan haze occupy the right, so darkening the whole frame
+    would buy the contrast by throwing away the photograph. The first attempt did exactly
+    that and the hall disappeared.
+
+    AC-61 measures this on every build. Changing either value without re-running it is how
+    it silently comes back.
+  */}
+  <div class="absolute inset-0 -z-10 bg-linear-to-t from-bg-base/95 via-bg-base/70 to-bg-base/30"></div>
+  <div class="absolute inset-0 -z-10 bg-bg-base opacity-50 tablet:hidden"></div>
+  <div
+    class="absolute inset-0 -z-10 hidden bg-linear-to-r from-bg-base/90 via-bg-base/55 to-transparent tablet:block"
+  >
+  </div>
+
+  <div class="container-turbine flex flex-col gap-4 tablet:gap-8">
+    {/*
+      The one sodium eyebrow on the page: FIGMA-SPEC 5.2 gives the hero accent.sodium
+      where the section kickers below use accent.coolant. It reads at 12px because
+      sodium on bg.base measures 6.87:1 (design/tokens/CONTRAST.md).
+    */}
+    <p class="text-xs font-semibold uppercase tracking-[0.06em] text-accent-sodium">Fourth edition</p>
+
+    {/*
+      One h1 holding both lines, so its accessible name reads "TURBINE Three nights
+      inside the machine" (CONTENT 4). The wordmark is typed in caps because it is a
+      proper noun (CANON 1); the style adds the +0.18em tracking and nothing else.
+      The second line drops back to the body face, which is why it restates family,
+      weight and tracking — all three are inherited from the display lockup above it.
+    */}
+    <h1
+      id="hero-title"
+      class="font-display text-4xl font-bold leading-none tracking-wordmark text-text-primary tablet:text-6xl desktop:text-7xl"
+    >
+      TURBINE
+      <span
+        class="mt-4 block font-body text-lg font-normal leading-relaxed tracking-normal tablet:mt-6 desktop:text-xl"
+      >
+        Three nights inside the machine
+      </span>
+    </h1>
+
+    <p class="max-w-[720px] text-lg leading-relaxed text-text-secondary desktop:text-xl">
+      Ambient, techno and modular sound in a hall built for power.
+    </p>
+
+    {/*
+      Two lines rather than the frame's single meta line, because CONTENT 4 writes
+      them as two strings and the dates carry more weight than the address.
+    */}
+    <div class="flex flex-col gap-2">
+      <p class="text-base font-medium text-text-primary">Friday 12 – Sunday 14 June 2027</p>
+      <p class="text-base text-text-secondary">The Powerhouse, Hall E · Kraków</p>
+    </div>
+
+    <div class="flex flex-col gap-3 tablet:flex-row tablet:gap-4">
+      <Button href="#tickets" class="w-full tablet:w-auto">Get tickets</Button>
+      <Button href="#lineup" variant="secondary" class="w-full tablet:w-auto">See the lineup</Button>
+    </div>
+
+    {/*
+      Visible text "Scroll", accessible name "Scroll down to the lineup" (CONTENT 14).
+      The visible label is the first words of the accessible name, which is what SC
+      2.5.3 asks for; the chevron says the direction and nothing else, so it is hidden.
+    */}
+    <a
+      href="#lineup"
+      data-scroll-cue
+      aria-label="Scroll down to the lineup"
+      class="inline-flex items-center gap-2 self-start py-2 text-xs font-semibold uppercase tracking-[0.06em] text-text-secondary hover:text-text-primary"
+    >
+      Scroll
+      <svg
+        class="h-6 w-6 motion-safe:animate-bounce"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        focusable="false"
+      >
+        <path d="m6 9 6 6 6-6"></path>
+      </svg>
+    </a>
+  </div>
+</Section>

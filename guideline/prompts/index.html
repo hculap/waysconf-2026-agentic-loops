@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The prompts — Build an AI that checks and fixes its own work</title>
+<meta name="description" content="Seven prompts that take an empty folder to a website an agent built, checked and corrected by itself. WaysConf 2026 masterclass.">
+<meta name="theme-color" content="#0A0B0D">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root{
+  --bg:#0A0B0D; --surface:#131519; --raised:#1C1F25;
+  --line:#2A2E36; --line-2:#3D434E;
+  --fg:#F2F4F7; --fg-2:#A7AEBB; --muted:#6B7280;
+  --sodium:#FF6A1A; --coolant:#2FE6D6; --arc:#7C5CFF;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font:400 17px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+:focus-visible{outline:2px solid var(--coolant);outline-offset:2px}
+.skip{position:absolute;left:16px;top:16px;z-index:99;transform:translateY(-200%);background:var(--sodium);color:var(--bg);padding:12px 16px;border-radius:8px;font-weight:600;text-decoration:none;transition:transform .15s}
+.skip:focus{transform:none}
+.wrap{max-width:820px;margin:0 auto;padding-inline:24px}
+@media(min-width:768px){.wrap{padding-inline:48px}}
+
+header.top{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:10}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:16px}
+.wordmark{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;letter-spacing:.18em;color:var(--sodium);font-size:15px}
+.top nav{display:flex;gap:18px;overflow-x:auto;font-size:14px}
+.top nav a{color:var(--fg-2);text-decoration:none;white-space:nowrap}
+.top nav a:hover{color:var(--fg)}
+
+h1{font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(34px,6vw,56px);line-height:1.05;letter-spacing:-.02em;margin:48px 0 16px}
+h2{font-family:'Space Grotesk',system-ui,sans-serif;font-size:clamp(24px,4vw,34px);line-height:1.15;letter-spacing:-.02em;margin:8px 0 12px}
+h3{font-family:'Space Grotesk',system-ui,sans-serif;font-size:20px;margin:28px 0 8px}
+h4{font-size:16px;color:var(--coolant);margin:20px 0 6px;text-transform:none}
+p,li{color:var(--fg-2)}
+strong{color:var(--fg);font-weight:600}
+a{color:var(--coolant)}
+hr{border:0;border-top:1px solid var(--line);margin:28px 0}
+code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.88em;background:var(--raised);color:var(--fg);padding:.12em .38em;border-radius:4px}
+blockquote{border-left:3px solid var(--sodium);background:var(--surface);margin:18px 0;padding:14px 18px;border-radius:0 8px 8px 0}
+blockquote p{color:var(--fg);margin:0}
+table{width:100%;border-collapse:collapse;margin:16px 0;font-size:15px}
+th{text-align:left;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--coolant);border-bottom:1px solid var(--line-2);padding:8px 10px}
+td{border-bottom:1px solid var(--line);padding:9px 10px;color:var(--fg-2);vertical-align:top}
+
+.lede{font-size:20px;color:var(--fg);max-width:62ch}
+.need{display:grid;gap:16px;margin:28px 0 8px}
+@media(min-width:768px){.need{grid-template-columns:1fr 1fr}}
+.need a{display:block;border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:20px;text-decoration:none;color:inherit}
+.need a:hover{border-color:var(--line-2)}
+.need b{display:block;font-family:'Space Grotesk',system-ui,sans-serif;font-size:19px;color:var(--fg);margin-bottom:4px}
+.need span{display:block;color:var(--fg-2);font-size:15px}
+.need em{display:block;margin-top:10px;color:var(--coolant);font-style:normal;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+.step{border-top:1px solid var(--line);padding-top:36px;margin-top:44px}
+.step__no{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;letter-spacing:.08em;color:var(--coolant);text-transform:uppercase}
+
+.prompt{border:1px solid var(--line-2);border-radius:12px;overflow:hidden;margin:18px 0;background:var(--surface)}
+.prompt__bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 14px;background:var(--raised);border-bottom:1px solid var(--line)}
+.prompt__label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--fg-2)}
+.copy{font:600 13px/1 Inter,system-ui,sans-serif;background:var(--sodium);color:var(--bg);border:0;border-radius:6px;padding:8px 14px;cursor:pointer;min-height:32px}
+.copy:hover{filter:brightness(1.08)}
+.copy[data-done]{background:#3DDC84}
+pre{margin:0;padding:18px;overflow-x:auto}
+pre code{background:none;padding:0;font-size:14px;line-height:1.62;color:var(--fg);white-space:pre-wrap;word-break:break-word}
+pre.plain{background:var(--surface);border:1px solid var(--line);border-radius:10px;margin:14px 0}
+
+footer{border-top:1px solid var(--line);margin-top:64px;padding-block:36px 56px}
+footer p{font-size:14px}
+.legal{color:var(--fg-2);font-size:13px}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="top">
+  <div class="wrap">
+    <span class="wordmark">TURBINE</span>
+    <nav aria-label="The seven prompts">
+      <a href="#step-01">01</a><a href="#step-02">02</a><a href="#step-03">03</a><a href="#step-04">04</a><a href="#step-05">05</a><a href="#step-06">06</a><a href="#step-07">07</a><a href="#step-08">08</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+<div class="wrap">
+
+  <h1>The prompts</h1>
+
+  <p class="lede">Seven things to say to a coding agent. Start in an empty folder, finish
+  with a website on the internet that the agent built, checked and corrected by itself.</p>
+
+  <div class="need">
+    <a href="#figma-link-goes-here">
+      <b>The design</b>
+      <span>The TURBINE file in Figma. Open it, look at it, keep it on your second screen.</span>
+      <em>Open in Figma</em>
+    </a>
+    <a href="/design-pack.zip" download>
+      <b>The design pack</b>
+      <span>The same design as files: three PNGs, every colour and size, every word. Use this if Figma will not talk to your agent.</span>
+      <em>Download · 7 MB</em>
+    </a>
+  </div>
+
+  <p>Those two and this page. There is nothing to clone and no code to read —
+  <strong>everything else, the agent makes for itself.</strong></p>
+
+  <p>Paste each prompt whole. The rules in them matter as much as the request, and cutting
+  a prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
+
+  <section class="step" id="step-01">
+  <p class="step__no">Prompt 01</p>
+  <h2>Start</h2>
+  <p>Empty folder in, a website running on your own machine out. Nothing is designed yet; this is just the workbench.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Set up a new website project in this folder.
+
+Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
+database. Node is already installed.
+
+Then start the development server and tell me the address to open in my browser.
+
+Do not build any pages yet. Do not invent any content. I will give you the design in the
+next message, and I want the page to still be empty when I do.
+
+While you work, tell me in one line what each command is doing. I have not used a terminal
+before and I would like to follow along.</code></pre></div>
+<hr>
+<p><strong>Codex will ask whether it trusts this folder.</strong> Say yes. It refuses to work in a directory it has not been told about, which in a brand-new empty folder means the very first thing it does is stop and ask. That is the tool being careful, not something going wrong.</p>
+<p><strong>What you should see.</strong> A few minutes of installing, then a line like <code>Local http://localhost:4321/</code>. Open it. You get Astro's placeholder page — plain, ugly, correct.</p>
+<p><strong>The terminal is now busy.</strong> That window is running the site and will not take another command. Leave it alone and open a second one. In Claude Code and Codex you can simply keep talking; they handle it.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building a landing page anyway</td><td><code>Stop. Undo the pages you created. I want an empty project until I give you the design.</code></td></tr><tr><td><code>Not inside a trusted directory</code></td><td>This is Codex asking permission. Answer yes, or run <code>git init</code> in the folder first.</td></tr><tr><td><code>command not found: npm</code></td><td>Node is not installed. Follow the setup page, or switch to the browser option on it.</td></tr><tr><td>It asks you to choose a template</td><td><code>Pick the minimal or empty template. No example content.</code></td></tr><tr><td>Nothing happens for two minutes</td><td>It is installing. Installing looks exactly like being stuck. Give it five.</td></tr></tbody></table>
+<hr>
+<h3>Why it is worded like that</h3>
+<p><strong>&quot;Do not build any pages yet.&quot;</strong> Left to itself an agent will fill the silence — it will invent a hero, a features grid and three testimonials before you have said a word about what you want. Saying what <em>not</em> to do is half of prompting, and it is the half people leave out.</p>
+<p><strong>&quot;Tell me in one line what each command is doing.&quot;</strong> You can ask for this. The agent is not only a machine that produces files; it is the only patient explainer you will have all afternoon.</p>
+</section>
+<section class="step" id="step-02">
+  <p class="step__no">Prompt 02</p>
+  <h2>Look at the design</h2>
+  <p>The agent reads the design and tells you what it found. It writes nothing. This is the cheapest correction you will get all day: a wrong assumption costs one sentence to fix here, and twenty minutes of generated code to fix later.</p>
+<p>Two routes, depending on whether your Figma account can talk to the agent. <strong>Neither is better.</strong> The second one is what the gates compare against.</p>
+<hr>
+<h3>Route A — you connected Figma</h3>
+<p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex, and the workshop file opens in your browser.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Read the TURBINE design file through the Figma MCP server:
+&lt;paste the Figma link here&gt;
+
+Do not write any code yet. Tell me what you found, as a list:
+
+1. Every section, in the order they appear down the page, with the name of each.
+2. Every colour, as an exact value, and what it is used for.
+3. Every text size, and which one is used where.
+4. The spacing values you can see — the gaps between things.
+5. Anything the design does not tell you, and that you would otherwise have to guess.
+
+Point 5 is the one I care about most. Be specific and be honest: &quot;I cannot tell what
+happens to the lineup grid below 500px&quot; is more useful to me than a confident guess.</code></pre></div>
+<hr>
+<h3>Route B — Figma is free, or the connection refuses</h3>
+<p>The design pack is a folder you downloaded from the setup page. Put it beside your project and unzip it, so that there is a <code>design</code> folder next to your <code>src</code> folder.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2">Copy</button></div><pre id="p2"><code>There is a folder called design next to this project. It contains:
+
+- three PNGs: the page as it should look at 390, 768 and 1440 pixels wide
+- tokens.json: every colour, text size, spacing value and radius, by name
+- content.md: every word that appears on the page
+
+Read all three. Do not write any code yet. Tell me what you found, as a list:
+
+1. Every section, in the order they appear down the page.
+2. Every colour, by its name from tokens.json, and what it is used for.
+3. Every text size, and which one is used where.
+4. Anything the three files disagree about, or do not tell you, and that you would
+   otherwise have to guess.
+
+Point 4 is the one I care about most. Be specific and be honest: &quot;the PNG shows a hover
+state I have no values for&quot; is more useful to me than a confident guess.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> A list. Read it. Two things are worth your attention:</p>
+<ul><li><strong>Does it describe your design?</strong> If it says &quot;a hero, three feature cards and a pricing</li></ul>
+<p>  table&quot; and your design has a lineup of twelve artists, it is looking at something else,   or at nothing.</p>
+<ul><li><strong>What is in point 4 or 5?</strong> That list is the brief you forgot to write. Answer it now,</li></ul>
+<p>  in your own words, before moving on.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>Figma returns an error or 401</td><td>Your account does not include Dev Mode. Switch to Route B — nothing downstream changes.</td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>It describes a page you do not recognise</td><td>It is not reading your file. Check the link, or switch to Route B.</td></tr></tbody></table>
+<hr>
+<h3>Why this prompt exists at all</h3>
+<p>It produces nothing. That is the point.</p>
+<p>Everything that goes wrong later in a design-to-code loop went wrong here, invisibly: the agent guessed a colour, assumed a breakpoint, invented a word. Forcing it to say what it saw — <em>before</em> it can hide the guess inside four hundred lines of markup — is the highest return per second of anything in this session.</p>
+<p>In Claude Code this is what <strong>plan mode</strong> does for you automatically (<code>Shift+Tab</code> until the footer says <em>plan mode on</em>). This prompt is plan mode written out by hand, so that it works in any agent.</p>
+</section>
+<section class="step" id="step-03">
+  <p class="step__no">Prompt 03</p>
+  <h2>Build it</h2>
+  <p>Now it writes the page. Section by section, stopping after each one, so that you are looking at a design review rather than a wall of output.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Build the page now, from the design you just read.
+
+One section at a time, in the order they appear down the page. After each section: reload
+the page, tell me what you built in one sentence, and then STOP and wait for me to say
+&quot;next&quot;. Do not build two sections in one go, however small they look.
+
+Rules, all of them non-negotiable:
+
+- Every colour and every size comes from the design. If you find yourself choosing a
+  value, stop and ask me instead.
+- Every word comes from the content I gave you. Do not write copy. Do not improve copy.
+  If a piece of text seems to be missing, ask — do not fill the gap.
+- No new packages. Astro and Tailwind are what we have.
+- The page must work with images that have not loaded and with JavaScript switched off.
+  Anything clever is an addition on top of something that already works without it.
+
+If the design does not tell you something, do not guess. Write the question down, pick the
+reading you think is likeliest, tell me both, and carry on. I would rather correct one
+assumption than discover six.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> One section. Then silence, and a question. Look at the page in your browser. Compare it to the design on your other screen. Then say <code>next</code>, or say what is wrong — in plain words, the way you would to a junior designer:</p>
+<blockquote>The gap under the heading is too tight, and the orange is the wrong orange.</blockquote>
+<p>That is a perfectly good bug report. You do not need the vocabulary.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It builds the whole page in one burst</td><td><code>Stop. Keep what you have. From now on, one section then wait for me.</code></td></tr><tr><td>Text you have never seen before</td><td><code>Where did that sentence come from? Replace it with the text from the content I gave you.</code></td></tr><tr><td>A colour that is nearly right</td><td><code>That is not the value in the design. Use the exact one and tell me which token it is.</code></td></tr><tr><td>It says it is done and it clearly is not</td><td><code>Which sections have you built, and which are still missing? List both.</code></td></tr><tr><td>It gets slower and vaguer as it goes</td><td>It is running low on context. Say <code>Summarise where we are in three lines</code>, start a fresh session, paste the summary, and carry on.</td></tr></tbody></table>
+<hr>
+<h3>Two things worth noticing while it works</h3>
+<p><strong>It is faster than you, and that is not the same as better.</strong> Six sections will appear in the time it takes you to properly look at one. The pause after each section exists so that the reviewing keeps pace with the building. Use it.</p>
+<p><strong>Nothing here has checked anything yet.</strong> The page may look finished at the end of this prompt. It has been judged by exactly one thing so far: your eyes, on your screen, at your window size. Prompt 04 is where that changes.</p>
+</section>
+<section class="step" id="step-04">
+  <p class="step__no">Prompt 04</p>
+  <h2>Write the checker</h2>
+  <p><strong>This is the workshop.</strong> Everything before it was getting a page onto a screen. Everything after it depends on what happens here.</p>
+<p>You are about to ask the agent to build the thing that will judge its own work — and then, in the next prompt, forbid it from ever touching that thing again.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Now write a program that checks your own work.
+
+It must be a program, not an opinion. It runs, it looks at the real page in a real
+browser, and it exits with code 0 if everything is right and a non-zero code if anything
+is wrong. It never asks a language model anything, it never asks me anything, and it
+gives the same answer twice on the same page.
+
+Put it in check.mjs, and make &quot;npm run check&quot; run it. You may install Playwright and
+@axe-core/playwright for this — that is the one exception to the no-new-packages rule.
+
+It must check at least these, and it must check them against the page as a browser
+actually renders it, not against the source code:
+
+1. The site builds with no errors.
+2. Loading the page produces no errors in the browser console.
+3. Every section from the design is present, and in the right order.
+4. Accessibility: zero axe-core violations, at 390, 768 and 1440 pixels wide.
+5. Every colour the page paints is one of the colours in the design. Anything else is a
+   failure, and the report says which colour and which element.
+6. Every piece of text from the content file appears on the page.
+7. Nothing sticks out sideways at 390 pixels — no horizontal scrollbar.
+8. Every image has alt text, and it is not the filename.
+
+When something fails, the report must say four things: what failed, where on the page,
+what it expected, and what it found. &quot;Contrast issue on the page&quot; is useless. &quot;The date
+line in the hero is #6B7280 on #0A0B0D, which is 4.07 to 1, and body text needs 4.5&quot; is
+the whole job.
+
+Write the report to check-report.md as well as printing it, because in the next step I am
+going to hand that file straight back to you.
+
+Two rules about the checker itself:
+
+- If a check cannot run — the browser will not start, the page will not load — that is a
+  FAILURE, never a pass and never a silent skip. A check that did not happen must not look
+  like a check that succeeded.
+- Do not make the checks lenient so that they pass. I am expecting this to fail. If it
+  passes first time I will assume it is not checking anything.
+
+When it is written, run it and show me the output.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> Red. Quite a lot of it.</p>
+<p>That is the correct outcome and it is worth sitting with for a second. A page you were fairly happy with two minutes ago has just been told, by a program, exactly what is wrong with it — with element names and measured numbers.</p>
+<p>Read three or four of the failures. Not to fix them; just to see what the report sounds like when it is written well.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It passes first time</td><td><code>I do not believe it. Show me what each check actually asserts, and prove one of them can fail — break something on purpose and run it again.</code></td></tr><tr><td>Failures like &quot;improve accessibility&quot;</td><td><code>That is advice, not a measurement. Every failure must name an element and give a number.</code></td></tr><tr><td>It checks the source code instead of the page</td><td><code>Check the rendered page in a browser, not the files. A class name in the source is not proof of a colour on the screen.</code></td></tr><tr><td>It skips a check it could not run</td><td><code>A check that did not run is a failure, not a skip. Change it so that anything unverified comes out red.</code></td></tr><tr><td>It goes quiet for a long time</td><td>Installing a browser takes a few minutes on a first run.</td></tr></tbody></table>
+<hr>
+<h3>Why this is the whole point</h3>
+<p>Ask a model whether its work is good and it will tell you. It will be articulate, specific, and it will sound exactly the same whether the answer is true or not. You have no way of knowing which time you got.</p>
+<p><code>check.mjs</code> cannot do that. It is a few hundred lines that open a browser, measure things, and return a number. It has no opinion about whether you will like the page, it does not know that the agent worked hard, and it will not be talked round.</p>
+<p>That is what makes the next prompt work.</p>
+<blockquote><strong>A loop is only worth building if something in it can say no without asking a language model for permission.</strong></blockquote>
+<p>One honest warning, because the checker will shortly start telling you the page is fine: it is answering a narrower question than &quot;is this page good&quot;. Automated accessibility rules reach roughly 30–40% of what the standard actually requires. A colour check knows nothing about whether the design works. Prompt 07 goes looking for the rest.</p>
+</section>
+<section class="step" id="step-05">
+  <p class="step__no">Prompt 05</p>
+  <h2>The loop</h2>
+  <p>You have a page and you have something that can say no to it. This is the sentence that puts them in a circle.</p>
+<p>There is no script here, and there is nothing to install. The loop is a paragraph.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Run npm run check.
+
+If it exits 0, stop and tell me — we are finished.
+
+If it does not, read check-report.md and fix what it names. Then run npm run check again.
+Repeat until it exits 0.
+
+Work in the order the report lists things. Fix the cause, not the symptom: if a colour is
+wrong, use the one from the design, do not nudge it until the number moves. Make the
+smallest change that clears each failure, and leave alone anything that was already
+passing.
+
+Three rules, and the first one matters more than the other two:
+
+1. NEVER change check.mjs to make a check pass. Not a threshold, not a skipped assertion,
+   not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
+   one and why, and change nothing.
+2. Do not add packages, and do not invent text.
+3. If the same failure survives three attempts, stop and tell me what you tried each time
+   and what happened. Three failed repairs usually means the design is asking for two
+   things that cannot both be true, and no fourth attempt will resolve that.
+
+Keep going on your own. Do not ask me to confirm each round.</code></pre></div>
+<hr>
+<h3>Claude Code: make it stick</h3>
+<p>Claude Code has this built in. Instead of trusting the agent to keep going, you can make it structurally unable to stop:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2">Copy</button></div><pre id="p2"><code>/goal npm run check exits 0</code></pre></div>
+<p>The session will not end until that is true. Not &quot;until the agent believes it is true&quot; — the command actually runs, and its exit code decides. Paste the prompt above first, then the <code>/goal</code> line.</p>
+<p><strong>Codex does not have this.</strong> There, the paragraph is the mechanism: it works, it just relies on the agent doing as it was told rather than on the harness enforcing it. Watch the output and say <code>keep going</code> if it stops early.</p>
+<hr>
+<p><strong>What you should see.</strong> Several minutes of check → fix → check. The failure count comes down. Somewhere in the middle it will probably go <em>up</em> by one — a fix that broke something else — and then come down again.</p>
+<p>Then:</p>
+<pre class="plain"><code>✓ all checks passed</code></pre>
+<p>Nobody decided that. A program exited 0.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td><strong>It edited <code>check.mjs</code></strong></td><td><code>Put the checker back exactly as it was, and fix the page instead.</code> Then look at what it changed — that is the most instructive thing that will happen to you today.</td></tr><tr><td>It stops after one round</td><td><code>Keep going. Do not stop until npm run check exits 0.</code> Or use <code>/goal</code>.</td></tr><tr><td>The same failure keeps coming back</td><td><code>You have tried that three times. Stop. Tell me what you tried and what happened each time.</code></td></tr><tr><td>It says it is done but the check is red</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>It gets slower and vaguer</td><td>Context is filling. <code>Write what is left into notes.md in ten lines</code>, start a fresh session, paste the notes, continue.</td></tr></tbody></table>
+<hr>
+<h3>The two things to take home</h3>
+<p><strong>Fresh beats long.</strong> If you have to restart the session, you lose nothing as long as the state is in files — the report and your notes. An agent with a short memory and good notes outperforms one with a long conversation and none. That is why the checker writes <code>check-report.md</code> to disk instead of only printing it.</p>
+<p><strong>The rule is the design.</strong> &quot;Never change the checker&quot; sounds like discipline. It is architecture. The moment the thing being judged can edit the judge, every green result afterwards means nothing — and it will still look exactly as reassuring.</p>
+</section>
+<section class="step" id="step-06">
+  <p class="step__no">Prompt 06</p>
+  <h2>Ship it</h2>
+  <p>A URL you can send to someone. This is the bit that makes the afternoon real.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Put this on the internet.
+
+Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
+am not logged in, tell me what to click rather than doing it silently.
+
+When it is live, do not just tell me it worked. Check:
+
+- fetch the public URL and confirm it returns 200
+- confirm the page it serves is the page you just built, not an older one — compare what
+  comes back against what is in the dist folder
+- run the accessibility check once more against the live URL, not the local one
+
+Then give me the URL on its own line so I can copy it.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> A browser window asking you to authorise Netlify — do it — then a question about which site to create. Then a line like:</p>
+<pre class="plain"><code>https://something-something-123456.netlify.app</code></pre>
+<p>Open it on your phone. That is the whole point of the exercise: the thing exists, on the internet, and you can hand it to someone.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It asks you to log in and nothing opens</td><td>It printed a URL. Paste it into a browser by hand.</td></tr><tr><td>A blank page at the live URL</td><td><code>The live page is blank. Check what you published — which folder did you deploy?</code></td></tr><tr><td>CSS missing, text unstyled</td><td>Usually the wrong folder was published. <code>Deploy the dist folder, not the project root.</code></td></tr><tr><td>&quot;It deployed successfully&quot; with no URL</td><td><code>Give me the public URL on its own line.</code></td></tr></tbody></table>
+<hr>
+<h3>The check that matters here, and why it is not fussiness</h3>
+<p>&quot;Confirm the page it serves is the page you just built.&quot;</p>
+<p>Everything up to now proved something about a file on your laptop. Between that file and a visitor there is a build, an upload, a CDN and a cache, and each of them has been known to serve something other than what you sent. Green checks locally say nothing about what is live.</p>
+<p>When this was built, that check failed — twice — for a reason nobody would have guessed: the host quietly injects its own tags into every page it serves, so the bytes can never match exactly. The honest check turned out to be &quot;the body is identical and everything I put in the head is still there&quot;, which is a different sentence from the one originally written down, and it is the true one.</p>
+<p>Asking &quot;is the thing I published the thing I checked?&quot; takes ten seconds and is the last place a whole afternoon of correctness can quietly evaporate.</p>
+</section>
+<section class="step" id="step-07">
+  <p class="step__no">Prompt 07</p>
+  <h2>Try to break it</h2>
+  <p>Your checker is green. That means <em>no known defect</em> — it has never meant finished.</p>
+<p>This prompt goes looking for what the checker structurally cannot see. It is a model checking a model, which makes it the least reliable thing you will do today, and it is still worth doing, because the alternative is not looking.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>The checks pass. Now try to prove the page is still wrong.
+
+Your job in this message is to attack, not to defend and not to fix. Find five things that
+are wrong with this page that check.mjs cannot catch, and for each one tell me:
+
+- exactly which element, by what I would see on screen
+- what is wrong with it
+- why the checker missed it — what question does it ask that this slips past?
+
+Look specifically where an automated check has no reach:
+
+- text over a photograph: axe does not judge that contrast at all, it marks it
+  &quot;incomplete&quot; and moves on
+- reading order for someone using a keyboard or a screen reader: technically valid and
+  incoherent is a thing that exists
+- alt text that is present, and useless
+- a heading structure that looks like a hierarchy and is not one
+- copy that passes every rule and still does not sound like the brand
+- what happens at 500 pixels wide — a width nobody screenshotted
+- anything that only breaks on the second visit, or with a slow connection
+
+Before you tell me any of them, argue against each one yourself, from three angles:
+
+  is it true      - go and look again, do not trust your first reading
+  does it matter  - would a visitor notice, or only a checklist?
+  is it handled   - is it already covered somewhere I have not looked?
+
+Report only the findings that survive all three. Default to discarding when you are
+unsure, and tell me how many you threw away. Four real findings beat five with a guess in
+them. If you cannot point at a specific element, it is not a finding.
+
+Do not fix anything yet. I want to decide which of these are real first.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> A short list, several items of which are genuinely worth fixing — and at least one that is wrong, or that you disagree with. Both outcomes are the lesson.</p>
+<p>Pick the two you believe and say:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2">Copy</button></div><pre id="p2"><code>Fix findings 2 and 4. Leave the rest. Then run npm run check again — I want to know if
+fixing them broke anything that was passing.</code></pre></div>
+<hr>
+<h3>Why you make it argue with itself</h3>
+<p>A reviewer asked to &quot;find problems&quot; finds problems — it will produce five, because you asked for five. A reviewer asked to <em>destroy a specific claim</em> either destroys it or fails to, and failing to is information.</p>
+<p>The three angles are doing the job a second person would do. It is weaker than a second person and much better than nothing, and it costs one paragraph.</p>
+<h3>Where self-assessment is fine, and where it is not</h3>
+<table><thead><tr><th>Fine</th><th>Not fine</th></tr></thead><tbody><tr><td>Is this sentence any good</td><td>Is this correct</td></tr><tr><td>Which of these five findings matters most</td><td>Is this accessible</td></tr><tr><td>Does this read as the same brand</td><td>Does this match the design</td></tr><tr><td>Is the hierarchy clear</td><td>Is it finished</td></tr></tbody></table>
+<p>The left column has no external truth to check against, so a thoughtful opinion is the best instrument available. The right column has one — so use it, and do not accept an opinion instead.</p>
+<p>This prompt lives entirely in the left column. That is why it produces a list for you to triage, and never a verdict.</p>
+<hr>
+<h3>One real example</h3>
+<p>While this workshop was being built, the accessibility check was green. Zero violations, three widths, twice in a row, perfect Lighthouse score.</p>
+<p>Five of the nine pieces of text in the hero were below the legal contrast minimum against the photograph behind them. The largest, first, most-read text on the page.</p>
+<p>The checker was not broken and it was not lying. axe does not evaluate text over a background image — it reports the pair as <em>incomplete</em>, and in a gate whose rule is &quot;zero violations&quot;, incomplete is indistinguishable from correct.</p>
+<p>Nothing in the source would have told you either. The background there was a photograph, two translucent overlays and a gradient composited together, and no line of CSS anywhere says what colour that comes out as. It took a person deciding to look.</p>
+<p><strong>Green means no known defect. Knowing where your checks stop is the job.</strong></p>
+</section>
+<section class="step" id="step-08">
+  <p class="step__no">Prompt 08</p>
+  <h2>The same job, as a workflow</h2>
+  <p>You have just run seven prompts by hand. You were the thing between them: you read the output, you decided it was good enough, you pasted the next one.</p>
+<p>That role is describable. <strong>Phases, what happens in each, and what has to be true before the next one starts</strong> — write those down and the agent runs the sequence itself.</p>
+<p>No script. No tool. It is a message.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>I want you to do a whole job, in phases I define. Work through them in order, on your own,
+and do not skip ahead.
+
+PHASE 1 — LOOK
+Read the design: design/tokens.json, design/content.md, and the three PNGs in design/.
+Write what you found into notes.md: every section in order, every colour by name, every
+text size, and a list of anything the design does not tell you.
+Do not write any code in this phase.
+Before moving on: show me notes.md and wait for me to say &quot;go&quot;.
+
+PHASE 2 — BUILD
+Build the page section by section, in the order from notes.md. Colours and sizes only
+from tokens.json. Words only from content.md. No new packages except the two named in
+phase 3.
+Before moving on: the site builds with no errors.
+
+PHASE 3 — ARM
+Write check.mjs: a program that opens the real page in a real browser and exits 0 or
+non-zero. It must check the sections, zero axe violations at 390/768/1440, that every
+colour is one from tokens.json, that every string from content.md is on the page, and
+that nothing overflows sideways at 390. Wire it to &quot;npm run check&quot;. You may install
+Playwright and @axe-core/playwright here.
+A check that cannot run is a failure, never a skip.
+Before moving on: npm run check runs and reports something. It will be red. Good.
+
+PHASE 4 — REPAIR
+Loop: run npm run check, read check-report.md, fix what it names, run it again. Repeat
+until it exits 0.
+NEVER edit check.mjs to make a check pass. If you believe a check is wrong, stop and tell
+me which and why.
+Before moving on: npm run check exits 0.
+
+PHASE 5 — SHIP
+Build and deploy to Netlify. Then fetch the live URL and prove the page it serves is the
+page that passed phase 4.
+Before moving on: the live URL returns 200 and serves what you built.
+
+PHASE 6 — ATTACK
+Find five things wrong with the page that check.mjs cannot see. For each one, argue
+against it yourself from three angles before you tell me — is it true, does it matter, is
+it already handled — and only report the ones that survive your own argument.
+Do not fix anything. Give me the list.
+
+Rules for the whole run:
+- Announce each phase as you enter it.
+- If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
+  with the previous one broken.
+- Keep notes.md current as you go. If you run out of room and we have to start fresh,
+  notes.md is all the next session will have.</code></pre></div>
+<hr>
+<p><strong>What you should see.</strong> <code>PHASE 1 — LOOK</code> and then work, unattended, for a long time. It will stop at the two places you told it to stop, and nowhere else.</p>
+<hr>
+<h3>Loop and workflow are different things</h3>
+<p>People use the words interchangeably. They are not the same shape, and knowing which one you need is most of the skill.</p>
+<table><thead><tr><th>Aspect</th><th><strong>Loop</strong></th><th><strong>Workflow</strong></th></tr></thead><tbody><tr><td>Shape</td><td>Do this again until a condition holds</td><td>Do these things, in this order, with a bar between each</td></tr><tr><td>You define</td><td>the <strong>exit condition</strong></td><td>the <strong>phases</strong></td></tr><tr><td>Ends when</td><td>a program says yes</td><td>the last phase finishes</td></tr><tr><td>Good for</td><td>converging on correctness</td><td>work with stages that depend on each other</td></tr><tr><td>In this pack</td><td>prompt 05</td><td>this prompt</td></tr></tbody></table>
+<p>Phase 4 above is a loop, living inside a workflow. That is the usual arrangement: the workflow gets you from nothing to nearly-right, and a loop inside one phase closes the last gap.</p>
+<hr>
+<h3>Parameterise it</h3>
+<p>The phase list is the program. Change it and you have changed the job, without writing a line of anything:</p>
+<blockquote>Phase 2 builds only the hero and the lineup. Leave the rest.</blockquote>
+<blockquote>Between phase 2 and 3, add a phase: show me each section as a screenshot at 390 and wait for my approval.</blockquote>
+<blockquote>Skip phase 5. I am not deploying today.</blockquote>
+<blockquote>In phase 6, look only at what happens between 480 and 620 pixels wide.</blockquote>
+<p>That is what &quot;no script needed&quot; means in practice. A script would have to be edited, tested and re-run. This gets edited in the sentence you were about to say anyway.</p>
+<hr>
+<h3>When to reach for this, and when not</h3>
+<p><strong>Use the workflow</strong> when you know the shape of the work and want to walk away: it is long, the stages are real, and you would rather come back to a result than babysit.</p>
+<p><strong>Use the seven prompts</strong> when you are learning, when you want to steer, or when the design is unclear and you expect to change your mind halfway. Every stop is a chance to disagree, and disagreeing early is cheaper than everything else in this session.</p>
+<p>The first time you do a piece of work, do it by hand. The second time, you know what the phases are.</p>
+<hr>
+<h3>If it goes wrong</h3>
+<table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It announces phase 3 without doing phase 2</td><td><code>You skipped phase 2. Go back and finish it before phase 3.</code></td></tr><tr><td>It blows through the &quot;wait for me&quot; bar</td><td><code>Phase 1 said wait. Stop and show me notes.md.</code></td></tr><tr><td>It gets vaguer around phase 4</td><td><code>Summarise the state into notes.md.</code> Then start a fresh session, paste notes.md, and say <code>Continue from phase 4.</code></td></tr><tr><td>It declares the whole thing done</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>A phase fails and it continues anyway</td><td><code>You were told to stop on a failed phase. What failed, and why did you continue?</code></td></tr></tbody></table>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 ·
+    Szymon Paluch</p>
+    <p class="legal">TURBINE is a fictional festival created as teaching material. Artist
+    names, imagery and copy are invented. Any resemblance to a real event or performer is
+    coincidental.</p>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = document.getElementById(btn.dataset.for);
+    if (!pre) return;
+    var text = pre.innerText;
+    var done = function(){
+      btn.textContent = 'Copied';
+      btn.setAttribute('data-done','');
+      setTimeout(function(){ btn.textContent = 'Copy'; btn.removeAttribute('data-done'); }, 1600);
+    };
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
+    } else { fallback(text, done); }
+  });
+});
+function fallback(text, done){
+  var ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly','');
+  ta.style.position='absolute'; ta.style.left='-9999px';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); done(); } catch(e) {}
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>

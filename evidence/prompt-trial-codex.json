@@ -1,0 +1,72 @@
+{
+  "agent": "codex",
+  "steps": [
+    {
+      "id": "01",
+      "note": "an Astro project exists",
+      "seconds": 0,
+      "exit": 1,
+      "filesBefore": 0,
+      "filesAfter": 0,
+      "expected": [
+        "package.json",
+        "astro.config.mjs"
+      ],
+      "present": [],
+      "missing": [
+        "package.json",
+        "astro.config.mjs"
+      ],
+      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+    },
+    {
+      "id": "03",
+      "note": "a page with a hero exists",
+      "seconds": 0,
+      "exit": 1,
+      "filesBefore": 0,
+      "filesAfter": 0,
+      "expected": [
+        "src/pages/index.astro"
+      ],
+      "present": [],
+      "missing": [
+        "src/pages/index.astro"
+      ],
+      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+    },
+    {
+      "id": "04",
+      "note": "a checker exists and npm run check is wired",
+      "seconds": 0,
+      "exit": 1,
+      "filesBefore": 0,
+      "filesAfter": 0,
+      "expected": [
+        "check.mjs"
+      ],
+      "present": [],
+      "missing": [
+        "check.mjs"
+      ],
+      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+    },
+    {
+      "id": "05",
+      "note": "the loop ran",
+      "seconds": 0,
+      "exit": 1,
+      "filesBefore": 0,
+      "filesAfter": 0,
+      "expected": [
+        "check.mjs"
+      ],
+      "present": [],
+      "missing": [
+        "check.mjs"
+      ],
+      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+    }
+  ],
+  "finalCheck": null
+}

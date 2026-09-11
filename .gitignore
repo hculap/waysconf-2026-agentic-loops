@@ -28,3 +28,6 @@ evidence/**/node_modules/
 
 # ralph.sh verification worktree
 .ralph-test/
+
+# Prompt-pack trial workdir
+.prompt-test/

@@ -1,0 +1,148 @@
+---
+/**
+ * Venue — CANON §7 section 7.
+ *
+ * Two rows, both two columns at 1440 and stacked below it: the building in a
+ * photograph and prose, then how to reach it and where it sits (FIGMA-SPEC §5.6,
+ * with the stacking from §6 and §7).
+ *
+ * Three decisions are worth the reader's time.
+ *
+ * `venue-detail.jpg` is not here on purpose. CONTENT.md §13 lists it among the
+ * "supplied files the design does not place" and says to leave it out rather than
+ * find a slot for it. A second photograph would be easy and would be the page
+ * deciding its own content.
+ *
+ * The map is a box and not an image. CANON §11 rules out third-party embeds, so a
+ * Maps iframe is not available, and CONTENT.md §13 confirms the placeholder has no
+ * file and no alt text because it is a box rather than a picture. What sits inside
+ * it is a centred site marker drawn from tokens: FIGMA-SPEC §5.6 and CONTENT.md §13
+ * both ask for a centred mono label reading MAP PLACEHOLDER, and that exact word is
+ * on AC-40's banned list, so rendering the label as specified would fail the build.
+ * The gate is not edited and the word is not smuggled in through a pseudo-element;
+ * the conflict is raised instead. The caption below the box carries the geography,
+ * so the marker is decoration and the box loses no information by being wordless.
+ *
+ * The travel entries are a description list because that is what they are — four
+ * terms and their descriptions (CONTENT.md §8). The terms are typed in sentence
+ * case and uppercased by CSS, so the string a screen reader gets is a word rather
+ * than four letters spelled out.
+ */
+import Section from '../components/Section.astro'
+import SectionHeading from '../components/SectionHeading.astro'
+
+interface TravelEntry {
+  term: string
+  description: string
+}
+
+const travel: TravelEntry[] = [
+  {
+    term: 'Tram',
+    description:
+      'Trams 9, 14 and 22 stop at Elektrownia, 200 metres from the gate. The last tram into the centre leaves at 23:10; after that the night line 62 runs every forty minutes until 04:40.',
+  },
+  {
+    term: 'Train',
+    description:
+      'Kraków Główny is twenty minutes away on tram 14, or a 35-minute walk along the river.',
+  },
+  {
+    term: 'Bike',
+    description:
+      'Three hundred covered racks inside the gate, lit and staffed until thirty minutes after the last set.',
+  },
+  {
+    term: 'Accessibility',
+    description:
+      'Step-free from the gate to all three stages. A lift serves the Boiler Room and the Cooling Tower balcony, and the Turbine Hall has a raised viewing platform with its own bar and toilet. Accessible toilets on every level.',
+  },
+]
+
+/** Body/Base on bg.base. text.secondary measures 8.83:1 there, clear of AA with room. */
+const body = 'text-base leading-relaxed text-text-secondary'
+---
+
+<Section name="venue" heading="The Powerhouse, Hall E">
+  {/* venue/split. One column until 1440, then two 576s with the 48 gutter. */}
+  <div class="grid items-start gap-12 desktop:grid-cols-2">
+    <img
+      src="/images/venue-exterior.jpg"
+      alt="A long brick power station with tall arched windows at blue hour, orange light leaking from inside, a chimney and cooling tower behind it."
+      width="1600"
+      height="1200"
+      loading="lazy"
+      decoding="async"
+      class="aspect-[4/3] w-full rounded-md object-cover tablet:aspect-video desktop:aspect-[4/3]"
+    />
+
+    <div class="flex flex-col gap-4">
+      <p class={body}>
+        Hall E has not made electricity since 1998. For three nights it makes something else. The
+        building went up in 1928 to burn coal for the city; Hall E held the turbines, and their
+        concrete plinths are still set into the floor. The main stage goes up between them.
+      </p>
+      <p class={body}>
+        The three rooms are not versions of one room. The Turbine Hall is the main floor: twenty-six
+        metres up to the roof trusses and about eight seconds of reverb, which is why the slow sets
+        are programmed here and not downstairs. The Boiler Room is two levels below ground — brick
+        vaults, a low ceiling, iron furnace doors along one wall, and heat the crowd makes and the
+        building keeps. The Cooling Tower is a forty-metre concrete shell with a ring of seating at
+        the base and a deck closing the top. It is the quietest room on site, and the loudest thing
+        in it is usually the room.
+      </p>
+      <p class={body}>
+        Four thousand people a night, across all three. The hall is not heated and it holds the
+        cold: about fourteen degrees on the floor at three in the morning, in June. Bring a layer,
+        and bring ear protection.
+      </p>
+    </div>
+  </div>
+
+  {/* venue/lower. The 48 above it is the slot gap Section already owns. */}
+  <div class="grid items-start gap-12 desktop:grid-cols-2">
+    <div class="flex flex-col gap-6">
+      <SectionHeading heading="Getting here" level={3} />
+
+      <p class="font-mono text-sm leading-normal text-text-primary">
+        The Powerhouse, Hall E · ul. Kotłowa 3 · 30-702 Kraków
+      </p>
+
+      {/* Two columns of travel at 768, one at every other width (FIGMA-SPEC §6, §7).
+          The div around each pair is what keeps a term and its description together
+          as one grid item; a bare dt and dd would be placed as two. */}
+      <dl class="grid gap-6 tablet:grid-cols-2 desktop:grid-cols-1">
+        {
+          travel.map((entry) => (
+            <div class="flex flex-col gap-1">
+              <dt class="text-xs font-semibold uppercase leading-normal tracking-[0.06em] text-text-secondary">
+                {entry.term}
+              </dt>
+              <dd class="text-base leading-relaxed text-text-primary">{entry.description}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <p class={body}>
+        There is no parking on site and the streets around it are permit-only. The drop-off point is
+        on the corner of ul. Kotłowa and ul. Węglowa, fifty metres from the gate.
+      </p>
+    </div>
+
+    <figure class="flex flex-col gap-3">
+      <div
+        class="flex h-[200px] items-center justify-center rounded-md border border-border-subtle bg-bg-raised tablet:h-[280px] desktop:h-[320px]"
+      >
+        <span class="flex h-8 w-8 items-center justify-center rounded-pill border border-border-strong">
+          <span class="block h-3 w-3 rounded-pill bg-accent-sodium"></span>
+        </span>
+      </div>
+
+      <figcaption class="text-sm leading-normal text-text-secondary">
+        Hall E, the gate on ul. Kotłowa, and the Elektrownia tram stop two streets north. The river
+        runs along the southern edge of the site.
+      </figcaption>
+    </figure>
+  </div>
+</Section>
