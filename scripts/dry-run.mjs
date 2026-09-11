@@ -92,9 +92,25 @@ function gateCounts(report) {
   }
 }
 
+/**
+ * Codex sandbox policy.
+ *
+ * `workspace-write` is the right default and the one a participant on a laptop should
+ * use: the agent may write inside the project and nowhere else. On some Linux hosts the
+ * sandbox cannot initialise at all — this repository was built on one, where every write
+ * failed with "the execution sandbox failed, and direct file writing also failed" — so
+ * the policy is overridable rather than hard-coded, and the override has to be typed
+ * deliberately.
+ *
+ *   CODEX_SANDBOX=danger-full-access node scripts/dry-run.mjs --agent codex
+ *
+ * Only do that inside a throwaway worktree, which is exactly what this script creates.
+ */
+const CODEX_SANDBOX = process.env.CODEX_SANDBOX || 'workspace-write'
+
 const AGENT_INVOCATION = {
   claude: (prompt) => ['claude', ['-p', prompt, '--permission-mode', 'acceptEdits']],
-  codex: (prompt) => ['codex', ['exec', prompt, '--full-auto']],
+  codex: (prompt) => ['codex', ['exec', '-s', CODEX_SANDBOX, prompt]],
 }
 
 async function main() {

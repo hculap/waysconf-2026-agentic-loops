@@ -81,8 +81,11 @@ for i in $(seq 1 "$MAX"); do
         > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
     codex)
-      codex exec "$(cat loop/PROMPT.md)" \
-        --full-auto \
+      # workspace-write lets the agent edit this project and nothing else, which is what
+      # you want. On a host where Codex's sandbox cannot initialise, every write fails
+      # with "the execution sandbox failed" — set CODEX_SANDBOX=danger-full-access, and
+      # only inside a worktree you are willing to throw away.
+      codex exec -s "${CODEX_SANDBOX:-workspace-write}" "$(cat loop/PROMPT.md)" \
         > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
     *)

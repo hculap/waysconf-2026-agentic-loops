@@ -42,8 +42,28 @@ jobs:
         if: steps.playwright-cache.outputs.cache-hit == 'true'
         run: npx playwright install-deps chromium
 
+      # On `solution` the gates must pass: that branch is the answer key, and an answer
+      # key that does not satisfy its own contract is worthless.
+      #
+      # On `main` and the step-* checkpoints they are *expected* to fail — those branches
+      # are the starting line and the stages along the way. The run still happens, and the
+      # report is still uploaded, because the point of a checkpoint is to show a
+      # participant exactly what is red at that stage. It just does not fail the job.
       - name: Run every gate
+        id: gates
+        continue-on-error: ${{ github.ref_name != 'solution' }}
         run: npm run check
+
+      - name: Explain the result
+        if: always()
+        run: |
+          if [ "${{ github.ref_name }}" = "solution" ]; then
+            echo "solution: every gate must pass. Outcome: ${{ steps.gates.outcome }}"
+          else
+            echo "${{ github.ref_name }} is a starting point, not a finished page."
+            echo "Gate failures here are the task list, not a broken build."
+            echo "Outcome: ${{ steps.gates.outcome }} — see the uploaded gate-report artifact."
+          fi
 
       - name: Upload the report
         if: always()
