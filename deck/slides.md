@@ -13,10 +13,18 @@ drawings:
 transition: none
 mdc: true
 css: unocss
+# The deck is dark-only. Without this, Slidev follows the viewer's OS setting and
+# Shiki renders its LIGHT palette over a hardcoded dark background — dark grey code
+# on near-black, which is what a projector in a bright room shows you at 09:00.
+colorSchema: dark
 fonts:
   sans: Inter
-  serif: Inter
+  serif: Playfair Display
   mono: JetBrains Mono
+  # All four faces are in deck/public/fonts and declared in style.css. Listing them
+  # as local stops Slidev fetching anything from Google at build or at runtime —
+  # conference wifi is not a dependency this deck is allowed to have.
+  local: Inter, Playfair Display, Space Grotesk, JetBrains Mono
 ---
 
 <style>
@@ -27,13 +35,13 @@ fonts:
 
 # Build an AI that checks and fixes its own work
 
-<p class="text-2xl mt-6" style="color: var(--turbine-text)">
+<p class="text-2xl mt-6" style="color: var(--sp-fg)">
 Agentic loops in practice.
 </p>
 
 <p class="mt-10">
 Szymon Paluch · CTO, Susteen<br>
-<span style="color: var(--turbine-muted)">ROOM-PM · 16 September 2026</span>
+<span style="color: var(--sp-fg-3)">ROOM-PM · 16 September 2026</span>
 </p>
 
 <!--
@@ -67,7 +75,7 @@ Then someone asks a question the demo was not built to survive:
 
 </div>
 
-<div class="mt-8 text-xl" style="color: var(--turbine-text)">
+<div class="mt-8 text-xl" style="color: var(--sp-fg)">
 
 *Does it match the design?*
 
@@ -95,7 +103,7 @@ layout: center
 
 # This is a talk about the word *no*
 
-<p class="text-xl mt-8" style="color: var(--turbine-text-2)">
+<p class="text-xl mt-8" style="color: var(--sp-fg-2)">
 A loop is only worth building if something in it can refuse<br>
 the work without asking a language model for an opinion.
 </p>
@@ -192,8 +200,8 @@ colour and size, and every word.
 
 ### The prompts
 
-<p class="mt-2" style="color: var(--turbine-coolant)">
-turbine-workshop.netlify.app
+<p class="mt-2" style="color: var(--sp-accent-2)">
+waysconf.szymonpaluch.com
 </p>
 
 Eight of them, with a copy button on each.
@@ -212,7 +220,7 @@ claude          # or: codex
 There is <b>nothing to clone</b> and no code to read.
 </p>
 
-<p class="mt-4" style="color: var(--turbine-coolant)">
+<p class="mt-4" style="color: var(--sp-accent-2)">
 The project, the page, and the program that checks the page — the agent makes all
 three for itself.
 </p>
@@ -274,7 +282,7 @@ It gives you no feedback while it works, which reads as "broken" and is almost a
 When a command finishes you get the prompt back. When you do not get the prompt back,
 it is still going.
 
-<p class="mt-4" style="color: var(--turbine-muted)">
+<p class="mt-4" style="color: var(--sp-fg-3)">
 Full version: docs/TERMINAL-IN-TEN-MINUTES.md
 </p>
 
@@ -299,7 +307,7 @@ class: section
 
 # MCP, in one sentence
 
-<p class="text-2xl mt-10" style="color: var(--turbine-text)">
+<p class="text-2xl mt-10" style="color: var(--sp-fg)">
 A standard way for a coding agent to call tools that are not inside it.
 </p>
 
@@ -458,7 +466,7 @@ Then, from the prompts page:
 <b>01</b> start &nbsp;→&nbsp; <b>02</b> look at the design &nbsp;→&nbsp; <b>03</b> build
 </p>
 
-<p class="mt-4" style="color: var(--turbine-coolant)">
+<p class="mt-4" style="color: var(--sp-accent-2)">
 Prompt 02 writes nothing. Read what it says it found before you let it near a file.
 </p>
 
@@ -471,7 +479,7 @@ Prompt 02 writes nothing. Read what it says it found before you let it near a fi
 Stop where you are. Leave whatever is unfinished. I want to move on.
 </blockquote>
 
-<p class="mt-4" style="color: var(--turbine-text-2)">
+<p class="mt-4" style="color: var(--sp-fg-2)">
 Every prompt stands alone. A half-built page with a working checker teaches more than
 a finished page with none.
 </p>
@@ -527,7 +535,7 @@ Does this read as the same brand.
 
 Is the hierarchy clear.
 
-<p class="mt-4" style="color: var(--turbine-muted)">
+<p class="mt-4" style="color: var(--sp-fg-3)">
 Taste, prioritisation, judgement.
 </p>
 
@@ -544,7 +552,7 @@ Does it match the design.
 
 Is it finished.
 
-<p class="mt-4" style="color: var(--turbine-muted)">
+<p class="mt-4" style="color: var(--sp-fg-3)">
 Anything with an external truth.<br>
 Use the external truth.
 </p>
@@ -684,7 +692,7 @@ carries the criterion id, the selector, the expected value and the measured one.
 
 # The rule that holds it all up
 
-<div class="mt-10 text-2xl" style="color: var(--turbine-text)">
+<div class="mt-10 text-2xl" style="color: var(--sp-fg)">
 
 The agent may never edit the verifier.
 
@@ -715,14 +723,14 @@ along, not with an opinion.
 
 # Here is what actually happened
 
-<div class="mt-6">
+<div class="mt-4">
 
-I ran the prompts before the conference, in an **empty folder** outside every repository.
-No starter, no `node_modules`, no notes — exactly what you have in front of you now.
+These prompts, an **empty folder** outside every repository, Codex. Exactly what you have
+in front of you now.
 
 </div>
 
-<div class="mt-8">
+<div class="mt-6">
 
 | Codex CLI, empty folder | |
 |---|---|
@@ -730,25 +738,21 @@ No starter, no `node_modules`, no notes — exactly what you have in front of yo
 | 03 — a hero, from the values given | **41s** |
 | 04 — **the agent writes its own checker** | **495s** |
 | 05 — the loop runs | **46s** |
-| What prompt 04 produced | `check.mjs`, 264 lines — plus tests for the checker and a document explaining it, neither of which was asked for |
-| What it decided on its own | to treat axe's *incomplete* results as failures |
+| What 04 produced | `check.mjs`, 264 lines — plus tests for it and a document explaining it, unasked |
+| What it decided alone | to treat axe's *incomplete* results as failures |
 
 </div>
 
-<p class="mt-6" style="color: var(--turbine-muted)">
-evidence/prompt-trial.md — eleven minutes, unattended, measured by a program
+<p class="mt-4" style="color: var(--sp-accent-2)">
+That last row came out of one sentence in the prompt: <b>&ldquo;a check that cannot run is a
+failure, never a skip&rdquo;</b>. Finding it by hand cost me an afternoon.
 </p>
 
-<p class="mt-2" style="color: var(--turbine-coolant)">
-It found the axe blind spot from one sentence in the prompt: <b>&ldquo;a check that cannot
-run is a failure, never a skip&rdquo;</b>. That took me an afternoon by hand.
-</p>
-
-<p class="mt-2" style="color: var(--turbine-muted)">
-The Claude Code trial did not run on my machine: a hook belonging to something else
-refuses headless invocations. <b>That is recorded as a non-run, not as a gap</b> —
-evidence/dry-run-claude.md.
-</p>
+<!--
+The Claude Code line is deliberately NOT on the slide — it was 150px of overflow and
+checks/deck.mjs failed the slide for it. Say it out loud instead; it is in the notes
+below and it is worth more spoken than read.
+-->
 
 <!--
 Numbers come from evidence/prompt-trial.md. Refill this table from that file before the
@@ -786,7 +790,7 @@ Thirteen incidents while building this. **Nine were failures of the verifier or 
 
 </div>
 
-<p class="mt-6" style="color: var(--turbine-muted)">
+<p class="mt-6" style="color: var(--sp-fg-3)">
 evidence/INCIDENTS.md — all thirteen, written down at the time
 </p>
 
@@ -842,7 +846,7 @@ On Claude Code you can make it structural instead of trusted:
 /goal npm run check exits 0
 ```
 
-<p class="mt-4" style="color: var(--turbine-coolant)">
+<p class="mt-4" style="color: var(--sp-accent-2)">
 The session cannot end until that command actually exits 0. Codex has no equivalent —
 there, the paragraph is the mechanism.
 </p>
@@ -912,7 +916,7 @@ Reads `notes.md` — what was already tried, and what it cost.
 
 Reads the brief.
 
-<p class="mt-4" style="color: var(--turbine-coolant)">
+<p class="mt-4" style="color: var(--sp-accent-2)">
 Notes on disk beat memory in context.
 </p>
 
@@ -1002,7 +1006,7 @@ It will ask you to sign in, then to pick or create a site. Take the URL it print
 
 <div class="mt-8">
 
-<p class="text-xl" style="color: var(--turbine-coolant)">
+<p class="text-xl" style="color: var(--sp-accent-2)">
 Put your URL on the board. We are going to look at all of them.
 </p>
 
@@ -1051,7 +1055,7 @@ It does not evaluate text over a background image. It does not fail it — it ma
 Reading the CSS would not have found it either. The background there is a photograph, two
 scrims and a gradient composited together. No computed style says what colour that is.
 
-<p class="mt-4" style="color: var(--turbine-coolant)">
+<p class="mt-4" style="color: var(--sp-accent-2)">
 So it became AC-61, and there are sixty-one criteria now instead of sixty.
 </p>
 
@@ -1180,7 +1184,7 @@ class: cover
 
 </div>
 
-<div class="mt-10" style="color: var(--turbine-text-2)">
+<div class="mt-10" style="color: var(--sp-fg-2)">
 
 The brief · every prompt I used · the verifier · the Figma plugin ·<br>
 the evidence from both clean-room runs · these slides
@@ -1188,7 +1192,7 @@ the evidence from both clean-room runs · these slides
 </div>
 
 <div class="mt-10">
-<span style="color: var(--turbine-muted)">Questions. And then go and put your URL on the board.</span>
+<span style="color: var(--sp-fg-3)">Questions. And then go and put your URL on the board.</span>
 </div>
 
 <!--

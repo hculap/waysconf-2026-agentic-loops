@@ -17,13 +17,13 @@ You need **two things**. Neither of them is code.
 | | |
 |---|---|
 | **The design** | The TURBINE file in Figma, plus a [design pack](design-pack/) — the same design as three PNGs, every colour and size, and every word |
-| **[The prompts](https://turbine-workshop.netlify.app/prompts/)** | Eight things to say to your agent, with a copy button on each |
+| **[The prompts](https://waysconf.szymonpaluch.com/workshop/)** | Eight things to say to your agent, with a copy button on each |
 
 There is **nothing to clone**, no script to run and no code to read. You start in an empty
 folder. Everything else — the project, the page, and the program that checks the page —
 the agent makes for itself.
 
-Before the day: **[the setup page](https://turbine-workshop.netlify.app)**. Four free
+Before the day: **[the setup page](https://waysconf.szymonpaluch.com)**. Four free
 accounts, fifteen minutes, much easier at home than on conference wifi.
 
 ---

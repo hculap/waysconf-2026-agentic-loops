@@ -15,7 +15,7 @@ That is the entire deploy. The folder is static: one HTML file, two stylesheets,
 three licence texts that travel with them. No build step, no framework, no bundler. Dragging the folder
 onto <https://app.netlify.com/drop> does the same thing without a terminal.
 
-The published address used in `README.md` is `https://turbine-workshop.netlify.app`.
+The published address used in `README.md` is `https://waysconf.szymonpaluch.com`.
 
 ## What is in here
 

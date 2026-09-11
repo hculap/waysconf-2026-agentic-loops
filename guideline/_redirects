@@ -1,0 +1,18 @@
+# waysconf.szymonpaluch.com — one address for the whole session.
+#
+# The deck and the finished festival site are separate Netlify deploys, so these are
+# redirects rather than proxies: both are single-page apps built for the root of their own
+# host, and proxying them under a subpath would break every asset URL they emit.
+#
+# 302 rather than 301 on purpose. A permanent redirect is cached by browsers for a long
+# time, and these targets will move again after the conference.
+
+/deck      https://turbine-deck.netlify.app/       302
+/deck/*    https://turbine-deck.netlify.app/:splat 302
+/site      https://turbine-festival.netlify.app/   302
+/site/*    https://turbine-festival.netlify.app/:splat 302
+
+# The prompts page moved when the site was split into two tabs. Anyone holding the old
+# link — it was in an early draft of the organiser email — lands in the right place.
+/prompts   /workshop/                              301
+/prompts/* /workshop/                              301

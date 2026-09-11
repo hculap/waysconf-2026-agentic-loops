@@ -25,22 +25,22 @@ const LINKS = [
   {
     label: 'The prompts',
     hint: 'All eight. Copy from here.',
-    url: 'https://turbine-workshop.netlify.app/workshop/',
+    url: 'https://waysconf.szymonpaluch.com/workshop/',
   },
   {
     label: 'Before you come',
     hint: 'Accounts and installs.',
-    url: 'https://turbine-workshop.netlify.app',
+    url: 'https://waysconf.szymonpaluch.com',
   },
   {
     label: 'The slides',
     hint: 'Including the ones I skipped.',
-    url: 'https://turbine-deck.netlify.app',
+    url: 'https://waysconf.szymonpaluch.com/deck',
   },
   {
     label: 'The finished site',
     hint: 'What the loop built.',
-    url: 'https://turbine-festival.netlify.app',
+    url: 'https://waysconf.szymonpaluch.com/site',
   },
 ]
 

@@ -1,33 +1,48 @@
 /* ==========================================================================
-   TURBINE deck theme
+   Deck theme — szymonpaluch.com
 
-   Not a theme package — just a stylesheet layered over Slidev's default, using
-   the same design tokens as the site. The slides and the thing being built on
-   stage should not look like they came from different projects.
+   Not a theme package, just a stylesheet layered over Slidev's default.
 
-   Tokens are duplicated here rather than imported because the deck is a separate
-   npm package that must build without the site's toolchain. They are checked
-   against design/tokens/tokens.json by scripts/check-deck-tokens.mjs.
+   This carries the SPEAKER's brand, not TURBINE's. TURBINE is the fictional
+   festival built on stage and it has its own identity — sodium orange, coolant
+   cyan, Space Grotesk display — which stays in design/tokens/tokens.css and on
+   the festival site. Making the deck look like the thing being demoed would
+   blur exactly the line this talk is about: who is speaking, and what is being
+   built.
+
+   Values are duplicated here rather than imported because the deck is a
+   separate npm package that must build without the site's toolchain. The
+   source of truth is design/tokens/speaker.css, and every pairing it permits
+   is measured by `node scripts/read-brand.mjs --contrast`.
    ========================================================================== */
 
 :root {
-  --turbine-bg: #0a0b0d;
-  --turbine-surface: #131519;
-  --turbine-raised: #1c1f25;
-  --turbine-border: #2a2e36;
-  --turbine-border-strong: #3d434e;
-  --turbine-text: #f2f4f7;
-  --turbine-text-2: #a7aebb;
-  --turbine-muted: #6b7280;
-  --turbine-sodium: #ff6a1a;
-  --turbine-coolant: #2fe6d6;
-  --turbine-arc: #7c5cff;
-  --turbine-danger: #ff4d4d;
-  --turbine-success: #3ddc84;
+  --sp-bg: #0a0a0a;
+  --sp-surface: #161616;
+  --sp-raised: #1f1f1f;
+  --sp-line: #2e2e2e;
+  --sp-line-strong: #3f3f46;
 
-  --slidev-theme-primary: var(--turbine-sodium);
+  --sp-fg: #ffffff;
+  --sp-fg-2: #d1d5db;
+  --sp-fg-3: #9ca3af;
+  --sp-on-accent: #0a0a0a;
+
+  --sp-accent: #10b981;      /* emerald 500 — the brand, and a gate passing */
+  --sp-accent-2: #34d399;    /* emerald 400 — asides, links, hover */
+  --sp-amber: #f59e0b;       /* amber 500 — attention, the workflow */
+  --sp-amber-2: #fbbf24;
+  --sp-danger: #f87171;      /* red 400 — a check failing */
+
+  --slidev-theme-primary: var(--sp-accent);
 }
 
+@font-face {
+  font-family: 'Playfair Display';
+  src: url('/fonts/playfair-display.woff2') format('woff2');
+  font-weight: 400 700;
+  font-display: swap;
+}
 @font-face {
   font-family: 'Space Grotesk';
   src: url('/fonts/space-grotesk.woff2') format('woff2');
@@ -48,73 +63,98 @@
 }
 
 .slidev-layout {
-  background-color: var(--turbine-bg);
-  color: var(--turbine-text);
+  background-color: var(--sp-bg);
+  color: var(--sp-fg);
   font-family: 'Inter', system-ui, sans-serif;
-  padding: 3rem 4rem;
+  padding: 2.4rem 3.4rem;
 }
 
+/* Playfair for the headline voice, exactly as on the site. A serif at 52px on
+   near-black is the single strongest brand signal available, and it costs one
+   font file. */
 .slidev-layout h1,
-.slidev-layout h2,
-.slidev-layout h3 {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
-  color: var(--turbine-text);
-  letter-spacing: -0.02em;
+.slidev-layout h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  color: var(--sp-fg);
+  letter-spacing: -0.01em;
   font-weight: 700;
 }
 
 .slidev-layout h1 {
-  font-size: 3.25rem;
-  line-height: 1.05;
-  margin-bottom: 1.5rem;
+  font-size: 2.8rem;
+  line-height: 1.04;
+  margin-bottom: 1.1rem;
 }
 
 .slidev-layout h2 {
-  font-size: 2rem;
-  line-height: 1.15;
-  margin-bottom: 1rem;
+  font-size: 1.7rem;
+  line-height: 1.14;
+  margin-bottom: 0.8rem;
 }
 
+/* h3 is a sub-label inside a column, not a headline. Space Grotesk, uppercase,
+   letter-spaced — the site's // LABEL treatment without the slashes, which are
+   reserved for .kicker. */
 .slidev-layout h3 {
-  font-size: 1.25rem;
-  color: var(--turbine-coolant);
-  font-weight: 500;
-  letter-spacing: 0;
+  font-family: 'Space Grotesk', ui-monospace, monospace;
+  font-size: 0.95rem;
+  color: var(--sp-accent);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
 }
 
 .slidev-layout p,
 .slidev-layout li {
-  color: var(--turbine-text-2);
-  font-size: 1.25rem;
-  line-height: 1.55;
+  color: var(--sp-fg-2);
+  font-size: 1.1rem;
+  line-height: 1.5;
 }
 
 .slidev-layout strong {
-  color: var(--turbine-text);
+  color: var(--sp-fg);
   font-weight: 600;
 }
 
-/* The wordmark lockup, used on the cover and section dividers. */
+/* The wordmark lockup, used on the cover and section dividers. TURBINE is a
+   client's name, so it keeps a machine face rather than the speaker's serif. */
 .wordmark {
   font-family: 'Space Grotesk', system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: 0.18em;
-  color: var(--turbine-sodium);
+  color: var(--sp-accent);
   text-transform: uppercase;
 }
 
-/* A label above a heading — the same device the site uses above each section. */
+/* A label above a heading. The site writes these as `// MOST READ` with a
+   hairline running off to the right; the ::before and ::after are that. */
 .kicker {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.9rem;
-  letter-spacing: 0.08em;
-  color: var(--turbine-coolant);
+  font-family: 'Space Grotesk', ui-monospace, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--sp-accent);
   text-transform: uppercase;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.kicker::before {
+  content: '//';
+  color: var(--sp-accent);
+  opacity: 0.75;
+}
+.kicker::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, var(--sp-line-strong), transparent);
 }
 
 /* Verdict chips. Green and red are the two states the whole talk is about, so
-   they get to be loud. */
+   they get to be loud. Near-black ink on both: white on emerald is 2.54:1. */
 .verdict {
   display: inline-block;
   font-family: 'JetBrains Mono', ui-monospace, monospace;
@@ -125,70 +165,95 @@
   letter-spacing: 0.06em;
 }
 .verdict.pass {
-  background: var(--turbine-success);
-  color: var(--turbine-bg);
+  background: var(--sp-accent);
+  color: var(--sp-on-accent);
 }
 .verdict.fail {
-  background: var(--turbine-danger);
-  color: var(--turbine-bg);
+  background: var(--sp-danger);
+  color: var(--sp-on-accent);
 }
 
 .slidev-layout code {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  background: var(--turbine-raised);
-  color: var(--turbine-text);
+  background: var(--sp-raised);
+  color: var(--sp-fg);
   padding: 0.15em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
 }
 
 .slidev-layout pre {
-  background: var(--turbine-surface) !important;
-  border: 1px solid var(--turbine-border);
-  border-radius: 8px;
-  padding: 1.25rem 1.5rem !important;
-  font-size: 1rem;
+  background: var(--sp-surface) !important;
+  border: 1px solid var(--sp-line);
+  border-radius: 12px;
+  padding: 1rem 1.25rem !important;
+  font-size: 0.9rem;
+}
+
+/* The rule above gives every inline <code> a raised background — including the <code>
+   inside a <pre>, and including every token span Shiki emits. Stacked on the block's own
+   surface that paints a lighter box behind each line, which reads as a rendering fault
+   from the back of the room. The block has a surface; nothing inside it needs one. */
+.slidev-layout pre code,
+.slidev-layout pre code span {
+  background: none !important;
 }
 
 .slidev-layout blockquote {
-  border-left: 3px solid var(--turbine-sodium);
-  background: var(--turbine-surface);
-  padding: 1rem 1.5rem;
-  color: var(--turbine-text);
+  border-left: 3px solid var(--sp-accent);
+  background: var(--sp-surface);
+  padding: 0.85rem 1.25rem;
+  color: var(--sp-fg);
   font-style: normal;
 }
 
 .slidev-layout table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 .slidev-layout th {
   text-align: left;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-size: 0.85rem;
-  letter-spacing: 0.06em;
+  font-family: 'Space Grotesk', ui-monospace, monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--turbine-coolant);
-  border-bottom: 1px solid var(--turbine-border-strong);
+  color: var(--sp-accent);
+  border-bottom: 1px solid var(--sp-line-strong);
   padding: 0.5rem 0.75rem;
 }
 .slidev-layout td {
-  border-bottom: 1px solid var(--turbine-border);
-  padding: 0.55rem 0.75rem;
-  color: var(--turbine-text-2);
+  border-bottom: 1px solid var(--sp-line);
+  padding: 0.42rem 0.7rem;
+  color: var(--sp-fg-2);
+}
+
+/* Diagrams.
+
+   The slide canvas is a fixed 980x552 that Slidev scales to the screen, so vh/vw inside
+   it refer to the browser window rather than to the slide and are useless here. A
+   1600x900 diagram at width:100% comes out 490 canvas-px tall; with a heading above it
+   that is ~80px more than there is room for, and the canvas clips rather than scrolls.
+
+   The !important is not laziness: the images carry .w-full from the markdown, and a
+   utility class beats a plain selector. checks/deck.mjs is what noticed, on ten slides. */
+.slidev-layout img {
+  max-height: 390px !important;
+  width: auto !important;
+  max-width: 100%;
+  margin-inline: auto;
 }
 
 /* Two-column body, used for before/after and design/code comparisons. */
 .cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: start;
 }
 
 .slidev-layout a {
-  color: var(--turbine-coolant);
+  color: var(--sp-accent-2);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
@@ -199,9 +264,9 @@
   position: absolute;
   left: 4rem;
   right: 4rem;
-  bottom: 1.75rem;
+  bottom: 1.1rem;
   height: 1px;
-  background: var(--turbine-border);
+  background: var(--sp-line);
 }
 
 .slidev-layout.cover::after,

@@ -2,66 +2,66 @@
   <title id="t03">Three tiers of verification, widest at the bottom</title>
   <desc id="d03">A pyramid of three stacked trapezoids on a near-black ground, with annotations to the right of each. The bottom and widest tier, outlined in teal, is DETERMINISTIC GATES: build, runtime, structure, a11y, tokens, content, links and perf, run by npm run check, which returns exit 0 or exit 1 and in which no model takes part. It catches a broken build, a missing section, an axe violation, an off-palette hex and a dead link; it cannot tell you whether the page is any good. The middle tier, outlined in violet, is MEASURABLE COMPARISON: a pixel diff at 390, 768 and 1440 pixels against the design export, blocking, judged against a budget rather than an opinion: 1.5 per cent of pixels, and 0.5 per cent in the hero. It catches drift from the design; it cannot say which of the two images is right, and a zero per cent diff against a bad export still passes. The top and narrowest tier, outlined in a dashed orange, is ADVERSARIAL REVIEW: models refuting models, never blocking, opening items but never closing them. It catches meaning, such as alt text that says nothing or ARIA that lies; it cannot close anything, and two runs give two lists. A note underneath records that the build gate runs first and alone, that the seven browser gates then run together in one parallel run with Lighthouse last, that only the bottom two tiers can fail the build, that adversarial review runs after npm run check exits 0 and never blocks, and that the thirty to forty per cent figure is a widely cited estimate of automated rule coverage across WCAG rather than a measurement of this page.</desc>
 
-  <rect x="0" y="0" width="1600" height="980" fill="#0A0B0D"/>
+  <rect x="0" y="0" width="1600" height="980" fill="#0A0A0A"/>
 
   <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 
-    <text x="60" y="78" font-size="40" font-weight="700" fill="#F2F4F7">Three tiers of verification</text>
-    <text x="60" y="118" font-size="24" fill="#A7AEBB">The bottom tier is the widest, the cheapest and the only kind that can be trusted to say no on its own.</text>
+    <text x="60" y="78" font-size="40" font-weight="700" fill="#FFFFFF">Three tiers of verification</text>
+    <text x="60" y="118" font-size="24" fill="#9CA3AF">The bottom tier is the widest, the cheapest and the only kind that can be trusted to say no on its own.</text>
 
-    <polygon points="355,170 725,170 808,370 272,370" fill="#131519" stroke="#FF6A1A" stroke-width="4" stroke-dasharray="12 9"/>
-    <text x="540" y="232" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">ADVERSARIAL REVIEW</text>
-    <text x="540" y="268" font-size="21" fill="#A7AEBB" text-anchor="middle">models refuting models</text>
-    <text x="540" y="300" font-size="21" fill="#A7AEBB" text-anchor="middle">every claim cites a selector</text>
-    <text x="540" y="336" font-size="21" fill="#FF6A1A" text-anchor="middle">never blocking</text>
+    <polygon points="355,170 725,170 808,370 272,370" fill="#161616" stroke="#10B981" stroke-width="4" stroke-dasharray="12 9"/>
+    <text x="540" y="232" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">ADVERSARIAL REVIEW</text>
+    <text x="540" y="268" font-size="21" fill="#9CA3AF" text-anchor="middle">models refuting models</text>
+    <text x="540" y="300" font-size="21" fill="#9CA3AF" text-anchor="middle">every claim cites a selector</text>
+    <text x="540" y="336" font-size="21" fill="#10B981" text-anchor="middle">never blocking</text>
 
-    <polygon points="259,400 821,400 904,600 176,600" fill="#131519" stroke="#7C5CFF" stroke-width="4"/>
-    <text x="540" y="462" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">MEASURABLE COMPARISON</text>
-    <text x="540" y="498" font-size="21" fill="#A7AEBB" text-anchor="middle">pixel diff at 390 · 768 · 1440</text>
-    <text x="540" y="530" font-size="21" fill="#A7AEBB" text-anchor="middle">against design/export/ — 1.5% of pixels, 0.5% in the hero</text>
-    <text x="540" y="566" font-size="21" fill="#7C5CFF" text-anchor="middle">blocking · budgets, not opinions</text>
+    <polygon points="259,400 821,400 904,600 176,600" fill="#161616" stroke="#FBBF24" stroke-width="4"/>
+    <text x="540" y="462" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">MEASURABLE COMPARISON</text>
+    <text x="540" y="498" font-size="21" fill="#9CA3AF" text-anchor="middle">pixel diff at 390 · 768 · 1440</text>
+    <text x="540" y="530" font-size="21" fill="#9CA3AF" text-anchor="middle">against design/export/ — 1.5% of pixels, 0.5% in the hero</text>
+    <text x="540" y="566" font-size="21" fill="#FBBF24" text-anchor="middle">blocking · budgets, not opinions</text>
 
-    <polygon points="163,630 917,630 1000,830 80,830" fill="#131519" stroke="#2FE6D6" stroke-width="4"/>
-    <text x="540" y="692" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">DETERMINISTIC GATES</text>
-    <text x="540" y="728" font-size="21" fill="#A7AEBB" text-anchor="middle">build · runtime · structure · a11y · tokens · content · links · perf</text>
-    <text x="540" y="764" font-size="21" fill="#2FE6D6" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run check · exit 0 or exit 1</text>
-    <text x="540" y="800" font-size="21" fill="#2FE6D6" text-anchor="middle">blocking · no model takes part</text>
+    <polygon points="163,630 917,630 1000,830 80,830" fill="#161616" stroke="#F59E0B" stroke-width="4"/>
+    <text x="540" y="692" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">DETERMINISTIC GATES</text>
+    <text x="540" y="728" font-size="21" fill="#9CA3AF" text-anchor="middle">build · runtime · structure · a11y · tokens · content · links · perf</text>
+    <text x="540" y="764" font-size="21" fill="#F59E0B" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run check · exit 0 or exit 1</text>
+    <text x="540" y="800" font-size="21" fill="#F59E0B" text-anchor="middle">blocking · no model takes part</text>
 
     <g>
-      <path d="M1050 192 l6 7 l11 -13" fill="none" stroke="#3DDC84" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="1078" y="206" font-size="20" font-weight="700" fill="#3DDC84" letter-spacing="1.5">CATCHES</text>
-      <text x="1050" y="244" font-size="21" fill="#A7AEBB">meaning — alt text that says nothing, ARIA</text>
-      <text x="1050" y="272" font-size="21" fill="#A7AEBB">that lies, contrast over photography, tone</text>
-      <path d="M1050 300 l14 14 M1064 300 l-14 14" fill="none" stroke="#FF4D4D" stroke-width="4" stroke-linecap="round"/>
-      <text x="1078" y="314" font-size="20" font-weight="700" fill="#FF4D4D" letter-spacing="1.5">CANNOT</text>
-      <text x="1050" y="352" font-size="21" fill="#A7AEBB">close anything. It opens items; a person</text>
-      <text x="1050" y="380" font-size="21" fill="#A7AEBB">triages them. Two runs, two lists.</text>
+      <path d="M1050 192 l6 7 l11 -13" fill="none" stroke="#34D399" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="1078" y="206" font-size="20" font-weight="700" fill="#34D399" letter-spacing="1.5">CATCHES</text>
+      <text x="1050" y="244" font-size="21" fill="#9CA3AF">meaning — alt text that says nothing, ARIA</text>
+      <text x="1050" y="272" font-size="21" fill="#9CA3AF">that lies, contrast over photography, tone</text>
+      <path d="M1050 300 l14 14 M1064 300 l-14 14" fill="none" stroke="#F87171" stroke-width="4" stroke-linecap="round"/>
+      <text x="1078" y="314" font-size="20" font-weight="700" fill="#F87171" letter-spacing="1.5">CANNOT</text>
+      <text x="1050" y="352" font-size="21" fill="#9CA3AF">close anything. It opens items; a person</text>
+      <text x="1050" y="380" font-size="21" fill="#9CA3AF">triages them. Two runs, two lists.</text>
     </g>
 
     <g>
-      <path d="M1050 422 l6 7 l11 -13" fill="none" stroke="#3DDC84" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="1078" y="436" font-size="20" font-weight="700" fill="#3DDC84" letter-spacing="1.5">CATCHES</text>
-      <text x="1050" y="474" font-size="21" fill="#A7AEBB">drift from the design — spacing, colour,</text>
-      <text x="1050" y="502" font-size="21" fill="#A7AEBB">a layout that moved, a size off the scale</text>
-      <path d="M1050 530 l14 14 M1064 530 l-14 14" fill="none" stroke="#FF4D4D" stroke-width="4" stroke-linecap="round"/>
-      <text x="1078" y="544" font-size="20" font-weight="700" fill="#FF4D4D" letter-spacing="1.5">CANNOT</text>
-      <text x="1050" y="582" font-size="21" fill="#A7AEBB">say which of the two images is right.</text>
-      <text x="1050" y="610" font-size="21" fill="#A7AEBB">A 0% diff against a bad export passes.</text>
+      <path d="M1050 422 l6 7 l11 -13" fill="none" stroke="#34D399" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="1078" y="436" font-size="20" font-weight="700" fill="#34D399" letter-spacing="1.5">CATCHES</text>
+      <text x="1050" y="474" font-size="21" fill="#9CA3AF">drift from the design — spacing, colour,</text>
+      <text x="1050" y="502" font-size="21" fill="#9CA3AF">a layout that moved, a size off the scale</text>
+      <path d="M1050 530 l14 14 M1064 530 l-14 14" fill="none" stroke="#F87171" stroke-width="4" stroke-linecap="round"/>
+      <text x="1078" y="544" font-size="20" font-weight="700" fill="#F87171" letter-spacing="1.5">CANNOT</text>
+      <text x="1050" y="582" font-size="21" fill="#9CA3AF">say which of the two images is right.</text>
+      <text x="1050" y="610" font-size="21" fill="#9CA3AF">A 0% diff against a bad export passes.</text>
     </g>
 
     <g>
-      <path d="M1050 652 l6 7 l11 -13" fill="none" stroke="#3DDC84" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-      <text x="1078" y="666" font-size="20" font-weight="700" fill="#3DDC84" letter-spacing="1.5">CATCHES</text>
-      <text x="1050" y="704" font-size="21" fill="#A7AEBB">a broken build, a missing section, an axe</text>
-      <text x="1050" y="732" font-size="21" fill="#A7AEBB">violation, an off-palette hex, a dead link</text>
-      <path d="M1050 760 l14 14 M1064 760 l-14 14" fill="none" stroke="#FF4D4D" stroke-width="4" stroke-linecap="round"/>
-      <text x="1078" y="774" font-size="20" font-weight="700" fill="#FF4D4D" letter-spacing="1.5">CANNOT</text>
-      <text x="1050" y="812" font-size="21" fill="#A7AEBB">tell you whether the page is any good.</text>
-      <text x="1050" y="840" font-size="21" fill="#A7AEBB">Every gate green is not the same as right.</text>
+      <path d="M1050 652 l6 7 l11 -13" fill="none" stroke="#34D399" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <text x="1078" y="666" font-size="20" font-weight="700" fill="#34D399" letter-spacing="1.5">CATCHES</text>
+      <text x="1050" y="704" font-size="21" fill="#9CA3AF">a broken build, a missing section, an axe</text>
+      <text x="1050" y="732" font-size="21" fill="#9CA3AF">violation, an off-palette hex, a dead link</text>
+      <path d="M1050 760 l14 14 M1064 760 l-14 14" fill="none" stroke="#F87171" stroke-width="4" stroke-linecap="round"/>
+      <text x="1078" y="774" font-size="20" font-weight="700" fill="#F87171" letter-spacing="1.5">CANNOT</text>
+      <text x="1050" y="812" font-size="21" fill="#9CA3AF">tell you whether the page is any good.</text>
+      <text x="1050" y="840" font-size="21" fill="#9CA3AF">Every gate green is not the same as right.</text>
     </g>
 
-    <text x="60" y="880" font-size="24" fill="#F2F4F7">The build gate runs first and alone; the seven browser gates then run together, and Lighthouse last.</text>
-    <text x="60" y="916" font-size="22" fill="#A7AEBB">Only the bottom two tiers can fail the build. Adversarial review runs after npm run check exits 0, and never blocks.</text>
-    <text x="60" y="952" font-size="22" fill="#A7AEBB">Automated accessibility rules reach roughly 30 to 40 per cent of WCAG — a widely cited estimate, not a measurement of this page.</text>
+    <text x="60" y="880" font-size="24" fill="#FFFFFF">The build gate runs first and alone; the seven browser gates then run together, and Lighthouse last.</text>
+    <text x="60" y="916" font-size="22" fill="#9CA3AF">Only the bottom two tiers can fail the build. Adversarial review runs after npm run check exits 0, and never blocks.</text>
+    <text x="60" y="952" font-size="22" fill="#9CA3AF">Automated accessibility rules reach roughly 30 to 40 per cent of WCAG — a widely cited estimate, not a measurement of this page.</text>
   </g>
 </svg>

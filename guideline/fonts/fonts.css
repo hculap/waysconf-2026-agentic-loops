@@ -1,7 +1,8 @@
 /* ==========================================================================
    TURBINE setup page — self-hosted faces
 
-   The same three woff2 files the TURBINE site ships, copied out of
+   Playfair Display carries the speaker's brand; the other three are the faces the
+   TURBINE site ships, copied out of
    public/fonts/ so that this page is a folder you can drag onto Netlify with
    nothing else attached. Latin subset only. No request leaves the page.
 
@@ -17,6 +18,9 @@
 
    Inter — full licence text in OFL-Inter.txt
    Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+   Playfair Display — full licence text in OFL-PlayfairDisplay.txt
+   Copyright 2017 The Playfair Display Project Authors (https://github.com/clauseggers/Playfair-Display)
 
    JetBrains Mono — full licence text in OFL-JetBrainsMono.txt
    Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
@@ -76,4 +80,12 @@
   font-weight: 700;
   font-display: swap;
   src: url('jetbrains-mono-83c005d4.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Playfair Display';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('playfair-display.woff2') format('woff2');
 }

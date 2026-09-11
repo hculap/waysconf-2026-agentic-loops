@@ -24,6 +24,7 @@
     "check:perf": "node checks/gates/lighthouse.mjs",
     "check:assets": "node scripts/check-assets.mjs",
     "check:guideline": "node checks/guideline.mjs",
+    "check:deck": "node checks/deck.mjs",
     "gen:images": "node scripts/generate-images.mjs --all",
     "baseline": "node checks/baseline.mjs",
     "deploy": "npx netlify deploy --prod --dir=dist",

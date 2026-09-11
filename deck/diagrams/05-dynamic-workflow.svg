@@ -3,19 +3,19 @@
   <desc id="d05">A fan-out reading left to right on a near-black ground. THE PAGE, as rendered, together with docs slash CANON dot md, feeds one finder per lens: design, looking at spacing and rhythm; a11y, looking at what axe cannot see; and copy, looking at tone and drift. Three of the six lenses are drawn, and one round of up to six. The lenses return different numbers of candidate findings, three, four and two, each one a citation such as dot ticket-card, open square bracket role equals tab, or CONTENT dot md colon 412. Every candidate is then judged by the same three refuters, shown as a matrix of green chips reading stands and red chips reading refuted, one row per finding. A vertical majority filter lets through only the findings where two of three refuters said stands: five of the nine survive and continue, each at its own height, into a tall report column, checks slash adversarial-report dot md, which lists the surviving claim and its citation. Text beneath records that nothing here runs in lockstep, that a lens returning two findings does not hold up a lens returning four, that every claim must cite a selector or a file and line or it is discarded unread, and that nothing on this page sets pass or fail.</desc>
 
   <defs>
-    <marker id="ah-sodium" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="16" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#FF6A1A"/></marker>
-    <marker id="ah-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="16" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#A7AEBB"/></marker>
-    <marker id="ah-success" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#3DDC84"/></marker>
+    <marker id="ah-sodium" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="16" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="16" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-success" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#34D399"/></marker>
   </defs>
 
-  <rect x="0" y="0" width="1800" height="1000" fill="#0A0B0D"/>
+  <rect x="0" y="0" width="1800" height="1000" fill="#0A0A0A"/>
 
   <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 
-    <text x="60" y="78" font-size="40" font-weight="700" fill="#F2F4F7">One finder per lens, three refuters per finding</text>
-    <text x="60" y="118" font-size="24" fill="#A7AEBB">The work fans out, gets argued with, and only the part that survives a majority reaches a person.</text>
+    <text x="60" y="78" font-size="40" font-weight="700" fill="#FFFFFF">One finder per lens, three refuters per finding</text>
+    <text x="60" y="118" font-size="24" fill="#9CA3AF">The work fans out, gets argued with, and only the part that survives a majority reaches a person.</text>
 
-    <g font-size="20" font-weight="700" fill="#A7AEBB" letter-spacing="1" text-anchor="middle">
+    <g font-size="20" font-weight="700" fill="#9CA3AF" letter-spacing="1" text-anchor="middle">
       <text x="405" y="152">ONE FINDER PER LENS</text>
       <text x="675" y="152">CANDIDATE FINDINGS</text>
       <text x="974" y="152">THREE REFUTERS</text>
@@ -23,33 +23,33 @@
       <text x="1505" y="152">WHAT SURVIVES</text>
     </g>
 
-    <rect x="60" y="400" width="190" height="120" rx="10" fill="#131519" stroke="#A7AEBB" stroke-width="3"/>
-    <text x="155" y="442" font-size="24" font-weight="700" fill="#F2F4F7" text-anchor="middle">THE PAGE</text>
-    <text x="155" y="470" font-size="19" fill="#A7AEBB" text-anchor="middle">as rendered</text>
-    <text x="155" y="498" font-size="17" fill="#A7AEBB" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">docs/CANON.md</text>
+    <rect x="60" y="400" width="190" height="120" rx="10" fill="#161616" stroke="#9CA3AF" stroke-width="3"/>
+    <text x="155" y="442" font-size="24" font-weight="700" fill="#FFFFFF" text-anchor="middle">THE PAGE</text>
+    <text x="155" y="470" font-size="19" fill="#9CA3AF" text-anchor="middle">as rendered</text>
+    <text x="155" y="498" font-size="17" fill="#9CA3AF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">docs/CANON.md</text>
 
-    <polyline points="252,440 266,440 266,256 284,256" fill="none" stroke="#A7AEBB" stroke-width="3" marker-end="url(#ah-neutral)"/>
-    <line x1="252" y1="475" x2="284" y2="475" stroke="#A7AEBB" stroke-width="3" marker-end="url(#ah-neutral)"/>
-    <polyline points="252,490 274,490 274,667 284,667" fill="none" stroke="#A7AEBB" stroke-width="3" marker-end="url(#ah-neutral)"/>
+    <polyline points="252,440 266,440 266,256 284,256" fill="none" stroke="#9CA3AF" stroke-width="3" marker-end="url(#ah-neutral)"/>
+    <line x1="252" y1="475" x2="284" y2="475" stroke="#9CA3AF" stroke-width="3" marker-end="url(#ah-neutral)"/>
+    <polyline points="252,490 274,490 274,667 284,667" fill="none" stroke="#9CA3AF" stroke-width="3" marker-end="url(#ah-neutral)"/>
 
-    <rect x="290" y="206" width="230" height="100" rx="10" fill="#131519" stroke="#FF6A1A" stroke-width="3"/>
-    <text x="405" y="250" font-size="21" fill="#FF6A1A" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">design</text>
-    <text x="405" y="280" font-size="19" fill="#A7AEBB" text-anchor="middle">spacing and rhythm</text>
+    <rect x="290" y="206" width="230" height="100" rx="10" fill="#161616" stroke="#10B981" stroke-width="3"/>
+    <text x="405" y="250" font-size="21" fill="#10B981" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">design</text>
+    <text x="405" y="280" font-size="19" fill="#9CA3AF" text-anchor="middle">spacing and rhythm</text>
 
-    <rect x="290" y="425" width="230" height="100" rx="10" fill="#131519" stroke="#FF6A1A" stroke-width="3"/>
-    <text x="405" y="469" font-size="21" fill="#FF6A1A" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">a11y</text>
-    <text x="405" y="499" font-size="19" fill="#A7AEBB" text-anchor="middle">what axe cannot see</text>
+    <rect x="290" y="425" width="230" height="100" rx="10" fill="#161616" stroke="#10B981" stroke-width="3"/>
+    <text x="405" y="469" font-size="21" fill="#10B981" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">a11y</text>
+    <text x="405" y="499" font-size="19" fill="#9CA3AF" text-anchor="middle">what axe cannot see</text>
 
-    <rect x="290" y="617" width="230" height="100" rx="10" fill="#131519" stroke="#FF6A1A" stroke-width="3"/>
-    <text x="405" y="661" font-size="21" fill="#FF6A1A" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">copy</text>
-    <text x="405" y="691" font-size="19" fill="#A7AEBB" text-anchor="middle">tone and drift</text>
+    <rect x="290" y="617" width="230" height="100" rx="10" fill="#161616" stroke="#10B981" stroke-width="3"/>
+    <text x="405" y="661" font-size="21" fill="#10B981" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">copy</text>
+    <text x="405" y="691" font-size="19" fill="#9CA3AF" text-anchor="middle">tone and drift</text>
 
-    <g font-size="19" fill="#A7AEBB" text-anchor="middle">
+    <g font-size="19" fill="#9CA3AF" text-anchor="middle">
       <text x="405" y="750">three of six lenses shown</text>
       <text x="405" y="776">one round of up to six</text>
     </g>
 
-    <g stroke="#FF6A1A" stroke-width="2.5" fill="none" marker-end="url(#ah-sodium)">
+    <g stroke="#10B981" stroke-width="2.5" fill="none" marker-end="url(#ah-sodium)">
       <line x1="522" y1="256" x2="554" y2="198"/>
       <line x1="522" y1="256" x2="554" y2="256"/>
       <line x1="522" y1="256" x2="554" y2="314"/>
@@ -61,28 +61,28 @@
       <line x1="522" y1="667" x2="554" y2="696"/>
     </g>
 
-    <g font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#F2F4F7" text-anchor="middle">
-      <rect x="560" y="175" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+    <g font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="19" fill="#FFFFFF" text-anchor="middle">
+      <rect x="560" y="175" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="205">.ticket-card</text>
-      <rect x="560" y="233" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="233" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="263">.nav__link</text>
-      <rect x="560" y="291" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="291" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="321">.lineup__grid</text>
-      <rect x="560" y="365" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="365" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="395">[role=tab]</text>
-      <rect x="560" y="423" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="423" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="453">.lineup__grid a</text>
-      <rect x="560" y="481" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="481" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="511">.faq__button</text>
-      <rect x="560" y="539" width="230" height="46" rx="6" fill="#1C1F25" stroke="#FF6A1A" stroke-width="3"/>
+      <rect x="560" y="539" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#10B981" stroke-width="3"/>
       <text x="675" y="569">img.artist[3]</text>
-      <rect x="560" y="615" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="615" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="645">CONTENT.md:88</text>
-      <rect x="560" y="673" width="230" height="46" rx="6" fill="#1C1F25" stroke="#A7AEBB" stroke-width="2"/>
+      <rect x="560" y="673" width="230" height="46" rx="6" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="2"/>
       <text x="675" y="703">CONTENT.md:412</text>
     </g>
 
-    <g stroke="#A7AEBB" stroke-width="2">
+    <g stroke="#9CA3AF" stroke-width="2">
       <line x1="792" y1="198" x2="818" y2="198"/>
       <line x1="792" y1="256" x2="818" y2="256"/>
       <line x1="792" y1="314" x2="818" y2="314"/>
@@ -94,64 +94,64 @@
       <line x1="792" y1="696" x2="818" y2="696"/>
     </g>
 
-    <g font-size="19" font-weight="700" fill="#0A0B0D" text-anchor="middle">
-      <rect x="820" y="180" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="205">stands</text>
-      <rect x="926" y="180" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="205">stands</text>
-      <rect x="1032" y="180" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="205">refuted</text>
+    <g font-size="19" font-weight="700" fill="#0A0A0A" text-anchor="middle">
+      <rect x="820" y="180" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="205">stands</text>
+      <rect x="926" y="180" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="205">stands</text>
+      <rect x="1032" y="180" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="205">refuted</text>
 
-      <rect x="820" y="238" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="263">stands</text>
-      <rect x="926" y="238" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="974" y="263">refuted</text>
-      <rect x="1032" y="238" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="263">refuted</text>
+      <rect x="820" y="238" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="263">stands</text>
+      <rect x="926" y="238" width="96" height="36" rx="8" fill="#F87171"/><text x="974" y="263">refuted</text>
+      <rect x="1032" y="238" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="263">refuted</text>
 
-      <rect x="820" y="296" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="321">stands</text>
-      <rect x="926" y="296" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="321">stands</text>
-      <rect x="1032" y="296" width="96" height="36" rx="8" fill="#3DDC84"/><text x="1080" y="321">stands</text>
+      <rect x="820" y="296" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="321">stands</text>
+      <rect x="926" y="296" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="321">stands</text>
+      <rect x="1032" y="296" width="96" height="36" rx="8" fill="#34D399"/><text x="1080" y="321">stands</text>
 
-      <rect x="820" y="370" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="868" y="395">refuted</text>
-      <rect x="926" y="370" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="395">stands</text>
-      <rect x="1032" y="370" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="395">refuted</text>
+      <rect x="820" y="370" width="96" height="36" rx="8" fill="#F87171"/><text x="868" y="395">refuted</text>
+      <rect x="926" y="370" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="395">stands</text>
+      <rect x="1032" y="370" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="395">refuted</text>
 
-      <rect x="820" y="428" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="453">stands</text>
-      <rect x="926" y="428" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="453">stands</text>
-      <rect x="1032" y="428" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="453">refuted</text>
+      <rect x="820" y="428" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="453">stands</text>
+      <rect x="926" y="428" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="453">stands</text>
+      <rect x="1032" y="428" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="453">refuted</text>
 
-      <rect x="820" y="486" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="868" y="511">refuted</text>
-      <rect x="926" y="486" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="974" y="511">refuted</text>
-      <rect x="1032" y="486" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="511">refuted</text>
+      <rect x="820" y="486" width="96" height="36" rx="8" fill="#F87171"/><text x="868" y="511">refuted</text>
+      <rect x="926" y="486" width="96" height="36" rx="8" fill="#F87171"/><text x="974" y="511">refuted</text>
+      <rect x="1032" y="486" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="511">refuted</text>
 
-      <rect x="820" y="544" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="569">stands</text>
-      <rect x="926" y="544" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="974" y="569">refuted</text>
-      <rect x="1032" y="544" width="96" height="36" rx="8" fill="#3DDC84"/><text x="1080" y="569">stands</text>
+      <rect x="820" y="544" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="569">stands</text>
+      <rect x="926" y="544" width="96" height="36" rx="8" fill="#F87171"/><text x="974" y="569">refuted</text>
+      <rect x="1032" y="544" width="96" height="36" rx="8" fill="#34D399"/><text x="1080" y="569">stands</text>
 
-      <rect x="820" y="620" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="868" y="645">refuted</text>
-      <rect x="926" y="620" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="645">stands</text>
-      <rect x="1032" y="620" width="96" height="36" rx="8" fill="#FF4D4D"/><text x="1080" y="645">refuted</text>
+      <rect x="820" y="620" width="96" height="36" rx="8" fill="#F87171"/><text x="868" y="645">refuted</text>
+      <rect x="926" y="620" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="645">stands</text>
+      <rect x="1032" y="620" width="96" height="36" rx="8" fill="#F87171"/><text x="1080" y="645">refuted</text>
 
-      <rect x="820" y="678" width="96" height="36" rx="8" fill="#3DDC84"/><text x="868" y="703">stands</text>
-      <rect x="926" y="678" width="96" height="36" rx="8" fill="#3DDC84"/><text x="974" y="703">stands</text>
-      <rect x="1032" y="678" width="96" height="36" rx="8" fill="#3DDC84"/><text x="1080" y="703">stands</text>
+      <rect x="820" y="678" width="96" height="36" rx="8" fill="#34D399"/><text x="868" y="703">stands</text>
+      <rect x="926" y="678" width="96" height="36" rx="8" fill="#34D399"/><text x="974" y="703">stands</text>
+      <rect x="1032" y="678" width="96" height="36" rx="8" fill="#34D399"/><text x="1080" y="703">stands</text>
     </g>
 
-    <rect x="1160" y="170" width="70" height="570" rx="8" fill="#131519" stroke="#2FE6D6" stroke-width="3"/>
-    <text x="1195" y="770" font-size="20" font-weight="700" fill="#2FE6D6" text-anchor="middle">2 of 3</text>
-    <text x="1505" y="770" font-size="20" fill="#3DDC84" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">checks/adversarial-report.md</text>
+    <rect x="1160" y="170" width="70" height="570" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="3"/>
+    <text x="1195" y="770" font-size="20" font-weight="700" fill="#F59E0B" text-anchor="middle">2 of 3</text>
+    <text x="1505" y="770" font-size="20" fill="#34D399" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">checks/adversarial-report.md</text>
 
-    <rect x="1270" y="170" width="470" height="570" rx="10" fill="#131519" stroke="#3DDC84" stroke-width="3"/>
+    <rect x="1270" y="170" width="470" height="570" rx="10" fill="#161616" stroke="#34D399" stroke-width="3"/>
 
-    <g stroke="#A7AEBB" stroke-width="2">
+    <g stroke="#9CA3AF" stroke-width="2">
       <line x1="1130" y1="256" x2="1156" y2="256"/>
       <line x1="1130" y1="388" x2="1156" y2="388"/>
       <line x1="1130" y1="504" x2="1156" y2="504"/>
       <line x1="1130" y1="638" x2="1156" y2="638"/>
     </g>
-    <g stroke="#FF4D4D" stroke-width="4" stroke-linecap="round">
+    <g stroke="#F87171" stroke-width="4" stroke-linecap="round">
       <path d="M1186 247 l18 18 M1204 247 l-18 18"/>
       <path d="M1186 379 l18 18 M1204 379 l-18 18"/>
       <path d="M1186 495 l18 18 M1204 495 l-18 18"/>
       <path d="M1186 629 l18 18 M1204 629 l-18 18"/>
     </g>
 
-    <g stroke="#3DDC84" stroke-width="4" marker-end="url(#ah-success)">
+    <g stroke="#34D399" stroke-width="4" marker-end="url(#ah-success)">
       <line x1="1130" y1="198" x2="1266" y2="198"/>
       <line x1="1130" y1="314" x2="1266" y2="314"/>
       <line x1="1130" y1="446" x2="1266" y2="446"/>
@@ -160,22 +160,22 @@
     </g>
 
     <g>
-      <text x="1300" y="200" font-size="21" fill="#F2F4F7">spacing breaks the 4px rhythm</text>
-      <text x="1300" y="228" font-size="18" fill="#A7AEBB" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.ticket-card</text>
-      <text x="1300" y="316" font-size="21" fill="#F2F4F7">twelve cards should be a list</text>
-      <text x="1300" y="344" font-size="18" fill="#A7AEBB" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.lineup__grid</text>
-      <text x="1300" y="448" font-size="21" fill="#F2F4F7">focus order fights the grid</text>
-      <text x="1300" y="476" font-size="18" fill="#A7AEBB" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.lineup__grid a</text>
-      <text x="1300" y="564" font-size="21" fill="#F2F4F7">alt text present and meaningless</text>
-      <text x="1300" y="592" font-size="18" fill="#A7AEBB" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">img.artist[3]</text>
-      <text x="1300" y="698" font-size="21" fill="#F2F4F7">tone passes the list, fails the ear</text>
-      <text x="1300" y="726" font-size="18" fill="#A7AEBB" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">CONTENT.md:412</text>
+      <text x="1300" y="200" font-size="21" fill="#FFFFFF">spacing breaks the 4px rhythm</text>
+      <text x="1300" y="228" font-size="18" fill="#9CA3AF" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.ticket-card</text>
+      <text x="1300" y="316" font-size="21" fill="#FFFFFF">twelve cards should be a list</text>
+      <text x="1300" y="344" font-size="18" fill="#9CA3AF" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.lineup__grid</text>
+      <text x="1300" y="448" font-size="21" fill="#FFFFFF">focus order fights the grid</text>
+      <text x="1300" y="476" font-size="18" fill="#9CA3AF" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">.lineup__grid a</text>
+      <text x="1300" y="564" font-size="21" fill="#FFFFFF">alt text present and meaningless</text>
+      <text x="1300" y="592" font-size="18" fill="#9CA3AF" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">img.artist[3]</text>
+      <text x="1300" y="698" font-size="21" fill="#FFFFFF">tone passes the list, fails the ear</text>
+      <text x="1300" y="726" font-size="18" fill="#9CA3AF" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">CONTENT.md:412</text>
     </g>
 
-    <text x="60" y="812" font-size="24" font-weight="700" fill="#F2F4F7">Nothing here runs in lockstep.</text>
-    <text x="60" y="850" font-size="22" fill="#A7AEBB">Each candidate goes to three refuters whose only instruction is to argue that it is wrong, and reaches the filter when its own</text>
-    <text x="60" y="880" font-size="22" fill="#A7AEBB">panel finishes. A lens that returns two findings does not hold up a lens that returns four.</text>
-    <text x="60" y="922" font-size="22" fill="#2FE6D6">The filter is arithmetic: two of three must stand. Every claim cites a selector or a file and line, or it is discarded unread.</text>
-    <text x="60" y="956" font-size="22" fill="#2FE6D6">Nothing on this page sets pass or fail. It opens items for a person to triage.</text>
+    <text x="60" y="812" font-size="24" font-weight="700" fill="#FFFFFF">Nothing here runs in lockstep.</text>
+    <text x="60" y="850" font-size="22" fill="#9CA3AF">Each candidate goes to three refuters whose only instruction is to argue that it is wrong, and reaches the filter when its own</text>
+    <text x="60" y="880" font-size="22" fill="#9CA3AF">panel finishes. A lens that returns two findings does not hold up a lens that returns four.</text>
+    <text x="60" y="922" font-size="22" fill="#F59E0B">The filter is arithmetic: two of three must stand. Every claim cites a selector or a file and line, or it is discarded unread.</text>
+    <text x="60" y="956" font-size="22" fill="#F59E0B">Nothing on this page sets pass or fail. It opens items for a person to triage.</text>
   </g>
 </svg>

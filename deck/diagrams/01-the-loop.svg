@@ -3,73 +3,73 @@
   <desc id="d01">A cycle in five parts on a near-black ground. Along the top, three stages run left to right: GENERATE, where the agent writes the page; VERIFY, which runs npm run check, nine gates against a real browser; and a hexagonal GATE asking whether all nine are green. From the gate an arrow marked exit 0 leads right to DEPLOY, the only way out. An arrow marked exit 1 leads down to a document, checks slash report dot md, holding two real failure messages: AC-28 TOKENS, the muted grey used outside the legal block at 4.07 to 1, and AC-29 TOKENS, white on sodium orange at 2.87 to 1. From that document an arrow runs left to REPAIR, which fixes only what the report names, and from REPAIR an arrow runs straight up into GENERATE. The arrow back therefore carries a file written by a program, not an opinion produced by the model.</desc>
 
   <defs>
-    <marker id="ah-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#A7AEBB"/></marker>
-    <marker id="ah-coolant" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#2FE6D6"/></marker>
-    <marker id="ah-sodium" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#FF6A1A"/></marker>
-    <marker id="ah-success" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#3DDC84"/></marker>
-    <marker id="ah-danger" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#FF4D4D"/></marker>
+    <marker id="ah-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-coolant" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#F59E0B"/></marker>
+    <marker id="ah-sodium" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-success" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#34D399"/></marker>
+    <marker id="ah-danger" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#F87171"/></marker>
   </defs>
 
-  <rect x="0" y="0" width="1600" height="900" fill="#0A0B0D"/>
+  <rect x="0" y="0" width="1600" height="900" fill="#0A0A0A"/>
 
   <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 
-    <text x="60" y="78" font-size="40" font-weight="700" fill="#F2F4F7">The loop</text>
-    <text x="60" y="118" font-size="24" fill="#A7AEBB">Four steps and one exit. The step that decides is a program, and it decides the same way every time.</text>
+    <text x="60" y="78" font-size="40" font-weight="700" fill="#FFFFFF">The loop</text>
+    <text x="60" y="118" font-size="24" fill="#9CA3AF">Four steps and one exit. The step that decides is a program, and it decides the same way every time.</text>
 
-    <rect x="80" y="230" width="290" height="140" rx="10" fill="#131519" stroke="#FF6A1A" stroke-width="4"/>
-    <text x="225" y="284" font-size="30" font-weight="700" fill="#F2F4F7" text-anchor="middle">GENERATE</text>
-    <text x="225" y="318" font-size="21" fill="#A7AEBB" text-anchor="middle">the agent writes</text>
-    <text x="225" y="344" font-size="21" fill="#A7AEBB" text-anchor="middle">the page</text>
+    <rect x="80" y="230" width="290" height="140" rx="10" fill="#161616" stroke="#10B981" stroke-width="4"/>
+    <text x="225" y="284" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">GENERATE</text>
+    <text x="225" y="318" font-size="21" fill="#9CA3AF" text-anchor="middle">the agent writes</text>
+    <text x="225" y="344" font-size="21" fill="#9CA3AF" text-anchor="middle">the page</text>
 
-    <rect x="470" y="230" width="290" height="140" rx="10" fill="#131519" stroke="#2FE6D6" stroke-width="4"/>
-    <text x="615" y="284" font-size="30" font-weight="700" fill="#F2F4F7" text-anchor="middle">VERIFY</text>
-    <text x="615" y="318" font-size="21" fill="#2FE6D6" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run check</text>
-    <text x="615" y="344" font-size="21" fill="#A7AEBB" text-anchor="middle">nine gates, real browser</text>
+    <rect x="470" y="230" width="290" height="140" rx="10" fill="#161616" stroke="#F59E0B" stroke-width="4"/>
+    <text x="615" y="284" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">VERIFY</text>
+    <text x="615" y="318" font-size="21" fill="#F59E0B" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run check</text>
+    <text x="615" y="344" font-size="21" fill="#9CA3AF" text-anchor="middle">nine gates, real browser</text>
 
-    <polygon points="850,300 925,215 1075,215 1150,300 1075,385 925,385" fill="#131519" stroke="#2FE6D6" stroke-width="4"/>
-    <text x="1000" y="284" font-size="30" font-weight="700" fill="#F2F4F7" text-anchor="middle">GATE</text>
-    <text x="1000" y="320" font-size="21" fill="#A7AEBB" text-anchor="middle">all nine green?</text>
+    <polygon points="850,300 925,215 1075,215 1150,300 1075,385 925,385" fill="#161616" stroke="#F59E0B" stroke-width="4"/>
+    <text x="1000" y="284" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">GATE</text>
+    <text x="1000" y="320" font-size="21" fill="#9CA3AF" text-anchor="middle">all nine green?</text>
 
-    <rect x="1250" y="230" width="270" height="140" rx="10" fill="#3DDC84"/>
-    <text x="1385" y="284" font-size="30" font-weight="700" fill="#0A0B0D" text-anchor="middle">DEPLOY</text>
-    <text x="1385" y="318" font-size="21" fill="#0A0B0D" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run deploy</text>
-    <text x="1385" y="344" font-size="21" fill="#0A0B0D" text-anchor="middle">the only exit</text>
+    <rect x="1250" y="230" width="270" height="140" rx="10" fill="#34D399"/>
+    <text x="1385" y="284" font-size="30" font-weight="700" fill="#0A0A0A" text-anchor="middle">DEPLOY</text>
+    <text x="1385" y="318" font-size="21" fill="#0A0A0A" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run deploy</text>
+    <text x="1385" y="344" font-size="21" fill="#0A0A0A" text-anchor="middle">the only exit</text>
 
-    <line x1="378" y1="300" x2="462" y2="300" stroke="#A7AEBB" stroke-width="4" marker-end="url(#ah-neutral)"/>
-    <line x1="768" y1="300" x2="842" y2="300" stroke="#2FE6D6" stroke-width="4" marker-end="url(#ah-coolant)"/>
-    <line x1="1158" y1="300" x2="1242" y2="300" stroke="#3DDC84" stroke-width="4" marker-end="url(#ah-success)"/>
-    <text x="1200" y="276" font-size="22" font-weight="600" fill="#3DDC84" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exit 0</text>
+    <line x1="378" y1="300" x2="462" y2="300" stroke="#9CA3AF" stroke-width="4" marker-end="url(#ah-neutral)"/>
+    <line x1="768" y1="300" x2="842" y2="300" stroke="#F59E0B" stroke-width="4" marker-end="url(#ah-coolant)"/>
+    <line x1="1158" y1="300" x2="1242" y2="300" stroke="#34D399" stroke-width="4" marker-end="url(#ah-success)"/>
+    <text x="1200" y="276" font-size="22" font-weight="600" fill="#34D399" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exit 0</text>
 
-    <line x1="1000" y1="393" x2="1000" y2="492" stroke="#FF4D4D" stroke-width="4" marker-end="url(#ah-danger)"/>
-    <text x="1024" y="452" font-size="22" font-weight="600" fill="#FF4D4D" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exit 1</text>
+    <line x1="1000" y1="393" x2="1000" y2="492" stroke="#F87171" stroke-width="4" marker-end="url(#ah-danger)"/>
+    <text x="1024" y="452" font-size="22" font-weight="600" fill="#F87171" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exit 1</text>
 
-    <rect x="790" y="500" width="420" height="300" rx="8" fill="#131519" stroke="#A7AEBB" stroke-width="3"/>
-    <rect x="792" y="502" width="416" height="50" fill="#1C1F25"/>
-    <path d="M790 552 H1210" stroke="#A7AEBB" stroke-width="2"/>
+    <rect x="790" y="500" width="420" height="300" rx="8" fill="#161616" stroke="#9CA3AF" stroke-width="3"/>
+    <rect x="792" y="502" width="416" height="50" fill="#1F1F1F"/>
+    <path d="M790 552 H1210" stroke="#9CA3AF" stroke-width="2"/>
     <g font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
-      <text x="812" y="536" font-size="24" fill="#F2F4F7">checks/report.md</text>
-      <text x="1188" y="536" font-size="20" fill="#FF4D4D" text-anchor="end">2 failing</text>
-      <text x="812" y="596" font-size="20" fill="#FF4D4D">AC-28 TOKENS</text>
-      <text x="812" y="624" font-size="20" fill="#A7AEBB">#6B7280 on .card__genre,</text>
-      <text x="812" y="652" font-size="20" fill="#A7AEBB">outside [data-legal]. 4.07:1.</text>
-      <text x="812" y="702" font-size="20" fill="#FF4D4D">AC-29 TOKENS</text>
-      <text x="812" y="730" font-size="20" fill="#A7AEBB">#FFFFFF on #FF6A1A at .btn</text>
-      <text x="812" y="758" font-size="20" fill="#A7AEBB">is 2.87:1. Use #0A0B0D.</text>
+      <text x="812" y="536" font-size="24" fill="#FFFFFF">checks/report.md</text>
+      <text x="1188" y="536" font-size="20" fill="#F87171" text-anchor="end">2 failing</text>
+      <text x="812" y="596" font-size="20" fill="#F87171">AC-28 TOKENS</text>
+      <text x="812" y="624" font-size="20" fill="#9CA3AF">#71717A on .card__genre,</text>
+      <text x="812" y="652" font-size="20" fill="#9CA3AF">outside [data-legal]. 4.07:1.</text>
+      <text x="812" y="702" font-size="20" fill="#F87171">AC-29 TOKENS</text>
+      <text x="812" y="730" font-size="20" fill="#9CA3AF">#FFFFFF on #10B981 at .btn</text>
+      <text x="812" y="758" font-size="20" fill="#9CA3AF">is 2.87:1. Use #0A0A0A.</text>
     </g>
 
-    <line x1="782" y1="630" x2="378" y2="630" stroke="#A7AEBB" stroke-width="4" marker-end="url(#ah-neutral)"/>
-    <text x="580" y="604" font-size="21" fill="#A7AEBB" text-anchor="middle">first failing gate only, in order</text>
+    <line x1="782" y1="630" x2="378" y2="630" stroke="#9CA3AF" stroke-width="4" marker-end="url(#ah-neutral)"/>
+    <text x="580" y="604" font-size="21" fill="#9CA3AF" text-anchor="middle">first failing gate only, in order</text>
 
-    <rect x="80" y="560" width="290" height="140" rx="10" fill="#131519" stroke="#FF6A1A" stroke-width="4"/>
-    <text x="225" y="614" font-size="30" font-weight="700" fill="#F2F4F7" text-anchor="middle">REPAIR</text>
-    <text x="225" y="648" font-size="21" fill="#A7AEBB" text-anchor="middle">fix what the report</text>
-    <text x="225" y="674" font-size="21" fill="#A7AEBB" text-anchor="middle">names, nothing else</text>
+    <rect x="80" y="560" width="290" height="140" rx="10" fill="#161616" stroke="#10B981" stroke-width="4"/>
+    <text x="225" y="614" font-size="30" font-weight="700" fill="#FFFFFF" text-anchor="middle">REPAIR</text>
+    <text x="225" y="648" font-size="21" fill="#9CA3AF" text-anchor="middle">fix what the report</text>
+    <text x="225" y="674" font-size="21" fill="#9CA3AF" text-anchor="middle">names, nothing else</text>
 
-    <line x1="225" y1="552" x2="225" y2="378" stroke="#FF6A1A" stroke-width="4" marker-end="url(#ah-sodium)"/>
-    <text x="250" y="462" font-size="21" fill="#A7AEBB">the smallest change</text>
-    <text x="250" y="490" font-size="21" fill="#A7AEBB">that turns it green</text>
+    <line x1="225" y1="552" x2="225" y2="378" stroke="#10B981" stroke-width="4" marker-end="url(#ah-sodium)"/>
+    <text x="250" y="462" font-size="21" fill="#9CA3AF">the smallest change</text>
+    <text x="250" y="490" font-size="21" fill="#9CA3AF">that turns it green</text>
 
-    <text x="60" y="862" font-size="24" fill="#F2F4F7">The arrow back carries a file. Nothing on this path asks the model whether the work is good.</text>
+    <text x="60" y="862" font-size="24" fill="#FFFFFF">The arrow back carries a file. Nothing on this path asks the model whether the work is good.</text>
   </g>
 </svg>

@@ -27,7 +27,7 @@ send to someone.
 
 **Please spend fifteen minutes on setup before you arrive:**
 
-**→ https://turbine-workshop.netlify.app**
+**→ https://waysconf.szymonpaluch.com**
 
 That page walks you through four free accounts and one optional install. Doing it at
 home rather than in the room is the difference between building something and

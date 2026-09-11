@@ -1,0 +1,123 @@
+/* ==========================================================================
+   Speaker brand — szymonpaluch.com
+
+   Two identities live in this repository and they must not be confused:
+
+     TURBINE        the fictional festival whose site gets built on stage.
+                    Tokens: design/tokens/tokens.css. Sodium orange, coolant
+                    cyan, Space Grotesk. That palette is part of the exercise —
+                    it is deliberately hostile to careless colour choices.
+
+     This file      the speaker's own brand, used by the deck and by the
+                    participant site. Emerald on near-black, Playfair Display.
+                    Lifted from szymonpaluch.com so the workshop reads as part
+                    of that site rather than as a stray deck.
+
+   Every value below was read off the live site with a browser — computed
+   styles, not guessed from markup — on 2026-09-11:
+
+       node scripts/read-brand.mjs
+
+   Contrast was then measured for every pairing this file permits. The table at
+   the bottom is that measurement, not an assertion.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ------------------------------------------------------------------------
+     SURFACES
+     ------------------------------------------------------------------------ */
+  --sp-bg: #0a0a0a;           /* page */
+  --sp-surface: #161616;      /* cards, nav, code blocks */
+  --sp-raised: #1f1f1f;       /* hover, table header */
+
+  /* Hairlines. Decorative only — never the sole indicator of a control. */
+  --sp-line: #2e2e2e;         /* card borders, rules */
+  --sp-line-strong: #3f3f46;  /* dividers, focus ring base */
+
+  /* ------------------------------------------------------------------------
+     TEXT
+     Three levels, and all three pass AA on all three surfaces. There is no
+     trap colour in this palette: the one on the TURBINE side (#6B7280, 4.07:1)
+     exists to be fallen into during the workshop, and has no business here.
+     ------------------------------------------------------------------------ */
+  --sp-fg: #ffffff;           /* headings, body */
+  --sp-fg-2: #d1d5db;         /* supporting copy */
+  --sp-fg-3: #9ca3af;         /* captions, metadata */
+
+  /* Ink for accent fills. White on emerald measures 2.54:1 and fails; the site
+     puts near-black on the green button and so does this. */
+  --sp-on-accent: #0a0a0a;
+
+  /* ------------------------------------------------------------------------
+     ACCENTS
+     The brand carries two hues. Everything that needs a third signal uses
+     weight, size or a rule instead of inventing a colour.
+     ------------------------------------------------------------------------ */
+  --sp-accent: #10b981;       /* emerald 500 — the brand, links, a gate passing */
+  --sp-accent-2: #34d399;     /* emerald 400 — hover, asides, lighter emphasis */
+  --sp-accent-deep: #065f46;  /* emerald 800 — fills behind emerald text */
+  --sp-amber: #f59e0b;        /* amber 500 — attention, the workflow, badges */
+  --sp-amber-2: #fbbf24;      /* amber 400 — lighter badge */
+  --sp-danger: #f87171;       /* red 400 — a check failing. The only third hue */
+
+  /* Tints, as the site uses them: a wash behind a card, a border that hints */
+  --sp-accent-wash: rgb(16 185 129 / 0.06);
+  --sp-accent-edge: rgb(16 185 129 / 0.3);
+  --sp-amber-wash: rgb(245 158 11 / 0.08);
+
+  /* ------------------------------------------------------------------------
+     TYPE
+     Playfair Display for anything that carries the voice, Inter for anything
+     that carries information, Space Grotesk for the // KICKER labels, and
+     JetBrains Mono for things you type. Four faces is one more than ideal and
+     three of them are already in this repository.
+     ------------------------------------------------------------------------ */
+  --sp-font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --sp-font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --sp-font-label: "Space Grotesk", ui-monospace, monospace;
+  --sp-font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --sp-tracking-label: 0.14em;   /* the // KICKER treatment */
+  --sp-tracking-display: -0.01em;
+
+  /* ------------------------------------------------------------------------
+     SHAPE
+     Square by default. Pills for buttons, a soft radius for cards. The site
+     is 499 elements at 0px, 23 at 9999px and 8 each at 24/16/12px.
+     ------------------------------------------------------------------------ */
+  --sp-radius: 0px;
+  --sp-radius-sm: 4px;
+  --sp-radius-card: 16px;
+  --sp-radius-lg: 24px;
+  --sp-radius-pill: 9999px;
+
+  --sp-container: 1280px;
+}
+
+/* ==========================================================================
+   Measured contrast — node scripts/read-brand.mjs --contrast
+
+   On --sp-bg (#0A0A0A):
+     --sp-fg        #FFFFFF   19.80:1   PASS-AA
+     --sp-fg-2      #D1D5DB   13.44:1   PASS-AA
+     --sp-fg-3      #9CA3AF    7.80:1   PASS-AA
+     --sp-accent    #10B981    7.80:1   PASS-AA
+     --sp-accent-2  #34D399   10.30:1   PASS-AA
+     --sp-amber     #F59E0B    9.22:1   PASS-AA
+     --sp-amber-2   #FBBF24   11.86:1   PASS-AA
+     --sp-danger    #F87171    7.16:1   PASS-AA
+
+   On --sp-surface (#161616) the same eight range from 18.10:1 down to 6.54:1.
+   On --sp-raised (#1F1F1F), from 16.48:1 down to 5.96:1. All pass.
+
+   Ink on fills:
+     --sp-on-accent on --sp-accent    7.80:1   PASS-AA
+     #FFFFFF        on --sp-accent    2.54:1   FAIL — do not
+     --sp-on-accent on --sp-amber     9.22:1   PASS-AA
+     #FFFFFF        on --sp-amber     2.15:1   FAIL — do not
+
+   The two hairlines are below the 3:1 non-text bar on every surface and are
+   decorative only, exactly as on the TURBINE side.
+   ========================================================================== */
