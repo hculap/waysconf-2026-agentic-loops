@@ -17,7 +17,8 @@
  * summary as the first.
  */
 
-import { mkdir, copyFile, readdir, stat, utimes } from 'node:fs/promises'
+import { mkdir, copyFile, readdir, stat, utimes, writeFile } from 'node:fs/promises'
+import sharp from 'sharp'
 import { dirname, extname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
@@ -30,6 +31,24 @@ const TARGET = join(ROOT, 'public/images')
  * provenance for how the imagery was generated and has no business being served.
  */
 const SERVED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.svg'])
+
+/**
+ * Served width, where it should differ from the source.
+ *
+ * `design/assets/` holds the masters at the sizes `design/assets/PROMPTS.md` commissions.
+ * What the page needs is a different question, and it is a measured one: the artist
+ * portraits render at 161, 206 and 256 CSS px at the three breakpoints, so an 800px file
+ * ships roughly three times the pixels anyone sees. Lighthouse priced that at 674 KiB
+ * and it cost the performance gate four points.
+ *
+ * 512 covers the widest render at 2× device pixel ratio, with nothing left over. The
+ * master stays at 800 — this is a serving decision, not an edit to the design pack, and
+ * regenerating the pack does not undo it.
+ *
+ * Anything not listed here is copied through untouched: the hero renders full-bleed at
+ * 1440 and the venue images at 672, so their masters are already the right size.
+ */
+const SERVE_AT = [{ match: /^artist-\d+-/, width: 512, quality: 80 }]
 
 /**
  * utimes writes nanosecond precision and stat reads it back as a float, so a copy
@@ -59,6 +78,7 @@ async function main() {
 
   const entries = await readdir(SOURCE, { withFileTypes: true })
   let copied = 0
+  let resized = 0
   let skipped = 0
 
   for (const entry of entries) {
@@ -68,26 +88,46 @@ async function main() {
     const to = join(TARGET, entry.name)
 
     const [src, dest] = await Promise.all([stat(from), statOrNull(to)])
-    if (dest && dest.size === src.size && Math.abs(dest.mtimeMs - src.mtimeMs) < MTIME_TOLERANCE_MS) {
+    const willResize = SERVE_AT.some((r) => r.match.test(entry.name))
+    // A resized file is deliberately a different size from its source, so only the
+    // mtime can say whether it is current. An untouched copy is checked on both.
+    const current =
+      dest &&
+      Math.abs(dest.mtimeMs - src.mtimeMs) < MTIME_TOLERANCE_MS &&
+      (willResize || dest.size === src.size)
+    if (current) {
       skipped++
       continue
     }
 
-    await copyFile(from, to)
+    const rule = SERVE_AT.find((r) => r.match.test(entry.name))
+    if (rule) {
+      const out = await sharp(from)
+        .resize(rule.width, rule.width, { fit: 'cover', position: 'centre' })
+        .jpeg({ quality: rule.quality, progressive: true, mozjpeg: true })
+        .toBuffer()
+      await writeFile(to, out)
+      resized++
+    } else {
+      await copyFile(from, to)
+      copied++
+    }
     // Carry the mtime across so the next run can tell a stale copy from a current
-    // one without hashing every file.
+    // one without hashing every file. A resized file is smaller than its source, so
+    // the size comparison above already refuses to treat it as current — the mtime
+    // is what makes the second run cheap.
     await utimes(to, src.atime, src.mtime)
-    copied++
   }
 
-  if (copied + skipped === 0) {
+  if (copied + resized + skipped === 0) {
     console.error(`copy-assets: no images found in ${relative(ROOT, SOURCE)}.`)
     process.exitCode = 1
     return
   }
 
   console.log(
-    `copy-assets: ${copied} copied, ${skipped} already current -> ${relative(ROOT, TARGET)}/`,
+    `copy-assets: ${copied} copied, ${resized} resized for serving, ${skipped} already current ` +
+      `-> ${relative(ROOT, TARGET)}/`,
   )
 }
 
