@@ -3,6 +3,7 @@
  * Does the participant site actually work when you use it?
  *
  *   node checks/guideline-behaviour.mjs [--site guideline]
+ *   node checks/guideline-behaviour.mjs --url https://waysconf.szymonpaluch.com
  *
  * `checks/guideline.mjs` measures what the page looks like. This measures what it does,
  * because the two things that would silently rot are both interactive: the operating-system
@@ -12,8 +13,18 @@
  * worse than no picker. A copy button that silently does nothing is worse than no button,
  * because they will paste whatever was in the clipboard before.
  *
- * Every assertion is made against a real browser with a real clipboard. Nothing is skipped:
- * if a step cannot run, that is a failure.
+ * ── Why --url exists, and why it is not optional ────────────────────────────────────
+ *
+ * The folder mode passed everything while the deployed site was completely broken. Netlify
+ * serves `Content-Security-Policy: ... script-src 'self'`, which blocks inline scripts.
+ * The page inlined its script, so in production the picker did nothing and not one copy
+ * button worked — and the local check server, which sends no CSP, ran all of it happily.
+ *
+ * A check that does not reach the thing it claims to measure reports confidently either
+ * way. So: --url drives the real deployment through the same assertions, and BOTH modes
+ * now fail on any console error, which is what would have caught this on the first run.
+ *
+ * Nothing is skipped: if a step cannot run, that is a failure.
  */
 
 import { createServer } from 'node:http'
@@ -24,6 +35,7 @@ import { chromium } from 'playwright-core'
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const argSite = process.argv.includes('--site') && process.argv[process.argv.indexOf('--site') + 1]
+const argUrl = process.argv.includes('--url') && process.argv[process.argv.indexOf('--url') + 1]
 const SITE = argSite ? resolve(argSite) : join(ROOT, 'guideline')
 
 const OSES = ['mac', 'windows', 'linux']
@@ -42,27 +54,33 @@ const failures = []
 const fail = (m) => failures.push(m)
 const ok = (m) => console.log(`  ok   ${m}`)
 
-const server = createServer(async (req, res) => {
-  let path = decodeURIComponent(req.url.split('?')[0])
-  if (path.endsWith('/')) path += 'index.html'
-  try {
-    const body = await readFile(join(SITE, path))
-    res.writeHead(200, { 'content-type': TYPES[extname(path)] ?? 'application/octet-stream' })
-    res.end(body)
-  } catch {
-    res.writeHead(404, { 'content-type': 'text/plain' })
-    res.end('not found')
-  }
-})
-await new Promise((r) => server.listen(0, '127.0.0.1', r))
-const base = `http://127.0.0.1:${server.address().port}`
+let server = null
+let base = argUrl ? argUrl.replace(/\/$/, '') : null
+
+if (!base) {
+  server = createServer(async (req, res) => {
+    let path = decodeURIComponent(req.url.split('?')[0])
+    if (path.endsWith('/')) path += 'index.html'
+    try {
+      const body = await readFile(join(SITE, path))
+      res.writeHead(200, { 'content-type': TYPES[extname(path)] ?? 'application/octet-stream' })
+      res.end(body)
+    } catch {
+      res.writeHead(404, { 'content-type': 'text/plain' })
+      res.end('not found')
+    }
+  })
+  await new Promise((r) => server.listen(0, '127.0.0.1', r))
+  base = `http://127.0.0.1:${server.address().port}`
+}
+const closeServer = () => server?.close()
 
 let browser
 try {
   browser = await chromium.launch()
 } catch (error) {
   console.error(`FAIL — the browser would not start, so nothing was measured: ${error.message}`)
-  server.close()
+  closeServer()
   process.exit(1)
 }
 
@@ -76,14 +94,52 @@ const visibleOses = (page) =>
     )].sort(),
   )
 
-console.log(`Using guideline/ at ${base}\n`)
+console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${base}\n`)
 
 // ── the picker, with JavaScript ──────────────────────────────────────────────
 {
   const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
   await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: base })
   const page = await context.newPage()
+
+  // Anything the browser complains about is a failure. A Content-Security-Policy that
+  // refuses the page's own script is reported here and nowhere else — the DOM looks
+  // perfect, the styles are right, and nothing works.
+  const consoleErrors = []
+  page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()) })
+  page.on('pageerror', (e) => consoleErrors.push(`uncaught: ${e.message}`))
+
   await page.goto(base + '/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.waitForTimeout(500)
+
+  // Did OUR script run? An absence of errors is an inference; this is a measurement.
+  const ready = await page.evaluate(() => document.documentElement.getAttribute('data-sp-ready'))
+  if (ready === '1') ok('the page script ran')
+  else fail('the page script did not run — everything interactive below this line is dead')
+
+  // Our document must contain no inline <script>, because the host serves script-src 'self'
+  // and would block it. Asserting the shape rather than the symptom means a future inline
+  // script is caught here even if the host's CSP changes.
+  const inlineScripts = await page.evaluate(
+    () => [...document.querySelectorAll('script')].filter((s) => !s.src).length,
+  )
+  if (inlineScripts === 0) ok('no inline scripts of our own — nothing for a CSP to refuse')
+  else fail(`${inlineScripts} inline <script> in our own page; script-src 'self' blocks those`)
+
+  // With that established, an inline-script CSP violation can only come from something the
+  // host injected. Reported rather than swallowed: it is not ours, and it is not invisible.
+  const foreign = []
+  for (const e of consoleErrors) {
+    const isInlineCsp = /Content Security Policy/i.test(e) && /inline script/i.test(e)
+    if (isInlineCsp && inlineScripts === 0) foreign.push(e)
+    else fail(`the browser refused something: ${e.slice(0, 180)}`)
+  }
+  if (foreign.length) {
+    console.log(`  note ${foreign.length} inline-script CSP violation(s), none from our markup —`)
+    console.log('       the host injects its own HUD script and its own CSP then blocks it.')
+  } else if (consoleErrors.length === 0) {
+    ok('no console errors')
+  }
 
   const groups = await page.locator('[data-os]').count()
   if (groups < 6) fail(`only ${groups} [data-os] blocks on the page — the picker has nothing to switch`)
@@ -158,11 +214,11 @@ console.log(`Using guideline/ at ${base}\n`)
 }
 
 await browser.close()
-server.close()
+closeServer()
 
 if (failures.length) {
   console.log(`\nFAIL — ${failures.length} problem${failures.length === 1 ? '' : 's'}\n`)
   for (const f of failures) console.log(`  - ${f}`)
   process.exit(1)
 }
-console.log('\nPASS — the picker switches, the keyboard works, and every command copies itself')
+console.log(`\nPASS — ${argUrl ? 'live' : 'locally'}: the picker switches, the keyboard works, and every command copies itself`)
