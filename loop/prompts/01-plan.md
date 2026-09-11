@@ -6,9 +6,11 @@ delete a single file, and do not write code, not even a sketch of a component.
 Read first, and only the parts you need: `docs/CANON.md` §7, `brief/BRIEF.md` §4 and §7,
 `brief/ACCEPTANCE.md`, `brief/CONTENT.md` §15, `design/FIGMA-SPEC.md` §5, `AGENTS.md`.
 
-Produce one table, one section per row, in canonical order:
+Produce one table, one section per row, in canonical order, with these columns:
 
+```
 | # | Section | File | Criteria | Copy | Design | Behaviour | Risk |
+```
 
 - **Section** — the canonical name, and the `data-section` value it will carry.
 - **File** — the path you will create under `src/`.

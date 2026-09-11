@@ -17,7 +17,7 @@ Kraków, three nights in June 2027, twelve fictional artists.
 ### 1.1 One preamble, repeated verbatim
 
 Every prompt in this file opens with the same block of text. It fixes palette, light, grain, and the
-prohibitions, so that eighteen separate API calls return images that look like they came from one
+prohibitions, so that sixteen separate API calls return images that look like they came from one
 photographer on one night. The preamble is written out in full inside each fenced block rather than
 referenced, because each block is sent to the API exactly as it appears here. A prompt that depends on
 text somewhere else in the document is a prompt that breaks the first time someone copies it.
@@ -71,18 +71,19 @@ the reader is looking at.
 ### 1.4 Cost
 
 Nano Banana Pro is billed per generated image, at roughly **USD 0.134** per image at the 1K and 2K output
-tiers. The set here is 18 images:
+tiers. The set here is 16 images:
 
 | Group | Count | Tier | Approx. cost |
 |---|---:|---|---:|
 | Hero | 1 | 4K | 0.24 |
 | Venue | 2 | 2K | 0.27 |
 | Artist portraits | 12 | 1K | 1.61 |
-| Textures | 2 | 1K | 0.27 |
 | Social card | 1 | 2K | 0.13 |
-| **Total** | **18** | | **≈ USD 2.52** |
+| **Total** | **16** | | **≈ USD 2.25** |
 
-At a flat 0.134 per image the set is about **USD 2.41**; the hero is the only entry rendered at the 4K
+The two textures are not in this table. They are generated procedurally and cost nothing — see §5.
+
+At a flat 0.134 per image the fifteen non-hero entries come to about **USD 2.01**; the hero is the only entry rendered at the 4K
 tier, which costs more (roughly USD 0.24). Neither figure is the number to budget with. In practice a
 pack like this takes two to four passes before the grid reads as a set, so plan on **USD 6 to 10** for a
 full build from scratch, and near zero afterwards because the outputs are committed.
@@ -103,20 +104,17 @@ is larger than the tier it comes from.
 | `venue-exterior.jpg` | 1600×1200 | 4:3 | 4:3, 2K (2048×1536) | resize to 1600×1200, JPEG q82 |
 | `venue-detail.jpg` | 1600×1200 | 4:3 | 4:3, 2K (2048×1536) | resize to 1600×1200, JPEG q82 |
 | `artist-01…12-*.jpg` | 800×800 | 1:1 | 1:1, 1K (1024×1024) | resize to 800×800, JPEG q80 |
-| `texture-grain.png` | 1024×1024 | 1:1 | 1:1, 1K (1024×1024) | no resize, greyscale, luminance→alpha, PNG-8 |
-| `texture-scanline.png` | 1024×1024 | 1:1 | 1:1, 1K (1024×1024) | no resize, greyscale, luminance→alpha, PNG-8 |
-| `og-card.jpg` | 1200×630 | 1.905:1 | 16:9, 2K (2048×1152) | centre-crop to 2048×1075, resize to 1200×630, JPEG q85 |
+| `og-card.jpg` | 1200×630 | 16:9 requested, 1.905:1 delivered | 16:9, 2K (2048×1152) | centre-crop to 2048×1075, resize to 1200×630, JPEG q85 |
 
 1200×630 is not an aspect ratio the model offers, which is why the social card is generated wide and
 cropped. The prompt for it keeps the subject clear of the top and bottom 40px so the crop cannot decapitate
 anything.
 
-The two textures are the awkward case. Generative models do not produce seamlessly tileable output on
-request, whatever the prompt says. The script therefore runs an offset-and-blend pass (translate by 50% in
-both axes, feather the seam, verify that the wrapped edges match within a tolerance) before writing the
-PNG, and fails loudly if the seam survives. A deterministic procedural fallback for both textures lives in
-`scripts/textures-fallback.mjs`; if the tiling check fails twice, use it, because a scanline pattern whose
-row period divides 1024 evenly is a solved problem and not worth three more API calls.
+The two textures used to be the awkward case here, for a reason worth keeping: generative models do not
+produce seamlessly tileable output on request, whatever the prompt says. They are no longer generated at
+all. The model refused both on a recitation filter, and the refusal turned out to be a favour —
+`scripts/generate-textures.mjs` produces better files deterministically, in a fraction of the bytes.
+See §5.
 
 ### 1.6 Alt text policy
 
@@ -163,7 +161,7 @@ prompt is visible in a diff and an unchanged prompt does not get regenerated unl
 Two parsing rules, both of which the example above will break if they are ignored. The parser must strip
 fenced blocks before it looks for markers, otherwise the illustrative opening marker inside the fenced
 example is read as a nineteenth image. And it must reject any entry whose attributes are not all present and
-numeric where numbers are expected, rather than guessing a default. A correct run finds exactly **18**
+numeric where numbers are expected, rather than guessing a default. A correct run finds exactly **16**
 entries; `--dry-run` prints the count, and any other number means the parse is wrong, not the file.
 
 ---
@@ -730,81 +728,38 @@ room, no text, no watermark, no likeness of any real person.
 
 ## 5. Textures
 
-Both textures are overlays. They are applied in CSS over `color.bg.base`, at low opacity, and they are
-decorative, so they carry no alt text in markup. Both must tile at 1024 without a visible seam. Read
-§1.5 on the tiling check and the procedural fallback before regenerating either.
+**These two are not generated by the model. They are produced procedurally by
+`scripts/generate-textures.mjs`, and this section records why.**
 
-<!-- gen:begin id="texture-grain" file="texture-grain.png" width="1024" height="1024" aspect="1:1" tier="1K" crop="none" format="png" quality="100" -->
+Both were originally specified here as prompts, alongside the photographic assets. The model refused both,
+returning `Image generation blocked due to copyright/recitation` — a filter being cautious about regular
+patterns rather than a real rights question. The refusal was worth acting on anyway, because asking a large
+image model for procedural noise was the wrong tool from the start:
 
-### `texture-grain.png`
+| | Model | Procedural |
+|---|---|---|
+| Seamless tiling | must be checked, and often fails | true by construction |
+| Determinism | two runs give two different files | byte-identical from a seed |
+| Size | ~900 KB of incompressible noise at 1024 | 57 KB grain, 35 KB scanline at 256 |
+| Provenance | SynthID watermark, needs a credit line | sixty lines of arithmetic |
 
-| | |
-|---|---|
-| Output | 1024 × 1024 px |
-| Aspect ratio | 1:1 |
-| Post-process | greyscale, luminance mapped to alpha, PNG-8, seamless-tile pass |
-| Used in | Global body overlay, `background-repeat: repeat`, opacity around 0.04 |
+The targets changed with the method:
 
-```text
-TURBINE house style. Photographic, low-key, documentary rather than advertising. The palette is
-restricted to near-black #0A0B0D, deep charcoal #131519, sodium-lamp orange #FF6A1A and a cold coolant
-cyan #2FE6D6, with violet #7C5CFF used only as a trace; no other saturated colour anywhere in the frame.
-Light is practical and single-source: a work lamp, a sodium flood, a cold window, a tube fitting. Deep
-protected shadows, highlights that hold detail, fine 35mm film grain, slight sensor noise in the blacks.
-No HDR, no bloom, no lens flare, no colour grading toward teal-and-orange cliché, no glossy advertising
-finish. Absolutely no text, letters, numbers, signage, logos, watermarks, captions or subtitles anywhere
-in the image. No colour of any kind: this image is neutral greyscale only.
+| File | Output | Method |
+|---|---|---|
+| `texture-grain.png` | 256 × 256, tiles | four averaged samples of a seeded mulberry32 PRNG, giving a roughly normal distribution rather than television static; pattern carried entirely in alpha |
+| `texture-scanline.png` | 256 × 256, tiles | 4 px period with raised-cosine soft edges so it does not alias when scaled, plus faint per-pixel jitter so it does not read as a CSS repeating gradient |
 
-A flat, seamless, evenly distributed film grain texture and nothing else. Fine-grained monochrome noise of
-the kind found in a scan of push-processed black-and-white 35mm film, grain clusters roughly one to three
-pixels across, randomly sized and randomly distributed, with no clumping, no directional streaking and no
-pattern. The overall tone sits in the mid greys with low contrast, no pure black and no pure white, and
-the local average brightness is identical in every part of the square, with no vignette, no gradient, no
-hot spot and no darker corner. The texture must tile seamlessly: the content at the left edge continues
-the content at the right edge, and the top edge continues the bottom edge. Absolutely flat field. No
-subject, no object, no surface, no scratches, no dust specks, no hairs, no sprocket holes, no frame edges,
-no colour, no text, no watermark.
+Both are white with the pattern in the alpha channel, so they multiply over any surface without
+contributing a colour of their own. Both are decorative, carry no alt text in markup, and are applied as
+CSS backgrounds over `color.bg.base` at low opacity.
+
+```bash
+node scripts/generate-textures.mjs
 ```
 
-**Alt text (documentation only, applied as CSS background):** `Decorative film grain overlay.`
-
-<!-- gen:end -->
-
-<!-- gen:begin id="texture-scanline" file="texture-scanline.png" width="1024" height="1024" aspect="1:1" tier="1K" crop="none" format="png" quality="100" -->
-
-### `texture-scanline.png`
-
-| | |
-|---|---|
-| Output | 1024 × 1024 px |
-| Aspect ratio | 1:1 |
-| Post-process | greyscale, luminance mapped to alpha, PNG-8, seamless-tile pass, row period snapped to 4px |
-| Used in | Hero and ticker overlay, `background-repeat: repeat`, opacity around 0.06, hidden under `prefers-reduced-motion` if ever animated |
-
-```text
-TURBINE house style. Photographic, low-key, documentary rather than advertising. The palette is
-restricted to near-black #0A0B0D, deep charcoal #131519, sodium-lamp orange #FF6A1A and a cold coolant
-cyan #2FE6D6, with violet #7C5CFF used only as a trace; no other saturated colour anywhere in the frame.
-Light is practical and single-source: a work lamp, a sodium flood, a cold window, a tube fitting. Deep
-protected shadows, highlights that hold detail, fine 35mm film grain, slight sensor noise in the blacks.
-No HDR, no bloom, no lens flare, no colour grading toward teal-and-orange cliché, no glossy advertising
-finish. Absolutely no text, letters, numbers, signage, logos, watermarks, captions or subtitles anywhere
-in the image. No colour of any kind: this image is neutral greyscale only.
-
-A flat, seamless CRT scanline pattern and nothing else. Perfectly horizontal lines running the full width
-of the square, strictly parallel and strictly level, repeating on a constant four-pixel period: two darker
-pixel rows followed by two lighter pixel rows, with a soft one-pixel falloff between them rather than a
-hard binary edge. Neutral greyscale, low contrast, mid-tone average, no pure black and no pure white. The
-pattern is identical across the whole square: no gradient, no vignette, no curvature, no barrel
-distortion, no phosphor glow, no colour fringing, no moiré, no interference bands, no brightness drift
-from top to bottom. It must tile seamlessly in both axes, with the row phase at the bottom edge continuing
-correctly into the top edge. Absolutely flat field. No screen bezel, no glass reflection, no subject behind
-the lines, no vertical lines, no dot mask, no colour, no text, no watermark.
-```
-
-**Alt text (documentation only, applied as CSS background):** `Decorative horizontal scanline overlay.`
-
-<!-- gen:end -->
+The wider point is worth keeping: **not every asset in a generative pipeline should be generated.** The two
+files here that a model could not make are the two that a hundred lines of code makes better.
 
 ---
 

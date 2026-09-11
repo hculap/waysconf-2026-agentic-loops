@@ -1,0 +1,60 @@
+---
+/**
+ * Tag — the small mono label. Ticker tags, genre tags, billing and tier badges.
+ *
+ * Mono/Tag from FIGMA-SPEC 3: JetBrains Mono 700 at 12px, uppercase, wide tracking.
+ * Uppercasing happens in CSS. Copy typed in capitals reaches the markup in capitals,
+ * a screen reader spells it out letter by letter, and the string can no longer be
+ * changed without retyping it.
+ *
+ * Every solid fill takes text.on-accent — bg.base — as its ink. The three accents
+ * and both state colours are bright enough that light ink looks plausible and
+ * measures badly: white on arc is 4.35:1 and white on danger is 3.27:1, while
+ * bg.base clears AA on all five. AC-29 enforces the sodium case; the rest are the
+ * same argument with different numbers. See design/tokens/CONTRAST.md section 5.
+ */
+interface Props {
+  /** Which palette colour carries the tag. */
+  tone?: 'coolant' | 'sodium' | 'arc' | 'danger' | 'neutral'
+  /**
+   * plain   bare mono text, for the ticker and the genre line
+   * solid   filled pill-corner badge, for Headliner and Most popular
+   * outline hairline border, for a tag that needs an edge but not a fill
+   */
+  variant?: 'plain' | 'solid' | 'outline'
+  /** Render as something other than a span — `li` inside the ticker, say. */
+  as?: 'span' | 'li' | 'p' | 'div'
+  class?: string
+}
+
+const { tone = 'coolant', variant = 'plain', as: Tag = 'span', class: className } = Astro.props
+
+const base = 'inline-flex items-center font-mono text-xs font-bold uppercase tracking-[0.06em]'
+
+const ink = {
+  coolant: 'text-accent-coolant',
+  sodium: 'text-accent-sodium',
+  arc: 'text-accent-arc',
+  danger: 'text-state-danger',
+  neutral: 'text-text-secondary',
+}
+
+const fill = {
+  coolant: 'bg-accent-coolant',
+  sodium: 'bg-accent-sodium',
+  arc: 'bg-accent-arc',
+  danger: 'bg-state-danger',
+  neutral: 'bg-bg-raised',
+}
+
+/** Only the neutral fill is dark enough to keep light ink. */
+const solidInk = tone === 'neutral' ? 'text-text-primary' : 'text-text-on-accent'
+
+const variants = {
+  plain: ink[tone],
+  solid: `${fill[tone]} ${solidInk} rounded-sm px-2 py-1`,
+  outline: `${ink[tone]} rounded-pill border border-border-subtle px-2 py-1`,
+}
+---
+
+<Tag class:list={[base, variants[variant], className]}><slot /></Tag>

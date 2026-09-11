@@ -61,7 +61,7 @@ const progress = (text) => process.stderr.write(`  ${text}\n`)
  * consult isTTY — so anything that parses `astro check` output has to strip them first,
  * or every regex has to account for an escape sequence in the middle of a file path.
  */
-const stripAnsi = (text) => text.replace(/\[[0-?]*[ -/]*[@-~]/g, '')
+const stripAnsi = (text) => text.replace(/\u001B\[[0-?]*[ -/]*[@-~]/g, '')
 
 /**
  * Run a Node entry point as a child process and collect everything it said.
@@ -146,6 +146,8 @@ const STACK_NOISE = /^(at\s|Stack trace:|file:)/
  */
 const stripTimestamp = (line) => line.replace(/^\d{1,2}:\d{2}:\d{2}\s+/, '')
 
+const VITE_BANNER = /\bBuild failed in\b/
+
 /**
  * Pull the one line worth putting in the failure message out of a failed build.
  *
@@ -171,6 +173,13 @@ function extractLastError(text) {
       if (STACK_NOISE.test(line.trim())) break
       picked.push(stripTimestamp(line.trim()))
     }
+    // vite's "Build failed in 648ms" banner names no cause and carries a duration that
+    // changes every run, which would make an otherwise identical failure read as a new one.
+    // Keep it only when nothing more specific followed it.
+    if (picked.length > 1) {
+      const withoutBanner = picked.filter((l) => !VITE_BANNER.test(l))
+      if (withoutBanner.length) picked.splice(0, picked.length, ...withoutBanner)
+    }
   } else {
     const lastUseful = [...lines].reverse().find((l) => !STACK_NOISE.test(l.trim()))
     picked.push(stripTimestamp((lastUseful ?? lines[lines.length - 1]).trim()))
@@ -187,6 +196,7 @@ const tail = (text, lineCount) =>
     .split('\n')
     .filter((l) => l.trim() !== '')
     .slice(-lineCount)
+    .map((l) => stripTimestamp(l.trimEnd()))
     .join('\n')
 
 const fenced = (text) => `\n\n\`\`\`\n${text}\n\`\`\``

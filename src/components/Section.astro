@@ -1,0 +1,96 @@
+---
+/**
+ * Section — the shell every canonical section is built inside.
+ *
+ * It exists to make three things impossible to get wrong across eleven separate
+ * files:
+ *
+ *   AC-06  the section carries `data-section` and `id` set to the same canonical
+ *          name, spelled once here instead of eleven times.
+ *   AC-33  horizontal space comes from `.container-turbine` — max-width 1200,
+ *          gutter 24 at 390 and 48 at 1440 — and from nothing else.
+ *   AC-09  a <section> with an accessible name is a landmark region and an unnamed
+ *          one is not. Passing `heading` names it via aria-labelledby; passing
+ *          neither `heading` nor `label` leaves it deliberately unnamed rather
+ *          than shipping an anonymous region.
+ *
+ * Vertical rhythm is the responsive/section-pad-y variable from FIGMA-SPEC 2.5:
+ * 64 at 390, 96 at 768, 128 at 1440. It is set here and nowhere else, because two
+ * sources of vertical rhythm is one too many and the diff finds the difference.
+ */
+import SectionHeading from './SectionHeading.astro'
+
+interface Props {
+  /**
+   * The canonical name from CANON 7: skip-link, nav, hero, ticker, lineup,
+   * programme, venue, tickets, faq, newsletter, footer. Becomes both the
+   * `data-section` value AC-06 reads and the `id` the nav anchors point at.
+   */
+  name: string
+  /** Renders a SectionHeading block above the slot. */
+  kicker?: string
+  heading?: string
+  /** CONTENT 15 fixes every section heading at h2; subsections pass 3. */
+  headingLevel?: 2 | 3
+  intro?: string
+  /** Accessible name for a section that has no visible heading. */
+  label?: string
+  /** bg.surface lifts a section off the page; newsletter is the one that does. */
+  tone?: 'base' | 'surface'
+  /** Full-bleed content: the ticker marquee and the hero image ignore the gutter. */
+  bleed?: boolean
+  /** Drop the vertical rhythm. The nav and the ticker set their own height. */
+  flush?: boolean
+  /** Element to render. The footer and the header are sections too. */
+  as?: 'section' | 'header' | 'footer' | 'nav' | 'div'
+  class?: string
+  containerClass?: string
+}
+
+const {
+  name,
+  kicker,
+  heading,
+  headingLevel = 2,
+  intro,
+  label,
+  tone = 'base',
+  bleed = false,
+  flush = false,
+  as: Tag = 'section',
+  class: className,
+  containerClass,
+} = Astro.props
+
+const headingId = heading ? `${name}-heading` : undefined
+
+const tones = {
+  base: 'bg-bg-base',
+  surface: 'bg-bg-surface',
+}
+---
+
+<Tag
+  id={name}
+  data-section={name}
+  class:list={[
+    tones[tone],
+    !flush && 'py-16 tablet:py-24 desktop:py-32',
+    className,
+  ]}
+  aria-labelledby={headingId}
+  aria-label={!headingId && label ? label : undefined}
+>
+  {
+    bleed ? (
+      <slot />
+    ) : (
+      <div class:list={['container-turbine flex flex-col gap-12', containerClass]}>
+        {heading && (
+          <SectionHeading kicker={kicker} heading={heading} level={headingLevel} id={headingId} intro={intro} />
+        )}
+        <slot />
+      </div>
+    )
+  }
+</Tag>

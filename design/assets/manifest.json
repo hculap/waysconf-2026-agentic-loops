@@ -139,7 +139,7 @@
       "tier": "1K",
       "format": "jpg",
       "promptHash": "3d109a045b7955d37e3665dd1012bdb9cee3d74ca98d4888723078cfb63620e2",
-      "present": false
+      "present": true
     },
     "artist-12-vitrine": {
       "file": "artist-12-vitrine.jpg",
@@ -149,7 +149,7 @@
       "tier": "1K",
       "format": "jpg",
       "promptHash": "d40eba89b098ee470eaaa44b7c39ba09c5c27b4ae1630a48564f7008a0666366",
-      "present": false
+      "present": true
     },
     "texture-grain": {
       "file": "texture-grain.png",
@@ -179,7 +179,7 @@
       "tier": "2K",
       "format": "jpg",
       "promptHash": "44fa1546965009287f52375eab5f179c3b19e4e14c78563905d87d7373daeaa5",
-      "present": false
+      "present": true
     }
   }
 }

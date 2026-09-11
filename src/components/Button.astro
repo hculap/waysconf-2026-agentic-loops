@@ -1,0 +1,117 @@
+---
+/**
+ * Button — the only control surface on the page.
+ *
+ * Renders an <a> when `href` is passed and a <button> otherwise, because a thing
+ * that navigates and a thing that acts are different elements to a keyboard and to
+ * a screen reader, and no amount of styling makes them interchangeable.
+ *
+ * Two rules here are gates rather than taste:
+ *
+ *   AC-29  the primary fill is accent.sodium and its ink is text.on-accent, which
+ *          aliases bg.base. White on sodium measures 2.87:1 and fails at every
+ *          size; near-black on sodium measures 6.87:1. See design/tokens/CONTRAST.md.
+ *   AC-32  padding snaps to the spacing scale. FIGMA-SPEC 4.1 asks for 28px and
+ *          20px inline padding, which are not on the ten-step scale the same
+ *          document fixes in 2.4. The scale wins and those round to 32 and 24; the
+ *          heights it also fixes, 48 and 40, are preserved exactly.
+ *
+ * Hover is a 10% text.primary overlay, never a new fill. CANON gives the palette
+ * thirteen colours and a hover state is not allowed to make it fourteen. The
+ * overlay ships at `opacity: 0`, so the colour the page actually paints at rest is
+ * still an on-palette one (AC-26).
+ *
+ * The focus ring is not declared here. global.css defines :focus-visible once, in
+ * accent.coolant, the only colour in the palette that clears 3:1 against every
+ * surface (AC-17).
+ */
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends Omit<HTMLAttributes<'a'>, 'type'> {
+  /** Visual weight. One primary per screen region is the intent. */
+  variant?: 'primary' | 'secondary' | 'ghost'
+  /** md is 48px tall, sm is 40px. Both clear the 24px touch minimum (AC-23). */
+  size?: 'md' | 'sm'
+  /** Passing href renders an anchor. Omitting it renders a button. */
+  href?: string
+  /** Ignored on anchors. */
+  type?: 'button' | 'submit' | 'reset'
+  /** Real disabled: unfocusable. Form controls only. */
+  disabled?: boolean
+  /**
+   * Disabled in appearance and in the accessibility tree, still focusable. This is
+   * what the sold-out ticket button needs (CONTENT 9), because a control that
+   * drops out of the tab order also drops the explanation of why it is off.
+   */
+  ariaDisabled?: boolean
+  fullWidth?: boolean
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  ariaDisabled = false,
+  fullWidth = false,
+  class: className,
+  ...rest
+} = Astro.props
+
+const inert = disabled || ariaDisabled
+
+const base =
+  'relative isolate inline-flex items-center justify-center gap-2 rounded-pill font-body ' +
+  'font-semibold text-center align-middle no-underline'
+
+/** The hover wash. Inert controls do not get one; they are not going anywhere. */
+const overlay = inert
+  ? ''
+  : 'before:absolute before:inset-0 before:-z-10 before:rounded-[inherit] before:bg-text-primary ' +
+    'before:opacity-0 before:transition-opacity before:duration-150 hover:before:opacity-10'
+
+const sizes = {
+  md: 'min-w-[120px] px-8 py-3 text-base leading-6',
+  sm: 'min-w-[96px] px-6 py-2 text-sm leading-6',
+}
+
+const variants = {
+  primary: 'bg-accent-sodium text-text-on-accent',
+  secondary: 'border border-border-strong text-text-primary',
+  ghost: 'text-accent-coolant hover:underline',
+}
+
+/**
+ * Never expressed as opacity. A composited alpha cannot be measured by axe and
+ * cannot be read by a person in a bright room, so the off state is a real fill.
+ */
+const inertClasses = 'cursor-not-allowed bg-bg-raised text-text-secondary'
+
+const classes = [
+  base,
+  overlay,
+  sizes[size],
+  inert ? inertClasses : variants[variant],
+  fullWidth && 'w-full',
+  className,
+]
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes} aria-disabled={ariaDisabled ? 'true' : undefined} {...rest}>
+      <slot />
+    </a>
+  ) : (
+    <button
+      type={type}
+      class:list={classes}
+      disabled={disabled || undefined}
+      aria-disabled={ariaDisabled ? 'true' : undefined}
+      {...(rest as HTMLAttributes<'button'>)}
+    >
+      <slot />
+    </button>
+  )
+}

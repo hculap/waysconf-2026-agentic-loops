@@ -80,54 +80,66 @@ function shouldRun(id) {
 
 // ── Gate: build ───────────────────────────────────────────────────────────────
 
+const BUILD_CRITERIA = ['AC-01', 'AC-02', 'AC-05']
+
+/**
+ * AC-01, AC-02 and AC-05 live in checks/gates/build.mjs, the same way the Lighthouse
+ * criteria live in checks/gates/lighthouse.mjs: the gate is a standalone program that
+ * prints one JSON result, so it can be run and debugged on its own with
+ * `npm run check:build`. This function only shells out and folds the result in.
+ *
+ * AC-03 and AC-04 (console errors, network failures during load) are the browser half of
+ * the BUILD family and are reported separately by checks/specs/runtime.spec.ts.
+ */
 async function buildGate() {
-  if (NO_BUILD) {
+  const t0 = Date.now()
+  console.log(NO_BUILD ? '› checking the existing build' : '› building')
+
+  const args = ['checks/gates/build.mjs']
+  if (NO_BUILD) args.push('--no-build')
+  const { code, stdout, stderr } = await run('node', args)
+
+  if (!stdout.trim().startsWith('{')) {
+    // Unlike Lighthouse, a build gate that could not run is a hard failure rather than a
+    // skip. Every other gate reads dist/, so continuing would mean checking output that
+    // nothing has verified — and reporting green from it.
     return gateResult({
       id: 'build',
       title: 'Build',
-      status: existsSync(join(ROOT, 'dist/index.html')) ? STATUS.PASS : STATUS.FAIL,
-      criteria: ['AC-01'],
-      failures: existsSync(join(ROOT, 'dist/index.html'))
-        ? []
-        : [{ criterion: 'AC-01', message: 'dist/index.html does not exist and --no-build was passed.' }],
-      notes: ['--no-build: reused the existing dist/'],
+      status: STATUS.FAIL,
+      criteria: BUILD_CRITERIA,
+      failures: [
+        {
+          criterion: 'AC-01',
+          message: 'The build gate itself did not run, so nothing about the build is known.',
+          where: 'checks/gates/build.mjs',
+          actual: `exit code ${code}`,
+          hint: `Last lines of output:\n\n\`\`\`\n${(stderr || stdout).trim().split('\n').slice(-25).join('\n')}\n\`\`\``,
+        },
+      ],
+      durationMs: Date.now() - t0,
     })
   }
 
-  const t0 = Date.now()
-  console.log('› building')
-  const { code, stdout, stderr } = await run('npx', ['astro', 'build'])
-  const output = `${stdout}\n${stderr}`
-  const failures = []
-
-  if (code !== 0) {
-    // Keep the tail rather than the head: the actual error is almost always last.
-    const tail = output.trim().split('\n').slice(-40).join('\n')
-    failures.push({
-      criterion: 'AC-01',
-      message: 'astro build failed.',
-      where: 'npx astro build',
-      actual: `exit code ${code}`,
-      hint: `Build output (last 40 lines):\n\n\`\`\`\n${tail}\n\`\`\``,
+  try {
+    const parsed = JSON.parse(stdout.slice(stdout.indexOf('{')))
+    return gateResult({ ...parsed, durationMs: Date.now() - t0 })
+  } catch (err) {
+    return gateResult({
+      id: 'build',
+      title: 'Build',
+      status: STATUS.FAIL,
+      criteria: BUILD_CRITERIA,
+      failures: [
+        {
+          criterion: 'AC-01',
+          message: `Could not parse the build gate's output: ${String(err).slice(0, 200)}`,
+          where: 'checks/gates/build.mjs',
+        },
+      ],
+      durationMs: Date.now() - t0,
     })
   }
-
-  if (!existsSync(join(ROOT, 'dist/index.html'))) {
-    failures.push({
-      criterion: 'AC-01',
-      message: 'The build produced no dist/index.html.',
-      where: 'dist/',
-    })
-  }
-
-  return gateResult({
-    id: 'build',
-    title: 'Build',
-    status: failures.length ? STATUS.FAIL : STATUS.PASS,
-    criteria: ['AC-01'],
-    failures,
-    durationMs: Date.now() - t0,
-  })
 }
 
 // ── Gate: Lighthouse ──────────────────────────────────────────────────────────
@@ -141,7 +153,7 @@ async function perfGate(url) {
       id: 'perf',
       title: 'Lighthouse',
       status: STATUS.SKIP,
-      criteria: ['AC-40', 'AC-41'],
+      criteria: ['AC-52', 'AC-53', 'AC-54', 'AC-55'],
       notes: [`Lighthouse could not run: ${(stderr || stdout).trim().split('\n').slice(-3).join(' ')}`],
       durationMs: Date.now() - t0,
     })

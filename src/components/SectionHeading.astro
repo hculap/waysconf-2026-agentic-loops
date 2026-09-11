@@ -1,0 +1,63 @@
+---
+/**
+ * SectionHeading — kicker, heading, intro.
+ *
+ * The heading level is a prop and not a guess. CONTENT 15 fixes the outline for
+ * the whole page: one h1 in the hero, an h2 per section, an h3 for everything
+ * nested inside one. AC-08 walks the headings in DOM order and fails the build on
+ * the first skipped level, so a component that hard-coded <h2> would force every
+ * subsection to reach for a div and lose its place in the outline.
+ *
+ * The kicker is decoration with a job: it names the section before the heading
+ * does. It is set in mono, uppercase, in accent.coolant — 12.57:1 on bg.base, the
+ * widest margin in the palette, which it needs at 12px.
+ */
+interface Props {
+  /** Short label above the heading. Uppercased by CSS, not by typing in caps. */
+  kicker?: string
+  heading: string
+  /** 2 for a section, 3 for a subsection. CONTENT 15 has no h4 on this page. */
+  level?: 2 | 3 | 4
+  /** Set this when something points at the heading with aria-labelledby. */
+  id?: string
+  /** One sentence under the heading. Body/Lead, capped at 720px for measure. */
+  intro?: string
+  class?: string
+}
+
+const { kicker, heading, level = 2, id, intro, class: className } = Astro.props
+
+const Heading = `h${level}` as 'h2' | 'h3' | 'h4'
+
+/**
+ * Display/Section and Display/Subsection from FIGMA-SPEC 3, resolved through the
+ * responsive type variables in 2.5: 32/40/56 for an h2, 24/24/32 for an h3.
+ */
+const headingClasses = {
+  2: 'font-display text-3xl font-bold tracking-display tablet:text-4xl desktop:text-5xl',
+  3: 'font-display text-2xl font-medium tracking-display desktop:text-3xl',
+  4: 'font-display text-xl font-medium tracking-display',
+}
+---
+
+<div class:list={['flex flex-col gap-3', className]}>
+  {
+    kicker && (
+      <p class="font-mono text-xs font-bold uppercase tracking-[0.06em] text-accent-coolant">
+        {kicker}
+      </p>
+    )
+  }
+
+  <Heading id={id} class={headingClasses[level]}>{heading}</Heading>
+
+  {
+    intro && (
+      <p class="max-w-[720px] text-lg leading-relaxed text-text-secondary desktop:text-xl">
+        {intro}
+      </p>
+    )
+  }
+
+  <slot />
+</div>

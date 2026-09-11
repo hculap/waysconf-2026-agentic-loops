@@ -85,6 +85,7 @@ cost.
 | Lighthouse | 12.8.2 | Google |
 | pixelmatch | 7.2.0 | Vladimir Agafonkin / Mapbox |
 | pngjs | 7.0.0 | the pngjs contributors |
+| sharp | 0.35.4 | Lovell Fuller and contributors |
 | TypeScript | 5.9.3 | Microsoft |
 
 ### 4.2 Agents and command-line tools
