@@ -11,13 +11,13 @@ project writes it. `<angle brackets>` mark a placeholder you replace.
 ## A
 
 **Accessibility gate** — The part of `npm run check` that fails the run when the page breaks
-accessibility rules. In this workshop: the gate the session is built around. At `step-3` structure and
+accessibility rules. In this workshop: the check the session is built around. Once your page is built, structure and
 content have gone green and this one is still red, because the TURBINE palette contains a grey that
 fails contrast on purpose.
 
 **Adversarial review** — A review in which every candidate defect is handed to reviewers instructed to
 refute it, so only findings that survive get reported. In this workshop:
-`loop/workflows/adversarial-review.mjs`, run after the deterministic gates — the ones that are programs
+prompt 07, run after the checks that are programs
 rather than judgements — are green.
 
 **Agent** — A model that can act rather than only answer: it reads files, runs commands, and reacts to
@@ -25,7 +25,7 @@ what comes back. In this workshop: the agent writes the site, runs the gates, an
 report.
 
 **Agentic loop** — Build, check, read the failure, fix, check again, until a program says it is done. In
-this workshop: this is the entire subject. `loop/ralph.sh` is the whole of it: a dozen lines of logic
+this workshop: this is the entire subject. Prompt 05 is the whole of it: a paragraph
 wrapped in guard rails and comments.
 
 **Astro** — A website framework that turns the files in `src/` into finished HTML. In this workshop: it
@@ -51,8 +51,8 @@ workshop: `brief/ACCEPTANCE.md` AC-56 budgets it at 0.10 or less, which in pract
 that reserve their space before they arrive.
 
 **Checkout** — Switching the files in front of you to a different branch or saved point. In this
-workshop: `git checkout step-2` moves you to the workshop's step 2 if you fall behind. See
-`CHECKPOINTS.md`.
+workshop: you never need one. Every prompt stands alone, so falling behind means pasting the
+next prompt rather than recovering a state.
 
 **Chromium** — The open-source browser that Chrome is built from. In this workshop: the browser
 Playwright drives and Lighthouse measures, already installed in your Codespace.
@@ -118,7 +118,7 @@ is why `design/assets/PROMPTS.md` keeps every word out of the imagery.
 
 **Exit code** — The number a program returns when it finishes. Zero means it succeeded; anything else
 means it failed, and the number says which way. In this workshop: `npm run check` exits 0 only when every
-gate passed, and that number — not a sentence from a model — is what `loop/ralph.sh` reads to decide
+check passed, and that number — not a sentence from a model — is what the loop in prompt 05 reads to decide
 whether to stop.
 
 ## F
@@ -127,7 +127,7 @@ whether to stop.
 selection instead of editing tools. In this workshop: the handover point for spacing and token values.
 Without a paid seat you lose nothing here: `design/FIGMA-SPEC.md` carries the measurements frame by
 frame, `design/tokens/` carries the values and `design/export/` carries the reference screenshots.
-`loop/MCP.md` has a route to the live file that works on a free account.
+`docs/CONNECTING-FIGMA.md` has a route to the live file that works on a free account.
 
 ## G
 
@@ -169,7 +169,7 @@ your browser. Nobody else reaches it unless you make that forwarded port public.
 instead of a description of one. In this workshop: how the agent reaches Figma, a browser and Netlify.
 
 **MCP server** — A small program that exposes one system's abilities over MCP. In this workshop:
-`loop/MCP.md` has the exact `claude mcp add` commands for the Figma, Playwright and Netlify servers.
+`docs/CONNECTING-FIGMA.md` has the exact `claude mcp add` commands for the Figma, Playwright and Netlify servers.
 
 **Model** — The trained system that produces the text, such as Claude or GPT, usually offered in several
 sizes. In this workshop: the model is one component. The loop, the gates and the prompts around it are
@@ -295,4 +295,4 @@ it.
 
 **Workflow** — A scripted sequence of agent steps in which some steps fan out to several agents working
 in parallel, and every step is checked, instead of one long conversation. In this workshop:
-`loop/workflows/` holds two — one builds page sections in parallel, one runs adversarial review.
+Prompt 08 is one, written in words rather than in code: phases you define, and a bar the agent may not cross until each is met.

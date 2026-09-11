@@ -4,69 +4,72 @@
     {
       "id": "01",
       "note": "an Astro project exists",
-      "seconds": 0,
-      "exit": 1,
+      "seconds": 107,
+      "exit": 0,
       "filesBefore": 0,
-      "filesAfter": 0,
+      "filesAfter": 6,
       "expected": [
         "package.json",
         "astro.config.mjs"
       ],
-      "present": [],
-      "missing": [
+      "present": [
         "package.json",
         "astro.config.mjs"
       ],
-      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+      "missing": [],
+      "tail": "+  <body></body>\n+</html>\ndiff --git a/src/styles/global.css b/src/styles/global.css\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..f1d8c73cdcf9eaacb01fec99963ad78d591305ae\n--- /dev/null\n+++ b/src/styles/global.css\n@@ -0,0 +1 @@\n+@import \"tailwindcss\";\ndiff --git a/tsconfig.json b/tsconfig.json\nnew file mode 100644\nindex 0000000000000000000000000000000000000000..8bf91d3bb997dfb0ea4a592b849545656f0fcebe\n--- /dev/null\n+++ b/tsconfig.json\n@@ -0,0 +1,5 @@\n+{\n+  \"extends\": \"astro/tsconfigs/strict\",\n+  \"include\": [\".astro/types.d.ts\", \"**/*\"],\n+  \"exclude\": [\"dist\"]\n+}\n\nhook: Stop\nhook: Stop Completed\ntokens used\n20,711"
     },
     {
       "id": "03",
       "note": "a page with a hero exists",
-      "seconds": 0,
-      "exit": 1,
-      "filesBefore": 0,
-      "filesAfter": 0,
+      "seconds": 41,
+      "exit": 0,
+      "filesBefore": 6,
+      "filesAfter": 6,
       "expected": [
         "src/pages/index.astro"
       ],
-      "present": [],
-      "missing": [
+      "present": [
         "src/pages/index.astro"
       ],
-      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+      "missing": [],
+      "tail": "+.description {\n+  max-width: 560px;\n+  margin: 24px 0 0;\n+}\n+\n+button {\n+  margin-top: 32px;\n+  border: 0;\n+  padding: 14px 28px;\n+  background: #FF6A1A;\n+  color: #0A0B0D;\n+  font: inherit;\n+  font-weight: 700;\n+  cursor: pointer;\n+}\n+\n+button:focus-visible {\n+  outline: 2px solid #F2F4F7;\n+  outline-offset: 4px;\n+}\n\nhook: Stop\nhook: Stop Completed\ntokens used\n10,586"
     },
     {
       "id": "04",
       "note": "a checker exists and npm run check is wired",
-      "seconds": 0,
-      "exit": 1,
-      "filesBefore": 0,
-      "filesAfter": 0,
+      "seconds": 495,
+      "exit": 0,
+      "filesBefore": 6,
+      "filesAfter": 10,
       "expected": [
         "check.mjs"
       ],
-      "present": [],
-      "missing": [
+      "present": [
         "check.mjs"
       ],
-      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+      "missing": [],
+      "tail": "+test('rendered defects are identified with actual evidence', async t => {\n+  const result = await fixture(t, { html: '<!doctype html><html lang=\"en\"><head><title>Fixture</title></head><body style=\"background:white;color:black\"><main><section id=\"wrong\" style=\"width:1600px;background:red\"><h1>Goodbye</h1><img src=\"missing-photo.png\" alt=\"missing-photo.png\"><button></button></section></main><script>console.error(\"fixture console error\")</script></body></html>' });\n+  assert.equal(result.status, 1);\n+  for (const evidence of ['#FF0000', 'fixture console error', 'Hello', '1600', 'missing-photo.png', 'button-name', '#hero']) assert.ok(result.report.includes(evidence), evidence);\n+});\n+\n+test('build failure cannot pass browser checks against stale output', async t => {\n+  const result = await fixture(t, { build: 'node -e \"process.exit(7)\"' });\n+  assert.equal(result.status, 1);\n+  assert.match(result.report, /FAIL.*Build/);\n+  assert.match(result.report, /FAIL.*Accessibility/);\n+  assert.doesNotMatch(result.report, /\\| PASS \\|/);\n+});\n+\n+test('browser startup failure is reported for every unexecuted browser check', async t => {\n+  const result = await fixture(t, { browserUnavailable: true });\n+  assert.equal(result.status, 1);\n+  assert.match(result.report, /Executable doesn't exist/);\n+  for (const label of ['Browser console', 'Section order', 'Accessibility', 'Paint colours', 'Content', 'Images', 'Horizontal overflow']) assert.match(result.report, new RegExp(`FAIL.*${label}`));\n+});\n\nhook: Stop\nhook: Stop Completed\ntokens used\n58,172"
     },
     {
       "id": "05",
       "note": "the loop ran",
-      "seconds": 0,
-      "exit": 1,
-      "filesBefore": 0,
-      "filesAfter": 0,
+      "seconds": 46,
+      "exit": 0,
+      "filesBefore": 10,
+      "filesAfter": 10,
       "expected": [
         "check.mjs"
       ],
-      "present": [],
-      "missing": [
+      "present": [
         "check.mjs"
       ],
-      "tail": "Reading additional input from stdin...\nNot inside a trusted directory and --skip-git-repo-check was not specified."
+      "missing": [],
+      "tail": "\nInstall the browser once with `npx playwright install chromium`. Only Playwright and `@axe-core/playwright` were added as direct dependencies. Run the checker's integration tests with `node --test check.test.mjs`.\n\nThe supplied workspace has **no design or content reference**. The checker intentionally fails the dependent checks. It does not generate its expectations from the implementation. Supply these independently reviewed inputs to make those checks executable:\n\n- `check-design.json`: an object with `sections` (a nonempty array of `{ \"name\": \"…\", \"selector\": \"…\" }` in design order) and `colors` (a nonempty array of exact `#RRGGBB` colours from the design). Selectors must uniquely identify the rendered sections. Both DOM order and top-to-bottom/left-to-right visual order are checked.\n- `content.txt`: verbatim text, split into pieces by blank lines. Alternatively `content.json`: nested arrays/objects with text string leaves; every leaf is required. JSON takes precedence if both exist. Only whitespace is normalized; case and punctuation are exact. Keep metadata and URLs that are not intended as visible copy out of this text-only reference.\n\nThe target is the root page of this static Astro site. Browser checks run at widths 390, 768 and 1440, height 900, device scale 1, dark colour preference, reduced motion, English locale and UTC. Each width gets a fresh context. Entire vertical screenshots and reachable keyboard focus states are checked. The suite does not claim to exercise arbitrary click-driven application states or other routes.\n\nColour matching is deliberately literal: every captured RGB pixel must occur in the reference palette. No rounding, nearest-colour matching, antialiasing exceptions or image exemptions are used. Consequently text smoothing, transparency, shadows and photographs can fail even if their CSS source colours match the design. Reports group unexpected colours by the element hit-tested at their pixel coordinates; coordinates are document CSS pixels. Overlapping or pointer-events-disabled layers can make the hit-test name refer to an underlying element. Do not expand the design palette from observed screenshots merely to make it pass.\n\nThe check has bounded execution and capture limits; exceeding them fails. Keep package-lock.json and the Playwright browser version fixed for reproducible rendering. Dynamic or externally changing page content may itself be nondeterministic; this checker uses no model, random sampling or human decisions.\nfatal: not a git repository (or any of the parent directories): .git\n\ncodex\n`npm run check` exited **1**: 12 failures, 11 passes.\n\nThe first failure needs `check-design.json`; later failures also need `content.txt`. `CHECKING.md` confirms the workspace has no design or content references.\n\nI’m blocked until those authoritative inputs are supplied. Creating them from the page would invent expectations. No source files or `check.mjs` were changed.\nhook: Stop\nhook: Stop Completed\ntokens used\n12,089"
     }
   ],
-  "finalCheck": null
+  "finalCheck": {
+    "exit": 1,
+    "tail": "| PASS | Browser console | / at 390px | No console errors, uncaught exceptions or failed requests | 0 errors |\n| FAIL | Section order | / at 768px | Ordered section list from check-design.json | check-design.json: ENOENT: no such file or directory, open './check-design.json' |\n| PASS | Accessibility | / at 768px | Zero axe violations and unresolved results (all default rules) | 0 violations; 0 incomplete; 23 rules passed |\n| FAIL | Content | / at 768px | Every text piece from content.txt is rendered | content.txt: ENOENT: no such file or directory, open './content.txt' |\n| PASS | Images | / at 768px | Every image has non-filename alternative text | 0 image elements present |\n| FAIL | Paint colours | 768px / initial | Compare every screenshot pixel against the authoritative design palette | check-design.json: ENOENT: no such file or directory, open './check-design.json'; comparison could not run. Captured 1001 distinct RGBs. #hero-heading: 189 distinct RGBs; examples #0A0B0D at (58, 124), #F2F4F7 at (25, 124); html: 1 distinct RGBs; examples #0A0B0D at (0, 472), #0A0B0D at (0, 472); html &gt; body &gt; main &gt; section: 4 distinct RGBs; examples #0A0B0D at (0, 0), #0A102D at (23, 261); html &gt; body &gt; main &gt; section &gt; button: 197 distinct RGBs; examples #0A0B0D at (172, 303), #FF6A1A at (24, 303); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(1): 374 distinct RGBs; examples #0A0B0D at (39, 197), #A7AEBB at (25, 197); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(2): 555 distinct RGBs; examples #0A0B0D at (32, 249), #A7AEBB at (29, 250) |\n| FAIL | Paint colours | 768px / keyboard focus html &gt; body &gt; main &gt; section &gt; button | Compare every screenshot pixel against the authoritative design palette | check-design.json: ENOENT: no such file or directory, open './check-design.json'; comparison could not run. Captured 1001 distinct RGBs. #hero-heading: 189 distinct RGBs; examples #0A0B0D at (58, 124), #F2F4F7 at (25, 124); html: 1 distinct RGBs; examples #0A0B0D at (0, 472), #0A0B0D at (0, 472); html &gt; body &gt; main &gt; section: 5 distinct RGBs; examples #0A0B0D at (0, 0), #F2F4F7 at (18, 297); html &gt; body &gt; main &gt; section &gt; button: 197 distinct RGBs; examples #0A0B0D at (172, 303), #FF6A1A at (24, 303); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(1): 374 distinct RGBs; examples #0A0B0D at (39, 197), #A7AEBB at (25, 197); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(2): 555 distinct RGBs; examples #0A0B0D at (32, 249), #A7AEBB at (29, 250) |\n| PASS | Browser console | / at 768px | No console errors, uncaught exceptions or failed requests | 0 errors |\n| FAIL | Section order | / at 1440px | Ordered section list from check-design.json | check-design.json: ENOENT: no such file or directory, open './check-design.json' |\n| PASS | Accessibility | / at 1440px | Zero axe violations and unresolved results (all default rules) | 0 violations; 0 incomplete; 23 rules passed |\n| FAIL | Content | / at 1440px | Every text piece from content.txt is rendered | content.txt: ENOENT: no such file or directory, open './content.txt' |\n| PASS | Images | / at 1440px | Every image has non-filename alternative text | 0 image elements present |\n| FAIL | Paint colours | 1440px / initial | Compare every screenshot pixel against the authoritative design palette | check-design.json: ENOENT: no such file or directory, open './check-design.json'; comparison could not run. Captured 1001 distinct RGBs. #hero-heading: 189 distinct RGBs; examples #0A0B0D at (218, 124), #F2F4F7 at (185, 124); html: 1 distinct RGBs; examples #0A0B0D at (0, 472), #0A0B0D at (0, 472); html &gt; body &gt; main: 1 distinct RGBs; examples #0A0B0D at (0, 0), #0A0B0D at (0, 0); html &gt; body &gt; main &gt; section: 3 distinct RGBs; examples #0A0B12 at (183, 198), #0A102D at (183, 261); html &gt; body &gt; main &gt; section &gt; button: 197 distinct RGBs; examples #0A0B0D at (332, 303), #FF6A1A at (184, 303); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(1): 374 distinct RGBs; examples #0A0B0D at (199, 197), #A7AEBB at (185, 197); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(2): 555 distinct RGBs; examples #0A0B0D at (192, 249), #A7AEBB at (189, 250) |\n| FAIL | Paint colours | 1440px / keyboard focus html &gt; body &gt; main &gt; section &gt; button | Compare every screenshot pixel against the authoritative design palette | check-design.json: ENOENT: no such file or directory, open './check-design.json'; comparison could not run. Captured 1001 distinct RGBs. #hero-heading: 189 distinct RGBs; examples #0A0B0D at (218, 124), #F2F4F7 at (185, 124); html: 1 distinct RGBs; examples #0A0B0D at (0, 472), #0A0B0D at (0, 472); html &gt; body &gt; main: 1 distinct RGBs; examples #0A0B0D at (0, 0), #0A0B0D at (0, 0); html &gt; body &gt; main &gt; section: 5 distinct RGBs; examples #0A0B0D at (338, 297), #F2F4F7 at (178, 297); html &gt; body &gt; main &gt; section &gt; button: 197 distinct RGBs; examples #0A0B0D at (332, 303), #FF6A1A at (184, 303); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(1): 374 distinct RGBs; examples #0A0B0D at (199, 197), #A7AEBB at (185, 197); html &gt; body &gt; main &gt; section &gt; p:nth-of-type(2): 555 distinct RGBs; examples #0A0B0D at (192, 249), #A7AEBB at (189, 250) |\n| PASS | Browser console | / at 1440px | No console errors, uncaught exceptions or failed requests | 0 errors |"
+  }
 }

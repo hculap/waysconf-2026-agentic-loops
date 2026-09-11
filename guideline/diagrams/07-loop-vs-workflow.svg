@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t07 d07">
+  <title id="t07">The two shapes: a loop and a workflow</title>
+  <desc id="d07">Two diagrams side by side on a near-black ground. On the left, THE LOOP: a box marked DO THE WORK feeds into a diamond marked CHECK, which is labelled "a program, not an opinion". From the diamond an arrow marked "not yet" curves back up into DO THE WORK, and an arrow marked "exit 0" leaves to the right into DONE. A caption underneath reads "You define the exit condition". On the right, THE WORKFLOW: four stacked boxes marked PHASE 1 LOOK, PHASE 2 BUILD, PHASE 3 ARM, PHASE 4 REPAIR, each joined to the next by a short arrow passing through a horizontal bar labelled with what must be true before the next phase starts: "notes written", "it builds", "the checker runs", "checks pass". The fourth phase, REPAIR, contains a small circular arrow showing that a loop lives inside it. A caption underneath reads "You define the phases". Across the bottom, a single line: neither of these is a script. Both are things you say.</desc>
+
+  <defs>
+    <marker id="a7" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L12 5 L0 10 Z" fill="#A7AEBB"/>
+    </marker>
+    <marker id="a7g" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L12 5 L0 10 Z" fill="#3DDC84"/>
+    </marker>
+    <marker id="a7o" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L12 5 L0 10 Z" fill="#FF6A1A"/>
+    </marker>
+    <marker id="a7c" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+      <path d="M0 0 L12 5 L0 10 Z" fill="#2FE6D6"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="#0A0B0D"/>
+
+  <text x="60" y="72" font-family="system-ui,sans-serif" font-size="40" font-weight="700" fill="#F2F4F7">Two shapes</text>
+  <text x="60" y="112" font-family="system-ui,sans-serif" font-size="24" fill="#A7AEBB">Almost everything you will build on an agent is one of these. Neither is a script.</text>
+
+  <line x1="800" y1="160" x2="800" y2="790" stroke="#2A2E36" stroke-width="2" stroke-dasharray="6 8"/>
+
+  <!-- ─────────────── LEFT: THE LOOP ─────────────── -->
+  <text x="60" y="190" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#FF6A1A" letter-spacing="2">THE LOOP</text>
+  <text x="60" y="222" font-family="ui-monospace,monospace" font-size="17" fill="#A7AEBB">do this again until a condition holds</text>
+
+  <!-- do the work -->
+  <rect x="180" y="266" width="330" height="92" rx="10" fill="#FF6A1A"/>
+  <text x="345" y="303" text-anchor="middle" font-family="system-ui,sans-serif" font-size="23" font-weight="700" fill="#0A0B0D">DO THE WORK</text>
+  <text x="345" y="332" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" fill="#0A0B0D">the agent writes the page</text>
+
+  <path d="M345 358 L345 418" stroke="#A7AEBB" stroke-width="3" marker-end="url(#a7)"/>
+
+  <!-- check diamond -->
+  <path d="M345 428 L560 512 L345 596 L130 512 Z" fill="#131519" stroke="#2FE6D6" stroke-width="3"/>
+  <text x="345" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#F2F4F7">CHECK</text>
+  <text x="345" y="528" text-anchor="middle" font-family="ui-monospace,monospace" font-size="16" fill="#2FE6D6">npm run check</text>
+  <text x="345" y="552" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#A7AEBB">a program, not an opinion</text>
+
+  <!-- back arrow -->
+  <path d="M130 512 L72 512 L72 312 L170 312" fill="none" stroke="#FF6A1A" stroke-width="3" marker-end="url(#a7o)"/>
+  <text x="86" y="418" font-family="ui-monospace,monospace" font-size="16" fill="#FF6A1A" transform="rotate(-90 86 418)" text-anchor="middle">not yet — fix and repeat</text>
+
+  <!-- exit -->
+  <path d="M560 512 L640 512" stroke="#3DDC84" stroke-width="3" marker-end="url(#a7g)"/>
+  <rect x="648" y="480" width="112" height="64" rx="8" fill="#3DDC84"/>
+  <text x="704" y="519" text-anchor="middle" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#0A0B0D">DONE</text>
+  <text x="600" y="496" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#3DDC84">exit 0</text>
+
+  <rect x="72" y="646" width="656" height="104" rx="10" fill="#131519" stroke="#2A2E36" stroke-width="2"/>
+  <text x="100" y="682" font-family="system-ui,sans-serif" font-size="19" fill="#F2F4F7">You define the <tspan font-weight="700" fill="#FF6A1A">exit condition</tspan>.</text>
+  <text x="100" y="712" font-family="system-ui,sans-serif" font-size="18" fill="#A7AEBB">&#8220;Run the check. Fix what it names. Repeat until it exits 0.&#8221;</text>
+  <text x="100" y="738" font-family="ui-monospace,monospace" font-size="16" fill="#2FE6D6">prompt 05 &#183; /goal in Claude Code</text>
+
+  <!-- ─────────────── RIGHT: THE WORKFLOW ─────────────── -->
+  <text x="872" y="190" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#7C5CFF" letter-spacing="2">THE WORKFLOW</text>
+  <text x="872" y="222" font-family="ui-monospace,monospace" font-size="17" fill="#A7AEBB">do these, in order, with a bar between each</text>
+
+  <!-- phase 1 -->
+  <rect x="872" y="256" width="420" height="66" rx="8" fill="#131519" stroke="#7C5CFF" stroke-width="2"/>
+  <text x="896" y="288" font-family="ui-monospace,monospace" font-size="15" fill="#7C5CFF">PHASE 1</text>
+  <text x="1000" y="290" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#F2F4F7">LOOK</text>
+  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#A7AEBB">read the design, write notes, no code</text>
+  <path d="M1082 322 L1082 348" stroke="#A7AEBB" stroke-width="3" marker-end="url(#a7)"/>
+  <line x1="940" y1="352" x2="1224" y2="352" stroke="#3DDC84" stroke-width="2"/>
+  <text x="1240" y="358" font-family="ui-monospace,monospace" font-size="15" fill="#3DDC84">notes written</text>
+
+  <!-- phase 2 -->
+  <rect x="872" y="366" width="420" height="66" rx="8" fill="#131519" stroke="#7C5CFF" stroke-width="2"/>
+  <text x="896" y="398" font-family="ui-monospace,monospace" font-size="15" fill="#7C5CFF">PHASE 2</text>
+  <text x="1000" y="400" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#F2F4F7">BUILD</text>
+  <text x="1000" y="422" font-family="system-ui,sans-serif" font-size="16" fill="#A7AEBB">section by section, from the design</text>
+  <path d="M1082 432 L1082 458" stroke="#A7AEBB" stroke-width="3" marker-end="url(#a7)"/>
+  <line x1="940" y1="462" x2="1224" y2="462" stroke="#3DDC84" stroke-width="2"/>
+  <text x="1240" y="468" font-family="ui-monospace,monospace" font-size="15" fill="#3DDC84">it builds</text>
+
+  <!-- phase 3 -->
+  <rect x="872" y="476" width="420" height="66" rx="8" fill="#131519" stroke="#7C5CFF" stroke-width="2"/>
+  <text x="896" y="508" font-family="ui-monospace,monospace" font-size="15" fill="#7C5CFF">PHASE 3</text>
+  <text x="1000" y="510" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#F2F4F7">ARM</text>
+  <text x="1000" y="532" font-family="system-ui,sans-serif" font-size="16" fill="#A7AEBB">write the checker that will judge it</text>
+  <path d="M1082 542 L1082 568" stroke="#A7AEBB" stroke-width="3" marker-end="url(#a7)"/>
+  <line x1="940" y1="572" x2="1224" y2="572" stroke="#3DDC84" stroke-width="2"/>
+  <text x="1240" y="578" font-family="ui-monospace,monospace" font-size="15" fill="#3DDC84">the checker runs</text>
+
+  <!-- phase 4, containing a loop -->
+  <rect x="872" y="586" width="420" height="86" rx="8" fill="#1C1F25" stroke="#FF6A1A" stroke-width="2"/>
+  <text x="896" y="618" font-family="ui-monospace,monospace" font-size="15" fill="#7C5CFF">PHASE 4</text>
+  <text x="1000" y="620" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#F2F4F7">REPAIR</text>
+  <text x="1000" y="642" font-family="system-ui,sans-serif" font-size="16" fill="#A7AEBB">check, fix, check again &#8212; until green</text>
+  <path d="M1348 622 a 24 24 0 1 1 -12 -20" fill="none" stroke="#FF6A1A" stroke-width="3" marker-end="url(#a7o)"/>
+  <text x="1324" y="672" font-family="ui-monospace,monospace" font-size="15" fill="#FF6A1A">a loop lives here</text>
+
+  <rect x="872" y="696" width="656" height="54" rx="10" fill="#131519" stroke="#2A2E36" stroke-width="2"/>
+  <text x="898" y="720" font-family="system-ui,sans-serif" font-size="19" fill="#F2F4F7">You define the <tspan font-weight="700" fill="#7C5CFF">phases</tspan>, and what must be true before each one ends.</text>
+  <text x="898" y="742" font-family="ui-monospace,monospace" font-size="16" fill="#2FE6D6">prompt 08</text>
+
+  <!-- ─────────────── FOOTER ─────────────── -->
+  <line x1="60" y1="800" x2="1540" y2="800" stroke="#2A2E36" stroke-width="1"/>
+  <text x="60" y="842" font-family="system-ui,sans-serif" font-size="23" fill="#F2F4F7">Neither of these is a script. Both are things you <tspan font-style="italic" fill="#FF6A1A">say</tspan> &#8212; which is why changing one is a sentence, not an edit.</text>
+  <text x="60" y="874" font-family="system-ui,sans-serif" font-size="19" fill="#A7AEBB">They nest: the workflow gets you to nearly-right, and a loop inside one phase closes the last gap.</text>
+</svg>

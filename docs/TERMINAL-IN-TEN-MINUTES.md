@@ -78,7 +78,7 @@ is Microsoft's shell and the default.
 PowerShell runs almost everything in this workshop without complaint: `npm`, `git`, `npx`, both agent
 CLIs. There is one exception, and it is the reason you will hear WSL mentioned.
 
-The loop script, `loop/ralph.sh`, is a **bash** script. PowerShell is not bash and cannot run it.
+Some commands you find online are written for **bash**. PowerShell is not bash. Nothing in this workshop needs bash — every command here runs in PowerShell — but if you paste something from elsewhere and it complains, that is usually why.
 Neither can the old Command Prompt. Three ways around that:
 
 1. **Use a Codespace.** The terminal there is Linux and everything works. This is the recommended
@@ -191,9 +191,9 @@ These are all the commands the workshop uses:
 | `npm run check` | run every gate against the built site and write `checks/report.md` |
 | `npx netlify login` | opens a browser to sign you in; the terminal waits until you come back |
 | `npm run deploy` | publish `dist/` to Netlify. Sign in first, once, with the line above |
-| `bash loop/ralph.sh` | run the loop: check, hand the failures to the agent, repeat |
+| `npm run check` | run the checks your agent wrote, and print what failed |
 | `claude` or `codex` | start your coding agent in this folder |
-| `git checkout step-3` | jump to a workshop checkpoint — see [`../CHECKPOINTS.md`](../CHECKPOINTS.md) |
+| `npx netlify deploy --prod --dir=dist` | put the finished site on the internet |
 
 Two notes on reading commands elsewhere. Documentation often writes them with a leading `$`, as in
 `$ npm run check`. The `$` is the prompt, not part of the command; do not paste it. And commands are
@@ -355,7 +355,7 @@ Two ways out, and you want the first:
   panel. Leave the server running in the first. This is how everyone works.
 - **Press `Ctrl + C`** to stop the server and get the prompt back.
 
-The same applies to `bash loop/ralph.sh`, to `claude`, and to anything else that occupies the window.
+The same applies to `claude`, to `codex`, and to anything else that occupies the window.
 No prompt means the window is taken.
 
 ### 7.3 Something is waiting for you and you have not noticed
@@ -412,4 +412,4 @@ npm: no package.json?      You are not in the project folder. Run pwd.
 ```
 
 Two pages exist for when this one runs out: [`GLOSSARY.md`](GLOSSARY.md) for any word you meet and do
-not recognise, and [`../CHECKPOINTS.md`](../CHECKPOINTS.md) to get back on track if you fall behind.
+not recognise. If you fall behind, you do not need to recover anything: paste the next prompt and carry on.

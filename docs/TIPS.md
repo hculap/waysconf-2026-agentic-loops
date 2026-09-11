@@ -69,7 +69,7 @@ also reorganises components that were already passing, and the diff becomes unre
 
 **The loop edits the test.** Symptom: the gate went green and the diff touches `checks/`, a threshold, a
 `skip`, or `tokens.json`. The most common failure, and it feels like success. Fix: keep the verifier in its
-own directory and make the loop refuse to commit an iteration that touched it — `loop/ralph.sh` stops the
+own file and say so in the prompt in as many words — prompt 05 stops the
 run when anything under `checks/` or `.github/` has changed — then run the same gates in CI, where the
 agent is not the one running them. If a gate is genuinely wrong, a person changes it, in a commit, with a
 reason.
@@ -100,8 +100,8 @@ trusting the account of them. Fix: make completeness countable.
 
 ## 3. Bounding a loop
 
-**A hard iteration cap.** `loop/ralph.sh` is a `for` loop over a fixed maximum — twelve by default, and
-`MAX=3 bash loop/ralph.sh` when you want it to stop sooner. Twelve is generous for one section; if twelve
+**A hard iteration cap.** Say it in the prompt: *"stop after ten rounds and tell me where you got to"*.
+Ten is generous for one section; if ten
 did not do it, twenty-four will not either, and you would rather learn that for the price of twelve.
 
 **An explicit exit condition that no model evaluates.** Here it is `npm run check` exiting 0 — the same
@@ -155,7 +155,7 @@ Self-assessment is genuinely useful, and precisely bounded.
 The rule that keeps the useful half safe: **a model may open an item, never close one against the page.**
 The review agent writes findings, each citing a selector or a file and line, for a person to triage. It may
 kill its own candidates before you ever see them — that is what the refutation panel described in
-`loop/workflows/README.md` is for — but its output never sets pass or fail. One model with veto power
+prompt 07 is for — but its output never sets pass or fail. One model with veto power
 removes the determinism that makes everything else trustworthy.
 
 ---
@@ -182,7 +182,7 @@ diagnose.
 ## 6. Things never to let a loop do unattended
 
 - **`git push --force`.** It destroys history other people are standing on. Let the loop commit and nothing
-  more: `loop/ralph.sh` commits to whatever branch you started it on, and never pushes.
+  more: commit before you start a long unattended run, so that `git reset --hard` is always a way back.
 - **Delete anything outside the working directory.** A clean-up step with a wrong path variable does
   exactly what it was told. Run in a container or a disposable checkout, never in your home directory.
 - **Read, print or rotate secrets.** Anything printed into a transcript is there forever, and transcripts

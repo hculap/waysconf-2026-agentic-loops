@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" width="1600" height="980" role="img" aria-labelledby="t04 d04">
+  <title id="t04">What MCP connects: the agent, Figma, a browser, Netlify and the repository</title>
+  <desc id="d04">A topology on a near-black ground. The AGENT, Claude Code or Codex, sits in the centre. Above left is FIGMA, reached over mcp dot figma dot com, with design slash export and tokens dot json as the fallback route; a violet arrow labelled design data carries frames, variables and spacing from Figma down into the agent. Above right is BROWSER, the Playwright MCP server driving a real Chromium; a teal arrow runs from the agent up to the browser carrying navigate and screenshot instructions, and a second teal arrow returns from the browser to the agent carrying evidence. To the right is NETLIFY, the Netlify MCP server; a green arrow from the agent to Netlify carries the deployment, dist slash, and is labelled only after every gate is green. Underneath everything, spanning the full width, is THE REPOSITORY, holding src, public, design, brief, checks and loop: the agent writes in src, public and loop, and only reads design, brief and checks, with checks slash off limits to it. A double-headed arrow joins the agent to the repository, and dashed double-headed lines join the repository to the Figma export pack and to the dist folder that ships. A legend at the top distinguishes design data, evidence, the deployment and files on disk, and notes that no MCP server takes part in a pass or fail decision.</desc>
+
+  <defs>
+    <marker id="ah-arc" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#7C5CFF"/></marker>
+    <marker id="ah-coolant" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#2FE6D6"/></marker>
+    <marker id="ah-success" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#3DDC84"/></marker>
+    <marker id="ah-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#A7AEBB"/></marker>
+    <marker id="ah-neutral-r" viewBox="0 0 12 10" refX="0" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#A7AEBB"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="980" fill="#0A0B0D"/>
+
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+
+    <text x="60" y="78" font-size="40" font-weight="700" fill="#F2F4F7">What MCP actually connects</text>
+    <text x="60" y="118" font-size="24" fill="#A7AEBB">Three tools around one agent, and a repository underneath that every one of them reads and writes.</text>
+
+    <line x1="60" y1="151" x2="110" y2="151" stroke="#7C5CFF" stroke-width="5"/>
+    <text x="122" y="158" font-size="21" fill="#A7AEBB">design data</text>
+    <line x1="290" y1="151" x2="340" y2="151" stroke="#2FE6D6" stroke-width="5"/>
+    <text x="352" y="158" font-size="21" fill="#A7AEBB">evidence</text>
+    <line x1="486" y1="151" x2="536" y2="151" stroke="#3DDC84" stroke-width="5"/>
+    <text x="548" y="158" font-size="21" fill="#A7AEBB">the deployment</text>
+    <line x1="750" y1="151" x2="800" y2="151" stroke="#A7AEBB" stroke-width="3" stroke-dasharray="8 7"/>
+    <text x="812" y="158" font-size="21" fill="#A7AEBB">on disk</text>
+    <text x="1540" y="158" font-size="21" fill="#A7AEBB" text-anchor="end">No MCP server takes part in a pass or fail decision.</text>
+
+    <rect x="90" y="200" width="380" height="140" rx="10" fill="#131519" stroke="#7C5CFF" stroke-width="4"/>
+    <text x="280" y="252" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">FIGMA</text>
+    <text x="280" y="284" font-size="20" fill="#7C5CFF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">mcp.figma.com/mcp</text>
+    <text x="280" y="314" font-size="20" fill="#A7AEBB" text-anchor="middle">fallback: design/export/</text>
+
+    <rect x="1130" y="200" width="380" height="140" rx="10" fill="#131519" stroke="#2FE6D6" stroke-width="4"/>
+    <text x="1320" y="252" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">BROWSER</text>
+    <text x="1320" y="284" font-size="20" fill="#2FE6D6" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@playwright/mcp</text>
+    <text x="1320" y="314" font-size="20" fill="#A7AEBB" text-anchor="middle">a real Chromium, not a guess</text>
+
+    <rect x="610" y="400" width="380" height="160" rx="12" fill="#131519" stroke="#FF6A1A" stroke-width="4"/>
+    <text x="800" y="458" font-size="32" font-weight="700" fill="#F2F4F7" text-anchor="middle">AGENT</text>
+    <text x="800" y="492" font-size="21" fill="#A7AEBB" text-anchor="middle">Claude Code or Codex</text>
+    <text x="800" y="522" font-size="21" fill="#A7AEBB" text-anchor="middle">reads files, runs commands</text>
+
+    <rect x="1130" y="580" width="380" height="140" rx="10" fill="#131519" stroke="#3DDC84" stroke-width="4"/>
+    <text x="1320" y="632" font-size="28" font-weight="700" fill="#F2F4F7" text-anchor="middle">NETLIFY</text>
+    <text x="1320" y="664" font-size="20" fill="#3DDC84" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">@netlify/mcp</text>
+    <text x="1320" y="694" font-size="20" fill="#A7AEBB" text-anchor="middle">dist/ to a public URL</text>
+
+    <rect x="90" y="820" width="1420" height="120" rx="10" fill="#1C1F25" stroke="#A7AEBB" stroke-width="3"/>
+    <text x="130" y="868" font-size="28" font-weight="700" fill="#F2F4F7">THE REPOSITORY</text>
+    <text x="1470" y="868" font-size="21" fill="#2FE6D6" text-anchor="end">checks/ is off limits to the agent</text>
+    <text x="130" y="902" font-size="21" fill="#A7AEBB">src/ · public/ · loop/ — the agent writes here. design/ · brief/ · checks/ — it only reads.</text>
+
+    <polyline points="280,342 280,480 604,480" fill="none" stroke="#7C5CFF" stroke-width="4" marker-end="url(#ah-arc)"/>
+    <text x="442" y="462" font-size="21" fill="#7C5CFF" text-anchor="middle">design data</text>
+    <text x="442" y="512" font-size="19" fill="#A7AEBB" text-anchor="middle">frames · variables · spacing</text>
+
+    <polyline points="890,394 890,250 1124,250" fill="none" stroke="#2FE6D6" stroke-width="4" marker-end="url(#ah-coolant)"/>
+    <text x="1008" y="230" font-size="19" fill="#A7AEBB" text-anchor="middle">navigate · screenshot</text>
+
+    <polyline points="1126,310 970,310 970,394" fill="none" stroke="#2FE6D6" stroke-width="4" marker-end="url(#ah-coolant)"/>
+    <text x="1046" y="338" font-size="22" fill="#2FE6D6" text-anchor="middle">evidence</text>
+
+    <polyline points="994,520 1060,520 1060,650 1124,650" fill="none" stroke="#3DDC84" stroke-width="4" marker-end="url(#ah-success)"/>
+    <text x="1046" y="600" font-size="21" fill="#3DDC84" text-anchor="end">the deployment</text>
+    <text x="1046" y="626" font-size="19" fill="#A7AEBB" text-anchor="end">after the gates pass</text>
+
+    <line x1="800" y1="566" x2="800" y2="814" stroke="#A7AEBB" stroke-width="4" marker-start="url(#ah-neutral-r)" marker-end="url(#ah-neutral)"/>
+    <text x="784" y="662" font-size="21" fill="#A7AEBB" text-anchor="end">reads and writes</text>
+    <text x="784" y="690" font-size="19" fill="#A7AEBB" text-anchor="end">on every iteration</text>
+
+    <line x1="180" y1="346" x2="180" y2="814" stroke="#A7AEBB" stroke-width="3" stroke-dasharray="9 8" marker-start="url(#ah-neutral-r)" marker-end="url(#ah-neutral)"/>
+    <text x="200" y="640" font-size="19" fill="#A7AEBB">design/export/ and tokens.json</text>
+    <text x="200" y="666" font-size="19" fill="#A7AEBB">are committed here too</text>
+
+    <line x1="1400" y1="726" x2="1400" y2="814" stroke="#A7AEBB" stroke-width="3" stroke-dasharray="9 8" marker-start="url(#ah-neutral-r)" marker-end="url(#ah-neutral)"/>
+    <text x="1386" y="778" font-size="19" fill="#A7AEBB" text-anchor="end" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">dist/</text>
+  </g>
+</svg>

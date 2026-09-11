@@ -11,16 +11,19 @@ rather than in a setup problem.
 
 ## The two rescues that solve most things
 
-**Rescue A — jump to a checkpoint.** They have fallen behind. Their work is not lost;
-it is just not where the room is.
+**Rescue A — skip forward.** They have fallen behind. Nothing is lost, because every
+prompt is self-contained: a half-built page with a working checker teaches more than a
+finished page with none.
 
 ```bash
-git stash              # park whatever they have
-git checkout step-3    # or whichever step is on the screen
-npm install            # only if it complains about a missing package
+# Say this to their agent, in their own words:
+#   "Stop where you are. Leave whatever is unfinished. I want to move on."
+#
+# Then paste the next prompt from the prompts page. Every prompt stands alone.
 ```
 
-The current step number is always on the slide in the corner.
+The current prompt number is always on the slide in the corner. Reassure them that
+moving on is the designed path, not giving up.
 
 **Rescue B — move to the browser.** Their local setup is fighting them. Stop fighting
 it.

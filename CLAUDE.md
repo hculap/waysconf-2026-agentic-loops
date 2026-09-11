@@ -4,49 +4,64 @@ The project rules live in one file, shared with every other agent. Read it now:
 
 @AGENTS.md
 
-Everything below is specific to Claude Code. It does not replace anything above.
+Everything below is specific to Claude Code and to *this* repository — the speaker's
+workspace. It is not what a workshop participant does.
+
+## What a participant does, so you do not confuse the two
+
+A participant never opens this repository. They get the Figma file, a design pack, and
+`prompts/` — eight messages that take an empty folder to a deployed site. The agent they
+run writes its own project, its own page and its own checker. Nothing here is cloned.
+
+If you are changing anything under `prompts/`, remember it will be read by a designer who
+has never used a terminal, and that `guideline/prompts/index.html` is generated from it by
+`node scripts/build-prompts-page.mjs` — never edit the HTML by hand.
 
 ## Plan mode
 
-Start with plan mode (`Shift+Tab` until the footer says *plan mode on*). Explore the repository, read
-`docs/CANON.md` and `brief/`, and write a plan naming each section you will build and the acceptance
-criteria it satisfies. Present it before editing anything. The plan being read by a human before any code
-exists is the cheapest correction in the whole loop.
+Start with plan mode (`Shift+Tab` until the footer says *plan mode on*) for anything that
+touches more than one file. Explore, read `docs/CANON.md` and `brief/`, and present a plan
+before editing. A plan read by a human before any code exists is the cheapest correction in
+the whole loop — which is also the point of prompt 02.
 
-## The loop
+## The loop, here
 
-Two ways to run it, and they teach the same idea:
+The workshop teaches the loop as a sentence and as `/goal`. In this repository the same
+thing applies to the reference site:
 
-- `bash loop/ralph.sh` — the minimal version. A bash `for` loop, a prompt file, a progress file, a hard
-  iteration cap, and `npm run check` as the exit condition. Twelve lines you can read in one sitting.
-- `/loop` — the built-in skill, when you want Claude Code to pace itself between iterations.
+```
+/goal npm run check exits 0
+```
 
-Both stop on the same signal: the gates go green, or the cap is reached. Neither of them asks the model
-whether it is finished.
+The session will not end until that command actually exits 0. Not until you believe it
+would — it runs.
 
-## Workflows
+`checks/` is the verifier for the reference implementation in `src/`. It has ten gates and
+sixty-one criteria in `brief/ACCEPTANCE.md`, and it is **not** what participants use: they
+write their own in prompt 04, which is the entire point of that prompt.
 
-`loop/workflows/` holds two scripts for the Workflow tool:
+**Never edit anything under `checks/` to make a gate pass.** If you believe a gate is
+wrong, stop and say so. Changing the verifier to agree with the generator is the exact
+failure this workshop exists to demonstrate, and it has been caught happening here before —
+see `evidence/INCIDENTS.md`.
 
-- `build-sections.mjs` — fans out one agent per page section, then verifies each independently.
-- `adversarial-review.mjs` — finds candidate defects, then sends every candidate to a panel of
-  independent reviewers whose instruction is to *refute* it. Only findings that survive the panel reach
-  the report. This is the part of the pipeline that catches what the deterministic gates cannot.
+## Generated files, and what regenerates them
 
-## Subagents
-
-`.claude/agents/` defines three reviewers with deliberately narrow remits:
-
-| Agent | Looks for |
+| File | Generator |
 |---|---|
-| `design-critic` | Fidelity to the Figma design and the token system; spacing, hierarchy, rhythm |
-| `a11y-auditor` | What axe cannot see: focus order, ARIA correctness, keyboard traps, meaningful alt text |
-| `copy-checker` | Copy that drifted from `brief/CONTENT.md`, and tone violations from `docs/CANON.md` §10 |
+| `src/styles/theme.generated.css` | `node scripts/build-theme.mjs` |
+| `guideline/prompts/index.html` | `node scripts/build-prompts-page.mjs` |
+| `design-pack/` | `node scripts/build-design-pack.mjs` |
+| `figma-plugin/data.generated.js` | `node scripts/build-figma-plugin.mjs` |
+| `public/fonts/` | `node scripts/fetch-fonts.mjs` |
+| `public/images/` | `node scripts/copy-assets.mjs`, run as `prebuild` |
+| `docs/handout/index.html` | `node scripts/build-handout.mjs` |
 
-Use them after the deterministic gates are green, not instead of them.
+Editing any of them by hand puts the repository in a state where the next build silently
+reverts your change.
 
 ## MCP servers
 
-See `loop/MCP.md` for the exact `claude mcp add` commands for Figma, Playwright and Netlify, and for what
-to do when you do not have a paid Figma seat. The fallback path — `design/export/` plus
-`design/tokens/tokens.json` — is fully supported and is not a second-class route through this workshop.
+`docs/CONNECTING-FIGMA.md` has the verified `claude mcp add` commands for Figma, Playwright
+and Netlify, and says plainly what happens without a paid Figma seat. The design pack is
+the other route and is not a second-class one.

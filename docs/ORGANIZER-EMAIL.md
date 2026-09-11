@@ -63,7 +63,7 @@ See you Wednesday.
 - **One or two volunteers in the room would make a material difference.** Thirty
   people, mixed technical backgrounds, and one facilitator means someone with a
   broken setup waits. A volunteer does not need to know the material; they need to
-  be able to say "open `CHECKPOINTS.md` and run `git checkout step-2`". A one-page
+  be able to say "paste the next prompt and carry on". A one-page
   crib sheet is in the repository at `docs/HELPER-CRIB-SHEET.md`.
 - Power at seats, if it exists, is worth mentioning in your logistics email.
 - The session needs a projector at 1920×1080 or better; a lot of the time is spent

@@ -125,7 +125,7 @@ clone has the record and not only the claim.
 | Figma, remote | `https://mcp.figma.com/mcp` | the real design: frames, layers, variables, measured spacing |
 
 The Figma endpoint answers `401` until an OAuth sign-in completes, and that sign-in grants Dev Mode
-access only on a paid plan. [`loop/MCP.md`](loop/MCP.md) says so plainly and documents the two routes
+access only on a paid plan. [`docs/CONNECTING-FIGMA.md`](docs/CONNECTING-FIGMA.md) says so plainly and documents the two routes
 that work without one. The export-pack route is the reference path the visual gate compares against,
 not a consolation prize.
 
@@ -139,7 +139,7 @@ site).
 
 Every version in §4 was read off this machine on **11 September 2026** — from `node --version`,
 `npm --version`, each package's own `package.json` under `node_modules/`, and each CLI's `--version`.
-The MCP versions match those recorded in `loop/MCP.md`, verified the same day.
+The MCP versions match those recorded in `docs/CONNECTING-FIGMA.md`, verified the same day.
 
 They are a record of what this repository was built and tested against, not a minimum requirement. The
 project asks for Node 20.11 or newer and nothing else. If a command in the documentation has drifted,
@@ -153,7 +153,7 @@ The contrast figures quoted anywhere in this repository were computed from the h
 
 ## 6. The loop
 
-[`loop/ralph.sh`](loop/ralph.sh) takes its shape from the pattern Geoffrey Huntley has written about
+The loop this workshop teaches — prompt 05, and the `/goal` command in Claude Code — takes its shape from the pattern Geoffrey Huntley has written about
 as **"Ralph Wiggum"**: put the instruction in a file, run a coding agent against that file, let it
 fail, and run it again — doing the work through repetition with a fresh context each time, rather than
 through one long conversation that degrades as it grows.

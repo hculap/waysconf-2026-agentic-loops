@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 700" width="1800" height="700" role="img" aria-labelledby="t06 d06">
+  <title id="t06">Ninety minutes: the shape of the session</title>
+  <desc id="d06">A horizontal timeline marked from 0 to 90 minutes, running 14:55 to 16:25, split into two lanes. The upper lane, ON STAGE, holds the eight blocks of the deck: The case from 0 to 8; Setup, the Checkpoint 0 block, from 8 to 15; Design in from 15 to 25; Plan, then build from 25 to 40; The verifier from 40 to 55; The loop and workflows from 55 to 70; Ship it from 70 to 82; and Honesty from 82 to 90. The lower lane, ON YOUR MACHINE, holds the three hands-on sprints: SPRINT 1 from 25 to 40, planning and then building the nav and the hero; SPRINT 2 from 55 to 70, in which the loop runs unattended while the talk continues; and SPRINT 3 from 70 to 82, deploying, with every URL going on the board. Sprint 2 and the block called The loop and workflows occupy exactly the same span, and are bracketed by dashed orange lines and a tinted band labelled at the same time. Checkpoint marks sit at the end of each sprint, labelled step-1, step-4 and step-5, and a bracket under the last block marks where the eight-minute buffer lives.</desc>
+
+  <defs>
+    <pattern id="sprint2hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect x="0" y="0" width="16" height="16" fill="#FF6A1A"/>
+      <rect x="0" y="0" width="6" height="16" fill="#0A0B0D" opacity="0.10"/>
+    </pattern>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="700" fill="#0A0B0D"/>
+
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+
+    <text x="60" y="72" font-size="38" font-weight="700" fill="#F2F4F7">Ninety minutes</text>
+    <text x="60" y="110" font-size="22" fill="#A7AEBB">14:55 to 16:25. Eight blocks, three sprints, and one stretch where the machines work while the talking continues.</text>
+
+    <line x1="180" y1="176" x2="1770" y2="176" stroke="#A7AEBB" stroke-width="1.5"/>
+    <g stroke="#A7AEBB" stroke-width="1.5">
+      <line x1="180" y1="176" x2="180" y2="188"/>
+      <line x1="357" y1="176" x2="357" y2="188"/>
+      <line x1="533" y1="176" x2="533" y2="188"/>
+      <line x1="710" y1="176" x2="710" y2="188"/>
+      <line x1="887" y1="176" x2="887" y2="188"/>
+      <line x1="1063" y1="176" x2="1063" y2="188"/>
+      <line x1="1240" y1="176" x2="1240" y2="188"/>
+      <line x1="1417" y1="176" x2="1417" y2="188"/>
+      <line x1="1593" y1="176" x2="1593" y2="188"/>
+      <line x1="1770" y1="176" x2="1770" y2="188"/>
+    </g>
+    <g font-size="20" fill="#A7AEBB" text-anchor="middle">
+      <text x="180" y="160">0</text>
+      <text x="357" y="160">10</text>
+      <text x="533" y="160">20</text>
+      <text x="710" y="160">30</text>
+      <text x="887" y="160">40</text>
+      <text x="1063" y="160">50</text>
+      <text x="1240" y="160">60</text>
+      <text x="1417" y="160">70</text>
+      <text x="1593" y="160">80</text>
+      <text x="1782" y="160" text-anchor="end">90 min</text>
+    </g>
+
+    <rect x="1152" y="210" width="265" height="280" fill="#FF6A1A" opacity="0.12"/>
+    <g stroke="#FF6A1A" stroke-width="2" stroke-dasharray="9 8">
+      <line x1="1152" y1="198" x2="1152" y2="506"/>
+      <line x1="1417" y1="198" x2="1417" y2="506"/>
+    </g>
+
+    <text x="60" y="248" font-size="18" font-weight="700" fill="#F2F4F7">ON STAGE</text>
+    <text x="60" y="272" font-size="17" fill="#A7AEBB">the room</text>
+
+    <text x="60" y="412" font-size="18" font-weight="700" fill="#F2F4F7">ON YOUR</text>
+    <text x="60" y="434" font-size="18" font-weight="700" fill="#F2F4F7">MACHINE</text>
+    <text x="60" y="458" font-size="17" fill="#A7AEBB">your screen</text>
+
+    <g>
+      <rect x="180" y="210" width="141" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="250" y="272" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">The case</text>
+
+      <rect x="321" y="210" width="124" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="383" y="272" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">Setup</text>
+
+      <rect x="445" y="210" width="177" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="533" y="272" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">Design in</text>
+
+      <rect x="622" y="210" width="265" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="754" y="264" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">Plan, then build</text>
+      <text x="754" y="292" font-size="18" fill="#A7AEBB" text-anchor="middle">then on the floor</text>
+
+      <rect x="887" y="210" width="265" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="1019" y="264" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">The verifier</text>
+      <text x="1019" y="292" font-size="18" fill="#A7AEBB" text-anchor="middle">live contrast repair</text>
+
+      <rect x="1152" y="210" width="265" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="1284" y="264" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">The loop and</text>
+      <text x="1284" y="292" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">workflows</text>
+
+      <rect x="1417" y="210" width="212" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="1523" y="272" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">Ship it</text>
+
+      <rect x="1629" y="210" width="141" height="110" rx="6" fill="#131519" stroke="#A7AEBB" stroke-width="2"/>
+      <text x="1699" y="272" font-size="20" font-weight="700" fill="#F2F4F7" text-anchor="middle">Honesty</text>
+    </g>
+
+    <text x="1284" y="358" font-size="21" font-weight="700" fill="#FF6A1A" text-anchor="middle">at the same time</text>
+
+    <g>
+      <rect x="622" y="380" width="265" height="110" rx="6" fill="#FF6A1A"/>
+      <text x="754" y="418" font-size="24" font-weight="700" fill="#0A0B0D" text-anchor="middle">SPRINT 1</text>
+      <text x="754" y="446" font-size="19" fill="#0A0B0D" text-anchor="middle">plan, then build the</text>
+      <text x="754" y="472" font-size="19" fill="#0A0B0D" text-anchor="middle">nav and the hero</text>
+
+      <rect x="1152" y="380" width="265" height="110" rx="6" fill="url(#sprint2hatch)"/>
+      <rect x="1152" y="380" width="265" height="110" rx="6" fill="none" stroke="#FF6A1A" stroke-width="2"/>
+      <text x="1284" y="418" font-size="24" font-weight="700" fill="#0A0B0D" text-anchor="middle">SPRINT 2</text>
+      <text x="1284" y="446" font-size="19" fill="#0A0B0D" text-anchor="middle">the loop runs unattended</text>
+      <text x="1284" y="472" font-size="19" fill="#0A0B0D" text-anchor="middle">while the talk continues</text>
+
+      <rect x="1417" y="380" width="212" height="110" rx="6" fill="#FF6A1A"/>
+      <text x="1523" y="418" font-size="24" font-weight="700" fill="#0A0B0D" text-anchor="middle">SPRINT 3</text>
+      <text x="1523" y="446" font-size="19" fill="#0A0B0D" text-anchor="middle">deploy, and every</text>
+      <text x="1523" y="472" font-size="19" fill="#0A0B0D" text-anchor="middle">URL on the board</text>
+    </g>
+
+    <text x="60" y="566" font-size="17" fill="#A7AEBB">checkpoints</text>
+    <g stroke="#A7AEBB" stroke-width="2">
+      <line x1="887" y1="492" x2="887" y2="546"/>
+      <line x1="1417" y1="492" x2="1417" y2="546"/>
+      <line x1="1629" y1="492" x2="1629" y2="546"/>
+    </g>
+    <g font-size="18" fill="#A7AEBB" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+      <text x="887" y="570">step-1</text>
+      <text x="1417" y="570">step-4</text>
+      <text x="1629" y="570">step-5</text>
+    </g>
+
+    <path d="M1629 336 v10 h141 v-10" fill="none" stroke="#A7AEBB" stroke-width="2"/>
+    <text x="1770" y="376" font-size="18" fill="#A7AEBB" text-anchor="end">the buffer lives here</text>
+
+    <text x="60" y="632" font-size="22" fill="#A7AEBB">Sprint 2 is the only block that asks nothing of the room. It starts at 0:55, runs unattended, and the talk continues over it.</text>
+    <text x="60" y="662" font-size="22" fill="#A7AEBB">Every sprint ends on a checkpoint branch, so nobody stays stuck for more than one block. The eight-minute buffer is the last one.</text>
+  </g>
+</svg>
