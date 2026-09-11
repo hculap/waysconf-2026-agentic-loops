@@ -272,3 +272,39 @@ believable was present except the measurement.
 If a single sentence survives this whole workshop, it should probably be this one: a system
 that cannot distinguish "it passed" from "I did not look" will eventually tell you it
 passed.
+
+
+---
+
+## 12. An agent that did nothing, recorded as an agent that worked
+
+**Caught by:** a five-second agent pass with a zero exit code and an empty diff.
+
+**What happened.** The second clean-room trial, with Claude Code instead of Codex, invoked
+the agent and got this back in five seconds:
+
+    UserPromptSubmit operation blocked by hook:
+    Dashboard turn tracking: Claude hook session identity mismatch
+
+A hook belonging to an unrelated dashboard on the host machine refuses headless
+`claude -p` invocations it does not recognise. Nothing to do with the repository, the
+agent, or the loop — a property of one laptop.
+
+The harness recorded it as a normal iteration: exit 0, five seconds, no changes. It would
+have gone on to do that three more times, and written a table of four agent passes that
+never happened.
+
+**Fix.** An agent that exits 0 and changes nothing in under thirty seconds is now a
+**no-op**: the run stops, the iteration is labelled as such, and the agent's last twenty
+lines of output are kept so the reason is visible. `evidence/dry-run-claude.md` records
+the non-run rather than leaving a gap.
+
+**Not fixed, deliberately.** The hook belongs to the machine's owner and was left alone.
+Disabling somebody's environment to make your own measurement succeed is how you get a
+measurement of your own configuration.
+
+**The lesson.** Fifth instance in this project of the same confusion, and the most
+instructive, because this time the failure was *upstream of the agent entirely*. "Exit 0"
+means the process ended, nothing more. A loop needs to know the difference between an
+agent that considered the problem and declined to act, and an agent that was never
+allowed to read the prompt. Only one of those is worth iterating on.

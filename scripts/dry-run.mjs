@@ -250,6 +250,33 @@ async function main() {
 
     const stat = await run('git', ['diff', '--shortstat', 'HEAD'], { cwd: WORKTREE })
 
+    // An agent that exits 0 and changes nothing is not a pass, it is a no-op — and a
+    // loop that cannot tell the two apart will happily run its cap doing nothing and
+    // report the same failures every time as though it had tried.
+    //
+    // Observed here: a hook in the host environment refused the invocation, the CLI
+    // exited 0 in five seconds, and the harness recorded a clean agent pass. The next
+    // iteration then found the identical failures, which is the signature.
+    const noOp = dirty.stdout.trim() === '' && agentSeconds < 30
+    if (noOp) {
+      console.log(
+        `  the agent exited ${res.code} in ${agentSeconds.toFixed(0)}s and changed nothing. Stopping.`,
+      )
+      iterations.push({
+        n: i,
+        noOp: true,
+        checkSeconds,
+        agentSeconds,
+        agentExit: res.code,
+        counts,
+        cleared,
+        regressed,
+        failingCriteria: [...failing],
+        agentTail: (res.stdout + res.stderr).trim().split('\n').slice(-20).join('\n'),
+      })
+      break
+    }
+
     if (touchedChecks.length) {
       console.log(`  ⚠ agent modified the verifier: ${touchedChecks.join(', ')}`)
     }
@@ -335,6 +362,13 @@ function renderMarkdown(e) {
   L.push('| # | gates pass/fail/skip | failures | check | agent | cleared | regressed | diff |')
   L.push('|---|---|---|---|---|---|---|---|')
   for (const it of e.iterations) {
+    if (it.noOp) {
+      L.push(
+        `| ${it.n} | ${it.counts.pass}/${it.counts.fail}/${it.counts.skip} | ${it.counts.failures} | ` +
+          `${(it.checkSeconds ?? 0).toFixed(0)}s | ${(it.agentSeconds ?? 0).toFixed(0)}s | — | — | **no-op — the agent exited ${it.agentExit} and changed nothing** |`,
+      )
+      continue
+    }
     if (it.unmeasured) {
       L.push(
         `| ${it.n} | **not measured** | — | ${(it.checkSeconds ?? 0).toFixed(0)}s | — | — | — | verifier exited ${it.checkExit} without writing a report |`,
