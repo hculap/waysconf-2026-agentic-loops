@@ -5,9 +5,14 @@
   "type": "module",
   "description": "Slides for the WaysConf 2026 masterclass. Markdown in, a hostable web app out.",
   "scripts": {
+    "sync:diagrams": "node -e \"const fs=require('node:fs');fs.mkdirSync('public/diagrams',{recursive:true});for(const f of fs.readdirSync('diagrams')) if(f.endsWith('.svg')) fs.copyFileSync('diagrams/'+f,'public/diagrams/'+f)\"",
+    "predev": "npm run sync:diagrams",
     "dev": "slidev slides.md --open",
+    "prepresent": "npm run sync:diagrams",
     "present": "slidev slides.md --remote",
+    "prebuild": "npm run sync:diagrams",
     "build": "slidev build slides.md --base /",
+    "preexport": "npm run sync:diagrams",
     "export": "slidev export slides.md --output ../evidence/deck.pdf --dark",
     "export:notes": "slidev export-notes slides.md --output notes.pdf"
   },

@@ -14,7 +14,7 @@
  * Flags:
  *   --no-build      use the existing dist/ instead of rebuilding
  *   --skip-perf     skip Lighthouse (it is the slow one)
- *   --only <ids>    comma-separated gate ids to run, e.g. --only a11y,tokens
+ *   --only <ids>    comma-separated gate ids to run, e.g. --only a11y,tokens (--only=a11y,tokens works too)
  *   --url <url>     check a deployed URL instead of a local preview
  */
 
@@ -26,7 +26,14 @@ import { ROOT, STATUS, gateResult, writeReport } from './lib/report.mjs'
 
 const argv = process.argv.slice(2)
 const flag = (name) => argv.includes(name)
+/**
+ * Both `--only a11y,tokens` and `--only=a11y,tokens` are accepted. The second form is what
+ * most people type, and a flag that is silently ignored — every gate runs, no error, three
+ * Lighthouse passes nobody asked for — is worse in a live demo than one that refuses.
+ */
 const value = (name, fallback = null) => {
+  const inline = argv.find((a) => a.startsWith(`${name}=`))
+  if (inline !== undefined) return inline.slice(name.length + 1) || fallback
   const i = argv.indexOf(name)
   return i >= 0 && argv[i + 1] ? argv[i + 1] : fallback
 }
@@ -35,10 +42,18 @@ const NO_BUILD = flag('--no-build')
 const SKIP_PERF = flag('--skip-perf')
 const ONLY = value('--only') ? value('--only').split(',').map((s) => s.trim()) : null
 const REMOTE_URL = value('--url')
-const PORT = Number(process.env.CHECK_PORT || 4321)
-const BASE_URL = REMOTE_URL || `http://localhost:${PORT}`
+const PROCESS_PORT = process.env.CHECK_PORT ? Number(process.env.CHECK_PORT) : null
 
-const GATE_DIR = join(ROOT, 'checks/.results/gates')
+/**
+ * One results directory per run, not one shared by every run on the machine.
+ *
+ * The shared version was contaminated in practice: a Playwright session started by
+ * something else wrote into it while this script was aggregating, and the resulting
+ * report described a page from a different website entirely. Scoping by pid makes a
+ * run's results its own. See evidence/INCIDENTS.md.
+ */
+const RUN_DIR = join(ROOT, 'checks/.results', `run-${process.pid}`)
+const GATE_DIR = join(RUN_DIR, 'gates')
 const started = Date.now()
 const startedAt = new Date().toISOString()
 
@@ -76,6 +91,45 @@ async function waitForServer(url, timeoutMs = 60_000) {
 
 function shouldRun(id) {
   return !ONLY || ONLY.includes(id)
+}
+
+/** Ask the operating system for a port nothing is using. */
+async function freePort() {
+  const { createServer } = await import('node:net')
+  return new Promise((res, rej) => {
+    const srv = createServer()
+    srv.unref()
+    srv.on('error', rej)
+    srv.listen(0, '127.0.0.1', () => {
+      const { port } = srv.address()
+      srv.close(() => res(port))
+    })
+  })
+}
+
+/**
+ * Confirm the thing answering on that URL is the build we just made.
+ *
+ * Compares the served HTML to dist/index.html. Astro's preview server returns the
+ * file unchanged, so this is an exact match rather than a heuristic, and a heuristic
+ * is exactly what failed before: "it returned 200" was treated as "it is our site".
+ */
+async function servesOurBuild(url) {
+  const distIndex = join(ROOT, 'dist/index.html')
+  if (!existsSync(distIndex)) return { ok: false, detail: 'dist/index.html does not exist' }
+  try {
+    const served = await (await fetch(url, { redirect: 'follow' })).text()
+    const built = await readFile(distIndex, 'utf8')
+    if (served.trim() === built.trim()) return { ok: true }
+
+    const title = (s) => s.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim() ?? '(no title)'
+    return {
+      ok: false,
+      detail: `served page title is "${title(served)}"; dist/index.html has "${title(built)}"`,
+    }
+  } catch (err) {
+    return { ok: false, detail: `could not read the served page: ${String(err).slice(0, 160)}` }
+  }
 }
 
 // ── Gate: build ───────────────────────────────────────────────────────────────
@@ -189,7 +243,7 @@ async function main() {
       const summary = await writeReport(gates, {
         startedAt,
         durationMs: Date.now() - started,
-        baseUrl: BASE_URL,
+        baseUrl: baseUrl,
         aborted: 'build',
       })
       report(summary)
@@ -198,40 +252,80 @@ async function main() {
   }
 
   let server = null
+  let baseUrl = REMOTE_URL
   if (!REMOTE_URL) {
-    console.log(`› serving dist/ on :${PORT}`)
-    server = spawn('npx', ['astro', 'preview', '--port', String(PORT)], {
+    // Take a port the operating system says is free, rather than a fixed one.
+    //
+    // With a fixed port this script once ran nine gates, in a real browser, against
+    // a completely different website: something else on the machine already held
+    // 4321, `astro preview` failed to bind, and the health check saw an HTTP 200 and
+    // was satisfied. It then reported 427 confident, specific, correctly-formatted
+    // failures about someone else's marketing site.
+    //
+    // Two fixes, and the second is the one that matters:
+    //   1. a free port, so the collision usually does not happen
+    //   2. an identity check, so that when it does happen we find out
+    // See evidence/INCIDENTS.md.
+    const port = PROCESS_PORT ?? (await freePort())
+    baseUrl = `http://localhost:${port}`
+    console.log(`› serving dist/ on :${port}`)
+    server = spawn('npx', ['astro', 'preview', '--port', String(port)], {
       cwd: ROOT,
       stdio: 'ignore',
       detached: false,
     })
-    const up = await waitForServer(BASE_URL)
-    if (!up) {
-      server.kill()
+    const up = await waitForServer(baseUrl)
+    const failServe = async (message, extra = {}) => {
+      server?.kill()
       gates.push(
         gateResult({
           id: 'serve',
           title: 'Preview server',
           status: STATUS.FAIL,
-          failures: [{ message: `The preview server never answered on ${BASE_URL}.` }],
+          failures: [{ message, ...extra }],
         }),
       )
       const summary = await writeReport(gates, {
         startedAt,
         durationMs: Date.now() - started,
-        baseUrl: BASE_URL,
+        baseUrl,
       })
       report(summary)
       process.exit(1)
     }
+
+    if (!up) {
+      await failServe(`The preview server never answered on ${baseUrl}.`)
+    }
+
+    const identity = await servesOurBuild(baseUrl)
+    if (!identity.ok) {
+      await failServe(
+        'The server on that port is not serving this project. Every gate below it would be ' +
+          'measuring something else.',
+        {
+          where: baseUrl,
+          expected: 'the bytes of dist/index.html',
+          actual: identity.detail,
+          hint:
+            'Something else is already listening. Stop it, or run with CHECK_PORT set to a ' +
+            'port you know is free.',
+        },
+      )
+    }
   }
 
   try {
-    console.log('› running gates against', BASE_URL)
+    console.log('› running gates against', baseUrl)
     const pwArgs = ['playwright', 'test']
     if (ONLY) pwArgs.push(...ONLY.map((id) => `checks/specs/${id}.spec.ts`).filter((p) => existsSync(join(ROOT, p))))
     const pw = await run('npx', pwArgs, {
-      env: { ...process.env, CHECK_BASE_URL: BASE_URL },
+      env: {
+        ...process.env,
+        CHECK_BASE_URL: baseUrl,
+        CHECK_RUN_DIR: RUN_DIR,
+        PLAYWRIGHT_OUTPUT_DIR: join(RUN_DIR, 'artifacts'),
+      },
     })
 
     const files = existsSync(GATE_DIR) ? await readdir(GATE_DIR) : []
@@ -256,7 +350,7 @@ async function main() {
     }
 
     if (!SKIP_PERF && shouldRun('perf')) {
-      gates.push(await perfGate(BASE_URL))
+      gates.push(await perfGate(baseUrl))
     }
   } finally {
     if (server) server.kill('SIGTERM')
@@ -265,7 +359,7 @@ async function main() {
   const summary = await writeReport(gates, {
     startedAt,
     durationMs: Date.now() - started,
-    baseUrl: BASE_URL,
+    baseUrl,
   })
   report(summary)
   process.exit(summary.ok ? 0 : 1)

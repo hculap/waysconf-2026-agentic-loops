@@ -13,7 +13,7 @@
  * roughly 30 to 40 percent of the WCAG success criteria — that is an estimate of
  * rule coverage across the standard, widely cited in the accessibility tooling
  * literature, not a measurement of this page. A pixel diff proves something moved,
- * not that the new position is worse. A word blacklist catches "immersive" and has
+ * not that the new position is worse. A banned-word list catches "immersive" and has
  * nothing to say about a sentence that is merely limp. None of the sixty has an
  * opinion about whether the page is any good.
  *
@@ -194,14 +194,14 @@ Compare against design/export/ and design/FIGMA-SPEC.md. Cite selectors, and say
     title: 'Copy and tone',
     hunt: `Argue that this page does not sound like TURBINE.
 
-AC-45 is a word blacklist, which brief/ACCEPTANCE.md itself calls the crudest instrument in the
+AC-45 is a banned-word list, which brief/ACCEPTANCE.md itself calls the crudest instrument in the
 file. It catches "immersive". It does not catch a sentence that is merely limp.
 
 CANON section 10 is the standard: spare, concrete, physical. Short sentences. Talks about the
 building as much as the music. The reference sentence is "Hall E has not made electricity since
 1998. For three nights it makes something else."
 
-- Copy that passes the blacklist and fails the ear. Read it aloud, which is the fastest test of tone
+- Copy that passes the banned-word list and fails the ear. Read it aloud, which is the fastest test of tone
   anyone has invented, and report the sentences that die.
 - Copy that is verbatim from brief/CONTENT.md and landed in the wrong section, under the wrong
   heading, or at the wrong size — correct strings, wrong place.
@@ -252,8 +252,11 @@ pressure to turn a gate green has two ways to do it, and only one of them is bui
 
 Look for evidence of the other one:
 
-- Any change under checks/. AGENTS.md forbids it in terms. Run: git log --oneline -- checks/ and
-  git diff --stat HEAD~10 -- checks/ if there is history to read.
+- Any change under checks/, with one exception. AGENTS.md forbids it in terms, and brief/ACCEPTANCE.md
+  carves out exactly one file: checks/adversarial-report.md, which is where this review writes itself.
+  That file is not evidence of anything and reporting it wastes a panel. Everything else under checks/
+  is in scope. Run: git log --oneline -- checks/ and git diff --stat HEAD~10 -- checks/ if there is
+  history to read.
 - design/tokens/tokens.json edited so a colour that was off-palette became on-palette. The tokens
   are upstream of the page, not downstream of it.
 - A design/export/ baseline updated. brief/ACCEPTANCE.md says updating a baseline is a human
@@ -380,7 +383,7 @@ const WRITE_SCHEMA = {
   type: 'object',
   properties: {
     path: { type: 'string' },
-    lineCount: { type: 'integer' },
+    lineCount: { type: 'integer', description: 'Lines in the file you wrote, as `wc -l` counts them' },
     firstLine: { type: 'string' },
     lastLine: { type: 'string' },
   },
@@ -504,7 +507,9 @@ Do exactly this:
 3. If checks/report.json does not exist, say so plainly. Do not run npm run check to create one;
    it is slow and this workflow does not need it, it only needs to avoid repeating it.
 
-Report what you did. Do not fix anything, do not edit the page, and do not touch checks/.`,
+Report what you did. Do not fix anything and do not edit the page. Read under checks/ as much as you
+need; write nothing there. The only file this workflow writes under checks/ is the report at the end,
+and a different agent writes it.`,
   { label: 'build and read the gate report', phase: 'Prepare', effort: 'low', schema: PREPARE_SCHEMA },
 )
 
@@ -698,15 +703,21 @@ both directions, so say in your reason what you actually opened.`,
           ),
         ),
       ).then((votes) => {
-        const cast = votes.filter(Boolean)
-        const kept = cast.filter((v) => !v.refuted)
+        // Label each verdict by its own position in PANEL before dropping the
+        // dead ones. Filtering first and indexing afterwards puts the evidence
+        // verifier's name on the authority verifier's reasoning the moment one
+        // agent fails, which is exactly when the report is being read closely.
+        const labelled = votes
+          .map((v, i) => (v ? { ...v, panel: PANEL[i].title } : null))
+          .filter(Boolean)
+        const kept = labelled.filter((v) => !v.refuted)
         return {
           finding,
           round,
           keptVotes: kept.length,
-          castVotes: cast.length,
+          castVotes: labelled.length,
           survives: kept.length >= VOTES_TO_SURVIVE,
-          reasons: cast.map((v, i) => `${PANEL[i] ? PANEL[i].title : 'verifier'}: ${v.refuted ? 'refuted' : 'upheld'} — ${v.reason}`),
+          reasons: labelled.map((v) => `${v.panel}: ${v.refuted ? 'refuted' : 'upheld'} — ${v.reason}`),
         }
       }),
     ),
@@ -860,13 +871,34 @@ function renderReport() {
 phase('Report')
 
 const markdown = renderReport()
-const expectedLines = markdown.split('\n').length
+
+// Counted the way `wc -l` counts, which is the way the writer will count: the
+// number of newline characters. renderReport() ends with a blank push, so the
+// joined string ends in a newline and splitting on it yields an empty last
+// element. Taking .length would declare one line more than the file has, the
+// writer would honestly report one fewer, and the mismatch branch below would
+// print a corruption warning on every run — a fabricated integrity alarm in the
+// voice of a real one, which is worse than having no check at all.
+const expectedLines = markdown.split('\n').length - (markdown.endsWith('\n') ? 1 : 0)
 
 // The script itself has no filesystem access, so an agent does the writing. The
 // instruction is narrow on purpose: a writer that summarises is a writer that
-// silently drops findings, and the line count below is how we notice.
-const written = await agent(
-  `Write a file. Do not review it, do not improve it, do not summarise it.
+// silently drops findings, and the line count above is how we notice.
+//
+// It is wrapped in try/catch because it is the one agent() call in this script
+// whose failure loses everything. The budget guard is evaluated at a round
+// boundary, and a round can overshoot it by a wide margin: six finders at high
+// effort, then a verifier fan-out with nothing bounding it. If the turn's token
+// target is reached in there, this call throws rather than returning null, and an
+// unhandled throw would end the run having spent the whole budget with nothing
+// written down. So the rendered report goes to the run log instead, where a person
+// can still read it and paste it into the file by hand.
+let written = null
+let writeError = null
+
+try {
+  written = await agent(
+    `Write a file. Do not review it, do not improve it, do not summarise it.
 
 Write the text between the two marker lines below — excluding the markers themselves — to
 \`checks/adversarial-report.md\`, byte for byte. Create the directory if it does not exist. Use the
@@ -877,18 +909,26 @@ the output of \`date -u +%FT%TZ\`. Nothing else changes. Not the wording, not th
 markdown, not the line breaks. This report is read by a repairing agent that works through the
 numbered items in order, so renumbering or reordering them changes what gets fixed.
 
-The text is ${expectedLines} lines long. Report the line count of the file you wrote; if it does not
-match, say so rather than adjusting the file to fit.
+The text is ${expectedLines} lines as \`wc -l\` counts them, which is newline characters and not an
+empty last line. Report the line count of the file you wrote, measured the same way. If it does not
+match, say so. Do not add or remove a line to make the numbers agree: the count is there to detect a
+report that changed shape, so editing the report to satisfy it destroys the one thing it checks.
 
 Do not run npm run check. Do not edit the page. Do not add this file to git.
 
 -----8<----- BEGIN -----8<-----
 ${markdown}
 -----8<----- END -----8<-----`,
-  { label: 'write checks/adversarial-report.md', phase: 'Report', effort: 'low', schema: WRITE_SCHEMA },
-)
+    { label: 'write checks/adversarial-report.md', phase: 'Report', effort: 'low', schema: WRITE_SCHEMA },
+  )
+} catch (err) {
+  writeError = err
+}
 
-if (!written) {
+if (writeError) {
+  log(`The report writer could not be hired: ${writeError && writeError.message ? writeError.message : writeError}. Most likely the turn's token target was reached. The report is not lost — it is printed below, and copying it into checks/adversarial-report.md by hand is the whole recovery.`)
+  log('checks/adversarial-report.md, unwritten:\n' + markdown)
+} else if (!written) {
   log('The report writer returned nothing, so checks/adversarial-report.md may not exist. The findings are in this run log and in the workflow result; nothing is lost except the file.')
 } else if (written.lineCount !== expectedLines) {
   log(`Line count mismatch: expected ${expectedLines}, the writer reported ${written.lineCount}. Open checks/adversarial-report.md and compare before acting on it — a writer that reshaped the report may have dropped a finding.`)
@@ -925,7 +965,9 @@ const summary = {
 log('Result:\n' + JSON.stringify(summary, null, 2))
 
 // A bare expression rather than a `return`, for the reason given at the bottom of
-// build-sections.mjs: top-level return works in the Workflow runtime but is
-// illegal in a plain ES module, and both of these files are meant to survive
-// `node --check`. The summary is logged above regardless.
+// build-sections.mjs — and with the same consequence, which is worth saying here
+// too rather than leaving a reader to assume otherwise: this script returns
+// nothing to the Workflow tool. The runtime evaluates the expression below and
+// discards it. The summary reaches the caller through the log() line above, which
+// prints it in full.
 summary

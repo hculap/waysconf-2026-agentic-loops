@@ -42,7 +42,7 @@ them left to right as a narrative.
 |---|---|---|---|
 | 1 | `Cover` | Thumbnail and provenance | One 1600×960 frame, `cover` |
 | 2 | `Design system` | Tokens, type, components | Variable proof sheet, 17 text style specimens, all 10 component sets, contrast matrix |
-| 3 | `Desktop 1440` | Canonical composition | One frame, `TURBINE / Desktop 1440`, containing the 10 exported section frames |
+| 3 | `Desktop 1440` | Canonical composition | One frame, `TURBINE / Desktop 1440`, containing the 11 section frames, 10 of which export |
 | 4 | `Tablet 768` | Tablet deltas | One frame, `TURBINE / Tablet 768` |
 | 5 | `Mobile 390` | Mobile deltas | One frame, `TURBINE / Mobile 390` |
 | 6 | `Exports` | Export manifest and source assets | Manifest table frame plus the image asset frames listed in §8.4 |
@@ -86,40 +86,53 @@ Each viewport frame is set to the matching mode of the `TURBINE / Responsive` va
 
 ### 2.1 Naming convention
 
-`design/tokens/tokens.json` is the machine-readable token source. Figma variable names are derived from
-it by a single mechanical rule, so that a string in one file can be found in the other by literal search.
+`design/tokens/tokens.json` is the machine-readable token source. It is committed, and it is W3C DTCG
+shaped: every leaf carries a `$value` and a `$type`. Figma variable names are derived from its dot paths
+group by group. The translation is short enough to state in full, and `buildTokens()` in
+`scripts/build-figma-plugin.mjs` is its executable form.
 
 ```
-tokens.json dot path        ->   Figma variable name
-color.bg.base               ->   color/bg/base
-text.xl                     ->   text/xl
-space.6                     ->   space/6
-radius.pill                 ->   radius/pill
-responsive.gutter           ->   responsive/gutter
+tokens.json dot path                ->   Figma variable name
+color.bg.base                       ->   color/bg/base           (all of color.* maps 1:1)
+radius.pill                         ->   radius/pill             (all of radius.* maps 1:1)
+breakpoint.tablet                   ->   breakpoint/tablet       (all of breakpoint.* maps 1:1)
+spacing.6                           ->   space/6
+typography.fontSize.xl              ->   text/xl
+typography.fontFamily.display       ->   font/display
+typography.fontWeight.regular       ->   weight/regular
+typography.letterSpacing.display    ->   tracking/tight
+typography.letterSpacing.wordmark   ->   tracking/wordmark
+typography.letterSpacing.normal     ->   tracking/normal
+layout.maxWidth                     ->   size/content-max
+layout.gutter.mobile / .desktop     ->   the Mobile 390 / Desktop 1440 modes of responsive/gutter
 ```
 
 Rules, in full:
 
-1. Replace `.` with `/`. Nothing else changes.
+1. Only the group prefix is rewritten; the leaf key crosses unchanged. `spacing.6` is `space/6`, not
+   `spacing/6`, and `typography.fontSize.xl` is `text/xl`, not `typography/fontSize/xl`. A blanket
+   dot-to-slash substitution is not the rule and never was — it holds for three groups out of eight. The
+   table above is the whole of it, so a value can still be found in either file by reading one line.
 2. Keep the leading segment (`color/`, `space/`) even though the collection is already called Color or
-   Scale. The redundancy is deliberate: the plugin does a literal match on the full path, and a variable
-   named `bg/base` would not match `color.bg.base`.
+   Scale. The redundancy is deliberate: a variable named `bg/base` would not be found by anyone
+   searching for `color.bg.base`.
 3. All lowercase. Hyphens inside a segment are allowed (`content-max`), underscores and spaces are not.
 4. British spelling appears in prose only. Every identifier is `color`, never `colour`. Two spellings of
    the same concept in one codebase is a bug waiting for a designer to file it.
-5. A variable that does not exist in `tokens.json` does not exist in Figma, and the reverse. The pair is
-   checked by `scripts/` in the token-diff gate; a mismatch fails the build.
+5. Parity holds over the intersection of the two files, not over either one whole, because they do not
+   cover the same ground: `tokens.json` carries only what CANON fixes. Two carve-outs, both named and
+   both closed:
+   - **Figma only**, each recorded as an assumption in §12: the five `leading/*` steps, `tracking/wide`,
+     `border/hairline`, `border/focus`, `size/touch-min`, `size/tap-comfortable`, and all nine
+     `responsive/*` variables.
+   - **`tokens.json` only**: the `shadow` group, which the token file itself declares an implementation
+     extension with no Figma counterpart and excludes from the name diff.
 
-If `design/tokens/tokens.json` has not been written yet, it must take the shape below, with the same
-paths and the same values:
-
-```json
-{
-  "color": { "bg": { "base": "#0A0B0D", "surface": "#131519", "raised": "#1C1F25" } },
-  "space": { "1": 4, "2": 8, "3": 12 },
-  "text":  { "xs": "0.75rem", "sm": "0.875rem" }
-}
-```
+   Everything else exists on both sides, under the names in the table above.
+   `scripts/build-figma-plugin.mjs` asserts the counts when it generates the plugin bundle — fourteen
+   colour leaves, eleven type sizes, three families — and refuses to write if they move. The TOKENS gate
+   is a separate program doing a different job: `checks/specs/tokens.spec.ts`, AC-26 to AC-33, checks the
+   compiled CSS against `tokens.json`.
 
 ### 2.2 Collection `TURBINE / Color`
 
@@ -131,24 +144,42 @@ One mode, named `Dark`. There is no second mode. Type: `COLOR`. Every variable i
 | `color/bg/surface` | `#131519` | Cards, nav background |
 | `color/bg/raised` | `#1C1F25` | Hover states, table header |
 | `color/border/subtle` | `#2A2E36` | Hairlines, card borders |
-| `color/border/strong` | `#3D434E` | Focus ring base, dividers |
+| `color/border/strong` | `#3D434E` | Dividers, and the dark offset under a focus ring |
 | `color/text/primary` | `#F2F4F7` | Headings, body on dark |
 | `color/text/secondary` | `#A7AEBB` | Supporting copy |
-| `color/text/muted` | `#6B7280` | Legal and footer text only. Never body copy. |
+| `color/text/muted` | `#6B7280` | Trap. Never body copy, and not the footer legal copy either. See below and §4.10. |
+| `color/text/on-accent` | `#0A0B0D` | Alias of `color/bg/base`. Ink on every accent and state fill |
 | `color/accent/sodium` | `#FF6A1A` | Primary accent, CTAs |
 | `color/accent/coolant` | `#2FE6D6` | Links, active tab, focus ring |
 | `color/accent/arc` | `#7C5CFF` | Badges, marquee |
 | `color/state/danger` | `#FF4D4D` | Sold out, errors |
 | `color/state/success` | `#3DDC84` | Confirmation |
 
-Set the Figma **description** field on `color/text/muted` to:
-`Legal and footer only. 4.1:1 on bg/base — fails AA for body copy. Use text/secondary instead.`
-The description is what the Dev Mode MCP server returns alongside the value, so it is the cheapest way
-to put the warning in front of the model that will write the CSS.
+Every contrast ratio quoted anywhere in this file is computed in `design/tokens/CONTRAST.md`, which is
+the source for all of them and which opens by saying that nothing in it is estimated. Two variables carry
+a Figma **description**, because the description is what the Dev Mode MCP server returns alongside the
+value and is therefore the cheapest way to put a warning in front of the model that will write the CSS.
 
-**Hover and pressed states introduce no new colours.** CANON fixes thirteen colours and the file has
-thirteen. A hover is a 10% `color/text/primary` overlay layer named `overlay/hover` inside the
-component, not a fourteenth hex. This keeps the token-diff gate meaningful.
+`color/text/muted`:
+`Trap. 4.07:1 on bg/base and 3.78:1 on bg/surface, both under the 4.5:1 normal-text bar. No composed
+frame uses it; the footer legal block is set in text/secondary. See CONTRAST.md section 5, Trap 1.`
+
+`color/border/strong`:
+`Dividers, and the dark offset under a focus ring. 1.98:1 on bg/base — never the visible focus stroke.
+Use accent/coolant.`
+
+CANON §4 labels `border/strong` "focus ring base", which reads as an instruction and is not one. The
+visible focus stroke in this file is always `color/accent/coolant` — 12.57:1 on `bg/base`, against a 3:1
+requirement — and `border/strong` is only the dark offset underneath it. §4 says the same thing about
+components; §2.2 and §4 have to agree on the page, or someone reads one of them alone and ships a ring
+at 1.98:1.
+
+**Hover and pressed states introduce no new colours.** CANON fixes thirteen colours; the file has those
+thirteen plus one alias, `color/text/on-accent`, which resolves to `color/bg/base` and introduces no new
+hex. `tokens.json` carries the alias too, and `scripts/build-figma-plugin.mjs` asserts fourteen colour
+leaves, so a file built with thirteen is missing one. A hover is a 10% `color/text/primary` overlay layer
+named `overlay/hover` inside the component, not a fourteenth colour. This keeps the token-diff gate
+meaningful.
 
 ### 2.3 Collection `TURBINE / Type`
 
@@ -196,7 +227,7 @@ Line height, type `FLOAT`, expressed as a percentage in Figma and unitless in CS
 | `leading/tight` | 108% | 1.08 |
 | `leading/snug` | 125% | 1.25 |
 | `leading/normal` | 150% | 1.5 |
-| `leading/relaxed` | 162% | 1.625 |
+| `leading/relaxed` | 162% | 1.62 |
 
 Letter spacing, type `FLOAT`, in em:
 
@@ -280,31 +311,41 @@ On `Design system`, a frame `tokens/proof` — 1200 wide, vertical auto-layout, 
 variable name in `Mono/Time`, the hex in `Mono/Time` at `color/text/secondary`, and the measured
 contrast against `color/bg/base` in `Body/Small`.
 
-Below it, `tokens/contrast-matrix` — the four known-good pairings from CANON §4 marked pass, and the two
-known-bad pairings from CANON §8 marked fail with the measured ratio:
+Below it, `tokens/contrast-matrix` — the four known-good pairings from CANON §4 marked pass, and the
+traps marked fail. Every ratio is copied from `design/tokens/CONTRAST.md` §3 and §4. Type the measured
+number: a word like "high" cannot be printed into a text layer by a plugin and cannot be checked by a
+reader.
 
 | Pairing | Ratio | Verdict |
 |---|---|---|
-| `text/primary` on `bg/base` | high | Pass |
-| `text/primary` on `bg/surface` | high | Pass |
-| `text/secondary` on `bg/base` | high | Pass |
-| `bg/base` on `accent/sodium` | high | Pass — this is the button |
-| `text/muted` on `bg/base` | ~4.1:1 | **Fail** for body copy. Legal and footer only. |
-| `#FFFFFF` on `accent/sodium` | ~2.9:1 | **Fail**. Never white on orange. |
+| `text/primary` on `bg/base` | 17.87:1 | Pass |
+| `text/primary` on `bg/surface` | 16.59:1 | Pass |
+| `text/secondary` on `bg/base` | 8.83:1 | Pass |
+| `bg/base` on `accent/sodium` | 6.87:1 | Pass — this is the button |
+| `text/muted` on `bg/base` | 4.07:1 | **Fail** for body copy. CANON §8. |
+| `#FFFFFF` on `accent/sodium` | 2.87:1 | **Fail**. Never white on orange. CANON §8. |
+| `text/primary` on `accent/arc` | 3.94:1 | **Fail** below 24px. Arc takes `bg/base` ink only. |
+| `#FFFFFF` on `state/danger` | 3.27:1 | **Fail** for a pill label. Use `bg/base`. |
 
-The two failing rows stay in the file on purpose. They are the thing the accessibility gate will catch
-later, and a designer who sees them here understands why the gate exists.
+CANON §8 names the first two traps. CONTRAST.md §5 measures three more, and the two added here are the
+ones this file can actually produce: the ticker runs on `accent/arc` (§4.9) and the sold-out pill on
+`state/danger` (§4.6). The failing rows stay in the file on purpose. They are the thing the accessibility
+gate will catch later, and a designer who sees them here understands why the gate exists.
 
 ---
 
 ## 3. Text styles
 
-Seventeen styles, named `Group/Role`. Figma sorts on the slash, so the four groups collapse neatly in
-the panel.
+Seventeen styles, named `Group/Role`. Figma sorts on the slash, so the five groups — Display, Body,
+Label, Mono and Legal — collapse neatly in the panel.
 
-Every style binds family, weight, size, line height and letter spacing to variables from
-§2.3. No style carries a loose number. Four styles bind size to a `responsive/type/*` variable and
-therefore resize with the frame mode; the rest are fixed.
+Every style binds family, weight, size and letter spacing to variables from §2.3, and binds line height
+to a `leading/*` variable wherever the scale has a step for it. Five do not: `Display/Card-Title` at
+130%, `Label/Eyebrow` and `Mono/Tag` at 133%, and `Label/Button-Small` and `Mono/Time` at 143% carry a
+literal percentage, because the five-step leading scale has no step there and growing the scale by three
+steps to serve five styles costs more than it saves. Those five are the only loose numbers in the file,
+and §12 records them. Four styles bind size to a `responsive/type/*` variable and therefore resize with
+the frame mode; the rest are fixed.
 
 | Style | Family | Weight | Size (px) | Line height | Letter spacing | Case | Used by |
 |---|---|---|---|---|---|---|---|
@@ -375,15 +416,25 @@ Component set `Button`. Three variant properties, 24 variants.
 | `State` | `default` · `hover` · `focus` · `disabled` |
 | `Size` | `md` · `sm` |
 
-Component properties: `Label` (text, default `Buy tickets`), `Show icon` (boolean, default false),
-`Icon` (instance swap, shown when `Show icon` is true, 16×16, placed after the label).
+Component properties: `Label` (text, default `Get tickets`), `Show label` (boolean, default true),
+`Show icon` (boolean, default false), `Icon` (instance swap, shown when `Show icon` is true, 16×16,
+placed after the label).
 
 Anatomy: horizontal auto-layout, gap `space/2` (8), align centre, hug both axes, radius `radius/pill`.
 
 | Size | Text style | Padding Y | Padding X | Resulting height | Min width |
 |---|---|---|---|---|---|
-| `md` | `Label/Button` (16/24) | 12 | 28 | 48 | 120 |
-| `sm` | `Label/Button-Small` (14/20) | 10 | 20 | 40 | 96 |
+| `md` | `Label/Button` (16/24) | 12 | 24 | 48 | 120 |
+| `sm` | `Label/Button-Small` (14/20) | 8 | 16 | 36 | 96 |
+
+Every padding here is a step on the `space/*` scale, which §0 requires and which `brief/ACCEPTANCE.md`
+AC-32 enforces on the compiled CSS to ±0.5px. A button padded 28 or 20 fails the TOKENS gate on every
+single run, and the loop has no legal repair for it, because the design would be mandating a value the
+verifier forbids.
+
+When `Show label` is false the frame stops hugging and becomes a square: fixed 48×48, padding `space/3`
+(12) on all four sides around a 24×24 icon, no min width. That is the one icon-only control in the file
+and it is the compact nav's menu button (§4.3).
 
 Both heights clear the 24px touch minimum in CANON §9 with room to spare.
 
@@ -394,7 +445,7 @@ Both heights clear the 24px touch minimum in CANON §9 with room to spare.
 | `ghost` | none | none | `color/accent/coolant` |
 
 The primary label is `color/bg/base` on `color/accent/sodium`. This is a CANON §4 fixed pairing and the
-single most common thing a model gets wrong: white on orange is 2.9:1 and fails. See CANON §8.
+single most common thing a model gets wrong: white on orange is 2.87:1 and fails. See CANON §8.
 
 | State | Change |
 |---|---|
@@ -455,13 +506,24 @@ align centre, padding X `responsive/gutter`, padding Y 12. Fill `color/bg/surfac
 | Child | Spec |
 |---|---|
 | `nav/wordmark` | `Display/Wordmark-Nav`, `color/text/primary`, link to `#top` |
-| `nav/links` | Horizontal auto-layout, gap `space/8` (32). Four links: Lineup, Programme, Venue, FAQ. `Body/Base-Medium`, `color/text/secondary`. Active link `color/accent/coolant` with a 2px bottom rule in the same colour. Each link has 12px vertical padding so the hit target reaches 48. |
-| `nav/cta` | `Button` instance, `Variant=primary`, `Size=sm`, `Label=Buy tickets` |
+| `nav/links` | Horizontal auto-layout, gap `space/8` (32). Four links, labels and targets from `brief/CONTENT.md` §3 — the fourth reads `Questions`, not `FAQ`, though its target is still `#faq`. `Body/Base-Medium`, `color/text/secondary`. Active link `color/accent/coolant` with a 2px bottom rule in the same colour. Each link is a fixed 48-high row with its label centred. |
+| `nav/cta` | `Button` instance, `Variant=primary`, `Size=sm`, `Label` from `brief/CONTENT.md` §3 (`Tickets`) |
 
-`compact` — used at 390 only, per CANON §7 ("hamburger below 768"). Height 64. Wordmark left, a 48×48
-menu button right (`Button` instance, `Variant=ghost`, `Size=sm`, icon only). `nav/links` is present in
-the file but hidden, so the structure survives into the markup and the drawer is a CSS concern rather
-than a missing element.
+A fixed 48-high row rather than "12px of padding above and below": `Body/Base-Medium` is Inter 16 at
+`leading/relaxed` 162%, so its line box is 25.92px and 12 + 25.92 + 12 is 49.92, not 48. Two pixels of
+nav height is absorbed by no budget — the baseline and the screenshot end up different sizes and
+pixelmatch cannot compare them at all. Centring inside a fixed row gives exactly 48 and declares no
+padding for AC-32 to reject.
+
+`compact` — used at 390 only, per CANON §7 ("hamburger below 768"). Height 64. Wordmark left, the 48×48
+menu button right: a `Button` instance, `Variant=ghost`, `Size=sm`, `Show label` false, `Show icon`
+true, which is the square icon-only form defined in §4.1. `nav/links` is present in the file but hidden,
+so the structure survives into the markup and the drawer is a CSS concern rather than a missing element.
+
+Add a Dev Mode annotation on the `Nav` component set: `nav landmark, aria-label="Primary". The wordmark
+links to #top with the accessible name "TURBINE — back to top". Below 768 the links and the CTA collapse
+behind a button whose accessible name toggles Open menu / Close menu.` CANON §9 and `brief/CONTENT.md`
+§14 are both specific here, and the annotation is how that reaches the markup.
 
 ### 4.4 TabBar
 
@@ -471,7 +533,9 @@ Anatomy: horizontal auto-layout, gap `space/2` (8), hug, padding 4, fill `color/
 `radius/pill`. Contains four instances of the nested component `TabBar/Tab`.
 
 `TabBar/Tab` — one variant property `State` with values `default` · `hover` · `focus` · `active`.
-Horizontal auto-layout, padding 10/20, height 40, radius `radius/pill`, `Label/Button-Small`.
+Horizontal auto-layout, padding `space/2` / `space/4` (8/16), fixed height 40 with the label centred,
+radius `radius/pill`, `Label/Button-Small`. 10 and 20 are not steps on the spacing scale and AC-32
+rejects both; the four extra pixels of height come from the fixed height, not from off-scale padding.
 
 | State | Fill | Label |
 |---|---|---|
@@ -488,26 +552,27 @@ tells the implementation there is a visible ring to build.
 
 Component set `ArtistCard`, one variant property `Billing` with values `headliner` · `main` · `support`.
 
-Component properties: `Name` (text), `Genre` (text), `Day` (text), `Stage` (text), `Portrait` (image
-fill on `artist/portrait`).
+Component properties: `Name` (text), `Genre` (text), `Day` (text), `Stage` (text), `Blurb` (text),
+`Billing label` (text), `Portrait` (image fill on `artist/portrait`).
 
 Anatomy: vertical auto-layout, gap `space/3` (12), fill container width, hug height, padding 0, radius
 `radius/md`, clip content on. Fill `color/bg/surface`, 1px `color/border/subtle`.
 
 | Child | Spec |
 |---|---|
-| `artist/portrait` | Aspect ratio 4:5, fill container width, image fill, crop. At 282 wide this renders 282×352. |
+| `artist/portrait` | Aspect ratio 1:1, matching the supplied 800 × 800 files, fill container width, image fill, crop. At 282 wide this renders 282×282. |
 | `artist/body` | Vertical auto-layout, gap `space/2` (8), padding `space/4` (16) |
-| `artist/badge` | Present on `headliner` only. `Mono/Tag`, `color/bg/base` on `color/accent/arc`, padding 4/8, radius `radius/sm`, text `Headliner`. Absolutely positioned top-left of the portrait at 12/12. |
+| `artist/badge` | Present on all three billings. `Mono/Tag`, `color/bg/base` on `color/accent/arc`, padding 4/8, radius `radius/sm`. The text comes from `Billing label` and reads `Headliner`, `Main` or `Support`, the exact words `brief/CONTENT.md` §6 fixes for every card. Absolutely positioned top-left of the portrait at 12/12. |
 | `artist/name` | `Display/Card-Title`, `color/text/primary` |
-| `artist/meta` | Horizontal auto-layout, gap `space/2`, wrap on. `Body/Small`, `color/text/secondary`. Reads `Fri · Turbine Hall`. |
+| `artist/meta` | Horizontal auto-layout, gap `space/2`, wrap on. `Body/Small`, `color/text/secondary`. Formatted `<Day> · <Stage>` with the day spelled out, as `brief/CONTENT.md` §6 sets it: `Friday · Turbine Hall`, not `Fri · Turbine Hall`. |
 | `artist/genre` | `Mono/Tag`, `color/accent/coolant` |
+| `artist/blurb` | `Body/Small`, `color/text/secondary`, fill container. One sentence per card, from `brief/CONTENT.md` §6. AC-38 matches all twelve verbatim, so a card with nowhere to put the sentence cannot pass the content gate. |
 
 | Billing | Difference |
 |---|---|
-| `headliner` | Badge shown; `artist/name` overrides to 24px |
-| `main` | No badge; name at 20px |
-| `support` | No badge; name at 20px; `artist/genre` at `color/text/secondary` |
+| `headliner` | `Billing label` = `Headliner`; `artist/name` overrides to 24px |
+| `main` | `Billing label` = `Main`; name at 20px |
+| `support` | `Billing label` = `Support`; name at 20px; `artist/genre` at `color/text/secondary` |
 
 Hover on the whole card: `overlay/hover` over the portrait only, plus border to `color/border/strong`.
 
@@ -535,7 +600,7 @@ Anatomy: vertical auto-layout, gap `space/4` (16), fill container width, hug hei
 |---|---|
 | `standard` | As above |
 | `highlighted` | Border 2px `color/accent/sodium`; fill `color/bg/raised`; badge shown with `Badge label = Most popular`; card is 16px taller through padding `space/8` (32) |
-| `sold-out` | Border `color/border/subtle`; `ticket/price` in `color/text/secondary` with a strikethrough; a `Sold out` badge in `color/bg/base` on `color/state/danger`; CTA becomes `Variant=secondary`, `State=disabled`, `Label=Sold out` |
+| `sold-out` | Border `color/border/subtle`; `ticket/price` in `color/text/secondary` with a strikethrough; a `Sold out` badge in `color/bg/base` on `color/state/danger`; CTA becomes `Variant=secondary`, `Label=Workshop sold out`. Not `State=disabled`: `brief/CONTENT.md` §14 keeps it focusable and marks it `aria-disabled="true"`, so a keyboard user can still reach the control that explains why they cannot buy |
 
 CANON §3 fixes the three tiers: Single Night €45, Full Pass €110 (highlight this card), Full Pass +
 Workshop €165. The `sold-out` variant exists because the workshop tier is limited to 40 places and shows
@@ -553,13 +618,18 @@ Component properties: `Time` (text), `Turbine Hall` (text), `Boiler Room` (text)
 
 | Cell | Width at 1440 | Style |
 |---|---|---|
-| `row/time` | Fixed 96 | `Mono/Time`, `color/accent/coolant` |
+| `row/time` | Fixed 128 | `Mono/Time`, `color/accent/coolant` |
 | `row/turbine-hall` | Fill | `Body/Base-Medium`, `color/text/primary` |
 | `row/boiler-room` | Fill | `Body/Base-Medium`, `color/text/primary` |
 | `row/cooling-tower` | Fill | `Body/Base-Medium`, `color/text/primary` |
 
+128 rather than 96 because the cell holds a range, not a start time. `brief/CONTENT.md` §7 sets times
+like `19:30 – 21:00`: thirteen characters of JetBrains Mono at 14px, about 109px, which a 96 column clips
+and a 72 column destroys.
+
 An empty cell contains an em dash in `color/text/secondary`, not an empty text node. An empty node
-collapses in auto-layout and breaks the column alignment.
+collapses in auto-layout and breaks the column alignment. The dash is decorative and the cell also
+carries the visually hidden string `No set`, per `brief/CONTENT.md` §7.
 
 `stacked` — used at 390. Vertical auto-layout, gap `space/2` (8), padding `space/4`, bottom border 1px
 `color/border/subtle`. Time on its own line in `Mono/Time`, then one line per non-empty stage reading
@@ -579,14 +649,16 @@ Anatomy: vertical auto-layout, fill container width, gap 0, bottom border 1px `c
 | `faq/trigger` | Horizontal auto-layout, space between, align centre, fill container width, padding Y `space/6` (24), gap `space/4`. Minimum height 64. |
 | `faq/question` | `Display/Card-Title`, `color/text/primary`, fill container |
 | `faq/chevron` | 24×24 vector, `color/accent/coolant`. Rotated 180° in `expanded`. |
-| `faq/answer` | Shown in `expanded` only. `Body/Base`, `color/text/secondary`, padding bottom `space/6`, padding right `space/12` (48) so the measure stays under 80 characters. |
+| `faq/answer` | Shown in `expanded` only. `Body/Base`, `color/text/secondary`, padding bottom `space/6`, padding right `space/12` (48) so the answer clears the chevron column and does not run to the same edge as the question. |
 
 The trigger is the full-width row, not the chevron. A 24×24 chevron alone would technically satisfy the
 touch minimum and would still be a poor target.
 
-Add a Dev Mode annotation on `faq/trigger`: `button, aria-expanded, aria-controls -> faq/answer id`.
-CANON §9 requires the accordion to be keyboard operable with correct ARIA, and the annotation is how the
-requirement reaches the model that writes the markup.
+Add a Dev Mode annotation on `faq/trigger`: `details/summary, or a button with aria-expanded and
+aria-controls -> faq/answer id if built custom`. `brief/CONTENT.md` §10 specifies native `<details>` and
+`<summary>`, which satisfy both the keyboard requirement in CANON §9 and the no-JavaScript requirement in
+`brief/BRIEF.md` §6 without a line of script. The annotation is how that reaches the model that writes
+the markup.
 
 ### 4.9 Ticker
 
@@ -596,13 +668,24 @@ Anatomy: fill container width, height 56, clip content on, fill `color/bg/raised
 border `color/border/subtle`. Inside, `ticker/track` — horizontal auto-layout, gap `space/6` (24), align
 centre, hug width.
 
-`ticker/track` contains the twelve genre tags from CANON §2, each as `Mono/Tag` in `color/accent/arc`,
-separated by a 4×4 dot in `color/border/strong`:
+`ticker/track` contains the tags from `brief/CONTENT.md` §5 — the twelve CANON §2 genres plus two
+textures of the room — in that order, each as `Mono/Tag` in `color/text/primary`, separated by a 4×4 dot
+in `color/accent/arc`:
 
-`INDUSTRIAL TECHNO · DEEP AMBIENT · GENERATIVE · DRONE · MODULAR LIVE · HARDWARE TECHNO ·
-FIELD RECORDING · DUB TECHNO · NEOCLASSICAL ELECTRONIC · TAPE LOOPS · PERCUSSIVE AMBIENT · GLASSY IDM`
+`INDUSTRIAL TECHNO · DEEP AMBIENT · DRONE · CONCRETE AND STEEL · MODULAR LIVE · HARDWARE TECHNO ·
+FIELD RECORDING · TAPE LOOPS · DUB TECHNO · SODIUM LIGHT · NEOCLASSICAL ELECTRONIC ·
+PERCUSSIVE AMBIENT · GENERATIVE · GLASSY IDM`
 
-The full set is duplicated twice inside the track so the loop has something to scroll into.
+The tags are ink, so they take `color/text/primary`: 14.98:1 on `color/bg/raised`. `Mono/Tag` is 12px,
+which is normal text under WCAG however bold it is, and `color/accent/arc` on `color/bg/raised` measures
+3.80:1 — over the 3:1 non-text bar, which is why it is right for the separator dots, and under the 4.5:1
+text bar, which is why it cannot be the tag colour. CONTRAST.md §5, Trap 3 states the rule: arc is a fill
+that takes `bg/base` ink, never ink itself. Arc stays in the marquee, as CANON §4 asks, as the thing
+between the words.
+
+The full set is duplicated twice inside the track so the loop has something to scroll into. The animated
+strip is `aria-hidden`; the visually hidden sentence in `brief/CONTENT.md` §5 is its accessible
+equivalent and sits beside it.
 
 | Variant | Meaning |
 |---|---|
@@ -629,20 +712,31 @@ auto-layout, gap `space/12` (48).
 | `footer/brand` | Wordmark in `Display/Wordmark-Nav`, then the tagline `Three nights inside the machine` in `Body/Small`, `color/text/secondary` |
 | `footer/column` | Vertical auto-layout, gap `space/3` (12). Heading in `Label/Eyebrow`, `color/text/secondary`; four links in `Body/Small`, `color/text/primary`, each with 8px vertical padding. |
 | `footer/divider` | 1px rule, `color/border/subtle`, fill container width |
-| `footer/bottom` | Horizontal auto-layout, space between, align centre. Legal line left in `Legal/Fine`, `color/text/muted`; socials right as four 24×24 icons with 12px padding, `color/text/secondary`. |
-| `footer/disclaimer` | Fill container width. `Legal/Fine`, `color/text/muted`. The exact CANON §1 disclaimer text. |
+| `footer/bottom` | Horizontal auto-layout, space between, align centre. The first two legal lines left in `Legal/Fine`, `color/text/secondary`; socials right as three 24×24 icons with 12px padding, `color/text/secondary`. `brief/CONTENT.md` §12 fixes three socials, not four, and three legal lines — the third is the fiction disclaimer below. |
+| `footer/disclaimer` | Fill container width. `Legal/Fine`, `color/text/secondary`. The exact CANON §1 disclaimer text. |
 
-Column contents:
+Column headings and links, verbatim from `brief/CONTENT.md` §12, which also fixes every target:
 
-| Festival | Tickets | Info | Legal |
+| Festival | Visit | Contact | Small print |
 |---|---|---|---|
-| Lineup | Single Night | Getting here | Terms |
-| Programme | Full Pass | House rules | Privacy |
-| Venue | Full Pass + Workshop | Lost and found | Accessibility statement |
-| FAQ | Access and companions | Contact | Imprint |
+| Lineup | Getting here | hello@turbine.fm | Terms of entry |
+| Programme | Accessibility | access@turbine.fm | Privacy |
+| Venue | What to bring | Three emails a year | House rules |
+| Tickets | Lockers and cloakroom | Questions | Credits |
 
-`footer/disclaimer` and `footer/bottom` are the only two places in the entire file where
-`color/text/muted` appears. Everywhere else it is a bug.
+Three of the Visit links point at FAQ item ids — `#faq-accessibility`, `#faq-bring`, `#faq-lockers` —
+which is why §5.8 keeps CONTENT.md's ids rather than numbering the accordion itself.
+
+Both rows were `color/text/muted` until the contrast matrix was computed. `Legal/Fine` is 12px, so
+muted legal copy measures 4.07:1 on `bg/base` and 3.78:1 on `bg/surface` — normal text as far as axe
+is concerned, and a `color-contrast` violation against ACCEPTANCE AC-15, which is blocking and admits
+no exemption for small print. AC-28 permits `color/text/muted` inside `[data-legal]`; it does not
+require it. So the shipped page uses `color/text/secondary` here and renders `color/text/muted`
+nowhere. See `design/tokens/CONTRAST.md` §5, Trap 1.
+
+`color/text/muted` still exists as a variable and still appears on the cover frame, on its own
+specimen and in the proof sheet, because those are the places where showing the trap is the point.
+Anywhere in the three viewport frames it is a bug.
 
 `stacked` — used at 768 and 390. `footer/top` becomes a wrapped grid: brand full width, then the four
 columns in a 2×2 arrangement, column width 340 at 768 and 163 at 390, gap `space/6` / `space/4`.
@@ -677,37 +771,70 @@ a fixed-width frame that stops resizing the moment someone drags the section.
 
 Nav, Hero, Ticker and Footer override the shell where noted.
 
+**Who owns the strings.** `brief/CONTENT.md` owns every heading, intro, label, answer and alt attribute
+on the composed page, and `brief/BRIEF.md` says a missing string is a question rather than a gap to fill.
+The one exception is the eyebrow above each `h2`: CONTENT.md carries none, this file fixes the five, and
+§12 records them so the string on the page traces to a document rather than to someone's judgement.
+Everything else below quotes CONTENT.md or points at the section of it that holds the copy. Where the two
+files have disagreed, CONTENT.md has won, because that is the file the CONTENT gate reads.
+
+### 5.0 section-skip-link
+
+| Property | Value |
+|---|---|
+| Height | 0 in a composed frame; the instance inside is hidden until focused |
+| Layout | One `a11y/skip-link` instance, absolutely positioned at left `responsive/gutter`, top 8. See §5.12. |
+| Fill | none |
+| Position | The first child of `TURBINE / Desktop 1440`, above `section-nav` |
+
+The skip link is a section in its own right, not a child of the nav. CANON §7 lists it as section 1, and
+`brief/ACCEPTANCE.md` AC-06 reads the eleven `[data-section]` elements in DOM order beginning with
+`skip-link`; nesting it inside `section-nav` yields ten and fails with *expected 11 sections in canonical
+order, found 10*. It is the one section with no export — §8.2 gives the reason.
+
 ### 5.1 section-nav
 
 | Property | Value |
 |---|---|
 | Height | 72, fixed |
 | Layout | `Nav` instance, `Layout=full`, `Active=none`, fill container width |
-| Padding | X 48, Y 12 |
-| Fill | `color/bg/surface` |
+| Padding and fill | As §4.3. The `Nav` component already carries both. Declaring them again here insets the wordmark 96px from the edge at 1440 and puts the nav out of line with every other section; §5.10 defers to §4.10 the same way, and that is the pattern. |
 | Position | Sticky at top of `TURBINE / Desktop 1440` |
-| Skip link | `a11y/skip-link` absolutely positioned at 48 left, 8 top, hidden. See §5.12. |
 
 ### 5.2 section-hero
 
 | Property | Value |
 |---|---|
 | Height | 780, fixed |
-| Layout | Vertical auto-layout, gap `space/8` (32), align left, justify **end** |
-| Padding | X 120, top 160, bottom 96 |
-| Fill | Image `hero-hall-e.jpg`, crop, plus an overlay rectangle `hero/scrim` — linear gradient from `color/bg/base` at 90% (bottom) to `color/bg/base` at 20% (top) |
+| Layout | Vertical auto-layout, gap `space/8` (32), align left, justify **end**. The children sit in a container at `responsive/container-max` (1200), centred, exactly as the §5 shell does. |
+| Padding | X `responsive/gutter` (48), top `space/32` (128), bottom `space/24` (96) |
+| Fill | Image `hero-hall.jpg`, crop, plus an overlay rectangle `hero/scrim` — linear gradient from `color/bg/base` at 90% (bottom) to `color/bg/base` at 20% (top) |
 
 The scrim exists so the wordmark keeps its contrast over a photograph. Without it the contrast of the
 `h1` depends on the image, which no tool can check and no reviewer can approve.
 
+The gutter plus a 1200 container puts the wordmark 120px from the frame edge at 1440, which is where the
+hand-typed `X 120` used to put it. 120 and 160 are not steps on the spacing scale, and AC-32 fails any
+declared padding that is not; deriving the offset from the container instead of typing it keeps the
+number and passes the gate.
+
 | Child | Content | Style |
 |---|---|---|
 | `hero/eyebrow` | `Fourth edition` | `Label/Eyebrow`, `color/accent/sodium` |
-| `hero/wordmark` | `TURBINE` (the `h1`) | `Display/Wordmark-Hero` at 96, `color/text/primary` |
-| `hero/tagline` | `Three nights inside the machine` | `Body/Lead`, `color/text/primary` |
-| `hero/meta` | `12–14 June 2027 · The Powerhouse, Hall E · Kraków, Poland` | `Body/Base`, `color/text/secondary` |
-| `hero/ctas` | Horizontal auto-layout, gap `space/4` (16) | `Button` primary md `Buy tickets`; `Button` secondary md `See the lineup` |
-| `hero/scroll-cue` | 24×24 chevron, absolute, bottom 32, centre | `color/text/secondary`. Hidden under `prefers-reduced-motion`; annotate it. |
+| `hero/wordmark` | The `h1`, on two lines: `TURBINE`, then `hero/tagline` nested inside it | `Display/Wordmark-Hero` at 96, `color/text/primary` |
+| `hero/tagline` | `Three nights inside the machine` | A child of `hero/wordmark`, not a sibling. `Body/Lead`, `color/text/primary` |
+| `hero/secondary` | `Ambient, techno and modular sound in a hall built for power.` | `Body/Lead`, `color/text/secondary` |
+| `hero/dates` | `Friday 12 – Sunday 14 June 2027` | `Body/Base`, `color/text/secondary` |
+| `hero/venue` | `The Powerhouse, Hall E · Kraków` | `Body/Base`, `color/text/secondary` |
+| `hero/ctas` | Horizontal auto-layout, gap `space/4` (16) | `Button` primary md `Get tickets` to `#tickets`; `Button` secondary md `See the lineup` to `#lineup` |
+| `hero/scroll-cue` | Visible text `Scroll` beside a 24×24 chevron, absolute, bottom 32, centre | `Body/Small`, `color/text/secondary`. A link to `#lineup`; the chevron is decorative. Motion stops under `prefers-reduced-motion`; annotate it. |
+
+Every string here is `brief/CONTENT.md` §4 verbatim. The hero is the one region with a 0.5% pixel budget
+(`brief/ACCEPTANCE.md` AC-35), the tightest number in the pipeline, so it is also the region where a
+paraphrase costs most: a hero built from a different element count cannot land inside it. The tagline
+nests inside the `h1` because CONTENT.md puts it there in a `<span>`, which makes the heading's
+accessible name read `TURBINE Three nights inside the machine`. As a sibling it would change the
+accessible name of the only `h1` on the page.
 
 The wordmark at 96px with +0.18em tracking measures roughly 578px wide. It fits the 1200 container with
 no risk of a line break, which is why 96 is the top of the scale rather than something larger.
@@ -728,8 +855,9 @@ Shell as above. Container gap `space/12` (48).
 
 | Child | Spec |
 |---|---|
-| `section-header` | Eyebrow `Twelve artists`; h2 `Lineup`; intro `Three stages, three nights. Every ticket reaches all of them.` |
+| `section-header` | Eyebrow `Twelve artists`; h2 and intro from `brief/CONTENT.md` §6 |
 | `lineup/tabs` | `TabBar` instance, `Active=all`, hug width, aligned left |
+| `lineup/status` | A text node under the tabs. `Body/Small`, `color/text/secondary`. The four strings are in `brief/CONTENT.md` §6; it is `aria-live="polite"` and is rewritten on every filter change. |
 | `lineup/grid` | Horizontal auto-layout with wrap on, gap 24 both axes, fill container width. Twelve `ArtistCard` instances, fixed width 282. (1200 − 3×24) / 4 = 282, giving four per row and three rows. |
 
 Card order follows the CANON §2 table, rows 1 to 12: KASIMIR VOLT, Lena Orbis, NULLSET, Auric Drift,
@@ -743,43 +871,55 @@ Annotate `lineup/tabs`: `role=tablist, each tab role=tab with aria-selected, pan
 
 | Child | Spec |
 |---|---|
-| `section-header` | Eyebrow `Three nights`; h2 `Programme`; intro `Doors at 19:00. Last set ends at 02:00.` |
+| `section-header` | Eyebrow `Three nights`; h2 `Programme`; intro from `brief/CONTENT.md` §7 |
 | `programme/days` | Vertical auto-layout, gap `space/12` (48), fill container width |
+| `programme/note` | Below the days. `Body/Small`, `color/text/secondary`. The times-can-move note in `brief/CONTENT.md` §7. |
 
 Three `programme/day` frames — vertical auto-layout, gap `space/4` (16), fill container width:
 
 | Part | Spec |
 |---|---|
 | `day/heading` | `Display/Subsection`, `color/text/primary`. `Friday 12 June`, `Saturday 13 June`, `Sunday 14 June`. |
+| `day/doors` | `Mono/Time`, `color/text/secondary`. One per day, from `brief/CONTENT.md` §7. Friday and Saturday read `Doors 19:00 · Last set ends 04:00 · Hall clears 04:30`; Sunday is a different day and reads `Doors 17:30 · Last set ends 02:00 · Hall clears 02:30`. |
+| `day/daytime` | Saturday only, above the table. `Body/Small`, `color/text/secondary`. The 14:00 – 17:00 modular synthesis workshop line in `brief/CONTENT.md` §7. |
+| `day/caption` | The table caption for that day from `brief/CONTENT.md` §7. Visually hidden is acceptable, so in the composed frames it sits at 0% opacity and its visible state lives on `Design system`. |
 | `day/table-head` | `TimetableRow` styling but a header row: fill `color/bg/raised`, `Label/Eyebrow`, `color/text/secondary`, cells `Time`, `Turbine Hall`, `Boiler Room`, `Cooling Tower`, radius `radius/sm` on the top corners |
-| `day/rows` | Three `TimetableRow` instances, `Layout=table-row`, `Zebra` alternating false/true/false |
+| `day/rows` | Four `TimetableRow` instances, `Layout=table-row`, `Zebra` alternating false/true/false/true |
 
-Row contents, derived from the CANON §2 day and stage columns. Support acts at 20:00, main at 22:00,
-headliner at 00:00. Times are a scheduling assumption; day and stage are CANON and must not move.
+Row contents are `brief/CONTENT.md` §7 verbatim: four sets a night, one stage at a time, with real ranges
+rather than start times. Do not regenerate them from CANON §2. CANON fixes each artist's day and stage and
+says nothing about time, and a rule like "support at 20:00, main at 22:00, headliner at 00:00" cannot be
+satisfied: Cold Cathode and Odalys Ferrer are both support, both on Saturday, both on Cooling Tower, so the
+rule puts two sets in one slot on one stage. CONTENT.md's lineup intro promises that nothing you want to
+hear runs against anything else you want to hear, and a timetable with a clash printed under that sentence
+is exactly the failure this workshop exists to demonstrate.
 
 **Friday 12 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|
-| 20:00 | — | TAPE DECAY | Hiroko Vane |
-| 22:00 | — | Auric Drift | — |
-| 00:00 | KASIMIR VOLT | — | — |
+| 19:30 – 21:00 | — | — | Hiroko Vane |
+| 21:15 – 22:45 | — | TAPE DECAY | — |
+| 23:00 – 00:45 | — | Auric Drift | — |
+| 01:00 – 04:00 | KASIMIR VOLT | — | — |
 
 **Saturday 13 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|
-| 20:00 | — | — | Cold Cathode |
-| 22:00 | — | Mara Teschke | Odalys Ferrer |
-| 00:00 | Lena Orbis | — | — |
+| 19:30 – 21:00 | — | — | Odalys Ferrer |
+| 21:15 – 23:00 | — | — | Cold Cathode |
+| 23:15 – 01:00 | — | Mara Teschke | — |
+| 01:15 – 04:00 | Lena Orbis | — | — |
 
 **Sunday 14 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|
-| 20:00 | — | VITRINE | Ilse Rüm |
-| 22:00 | — | SUBSTATION 9 | — |
-| 00:00 | NULLSET | — | — |
+| 18:00 – 19:30 | — | — | Ilse Rüm |
+| 19:45 – 21:15 | — | VITRINE | — |
+| 21:30 – 23:15 | — | SUBSTATION 9 | — |
+| 23:30 – 02:00 | NULLSET | — | — |
 
 Annotate `programme/days`: `table with caption per day, th scope=col for stage columns, th scope=row for time`.
 
@@ -787,13 +927,13 @@ Annotate `programme/days`: `table with caption per day, th scope=col for stage c
 
 | Child | Spec |
 |---|---|
-| `section-header` | Eyebrow `The building`; h2 `Venue`; intro omitted |
+| `section-header` | Eyebrow `The building`; h2 `The Powerhouse, Hall E` from `brief/CONTENT.md` §8. `Venue` is the section slug and the nav label, not the heading. No intro: CONTENT.md puts three paragraphs in `venue/text` instead. |
 | `venue/split` | Horizontal auto-layout, gap `space/12` (48), align start, fill container width |
-| `venue/image` | Fill container (576), aspect 4:3, image `venue-hall-e.jpg`, radius `radius/md` |
-| `venue/text` | Fill container (576), vertical auto-layout, gap `space/4` (16) |
+| `venue/image` | Fill container (576), aspect 4:3, image `venue-exterior.jpg`, radius `radius/md` |
+| `venue/text` | Fill container (576), vertical auto-layout, gap `space/4` (16). The three paragraphs in `brief/CONTENT.md` §8, `Body/Base`, `color/text/secondary`. |
 | `venue/lower` | Horizontal auto-layout, gap `space/12` (48), fill container width, margin top `space/12` |
-| `venue/travel` | Fill container (576), vertical auto-layout, gap `space/6` (24). Three items, each a vertical stack: label in `Label/Eyebrow` `color/text/secondary`, detail in `Body/Base` `color/text/primary`. Labels: `By tram`, `By bike`, `Parking`. |
-| `venue/map` | Fill container (576), height 320, fill `color/bg/raised`, 1px `color/border/subtle`, radius `radius/md`. A static map placeholder with a centred `Mono/Tag` label `MAP PLACEHOLDER` in `color/text/secondary`. |
+| `venue/travel` | Fill container (576), vertical auto-layout, gap `space/6` (24). An `h3` `Getting here`, the address line, then four items, each a vertical stack: term in `Label/Eyebrow` `color/text/secondary`, description in `Body/Base` `color/text/primary`. Terms, descriptions and the line about parking are `brief/CONTENT.md` §8: `Tram`, `Train`, `Bike`, `Accessibility`. |
+| `venue/map` | Fill container (576), height 320, fill `color/bg/raised`, 1px `color/border/subtle`, radius `radius/md`. A static map placeholder built in Figma, with a centred `Mono/Tag` label `MAP PLACEHOLDER` in `color/text/secondary` and the map caption from `brief/CONTENT.md` §8 below it in `Body/Small`. |
 
 `venue/split` at 1200 with a 48 gap gives two 576 columns.
 
@@ -804,9 +944,9 @@ Maps iframe is both.
 
 | Child | Spec |
 |---|---|
-| `section-header` | Eyebrow `Three ways in`; h2 `Tickets`; intro `One ticket, all three stages. Prices are per person and include booking fees.` |
+| `section-header` | Eyebrow `Three ways in`; h2 `Tickets`; intro from `brief/CONTENT.md` §9 |
 | `tickets/cards` | Horizontal auto-layout, gap `space/6` (24), align stretch, fill container width. Three `TicketCard` instances at (1200 − 2×24) / 3 = 384. |
-| `tickets/comparison` | Vertical auto-layout, gap 0, fill container width, 1px `color/border/subtle`, radius `radius/md`. Four rows, each a horizontal auto-layout with a feature label (fill) and three 120-wide cells carrying a check or an em dash. |
+| `tickets/comparison` | Vertical auto-layout, gap 0, fill container width, 1px `color/border/subtle`, radius `radius/md`. Seven rows and a caption, from `brief/CONTENT.md` §9 — each row a horizontal auto-layout with a feature label (fill) and three 120-wide cells. The cells carry the words CONTENT.md gives them, not ticks: `Yes`, `No` and `Free` survive a screen reader, and a tick glyph does not. |
 | `tickets/access` | Horizontal auto-layout, gap `space/4` (16), padding `space/6` (24), fill `color/bg/surface`, 1px `color/accent/coolant`, radius `radius/md`. A 24×24 icon plus the CANON §3 access note in `Body/Base`, `color/text/primary`. |
 
 Card instances, in order:
@@ -815,13 +955,11 @@ Card instances, in order:
 |---|---|---|---|---|
 | 1 | Single Night | €45 | `standard` | none |
 | 2 | Full Pass | €110 | `highlighted` | `Most popular` |
-| 3 | Full Pass + Workshop | €165 | `standard` | `40 places` |
+| 3 | Full Pass + Workshop | €165 | `standard` | none |
 
-Card copy from CANON §3: Single Night includes one night on all three stages, note `Choose your date at
-checkout`. Full Pass includes all three nights. Full Pass + Workshop includes all three nights plus the
-Saturday modular synthesis workshop, limited to 40 places.
-
-Comparison rows: `All three stages`, `Three nights`, `Saturday workshop`, `Companion ticket`.
+Prices and tiers are CANON §3. Every string inside the cards — the price suffix, the inclusion list, the
+button label and the workshop availability line — is `brief/CONTENT.md` §9, including the fact that only
+card 2 carries a badge and that each button has its own label rather than three identical ones.
 
 The access note is required near the pricing table by CANON §3 and its exact wording is fixed there. It
 is not decoration and it is not moveable to the footer.
@@ -830,23 +968,34 @@ is not decoration and it is not moveable to the footer.
 
 | Child | Spec |
 |---|---|
-| `section-header` | Eyebrow `Before you come`; h2 `Questions` |
+| `section-header` | Eyebrow `Before you come`; h2 and intro from `brief/CONTENT.md` §10 |
 | `faq/list` | Vertical auto-layout, gap 0, width 800, centred in the container, top border 1px `color/border/subtle` |
 
-Eight `FaqRow` instances. The first is `State=expanded`, the rest `collapsed`, so the composed frame
-shows both states and the visual diff has something to compare against. Questions:
+Eight `FaqRow` instances, **all `State=collapsed`**, in the order `brief/CONTENT.md` §10 fixes and
+carrying its questions and its ids:
 
-1. What time do doors open?
-2. Is there re-entry between stages?
-3. How do I get to Hall E?
-4. Is the venue step-free?
-5. Can I bring a camera?
-6. Is there an age limit?
-7. Are tickets transferable?
-8. Where do I leave a coat?
+| # | id | Question |
+|---|---|---|
+| 1 | `faq-times` | What time does it start and finish? |
+| 2 | `faq-age` | Is there an age limit? |
+| 3 | `faq-reentry` | Can I leave and come back? |
+| 4 | `faq-accessibility` | What is the site like if I have access needs? |
+| 5 | `faq-bring` | What should I bring? |
+| 6 | `faq-cashless` | Is the site cashless? |
+| 7 | `faq-weather` | What happens if it rains? |
+| 8 | `faq-lockers` | Are there lockers? |
 
-Answer copy is owned by the brief. In the Figma file each answer is two sentences at most, set in
-`Body/Base`, `color/text/secondary`, and written in the CANON §10 voice.
+The ids are not decoration. The footer's Visit column links to three of them (§4.10), so renaming one
+breaks a link the LINKS gate resolves.
+
+All eight are collapsed because CONTENT.md ships them collapsed on load, and the composed frame is the
+baseline the visual gate compares the shipped page against. An expanded first row would put an open
+answer in the baseline that the page never renders, and the FAQ would differ at every breakpoint on every
+run — a permanent red with no repair available to the loop. The `expanded` variant is shown once, on
+`Design system`, which is where a component gallery belongs.
+
+Answer copy is owned by the brief and is not restated here. In the Figma file each answer is set in
+`Body/Base`, `color/text/secondary`, from `brief/CONTENT.md` §10.
 
 ### 5.9 section-newsletter
 
@@ -858,14 +1007,19 @@ Answer copy is owned by the brief. In the Figma file each answer is two sentence
 
 | Child | Spec |
 |---|---|
-| `newsletter/h2` | `Display/Subsection`, `color/text/primary`, centred. `Lineup updates, three or four times a year` |
+| `newsletter/h2` | An `h2`, styled `Display/Subsection` because the section is a 560-wide centred column rather than a full-width band. `color/text/primary`, centred. `Three emails a year`, from `brief/CONTENT.md` §11. |
+| `newsletter/pitch` | `Body/Base`, `color/text/secondary`, centred. The one-line pitch in `brief/CONTENT.md` §11. |
 | `newsletter/form` | Vertical auto-layout, gap `space/4` (16), fill container width |
-| `newsletter/email` | `Input` instance, `Type=email`, `Label=Email address`, `Required=true` |
-| `newsletter/consent` | `Input` instance, `Type=checkbox`, unchecked, label `Send me lineup and ticket updates. One click to stop.` |
-| `newsletter/submit` | `Button`, `Variant=primary`, `Size=md`, `Label=Subscribe`, fill container width |
-| `newsletter/note` | `Body/Small`, `color/text/secondary`. `No list sharing. No tracking pixels.` |
+| `newsletter/email` | `Input` instance, `Type=email`, `Required=true`. Label and placeholder from `brief/CONTENT.md` §11. |
+| `newsletter/consent` | `Input` instance, `Type=checkbox`, unchecked. Label from `brief/CONTENT.md` §11. |
+| `newsletter/submit` | `Button`, `Variant=primary`, `Size=md`, fill container width. Label from `brief/CONTENT.md` §11 (`Sign up`). |
+| `newsletter/note` | `Body/Small`, `color/text/secondary`. The line under the form and the fixture note, both from `brief/CONTENT.md` §11. |
 
-The consent box ships unchecked and the submit button says `Subscribe`, not `Yes, I want in`. CANON §11
+Add a Dev Mode annotation on `newsletter/form`: `visible label above every input, never a placeholder
+standing in for one. Consent unchecked on load and never pre-selected by script. Validation and
+confirmation messages announced with aria-live=polite, never as an alert dialog.`
+
+The consent box ships unchecked and the submit button says `Sign up`, not `Yes, I want in`. CANON §11
 rules out dark patterns by ruling out the things that need them, and a pre-ticked box is the one that
 sneaks back in.
 
@@ -877,16 +1031,21 @@ sneaks back in.
 
 | # | Section | Height at 1440 |
 |---|---|---|
-| 1 | `section-nav` | 72 (sticky) |
-| 2 | `section-hero` | 780 |
-| 3 | `section-ticker` | 56 |
-| 4 | `section-lineup` | approx. 1660 |
-| 5 | `section-programme` | approx. 1310 |
-| 6 | `section-venue` | approx. 1290 |
-| 7 | `section-tickets` | approx. 1360 |
-| 8 | `section-faq` | approx. 1080 |
-| 9 | `section-newsletter` | approx. 640 |
-| 10 | `section-footer` | approx. 590 |
+| 1 | `section-skip-link` | 0 (hidden until focused) |
+| 2 | `section-nav` | 72 (sticky) |
+| 3 | `section-hero` | 780 |
+| 4 | `section-ticker` | 56 |
+| 5 | `section-lineup` | approx. 1900 |
+| 6 | `section-programme` | approx. 1560 |
+| 7 | `section-venue` | approx. 1290 |
+| 8 | `section-tickets` | approx. 1360 |
+| 9 | `section-faq` | approx. 1080 |
+| 10 | `section-newsletter` | approx. 640 |
+| 11 | `section-footer` | approx. 590 |
+
+Eleven sections, matching CANON §7 and the eleven `[data-section]` values AC-06 reads. Lineup and
+programme are taller than they were: the card gained a sentence (§4.5) and each day gained a fourth row,
+a doors line and a caption (§5.5).
 
 Heights after the ticker are the result of hugging content and will shift as copy lands. They are listed
 so a build can be sanity-checked, not so they can be typed in. Do not set a fixed height on any section
@@ -894,11 +1053,13 @@ below the ticker.
 
 ### 5.12 Skip link
 
-`a11y/skip-link` — a component on `Design system`, instanced once into each viewport frame as the first
-child of `section-nav`, absolutely positioned at left `responsive/gutter`, top 8.
+`a11y/skip-link` — a component on `Design system`, instanced once into each viewport frame inside
+`section-skip-link` (§5.0), which is the first child of the frame and sits above `section-nav`.
+Absolutely positioned at left `responsive/gutter`, top 8.
 
 Horizontal auto-layout, padding 12/16, height 40, fill `color/accent/coolant`, radius `radius/sm`, text
-`Skip to content` in `Label/Button-Small`, `color/bg/base`.
+`Skip to main content` in `Label/Button-Small`, `color/bg/base`. That string is `brief/CONTENT.md` §2 and
+§14 verbatim, and its target is `#main`.
 
 In the composed frames the instance is set to 0% opacity and named `a11y/skip-link (hidden until
 focused)`. The visible state lives on `Design system`. CANON §9 requires it as the first focusable
@@ -916,11 +1077,11 @@ and the four responsive type sizes.
 
 | Section | Change at 768 |
 |---|---|
-| `section-nav` | `Nav` stays `Layout=full`. Height 72 → 64, padding X 32. Link gap 32 → 24, links drop to `Body/Small-Medium`. CANON §7 puts the hamburger *below* 768, so 768 keeps the full bar. |
-| `section-hero` | Height 780 → 700. Padding X 120 → 32, top 120, bottom 64. Wordmark 96 → 72 by mode. `hero/ctas` stays horizontal. |
+| `section-nav` | `Nav` stays `Layout=full`. Height 72 → 64. Padding and fill stay inside the component (§4.3) and the gutter follows the frame mode; nothing is redeclared on the wrapper. Link gap 32 → 24, links drop to `Body/Small-Medium`. CANON §7 puts the hamburger *below* 768, so 768 keeps the full bar. |
+| `section-hero` | Height 780 → 700. Padding X follows `responsive/gutter` (32) with the container capped at 704, so nothing is retyped; padding top 128 → 96 (`space/24`), bottom 64. Wordmark 96 → 72 by mode. `hero/ctas` stays horizontal. |
 | `section-ticker` | Height 56 → 48 |
 | `section-lineup` | Grid 4 columns → 3. Card width fixed 282 → fill container, giving (704 − 2×24) / 3 = 218.67. Portrait stays 4:5. Tabs unchanged. |
-| `section-programme` | `row/time` 96 → 72. Stage cells fill, approx. 200 each. `Layout=table-row` retained. |
+| `section-programme` | `row/time` 128 → 112, which still holds `19:30 – 21:00`. Stage cells fill, approx. 190 each. `Layout=table-row` retained. The doors line, the Saturday daytime line and the caption carry over unchanged. |
 | `section-venue` | `venue/split` and `venue/lower` become vertical. Image full width 704, aspect 16:9. Map full width 704 × 280. Travel items become a 2-column wrapped row. |
 | `section-tickets` | Cards stack vertically, gap `space/4` (16), each fill container with max width 480, centred. `highlighted` keeps its 2px sodium border but loses the extra padding. Comparison table cells 120 → 96. |
 | `section-faq` | `faq/list` width 800 → fill container (704) |
@@ -936,8 +1097,8 @@ Column width (342 − 3×16) / 4 = 73.5.
 
 | Section | Change at 390 |
 |---|---|
-| `section-nav` | `Nav` switches to `Layout=compact`. Height 64, padding X 24. Wordmark left, 48×48 menu button right. `nav/links` present but hidden. |
-| `section-hero` | Height 700 → 600. Padding X 24, top 96, bottom 64. Gap 32 → 16. Wordmark 40 by mode (roughly 240px wide, clearing the 342 container). `hero/meta` wraps to two lines. `hero/ctas` becomes vertical, gap 12, both buttons fill container width at height 48. |
+| `section-nav` | `Nav` switches to `Layout=compact`. Height 64; padding follows the mode gutter inside the component. Wordmark left, the 48×48 icon-only menu button of §4.3 right. `nav/links` present but hidden. |
+| `section-hero` | Height 700 → 600. Padding X follows the mode gutter (24), top 96, bottom 64. Gap 32 → 16. Wordmark 40 by mode (roughly 240px wide, clearing the 342 container). `hero/dates` and `hero/venue` each keep their own line. `hero/ctas` becomes vertical, gap 12, both buttons fill container width at height 48. |
 | `section-ticker` | Height 48 → 44. Tag gap 24 → 16. |
 | `section-lineup` | Grid 3 columns → 2. Card width (342 − 16) / 2 = 163. `artist/name` overrides to 16 for `headliner` as well; `artist/meta` stacks vertically. Tabs scroll horizontally with a 24px bleed to the right edge to signal there is more. |
 | `section-programme` | `TimetableRow` switches to `Layout=stacked`. `day/table-head` is hidden; the stage name moves inside each row. Empty stages are omitted rather than shown as an em dash. |
@@ -972,11 +1133,23 @@ full-page-<width>.png             one per breakpoint
 - The slug is identical to the `id` attribute on the corresponding `<section>` element in the markup and
   to the `data-section` value Playwright uses to locate it. One string, three places. If the Figma layer
   is renamed, the markup and the test are renamed in the same commit.
+- The visual gate resolves two spellings for each baseline it reads, in this order: the full page as
+  `<width>.png` then `full-page-<width>.png`, the hero as `section-hero-<width>.png` then
+  `hero-<width>.png`. Both work on purpose. `brief/ACCEPTANCE.md` AC-34 names
+  `design/export/{390,768,1440}.png` and `npm run baseline` writes those; a straight Figma export writes
+  the names above. The three files committed today are the `<width>.png` form, produced by
+  `npm run baseline` from the reference build — `design/export/README.md` says so, and says what the
+  difference means.
 
 ### 8.2 The export list
 
-Thirty-three files in `design/export/`. This list is what the visual diff gate expects; it is not a
-suggestion and nothing may be added to the directory that is not on it.
+Thirty-three files in `design/export/`. Three of them are read by a gate, and it is worth being exact
+about which. `brief/ACCEPTANCE.md` AC-34 compares each full-page screenshot against the full-page
+baseline for that width, and AC-35 compares the hero region against `section-hero-<width>.png`. There is
+no per-section criterion anywhere in ACCEPTANCE, so the remaining twenty-seven section PNGs are review
+material rather than gate input: they are what lets a person say *which* part moved when AC-34 goes red,
+and they earn their place for that alone. The directory also carries its own `README.md`, which is not an
+export and is not on this list.
 
 | Source layer | Files |
 |---|---|
@@ -994,9 +1167,10 @@ suggestion and nothing may be added to the directory that is not on it.
 | `TURBINE / Tablet 768` | `full-page-768.png` |
 | `TURBINE / Desktop 1440` | `full-page-1440.png` |
 
-The skip link is deliberately absent. It has no visual footprint in the composed frames, so a diff of it
-would compare two empty rectangles. Its focused state is exported separately to
-`design/assets/reference/state-skip-link-focused.png`, which the gate does not read.
+`section-skip-link` is deliberately absent from the list. It has no visual footprint in the composed
+frames, so a diff of it would compare two empty rectangles. Its focused state is not exported either: it
+lives visibly on the `Design system` page (§5.12), where a reviewer can see it without a gate reading it.
+`design/assets/` is not an alternative home for it — that directory is generated, not exported (§8.4).
 
 ### 8.3 Export settings
 
@@ -1004,32 +1178,37 @@ would compare two empty rectangles. Its focused state is exported separately to
 |---|---|---|
 | Format | PNG | Lossless. A JPEG artefact reads as a layout difference. |
 | Scale | **1x** | The PNG width must equal the CSS pixel width so a 1440 export is 1440px wide. Playwright must run with `deviceScaleFactor: 1` for the same reason. A 2x export against a 1x screenshot fails every comparison for a reason that has nothing to do with the design. |
-| Suffix | none | Figma appends `@2x` style suffixes automatically at other scales. At 1x it appends nothing, which is what the filenames above assume. |
+| Suffix | `-1440` on every layer on the `Desktop 1440` page, `-768` on `Tablet 768`, `-390` on `Mobile 390` | A Figma export is named layer name + suffix. A layer called `section-nav` with no suffix exports as `section-nav.png`, and the three pages each hold a `section-nav`, so with no suffix they collide on one filename and two of the three are lost. The suffix is where the width in §8.2's filenames comes from; it is not reserved for `@2x`. |
 | Colour profile | sRGB | |
 | Contents only | off | The frame's own background must be in the image, or every section exports onto transparency and diffs against a dark screenshot. |
 
-Set these as persistent export settings on each of the thirteen source layers, then use a single
-`Export` action. Do not export by hand-picking layers each time; the list drifts within two sessions.
+Set these as persistent export settings on each of the thirty-three source layers — ten section frames
+on each of the three viewport pages, plus the three viewport frames themselves — then use a single
+`Export` action. Thirty-three layers, thirty-three files, one action. Do not export by hand-picking
+layers each time; the list drifts within two sessions.
 
 ### 8.4 Image assets
 
-Source images live on the `Exports` page as individual frames and export to `design/assets/`.
+Figma exports no image. The pack is generated from `design/assets/PROMPTS.md` by
+`scripts/generate-images.mjs`, committed to `design/assets/`, and listed with exact dimensions in
+`design/assets/manifest.json`; `brief/CONTENT.md` §13 carries the alt text for each file. The frames on
+the `Exports` page place those files as image fills and must not rename them.
 
 | Frame | File | Size | Format |
 |---|---|---|---|
-| `asset/hero` | `hero-hall-e.jpg` | 2880×1560 | JPEG, quality 80 |
-| `asset/venue` | `venue-hall-e.jpg` | 1600×1200 | JPEG, quality 80 |
-| `asset/map` | `venue-map-placeholder.png` | 1152×640 | PNG |
-| `asset/artist/<slug>` ×12 | `artist-<slug>.jpg` | 640×800 | JPEG, quality 80 |
+| `asset/hero` | `hero-hall.jpg` | 2400×1350 | JPEG |
+| `asset/venue` | `venue-exterior.jpg` | 1600×1200 | JPEG |
+| `asset/venue-detail` | `venue-detail.jpg` | 1600×1200 | JPEG |
+| `asset/artist/<nn>-<slug>` ×12 | `artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg` | 800×800 | JPEG |
+| `asset/og` | `og-card.jpg` | 1200×630 | JPEG |
+| `asset/texture/<name>` ×2 | `texture-grain.png`, `texture-scanline.png` | 256×256 | PNG |
 
-Artist slugs, in CANON §2 order:
+There is no map file. The static map placeholder in §5.6 is a bordered box with a label, not an image,
+and CANON §11 rules out the real thing because every embeddable map is a third-party request.
 
-`kasimir-volt`, `lena-orbis`, `nullset`, `auric-drift`, `mara-teschke`, `substation-9`, `hiroko-vane`,
-`cold-cathode`, `ilse-rum`, `tape-decay`, `odalys-ferrer`, `vitrine`.
-
-Diacritics are stripped in filenames and only in filenames: `Ilse Rüm` is `artist-ilse-rum.jpg` on disk
-and `Ilse Rüm` in every piece of visible text and every `alt` attribute. The same rule gives
-`SUBSTATION 9` the slug `substation-9`.
+Filenames are numbered in CANON §2 order and carry the artist slug. Diacritics are stripped in
+filenames and only in filenames: `Ilse Rüm` is `artist-09-ilse-rum.jpg` on disk and `Ilse Rüm` in every
+piece of visible text. The same rule gives `SUBSTATION 9` the slug `substation-9`.
 
 Every image frame carries its `alt` text in the Figma layer description, because that is the field the
 Dev Mode MCP server returns. Decorative images carry the literal string `alt=""`. CANON §9 requires
@@ -1038,14 +1217,19 @@ the image is in front of them.
 
 ### 8.5 What the diff gate does with these
 
-For reference, so the export decisions above make sense: the gate screenshots each `data-section` at the
-three widths with `deviceScaleFactor: 1`, resizes nothing, and compares against the matching
-`section-<name>-<width>.png` with a per-pixel threshold of 0.1 and a failure budget of 2% of pixels.
-Anti-aliasing on text and the sub-pixel line-height difference noted in §3 sit comfortably inside that
-budget; a wrong colour, a wrong gap or a wrong font does not.
+For reference, so the export decisions above make sense. The budgets belong to `brief/ACCEPTANCE.md` and
+are quoted here, not set here:
 
-The three `full-page-<width>.png` files are compared with a looser 5% budget. Their job is to catch a
-section in the wrong order or missing entirely, not to police pixels.
+- **AC-34** — a full-page screenshot at 390, 768 and 1440, taken with `deviceScaleFactor: 1` and resized
+  by nothing, may differ from the full-page baseline by at most **1.5% of pixels**, at a per-pixel match
+  threshold of **0.1**.
+- **AC-35** — the hero region, clipped out of that same capture rather than shot separately, may differ
+  by at most **0.5%**. It is the tightest number in the pipeline, which is why §5.2 takes its strings and
+  its element count from `brief/CONTENT.md` §4 rather than paraphrasing them.
+
+Anti-aliasing on text and the sub-pixel line-height difference noted in §3 sit comfortably inside 1.5%; a
+wrong colour, a wrong gap or a wrong font does not. There is no per-section budget, because there is no
+per-section criterion — the twenty-seven section PNGs are read by a person, not by a program.
 
 ---
 
@@ -1068,7 +1252,7 @@ page. A whole-page selection returns thousands of nodes and the model summarises
 | **Variant names match the code's prop values** | `Variant=primary` becomes `variant="primary"` with no translation. `Variant=Primary Orange Big` becomes an invented enum. |
 | **Max-width set on containers** | Without it the model has no way to know the content caps at 1200 and hard-codes 1200 as a fixed width. |
 | **Layer descriptions carry the semantics a picture cannot** | Alt text, ARIA roles, heading levels, focus order. A picture of an accordion does not say `aria-expanded`. |
-| **Dev Mode annotations on the five interactive areas** | `nav`, `lineup/tabs`, `programme/days`, `faq/trigger`, `newsletter/form`. These are the five places CANON §9 makes non-negotiable demands. |
+| **Dev Mode annotations on the five interactive areas** | `Nav` (§4.3), `lineup/tabs` (§5.4), `programme/days` (§5.5), `faq/trigger` (§4.8), `newsletter/form` (§5.9). These are the five places CANON §9 makes non-negotiable demands, and each annotation's exact wording is given where the component is defined, so a plugin has a string to write and a designer has nothing to invent. `hero/scroll-cue` (§5.2) carries a sixth, on reduced motion. |
 | **`Ready for dev` on the three viewport frames only** | Marking everything ready is the same as marking nothing. |
 | **No hidden work-in-progress layers inside exported frames** | Hidden layers still return in the node tree. The model builds a `display: none` element nobody asked for. |
 | **Images have real image fills, not placeholder rectangles** | `get_image` returns the fill. A grey rectangle named `image` returns a grey rectangle. |
@@ -1093,10 +1277,12 @@ implementation that nobody could blame on the model.
    reviewer asks why, and there is no answer. Use `space/6`.
 4. **A separate artboard for the hover state.** It is a variant. An artboard called `Button hover` is
    invisible to the component API and the model will not find it, so the site ships with no hover.
-5. **Muted grey for supporting copy.** `color/text/muted` on `color/bg/base` is 4.1:1 and fails AA. It
-   is in the palette for legal text in the footer and nothing else. The accessibility gate will catch
-   it, but catching it after the fact costs a loop iteration.
-6. **White text on the orange button.** 2.9:1. The canonical pairing is near-black on orange, which
+5. **Muted grey for supporting copy.** `color/text/muted` on `color/bg/base` is 4.07:1 and fails AA, and
+   3.78:1 on `color/bg/surface`, where it is worse rather than better. It is in the palette because it is
+   the colour a model reaches for, and no composed frame uses it — not even the footer legal block, see
+   §4.10. The accessibility gate will catch it, but catching it after the fact costs a loop iteration.
+   `color/text/secondary` is 8.83:1 on the same background.
+6. **White text on the orange button.** 2.87:1. The canonical pairing is near-black on orange, which
    looks unusual for about a day and then looks correct.
 7. **Text set in caps by typing in caps.** Use the text-case property. Typed caps reach the markup as
    typed caps, a screen reader spells them out letter by letter, and the copy cannot be changed without
@@ -1114,8 +1300,10 @@ implementation that nobody could blame on the model.
     icon before handing over.
 12. **Placeholder copy left in place.** Lorem ipsum ships. `Artist name` ships. Whatever is in the text
     layer is what appears on the live site, because the model has no way to know you meant to replace it.
-13. **Twelve portraits at twelve different aspect ratios.** The card crops them to 4:5 in Figma, the CSS
-    does not, and the lineup grid becomes a staircase. Crop them in the file.
+13. **Twelve portraits at twelve different aspect ratios.** The card crops them in Figma, the CSS does
+    not, and the lineup grid becomes a staircase. The twelve supplied portraits are all 800×800, which is
+    why `artist/portrait` is 1:1 (§4.5) and nothing is cropped. If a replacement ever arrives at another
+    ratio, crop it in the file rather than letting the card do it.
 14. **Naming the Figma layer one thing and the section `id` another.** `Tickets Section Final` in Figma,
     `#tickets` in the markup, `section-tickets-1440.png` on disk. Pick the slug once and use it three
     times.
@@ -1131,10 +1319,12 @@ For a designer working by hand or a plugin working by script, this order avoids 
 3. Create the seventeen text styles in §3, binding each property to a variable.
 4. Build the ten component sets in §4 on `Design system`, plus `a11y/skip-link`.
 5. Build the token proof sheet and type specimen. Read the contrast matrix before continuing.
-6. Build `TURBINE / Desktop 1440` section by section in the CANON §7 order.
+6. Build `TURBINE / Desktop 1440` section by section in the CANON §7 order — eleven frames,
+   `section-skip-link` first.
 7. Duplicate to `TURBINE / Tablet 768` and `TURBINE / Mobile 390`, set the frame mode, then apply only
    the deltas in §6 and §7. Do not rebuild.
-8. Set the thirteen export settings in §8.3. Export once. Count the files: thirty-three.
+8. Set the export settings in §8.3 on all thirty-three source layers, each with its page's suffix.
+   Export once. Count the files: thirty-three.
 9. Run the Dev Mode check in §9 against `section-tickets`.
 10. Set `Ready for dev` on the three viewport frames.
 
@@ -1148,16 +1338,21 @@ if it turns out to matter, and each may be overridden without contradicting anyt
 | Decision | Value | Why |
 |---|---|---|
 | Tablet gutter | 32 | CANON fixes 24 mobile and 48 desktop; 32 is the step between |
-| Set times | 20:00 / 22:00 / 00:00 | CANON fixes day and stage per artist but not time. Support, main, headliner. |
-| Doors and curfew | 19:00 and 02:00 | Consistent with the set times above |
-| FAQ questions | The eight in §5.8 | CANON fixes the count at eight, not the content |
-| Footer column contents | The sixteen links in §4.10 | CANON fixes four columns, not their contents |
-| Travel items | Tram, bike, parking | CANON requires travel info, unspecified |
+| Section eyebrows | `Twelve artists`, `Three nights`, `The building`, `Three ways in`, `Before you come` | The one set of visible strings `brief/CONTENT.md` does not carry. Everything else in §5 is CONTENT.md's. |
 | Line height scale | `leading/*`, five steps | CANON fixes the type scale and tracking, not leading |
+| Off-scale line heights | 130%, 133% and 143% on the five styles named in §3 | The five-step scale has no step there; typed as literals rather than grown for five styles |
 | `tracking/wide` | +0.06em | CANON fixes -0.02em display and +0.18em wordmark only |
 | Type size names | Tailwind ladder, `xs` to `7xl` | CANON gives eleven rem values with no names |
 | Spacing names | Value ÷ 4, matching Tailwind | CANON gives ten px values with no names |
-| Hover treatment | 10% `text/primary` overlay | Keeps the palette at exactly thirteen colours |
+| Figma-only collections | `border/*`, `size/*`, `responsive/*` | Needed to build the file, not fixed by CANON, so absent from `tokens.json` by §2.1 rule 5 |
+| Hover treatment | 10% `text/primary` overlay | Keeps the palette at thirteen colours plus the one alias |
 | Section heights | The estimates in §5.11 | Content-driven; listed for sanity checks only |
 | Export scale | 1x | Required for dimensional parity with a `deviceScaleFactor: 1` screenshot |
-| Diff thresholds | 2% section, 5% full page | Stated here so the export settings have a reason |
+
+Five entries that used to be on this list have been removed, because they were never this file's to
+decide. **Set times and doors**, **the eight FAQ questions**, **the footer link inventory** and **the
+travel items** are all fixed in `brief/CONTENT.md`; §5 points at it, and the CONTENT gate matches its
+strings against the rendered page. **The diff thresholds** are fixed in `brief/ACCEPTANCE.md` AC-34 and
+AC-35, and §8.5 quotes them rather than restating them. Recording another file's decision as your own
+assumption is an invitation to the next reader to override it, which is how two artifacts in one
+repository end up saying different things to the same agent.

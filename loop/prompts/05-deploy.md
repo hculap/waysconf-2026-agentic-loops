@@ -12,15 +12,17 @@ If that exits non-zero, stop. Do not deploy, do not deploy "just the passing par
 draft URL to have a look. Report which gates failed and hand it back. Deploying an unverified build is the
 one thing in this repository that cannot be undone by a `git reset`.
 
-If it exits 0:
+**Also authorise Netlify first, yourself, before you send this.** `npx netlify login` prints a URL; open
+it, authorise, come back — the terminal is waiting. See `docs/GITHUB-FOR-DESIGNERS.md`. An agent cannot
+complete that handshake, and `npm run deploy` will sit on the prompt until it times out. If a site is
+already linked, use it; do not create a second one.
+
+If the gates exit 0 and Netlify is authorised:
 
 ```bash
 npm run build
 npm run deploy          # netlify deploy --prod --dir=dist
 ```
-
-The first Netlify run opens a browser to authorise and then asks you to pick or create a site. If a site is
-already linked, use it. Do not create a second one.
 
 Then prove the deploy, rather than reporting it:
 
@@ -30,8 +32,11 @@ Then prove the deploy, rather than reporting it:
    `curl -sS <URL> | sha256sum` against `sha256sum dist/index.html`. They match or you have deployed
    something other than what the gates approved. This is the check that is usually missing, and it is the
    only one that connects the green run to the live site.
-3. **The live page is still sound.** `npm run check -- --url <URL>` runs the browser gates against the
-   public URL rather than the local preview.
+3. **The live page is still sound.** `npm run check -- --url <URL> --skip-perf` runs the browser gates
+   against the public URL rather than the local preview. Lighthouse is excluded deliberately:
+   `brief/ACCEPTANCE.md` requires it to run against `npm run preview` on localhost, so that the result
+   measures the page rather than the conference wifi. Without `--skip-perf` you would be deciding the last
+   step of the workshop on a three-run audit of the room's network.
 
 Report: the URL, the two hashes, the HTTP status, and the result of the live run. If any of the three
 failed, say which and stop.

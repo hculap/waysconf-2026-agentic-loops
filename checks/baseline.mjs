@@ -2,15 +2,21 @@
 /**
  * Baseline generator for the VISUAL gate (AC-34, AC-35).
  *
- *   npm run baseline              # writes design/export/ when it is empty
- *   npm run baseline -- --yes     # overwrites baselines that already exist
- *   npm run baseline -- --url http://localhost:4321
+ *   npm run baseline -- --yes --reason "the hero crop changed in Figma"
+ *   npm run baseline -- --yes --reason "..." --url http://localhost:4321
  *
  * What this script produces is the definition of "correct" for AC-34 and AC-35. That makes it the one
  * tool in checks/ that can turn a failing page green without changing a single pixel of the page, which
  * is precisely the move the whole workshop argues against. So it is deliberately loud, it refuses to
- * overwrite anything without --yes, and it prints what it did in enough detail that a re-baseline shows
- * up in a terminal scrollback and in a diff.
+ * write anything without --yes and a written reason, and it prints what it did in enough detail that a
+ * re-baseline shows up in a terminal scrollback and in a diff.
+ *
+ * The guard used to be `if (files already exist && !--yes) refuse`, which protected files rather than
+ * the act of defining correct: `rm design/export/*.png && npm run baseline` walked straight past it and
+ * wrote a fresh definition of correct from the current build, exit code 0. So the confirmation is now
+ * unconditional, it is refused outright when nobody is at the keyboard, and every file written is
+ * recorded in design/export/manifest.json with its sha256 and the reason given — which is what lets the
+ * gate say "this baseline is not the one anybody signed off" instead of silently comparing against it.
  *
  * It serves dist/ itself, on an ephemeral port, rather than reusing whatever happens to be running on
  * 4321. A baseline captured against a stale dev server is a trap that costs an afternoon.
@@ -21,6 +27,7 @@
  */
 
 import { chromium } from '@playwright/test'
+import { createHash } from 'node:crypto'
 import { createServer } from 'node:http'
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { dirname, extname, join, relative, resolve, sep } from 'node:path'
@@ -30,6 +37,31 @@ import sharp from 'sharp'
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const DIST_DIR = join(ROOT, 'dist')
 const EXPORT_DIR = join(ROOT, 'design/export')
+const MANIFEST_PATH = join(EXPORT_DIR, 'manifest.json')
+
+/** A reason has to say something. Twelve characters is not a high bar; "update" should not clear it. */
+const MIN_REASON_LENGTH = 12
+
+/**
+ * Environment that means an agent, not a person, is holding the keyboard.
+ *
+ * loop/ralph.sh runs the agent with --permission-mode acceptEdits and commits whatever it produced, so
+ * "the loop cannot move the target" has to be enforced by something the loop runs into, not by a line
+ * in a prompt. These are the markers the runners in this repository set, plus the usual CI ones.
+ */
+const AGENT_MARKERS = [
+  'CI',
+  'CONTINUOUS_INTEGRATION',
+  'GITHUB_ACTIONS',
+  'CLAUDE_CODE',
+  'CLAUDECODE',
+  'CLAUDE_CODE_ENTRYPOINT',
+  'CODEX_SANDBOX',
+  'RALPH_LOOP',
+]
+
+/** The section the design needs a picture of: AC-35 compares design/export/section-hero-{w}.png. */
+const REQUIRED_SECTION = 'hero'
 
 /**
  * Duplicated from checks/lib/gate.ts on purpose: that file is TypeScript and this one has to run under
@@ -104,22 +136,30 @@ if (has('--help') || has('-h')) {
     [
       'Regenerate the visual baselines in design/export/ from the current build.',
       '',
-      'Usage: node checks/baseline.mjs [options]',
+      'Usage: node checks/baseline.mjs --yes --reason "<why>" [options]',
       '',
-      '  --yes            overwrite baselines that already exist (required for that, and only that)',
+      '  --yes            confirm that you are redefining what AC-34 and AC-35 mean by correct.',
+      '                   Required whether or not baselines already exist: deleting them first is not',
+      '                   a way around the question.',
+      '  --reason <text>  why the target is moving. Recorded in design/export/manifest.json and printed.',
       '  --url <url>      capture an already-running server instead of serving dist/',
       '  --only <widths>  comma-separated subset of 390,768,1440',
       '  --help           this text',
       '',
+      'Refused outright when stdin is not a terminal, or when an agent/CI marker is set in the',
+      'environment. Recording a baseline is a decision a person makes after looking at the page.',
+      '',
       'Files written, per width W in 390, 768, 1440:',
       '  design/export/W.png                  full page — what AC-34 compares against',
       '  design/export/section-<slug>-W.png   one per [data-section] — section-hero-W.png is AC-35',
+      '  design/export/manifest.json          sha256 and reason for every file above',
     ].join('\n'),
   )
   process.exit(0)
 }
 
-const OVERWRITE = has('--yes')
+const CONFIRMED = has('--yes')
+const REASON = (valueOf('--reason') ?? '').trim()
 const REMOTE_URL = valueOf('--url')
 const ONLY = valueOf('--only')
   ? valueOf('--only')
@@ -378,7 +418,7 @@ async function captureBreakpoint(browser, baseUrl, bp) {
       })
     }
 
-    return { writes, skipped, sectionCount: boxes.length, preconditions: pre }
+    return { writes, skipped, slugs: boxes.map((b) => b.slug).filter(Boolean), preconditions: pre }
   } finally {
     await context.close()
   }
@@ -401,19 +441,64 @@ async function main() {
   mkdirSync(EXPORT_DIR, { recursive: true })
   const existing = readdirSync(EXPORT_DIR).filter((f) => f.toLowerCase().endsWith('.png'))
 
-  if (existing.length && !OVERWRITE) {
-    console.error(`REFUSING TO OVERWRITE: design/export/ already holds ${existing.length} PNG baseline(s).`)
+  /**
+   * The confirmation is unconditional.
+   *
+   * The previous guard fired only when PNGs were already on disk, which protected the files and not
+   * the decision: two commands — `rm design/export/*.png`, then `npm run baseline` — wrote a brand-new
+   * definition of correct from the current build, printed warnings, and exited 0. An empty directory is
+   * not consent.
+   */
+  if (!CONFIRMED || REASON.length < MIN_REASON_LENGTH) {
+    console.error('REFUSING TO WRITE: recording a baseline redefines what AC-34 and AC-35 call correct.')
     console.error('')
-    for (const f of existing.slice(0, 12)) console.error(`  design/export/${f}`)
-    if (existing.length > 12) console.error(`  ... and ${existing.length - 12} more`)
+    console.error(
+      existing.length
+        ? `design/export/ currently holds ${existing.length} PNG baseline(s); they would be replaced where names collide.`
+        : 'design/export/ currently holds no PNG baseline, so this run would define the first one.',
+    )
     console.error('')
-    console.error('Re-run with --yes if you have decided that the current build is the new reference:')
+    if (!CONFIRMED) console.error('  missing --yes')
+    if (REASON.length < MIN_REASON_LENGTH) {
+      console.error(
+        REASON.length
+          ? `  --reason "${REASON}" is ${REASON.length} characters; at least ${MIN_REASON_LENGTH} are required`
+          : `  missing --reason "<why the target is moving>" (at least ${MIN_REASON_LENGTH} characters)`,
+      )
+    }
     console.error('')
-    console.error('  npm run baseline -- --yes')
+    console.error('  npm run baseline -- --yes --reason "the hero crop changed in Figma"')
     console.error('')
     process.exit(1)
   }
 
+  /**
+   * And it has to be a person giving it.
+   *
+   * An agent running under loop/ralph.sh can type any flag it likes; what it cannot do is be at a
+   * terminal. This is a speed bump rather than a security boundary — everything under checks/ is
+   * off limits to the implementing agent by AGENTS.md, and this is what that rule looks like when it
+   * is enforced by code instead of by a paragraph.
+   */
+  const marker = AGENT_MARKERS.find((name) => process.env[name])
+  if (marker || !process.stdin.isTTY) {
+    console.error('REFUSING TO WRITE: nobody is at the keyboard.')
+    console.error('')
+    console.error(
+      marker
+        ? `  ${marker} is set in the environment, which means this is a CI or agent run.`
+        : '  stdin is not a terminal, so this is a script, a pipe or an agent rather than a person.',
+    )
+    console.error('')
+    console.error('  A baseline is a human decision made after looking at the page. An agent that can move')
+    console.error('  the target always hits it, which is the failure this repository exists to demonstrate.')
+    console.error('  Run this yourself, in a terminal, and put the reason in the commit message too.')
+    console.error('')
+    process.exit(1)
+  }
+
+  console.log(`reason: ${REASON}`)
+  console.log('')
   if (existing.length) {
     console.log(`--yes given: ${existing.length} existing PNG baseline(s) will be replaced where names collide.`)
     console.log('')
@@ -436,15 +521,15 @@ async function main() {
     browser = await chromium.launch()
 
     const planned = []
-    let totalSections = 0
+    const slugsSeen = new Set()
 
     for (const bp of TARGET_BREAKPOINTS) {
       console.log(`capturing ${bp.width}x${bp.height} ...`)
       const result = await captureBreakpoint(browser, baseUrl, bp)
       planned.push(...result.writes)
-      totalSections += result.sectionCount
+      for (const slug of result.slugs) slugsSeen.add(slug)
       for (const s of result.skipped) console.log(`  skipped ${s}`)
-      if (result.sectionCount === 0) {
+      if (result.slugs.length === 0) {
         console.log('  WARNING: this page exposes no [data-section] elements.')
         console.log('  WARNING: only a full-page baseline was captured, and it is a picture of an unbuilt page.')
         console.log('  WARNING: AC-35 will stay unverifiable until the hero section exists and you re-run this.')
@@ -475,7 +560,10 @@ async function main() {
 
     console.log('')
     console.log(`These ${planned.length} file(s) are now what AC-34 and AC-35 compare the page against.`)
-    console.log(`${totalSections} [data-section] element(s) were seen. Commit the result with a message that says why.`)
+    console.log(
+      `${slugsSeen.size} distinct [data-section] value(s) were seen${slugsSeen.size ? `: ${[...slugsSeen].join(', ')}` : ''}. ` +
+        `Commit the result with a message that says why.`,
+    )
     console.log('')
   } finally {
     await browser?.close()

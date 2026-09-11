@@ -15,14 +15,26 @@
  * AC-06 has exactly one place it is satisfied.
  */
 import '../styles/global.css'
+import tokens from '../../design/tokens/tokens.json'
+
+const themeColor = tokens.color.bg.base.$value
 
 interface Props {
   title: string
   description: string
+  /**
+   * The social card carries its own headline and blurb. brief/CONTENT.md §1
+   * commissions four distinct strings, not two reused twice: the <title> is built
+   * for a search result and names the dates and the city, while the Open Graph
+   * pair is built for a link preview and names the festival and what it is.
+   */
+  ogTitle: string
+  ogDescription: string
+  ogImageAlt: string
   ogImage?: string
 }
 
-const { title, description, ogImage = '/images/og-card.jpg' } = Astro.props
+const { title, description, ogTitle, ogDescription, ogImageAlt, ogImage = '/images/og-card.jpg' } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://turbine-festival.netlify.app')
 ---
 
@@ -37,13 +49,20 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://turbine-fes
     <link rel="canonical" href={canonical.href} />
 
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content="TURBINE" />
+    <meta property="og:locale" content="en_GB" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={ogDescription} />
     <meta property="og:image" content={new URL(ogImage, canonical).href} />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta property="og:url" content={canonical.href} />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <meta name="theme-color" content="#0A0B0D" />
+    {/* The browser chrome colour has to reach the HTML as a literal, so it is read
+        from the token file at build time rather than typed here. AC-27 forbids a
+        colour literal anywhere in src/, and it is right to: a second copy of the
+        page background is a second thing to forget to update. */}
+    <meta name="theme-color" content={themeColor} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     {/* Self-hosted, latin subset only. See scripts/fetch-fonts.mjs for why this is
@@ -54,7 +73,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://turbine-fes
   </head>
 
   <body>
-    <a class="skip-link" href="#main">Skip to content</a>
+    <a class="skip-link" href="#main">Skip to main content</a>
     <slot name="header" />
     <main id="main" tabindex="-1">
       <slot />

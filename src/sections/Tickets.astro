@@ -1,0 +1,339 @@
+---
+/**
+ * Tickets — CANON §7 section 8: three tier cards, the comparison, the access note.
+ *
+ * Four decisions are worth the reader's time.
+ *
+ * 1. The sold-out state is derived, never typed. `workshopPlacesLeft` is the single
+ *    number this section holds, and the `data-places-left` attribute, the availability
+ *    line and the button label all fall out of it. ACCEPTANCE.md makes that the contract
+ *    — a warning written as a literal string is a string that will be wrong the first
+ *    time the number moves — so the three states from CONTENT.md §9 live here as data and
+ *    the page renders whichever one the number selects. It ships at 40, the full workshop
+ *    capacity, which is the default state CONTENT.md §9 asks for: no line, no badge.
+ *
+ * 2. The comparison is rendered twice. Above 768 it is a table, because a tier against a
+ *    feature is a two-dimensional relationship and a table is what that is. Below it the
+ *    same seven rows become three per-tier lists, because four columns do not survive
+ *    342px of content width (FIGMA-SPEC §7). Only `display` decides which one is painted;
+ *    both are always in the DOM, as the programme does the same thing for the same reason.
+ *
+ * 3. The Full Pass card is named by its badge. CONTENT.md §9 asks for the emphasis to
+ *    reach a screen reader and not only an eye, so each card is an `<article>` labelled by
+ *    its own heading, and the highlighted one by its badge and heading together: "Most
+ *    popular Full Pass". Colour and a 2px border carry the same message visually.
+ *
+ * 4. No kicker. FIGMA-SPEC §5.7 puts the eyebrow "Three ways in" above this h2, and
+ *    CONTENT.md §14 permits it as one of five strings the design owns — but the intro
+ *    CONTENT.md §9 commissions now opens with those same four words, so the eyebrow would
+ *    repeat the line directly beneath it. The lineup resolved the identical conflict the
+ *    same way; the discrepancy is worth raising against the Figma file rather than
+ *    printing twice.
+ *
+ * Gates this section answers directly:
+ *
+ *   AC-06  `data-section="tickets"` and the matching id, both set by Section.
+ *   AC-08  h2 from Section, then one h3 per tier. Nothing deeper: the per-tier label on
+ *          the mobile comparison lists is a paragraph, because CONTENT.md §15 fixes the
+ *          outline and an h4 there would add a heading the brief does not have.
+ *   AC-41  every card carries `data-tier`, the tier name, the price and the inclusions;
+ *          the workshop card carries `data-places-left`.
+ *   AC-43  the access note, verbatim, under the comparison and above the small print.
+ *   AC-29  the CTA ink is text.on-accent, which Button already owns. No colour is passed.
+ */
+import Section from '../components/Section.astro'
+import Button from '../components/Button.astro'
+import Tag from '../components/Tag.astro'
+
+/** The three keys the AC-41 contract reads out of `data-tier`. */
+type TierKey = 'single' | 'full' | 'workshop'
+
+interface Tier {
+  key: TierKey
+  /** CONTENT.md §9 spelling, exactly. It is the h3 and the comparison column head. */
+  name: string
+  price: string
+  /** The unit the price buys, set small beside it rather than folded into the figure. */
+  priceSuffix: string
+  /** Real text in the card, never a background image (CONTENT.md §14). */
+  badge?: string
+  includes: string[]
+  cta: string
+  /** CANON §3 highlights one tier. Exactly one, or the highlight marks nothing. */
+  highlighted?: boolean
+}
+
+/** CONTENT.md §16. Deliberately dead: the domain is fictional (CANON §11). */
+const TICKETS_URL = 'https://tickets.turbine.fm/2027'
+
+const intro =
+  'Three ways in. The price you see is the price you pay: no booking fee, no service charge, and no tier that expires while you are reading this.'
+
+const tiers: Tier[] = [
+  {
+    key: 'single',
+    name: 'Single Night',
+    price: '€45',
+    priceSuffix: 'one night',
+    includes: ['One night, chosen at checkout', 'All three stages', 'Re-entry on the night'],
+    cta: 'Choose a night',
+  },
+  {
+    key: 'full',
+    name: 'Full Pass',
+    price: '€110',
+    priceSuffix: 'three nights',
+    badge: 'Most popular',
+    includes: [
+      'All three nights, 12–14 June',
+      'All three stages',
+      'Re-entry on every night',
+      '€25 less than three single nights',
+    ],
+    cta: 'Get a Full Pass',
+    highlighted: true,
+  },
+  {
+    key: 'workshop',
+    name: 'Full Pass + Workshop',
+    price: '€165',
+    priceSuffix: 'three nights and the workshop',
+    includes: [
+      'Everything in the Full Pass',
+      'Modular synthesis workshop, Saturday 14:00 – 17:00',
+      'Led by Mara Teschke in the Boiler Room',
+      '40 places',
+    ],
+    cta: 'Get a Full Pass and workshop',
+  },
+]
+
+/**
+ * Places remaining in the Saturday workshop, and the only mutable fact on this page.
+ *
+ * It is not the same number as the "40 places" inclusion above: that is the room's
+ * capacity, fixed by CANON §3, and this is what is left of it. They agree today because
+ * nothing has sold, which is the state CONTENT.md §9 asks to ship — 10 or more shows no
+ * availability line at all.
+ *
+ * Annotated `number` rather than left to inference. A bare literal narrows to the type
+ * `40`, and TypeScript then rejects `=== 0` below as a comparison that can never be true
+ * (AC-02). The annotation says what is actually meant: a count that moves.
+ */
+const workshopPlacesLeft: number = 40
+
+/** CONTENT.md §9, the three availability states. Nothing below writes these by hand. */
+const LOW_PLACES_LINE = 'Fewer than 10 workshop places left.'
+const SOLD_OUT_LINE = 'Workshop sold out. Full Pass is still available.'
+const SOLD_OUT_CTA = 'Workshop sold out'
+
+const workshopSoldOut = workshopPlacesLeft === 0
+const workshopAvailability = workshopSoldOut
+  ? SOLD_OUT_LINE
+  : workshopPlacesLeft < 10
+    ? LOW_PLACES_LINE
+    : undefined
+
+interface ComparisonRow {
+  feature: string
+  single: string
+  full: string
+  workshop: string
+}
+
+/** CONTENT.md §9, the comparison table, row for row and cell for cell. */
+const comparisonCaption = 'The three tiers compared'
+
+const comparison: ComparisonRow[] = [
+  { feature: 'Price', single: '€45', full: '€110', workshop: '€165' },
+  { feature: 'Nights', single: 'One, chosen at checkout', full: 'Three', workshop: 'Three' },
+  { feature: 'Stages', single: 'All three', full: 'All three', workshop: 'All three' },
+  { feature: 'Re-entry on the night', single: 'Yes', full: 'Yes', workshop: 'Yes' },
+  { feature: 'Saturday workshop', single: 'No', full: 'No', workshop: 'Yes, 40 places' },
+  { feature: 'Companion ticket', single: 'Free', full: 'Free', workshop: 'Free' },
+  { feature: 'Booking fee', single: 'None', full: 'None', workshop: 'None' },
+]
+
+/**
+ * Visually hidden, still announced. Deliberately not Tailwind's `sr-only`, which declares
+ * `margin: -1px`: 1px is not a step on the spacing scale and AC-32 reports it on every
+ * element carrying the utility. `clip-path` does the same job with no box value to declare.
+ */
+const visuallyHidden = 'absolute h-px w-px overflow-hidden whitespace-nowrap [clip-path:inset(50%)]'
+
+/** Label/Eyebrow on the bg.raised header fill — 7.40:1, see CONTRAST.md §3. */
+const headCell = 'bg-bg-raised p-4 text-left text-xs font-semibold uppercase tracking-[0.06em] text-text-secondary'
+
+/** Body/Small-Medium. The hairline belongs to the row above the next one. */
+const bodyCell = 'border-t border-border-subtle p-4 text-left text-sm font-medium text-text-primary'
+
+/** Display/Subsection from FIGMA-SPEC §3: 24 at 390 and 768, 32 at 1440. */
+const tierHeading = 'font-display text-2xl font-medium tracking-display desktop:text-3xl'
+---
+
+<Section name="tickets" heading="Tickets" intro={intro}>
+  {/* tickets/cards. Stacked and capped at 480 until 1440, three across above it
+      (FIGMA-SPEC §5.7 with the stacking from §6). */}
+  <div class="mx-auto grid w-full max-w-[480px] gap-4 desktop:max-w-none desktop:grid-cols-3 desktop:gap-6">
+    {
+      tiers.map((tier) => {
+        const soldOut = tier.key === 'workshop' && workshopSoldOut
+        const availability = tier.key === 'workshop' ? workshopAvailability : undefined
+        const tierId = `ticket-${tier.key}-tier`
+        const badgeId = `ticket-${tier.key}-badge`
+
+        return (
+          <article
+            data-tier={tier.key}
+            data-places-left={tier.key === 'workshop' ? String(workshopPlacesLeft) : undefined}
+            aria-labelledby={tier.badge ? `${badgeId} ${tierId}` : tierId}
+            class:list={[
+              'flex h-full flex-col gap-4 rounded-lg p-4 tablet:p-6',
+              tier.highlighted
+                ? 'border-2 border-accent-sodium bg-bg-raised shadow-lg desktop:p-8'
+                : 'border border-border-subtle bg-bg-surface',
+            ]}
+          >
+            {tier.badge && (
+              <p id={badgeId} class="w-fit">
+                <Tag tone="sodium" variant="solid">
+                  {tier.badge}
+                </Tag>
+              </p>
+            )}
+
+            <h3 id={tierId} class={tierHeading}>
+              {tier.name}
+            </h3>
+
+            {/* Display/Price. The currency and the amount are one text node, so a screen
+                reader reads "€45" rather than spelling the symbol out separately. */}
+            <p class="flex flex-wrap items-baseline gap-2">
+              <span class="font-display text-4xl leading-[1.08] font-bold tracking-display tabular-nums text-accent-sodium">
+                {tier.price}
+              </span>
+              <span class="text-sm leading-normal text-text-secondary">{tier.priceSuffix}</span>
+            </p>
+
+            {/* `grow` rather than an auto margin on the button below it: auto margins are
+                resolved to a used pixel value that lands off the spacing scale (AC-32),
+                and growing the list aligns the three CTAs just as well. */}
+            <ul class="grow list-disc space-y-2 pl-4 text-base leading-relaxed text-text-secondary marker:text-accent-sodium">
+              {tier.includes.map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+
+            {availability && (
+              <p
+                class:list={[
+                  'text-sm leading-normal font-semibold',
+                  soldOut ? 'text-state-danger' : 'text-accent-sodium',
+                ]}
+              >
+                {availability}
+              </p>
+            )}
+
+            {/* Sold out keeps its href and takes `ariaDisabled`, not `disabled`: a control
+                that leaves the tab order takes the explanation of why it is off with it
+                (CONTENT.md §14). */}
+            <Button href={TICKETS_URL} fullWidth ariaDisabled={soldOut}>
+              {soldOut ? SOLD_OUT_CTA : tier.cta}
+            </Button>
+          </article>
+        )
+      })
+    }
+  </div>
+
+  {/* tickets/comparison, above 768. The caption is the table's accessible name and is not
+      repeated on screen, where the column heads already say what is being compared. */}
+  <div class="hidden overflow-hidden rounded-md border border-border-subtle tablet:block">
+    <table class="w-full border-separate border-spacing-0">
+      <caption class={visuallyHidden}>{comparisonCaption}</caption>
+      <thead>
+        <tr>
+          {/* The corner cell is blank in CONTENT.md §9, so it is a td. A th with no text
+              is a column header that names nothing. */}
+          <td class={headCell}></td>
+          {tiers.map((tier) => (
+            <th scope="col" class={headCell}>
+              {tier.name}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {comparison.map((row) => (
+          <tr>
+            <th
+              scope="row"
+              class="border-t border-border-subtle p-4 text-left text-sm font-medium text-text-secondary"
+            >
+              {row.feature}
+            </th>
+            {tiers.map((tier) => (
+              <td class={bodyCell}>{row[tier.key]}</td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  {/* The same seven rows below 768, one list per tier. */}
+  <div class="flex flex-col gap-4 tablet:hidden">
+    {
+      tiers.map((tier) => {
+        const labelId = `tickets-compare-${tier.key}`
+
+        return (
+          <div class="flex flex-col gap-3 rounded-md border border-border-subtle p-4">
+            <p id={labelId} class="font-display text-xl font-medium tracking-display text-text-primary">
+              {tier.name}
+            </p>
+            <dl aria-labelledby={labelId} class="flex flex-col gap-2">
+              {comparison.map((row) => (
+                <div class="flex flex-wrap items-baseline justify-between gap-2">
+                  <dt class="text-sm leading-normal text-text-secondary">{row.feature}</dt>
+                  <dd class="text-sm leading-normal font-medium text-text-primary">{row[tier.key]}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        )
+      })
+    }
+  </div>
+
+  {/* tickets/access. CANON §3 requires this next to the prices, not in the footer, and
+      fixes its wording; AC-43 reads it verbatim out of this section. */}
+  <div class="flex items-start gap-4 rounded-md border border-accent-coolant bg-bg-surface p-6">
+    <svg
+      class="mt-1 h-6 w-6 shrink-0 text-accent-coolant"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="9"></circle>
+      <path d="M12 11.5v4.5"></path>
+      <path d="M12 8h.01"></path>
+    </svg>
+
+    <p class="text-base leading-relaxed text-text-primary">
+      Companion tickets for personal assistants are free. Write to <a
+        href="mailto:access@turbine.fm"
+        class="text-accent-coolant underline underline-offset-2">access@turbine.fm</a
+      > and we will arrange it, no documentation required.
+    </p>
+  </div>
+
+  <p class="text-sm leading-normal text-text-secondary">Every ticket is 18+. Bring photo ID.</p>
+</Section>

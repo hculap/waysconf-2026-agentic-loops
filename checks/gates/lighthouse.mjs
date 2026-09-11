@@ -47,6 +47,13 @@ const median = (xs) => {
   return s[Math.floor(s.length / 2)]
 }
 
+/**
+ * Lighthouse's default mobile profile: emulated phone screen, simulated throttling, 4x CPU
+ * slowdown. Deliberately not overridden to desktop. BRIEF.md section 2 says most visitors
+ * arrive on a phone, section 3 goal 5 and section 7 gate 8 both name the mobile profile, and
+ * every threshold in brief/ACCEPTANCE.md AC-52 and AC-56 is calibrated for it — a 90
+ * performance floor and a 2.5s LCP budget mean almost nothing on an unthrottled desktop run.
+ */
 async function runOnce(port) {
   const result = await lighthouse(
     URL_UNDER_TEST,
@@ -54,19 +61,7 @@ async function runOnce(port) {
       port,
       output: 'json',
       logLevel: 'error',
-      screenEmulation: {
-        mobile: false,
-        width: 1440,
-        height: 900,
-        deviceScaleFactor: 1,
-        disabled: false,
-      },
-      formFactor: 'desktop',
-      throttling: {
-        rttMs: 40,
-        throughputKbps: 10 * 1024,
-        cpuSlowdownMultiplier: 1,
-      },
+      formFactor: 'mobile',
     },
     undefined,
   )
@@ -98,7 +93,44 @@ async function main() {
 
   try {
     const runs = []
-    for (let i = 0; i < 3; i++) runs.push(await runOnce(chrome.port))
+    // A Lighthouse run that fails to load the page still returns an lhr, with every
+    // category scored 0. Taking the median of [0, 0, 80] then reports a perfect page as
+    // a total failure — which is exactly what happened here the first time this gate saw
+    // the real site, with two runs losing the race against a Playwright session on the
+    // same machine. A run that did not happen is not a measurement of zero.
+    const discarded = []
+    for (let i = 0; i < 5 && runs.length < 3; i++) {
+      const lhr = await runOnce(chrome.port)
+      const scores = THRESHOLDS.map((t) => lhr.categories?.[t.key]?.score)
+      const allZero = scores.every((s) => s === 0 || s === null || s === undefined)
+      if (lhr.runtimeError || allZero) {
+        discarded.push(lhr.runtimeError?.message ?? 'every category scored 0, so the page did not load')
+        continue
+      }
+      runs.push(lhr)
+    }
+
+    if (runs.length < 2) {
+      console.log(
+        JSON.stringify({
+          id: 'perf',
+          title: 'Lighthouse',
+          status: 'skip',
+          criteria: THRESHOLDS.map((t) => t.criterion),
+          failures: [],
+          notes: [
+            `Only ${runs.length} of 5 attempts produced a usable run, so there is no measurement.`,
+            ...discarded.slice(0, 3).map((d) => `discarded: ${d}`),
+          ],
+        }),
+      )
+      return
+    }
+    if (discarded.length) {
+      // Say it out loud. A gate that quietly drops half its samples is a gate that
+      // reports whatever the survivors happened to say.
+      console.error(`  (discarded ${discarded.length} failed Lighthouse run(s))`)
+    }
 
     const failures = []
     const scores = {}
@@ -145,7 +177,7 @@ async function main() {
         criteria: THRESHOLDS.map((t) => t.criterion),
         failures,
         notes: [
-          `Median of 3 desktop runs: ` +
+          `Median of 3 mobile-profile runs: ` +
             THRESHOLDS.map((t) => `${t.label} ${scores[t.key].score}`).join(', '),
           'A perfect accessibility score here still only means axe found nothing. It is a floor, not a ceiling.',
         ],

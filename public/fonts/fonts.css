@@ -5,6 +5,18 @@
    Source:    Google Fonts, latin subset only, woff2
 
    Self-hosted on purpose. See the header of the generator for why.
+
+   All three families are under the SIL Open Font License 1.1, which requires
+   the copyright notice and the licence to travel with the files. Both do:
+
+   Space Grotesk — full licence text in OFL-SpaceGrotesk.txt
+   Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+
+   Inter — full licence text in OFL-Inter.txt
+   Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+   JetBrains Mono — full licence text in OFL-JetBrainsMono.txt
+   Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
    ========================================================================== */
 
 @font-face {

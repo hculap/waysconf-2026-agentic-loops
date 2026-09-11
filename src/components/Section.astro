@@ -9,10 +9,13 @@
  *          name, spelled once here instead of eleven times.
  *   AC-33  horizontal space comes from `.container-turbine` — max-width 1200,
  *          gutter 24 at 390 and 48 at 1440 — and from nothing else.
- *   AC-09  a <section> with an accessible name is a landmark region and an unnamed
- *          one is not. Passing `heading` names it via aria-labelledby; passing
- *          neither `heading` nor `label` leaves it deliberately unnamed rather
- *          than shipping an anonymous region.
+ *   AC-09  every <section> on the page carries an accessible name. `heading` names
+ *          it from the heading this component renders, `labelledBy` from one the
+ *          section renders itself — the hero's h1 — and `label` from a string where
+ *          there is no heading at all. A section that should not be a landmark
+ *          passes `as="div"` instead of shipping an anonymous region: that is the
+ *          ticker, whose strip is aria-hidden decoration with a text equivalent
+ *          beside it rather than a destination anyone navigates to.
  *
  * Vertical rhythm is the responsive/section-pad-y variable from FIGMA-SPEC 2.5:
  * 64 at 390, 96 at 768, 128 at 1440. It is set here and nowhere else, because two
@@ -33,6 +36,12 @@ interface Props {
   /** CONTENT 15 fixes every section heading at h2; subsections pass 3. */
   headingLevel?: 2 | 3
   intro?: string
+  /**
+   * Id of a heading the section renders for itself, when that heading cannot come
+   * from `heading`. The hero is the only caller: its h1 belongs to the hero, not to
+   * SectionHeading, and AC-07 allows exactly one of them on the page.
+   */
+  labelledBy?: string
   /** Accessible name for a section that has no visible heading. */
   label?: string
   /** bg.surface lifts a section off the page; newsletter is the one that does. */
@@ -47,22 +56,31 @@ interface Props {
   containerClass?: string
 }
 
+/**
+ * The `: Props` annotation is load-bearing and not decoration. Astro reserves the
+ * prop name `as` for its polymorphic-component helper, and a Props interface that
+ * declares one stops being inferred onto Astro.props: every destructured value
+ * silently becomes `any` and `astro check` then fails on the first index into a
+ * lookup table (AC-02). Annotating the destructure puts the type back.
+ */
 const {
   name,
   kicker,
   heading,
   headingLevel = 2,
   intro,
+  labelledBy,
   label,
   tone = 'base',
   bleed = false,
   flush = false,
-  as: Tag = 'section',
+  as: Wrapper = 'section',
   class: className,
   containerClass,
-} = Astro.props
+}: Props = Astro.props
 
 const headingId = heading ? `${name}-heading` : undefined
+const nameFrom = headingId ?? labelledBy
 
 const tones = {
   base: 'bg-bg-base',
@@ -70,7 +88,7 @@ const tones = {
 }
 ---
 
-<Tag
+<Wrapper
   id={name}
   data-section={name}
   class:list={[
@@ -78,8 +96,8 @@ const tones = {
     !flush && 'py-16 tablet:py-24 desktop:py-32',
     className,
   ]}
-  aria-labelledby={headingId}
-  aria-label={!headingId && label ? label : undefined}
+  aria-labelledby={nameFrom}
+  aria-label={!nameFrom && label ? label : undefined}
 >
   {
     bleed ? (
@@ -93,4 +111,4 @@ const tones = {
       </div>
     )
   }
-</Tag>
+</Wrapper>

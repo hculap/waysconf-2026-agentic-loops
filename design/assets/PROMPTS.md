@@ -1,8 +1,22 @@
 # TURBINE — image generation script
 
-Every image in the TURBINE design pack is generated from this file. There are no hand-picked stock
-photographs and no images whose origin is unrecorded. Each entry below gives a filename, exact output
-dimensions, the generation parameters, the full prompt, and the alt text the page will ship with.
+Every photographic image in the TURBINE design pack is generated from this file. There are no
+hand-picked stock photographs and no images whose origin is unrecorded. Each entry below gives a
+filename, exact output dimensions, the generation parameters, the full prompt, and the alt text the page
+will ship with.
+
+Two files in `design/assets/` come from somewhere else and say so here rather than being quietly absent:
+the two overlay textures, which are arithmetic rather than photography and are produced by
+`scripts/generate-textures.mjs`, for the reasons §5 gives. The static map placeholder `docs/CANON.md` §7
+requires in the Venue section is not in this file either, because it is not an image at all:
+`design/FIGMA-SPEC.md` §5.6 draws it as a bordered box with a label, since `docs/CANON.md` §11 rules out
+an embedded map.
+
+**This file is the manifest.** The filenames, pixel dimensions, formats and alt text given below are the
+ones the pack ships and the ones `brief/CONTENT.md` §13 repeats for the implementing agent; where the two
+disagree, this file is the one that produced the bytes. `scripts/copy-assets.mjs` copies every image in
+`design/assets/` into `public/images/` as a `prebuild` step, so the served path of any file named here is
+`/images/<filename>` — which is where `src/layouts/Base.astro` points `og:image`.
 
 Target model: **Nano Banana Pro**, model id `gemini-3-pro-image`, Google Gemini API.
 
@@ -41,8 +55,9 @@ The per-image instruction follows the preamble in the same block, separated by a
 
 Text baked into a picture is text that cannot be translated, cannot be selected, cannot be resized by the
 reader, cannot be found by search, and cannot be read aloud by a screen reader. It also cannot be checked:
-the axe-core and contrast gates in `checks/` see DOM nodes and computed styles, not pixels, so a wordmark
-painted into a JPEG passes every automated test while failing every real user who needs it to be larger.
+the axe-core and contrast gates in `checks/` see the DOM — the page's real text and the styles computed
+for it — and not pixels, so a wordmark painted into a JPEG passes every automated test while failing
+every real user who needs it to be larger.
 
 So the images carry light and material only. The wordmark, the dates, the venue, the ticket prices and
 the calls to action are all DOM elements rendered over the image with a CSS scrim behind them. That is
@@ -50,8 +65,13 @@ why several prompts below ask for a quiet, near-black region in a specific part 
 needs somewhere to put words, and the contrast ratio of `color.text.primary` (`#F2F4F7`) over that region
 has to clear 4.5:1 the same as any other body text on the page.
 
-The rule is worth stating to participants in one line: **if a human has to read it, it belongs in the
-DOM, not in the JPEG.**
+The rule is worth stating to participants in one line: **if a human has to read it, it has to be text on
+the page, not paint in the picture.**
+
+The rule is about the page, and the social card is the image that has no page around it. A share preview
+is fetched as a flat bitmap and drawn by Slack, LinkedIn, X or iMessage, where there is no DOM to render
+over it and no CSS to scrim it. §6 explains what that means for `og-card.jpg`, and it is an application
+of the rule rather than an exception to it.
 
 ### 1.3 SynthID
 
@@ -88,8 +108,9 @@ tier, which costs more (roughly USD 0.24). Neither figure is the number to budge
 pack like this takes two to four passes before the grid reads as a set, so plan on **USD 6 to 10** for a
 full build from scratch, and near zero afterwards because the outputs are committed.
 
-Cost is per *returned* image, so a `--dry-run` costs nothing and `--only` costs one image. Regenerating
-the whole set to fix one portrait is the expensive mistake.
+Cost is per *returned* image, so a `--dry-run` costs nothing and `--only` costs one image for every id it
+matches: `--only artist-07-hiroko-vane` is one call at about USD 0.13, and the glob `--only "artist-*"` is
+twelve of them at about USD 1.61. Regenerating the whole set to fix one portrait is the expensive mistake.
 
 ### 1.5 Output tiers, cropping and exact dimensions
 
@@ -107,8 +128,11 @@ is larger than the tier it comes from.
 | `og-card.jpg` | 1200×630 | 16:9 requested, 1.905:1 delivered | 16:9, 2K (2048×1152) | centre-crop to 2048×1075, resize to 1200×630, JPEG q85 |
 
 1200×630 is not an aspect ratio the model offers, which is why the social card is generated wide and
-cropped. The prompt for it keeps the subject clear of the top and bottom 40px so the crop cannot decapitate
-anything.
+cropped. One frame of reference for that, since the numbers are easy to mix up: the crop from 2048×1152
+to 2048×1075 removes 38 px from the top and 38 px from the bottom of the **generated** frame, and the
+prompt asks for the top and bottom five percent of that frame — about 58 px — to be clear of anything
+important. The margin is deliberate and it is stated once, in the generated frame's pixels, not in the
+1200×630 output's.
 
 The two textures used to be the awkward case here, for a reason worth keeping: generative models do not
 produce seamlessly tileable output on request, whatever the prompt says. They are no longer generated at
@@ -128,19 +152,40 @@ given for each image below is the text the page ships, with one qualification wo
   `<img>` and never need alt at all. The strings below are documentation, not markup.
 - The **social card** string goes in `og:image:alt`, not in an `alt` attribute.
 
-### 1.7 Safe areas, checked in code
+An alt string here is also the shot brief: it describes the picture that was actually generated, and if a
+file does not show what its alt text describes, the file is wrong, not the string. `brief/CONTENT.md` §13
+carries the same strings for the implementing agent, who never reads this file; they are written once,
+here, next to the prompt that produced the image.
 
-Two images have text placed over them at render time, so both carry a machine-checkable constraint the
-validation loop can enforce rather than a designer's hope:
+### 1.7 The safe area, checked in code
 
-- `hero-hall.jpg` — the lower half of the frame must stay dark enough that `#F2F4F7` over it clears 4.5:1
-  before the CSS scrim is applied.
-- `og-card.jpg` — the left 58% of the frame (the first 696px of 1200) must satisfy the same condition.
+One image in the pack has text placed over it at render time. `hero-hall.jpg` carries the wordmark, the
+dates, the venue and two buttons across its lower half, so that region has to stay dark enough for
+`color.text.primary` (`#F2F4F7`) to clear 4.5:1 over it *before* the CSS scrim is applied. The social card
+is not in this list, and §6 says why.
 
-`scripts/check-image-safe-areas.mjs` samples the region, computes the worst-case contrast ratio against
-`#F2F4F7`, and exits non-zero if it fails. A regenerated hero that comes back brighter than the last one
-fails the gate before it ever reaches the page, which is the whole argument of the workshop applied to an
-asset pipeline.
+A constraint is only machine-checkable if the decision procedure is written down. "Sample the region and
+take the worst-case contrast" is not a specification: on this hero, the brightest pixel gives 0.91:1, the
+mean gives 11.46:1, the 99th percentile gives 1.80:1 and the 95th gives 4.70:1. Four readings of the same
+sentence, two verdicts. So the rule is arithmetic, and `scripts/check-image-safe-areas.mjs` implements
+exactly this and nothing else:
+
+1. Take the region — for the hero, the lower half of the frame.
+2. Divide it into 16 × 16 px tiles; the remainder strip at the right and bottom edges forms narrower
+   tiles rather than being discarded.
+3. For each tile compute the mean of the per-pixel WCAG relative luminance — the mean of the luminances,
+   not the luminance of the mean colour.
+4. Contrast against `#F2F4F7` is `(0.8983 + 0.05) / (L + 0.05)`.
+5. The region **passes** when at most 2% of tiles fall below 4.5:1 *and* no single tile falls below 3:1.
+
+16 px is about the area a glyph stem covers at the sizes used over this image, so a tile is roughly one
+letter's worth of background. The 2% allowance exists because a headline never covers a whole region; the
+3:1 floor stops that allowance being spent on one blown highlight sitting directly under a word. The
+script exits non-zero and prints both measured numbers and both thresholds, so the figure a repair prompt
+has to beat travels with the failure instead of living only here.
+
+A regenerated hero that comes back brighter than the last one fails the gate before it ever reaches the
+page, which is the whole argument of the workshop applied to an asset pipeline.
 
 ### 1.8 Machine-readable markers
 
@@ -193,15 +238,16 @@ in the image. No recognisable individual, no identifiable face, no likeness of a
 The interior of a decommissioned 1928 coal-fired power station at night. A vast turbine hall: riveted
 steel roof trusses eighteen metres overhead, a travelling crane rail running the length of one wall, a
 row of dead generator housings down the centre of the floor like beached whales, oil-stained concrete,
-brick piers, tall arched steel-framed windows showing only black. Sodium work lamps on tripods throw hard
-orange pools across the floor and up the nearest pier; everything beyond their reach falls to black. A
-thin cyan haze fills the upper volume of the hall and catches the light in visible shafts. Several
-hundred people stand in the middle distance, all facing away from the camera, entirely unlit, reading as
-flat dark silhouettes with no visible faces and no detail. Wide shot from a raised position at the back
-of the hall, 24mm equivalent, camera level and square to the room, the far end of the hall dissolving
-into darkness. Keep the bottom half of the frame quiet and close to black: floor, haze and silhouette
-only, with no bright element and no busy detail there. Practical light only, no stage rig, no video wall,
-no lasers, no strobes, no smoke machines aimed at the camera.
+brick piers, tall arched steel-framed windows showing only black. Sodium work lamps rigged high on the
+brick piers throw hard orange pools across the upper walls and the roof trusses, well above the heads of
+the crowd; everything beyond their reach falls to black. A thin cyan haze fills the upper volume of the
+hall and catches the light in visible shafts. Several hundred people stand in the middle distance, all
+facing away from the camera, entirely unlit, reading as flat dark silhouettes with no visible faces and
+no detail. Wide shot from a raised position at the back of the hall, 24mm equivalent, camera level and
+square to the room, the far end of the hall dissolving into darkness. Keep the bottom half of the frame
+quiet and close to black: floor, haze and silhouette only, with no bright element, no busy detail and no
+pool of lamplight anywhere in it. Practical light only, no stage rig, no video wall, no lasers, no
+strobes, no smoke machines aimed at the camera.
 ```
 
 **Alt text:** `The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze.`
@@ -257,7 +303,7 @@ no banners, no signage of any kind, no visible modern additions.
 | Output | 1600 × 1200 px |
 | Aspect ratio | 4:3 |
 | Generated at | 4:3, 2K tier (2048 × 1536), downscaled |
-| Used in | Section 7, Venue — secondary image; also the fallback share image if `og-card.jpg` is unavailable |
+| Used in | Nowhere on the page. `docs/CANON.md` §7 gives the Venue section one image slot and `venue-exterior.jpg` holds it; this is the alternate, kept so the slot can be re-cast without another API call |
 
 ```text
 TURBINE house style. Photographic, low-key, documentary rather than advertising. The palette is
@@ -292,6 +338,14 @@ Twelve images, one per artist in the canonical order of `docs/CANON.md` §2. All
 at the 1:1 1K tier and downscaled. They share one treatment so the lineup grid reads as a set: square
 crop, a single hard light source, a near-black ground, the same film grain, no text, no identifiable face.
 
+Square is a decision, not a default, and it has to be the same decision on both sides of the handover.
+`design/FIGMA-SPEC.md` §5.4 sets `artist/portrait` to an aspect ratio of 1:1 "matching the supplied
+800 × 800 files", so the card shows the whole master and crops nothing. Keep the two in step: a slot at
+any other ratio silently throws away part of every composition below, and the compositions here spend
+their negative space deliberately — a subject held low, a subject at the edge, a lattice floating in the
+middle sixty percent. If the card ratio ever changes, these twelve prompts change with it in the same
+commit, or the lineup grid becomes the staircase `design/FIGMA-SPEC.md` §10 warns about.
+
 Within that treatment, framing and colour emphasis are deliberately varied so twelve cards in a row do not
 look like twelve versions of one card. The plan is fixed in advance rather than left to chance:
 
@@ -310,8 +364,8 @@ look like twelve versions of one card. The plan is fixed in advance rather than 
 | 11 | `artist-11-odalys-ferrer.jpg` | Percussive ambient | Figure in motion | Mid-frame, long exposure | Sodium and violet |
 | 12 | `artist-12-vitrine.jpg` | Glassy IDM | Abstract, stacked glass | Centred, architectural | Coolant |
 
-Six are sodium-led, four coolant-led, one near-monochrome, one violet-led. Six carry a figure, two carry
-only hands, four are abstract. Filename slugs are ASCII-folded: `Ilse Rüm` becomes `ilse-rum`, and
+Six are sodium-led, four coolant-led, one near-monochrome, one violet-led. Seven carry a figure, two carry
+only hands, three are abstract. Filename slugs are ASCII-folded: `Ilse Rüm` becomes `ilse-rum`, and
 `SUBSTATION 9` becomes `substation-9`.
 
 <!-- gen:begin id="artist-01-kasimir-volt" file="artist-01-kasimir-volt.jpg" width="800" height="800" aspect="1:1" tier="1K" crop="none" format="jpg" quality="80" -->
@@ -437,15 +491,16 @@ in the image. No recognisable individual, no identifiable face, no likeness of a
 Square portrait for a drone artist. A tall, narrow column of sodium-orange light falls the full height of
 the frame slightly right of centre, a shaft from a high opening striking a concrete wall inside a dark
 shaft-like industrial space. Dust drifts through it. At the extreme left edge of the frame, one human
-shoulder and the very edge of a jaw enter the picture in near-total shadow, cropped hard by the frame,
-turned away, no face and no features visible, no more than a dark interruption of the background. The rest
-of the square is unbroken black and deep charcoal, weighted heavily to the top: more than half the image
-is empty. Static, vertical, patient composition, 35mm equivalent, no movement. No equipment, no ground
+shoulder and the back of a head enter the picture in near-total shadow, cropped hard by the frame, turned
+fully away from the camera, no face, no jaw, no profile, no eye and no feature of any kind visible at any
+point, no more than a dark interruption of the background. The rest of the square is unbroken black and
+deep charcoal, weighted heavily to the top: more than half the image is empty. Static, vertical, patient
+composition, 35mm equivalent, no movement. No equipment, no ground
 plane, no ceiling, no architecture beyond the one lit wall, no text, no watermark, no likeness of any real
 person.
 ```
 
-**Alt text:** `A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering at the left edge.`
+**Alt text:** `A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering from the left.`
 
 <!-- gen:end -->
 
@@ -751,8 +806,10 @@ The targets changed with the method:
 | `texture-scanline.png` | 256 × 256, tiles | 4 px period with raised-cosine soft edges so it does not alias when scaled, plus faint per-pixel jitter so it does not read as a CSS repeating gradient |
 
 Both are white with the pattern in the alpha channel, so they multiply over any surface without
-contributing a colour of their own. Both are decorative, carry no alt text in markup, and are applied as
-CSS backgrounds over `color.bg.base` at low opacity.
+contributing a colour of their own. Both are decorative and carry no alt text in markup.
+`texture-grain.png` is applied as a CSS background over `color.bg.base` at low opacity;
+`texture-scanline.png` is a companion the current design does not place, which `brief/CONTENT.md` §13
+says plainly rather than inviting the implementing agent to find it a home.
 
 ```bash
 node scripts/generate-textures.mjs
@@ -774,13 +831,19 @@ files here that a model could not make are the two that a hundred lines of code 
 | Output | 1200 × 630 px |
 | Aspect ratio | 1.905:1 (the Open Graph standard) |
 | Generated at | 16:9, 2K tier (2048 × 1152), centre-cropped to 2048 × 1075, downscaled |
-| Used in | `og:image` and `twitter:image` |
-| Constraint | Left 58% of the frame (first 696 px of 1200) must pass the §1.7 safe-area check |
+| Used in | `og:image` and `twitter:image`, served from `/images/og-card.jpg` |
 
-The wordmark, the tagline, the dates and the venue are drawn over this image in code, not baked into it.
-The prompt therefore asks for a composition that is mostly empty on the left, with the subject held to the
-right, and keeps everything of interest clear of the top and bottom edges so the 16:9 to 1.905:1 crop is
-harmless.
+This card carries no words, and nothing is drawn over it. A share preview is not a page: Slack, LinkedIn,
+X and iMessage fetch the file and paint it as a flat bitmap, with no DOM to put an element in and no CSS
+to scrim it. The festival name, the dates and the venue travel alongside it in `og:title` and
+`og:description`, which every one of those platforms renders as real text next to the picture —
+selectable, translatable, resizable, and read aloud correctly. That is the §1.2 rule applied rather than
+suspended, and it is worth saying out loud to a room that expects a share card to be a poster.
+
+So the composition is a composition. The left side is empty and near-black because the picture wants its
+weight on one side, not because a wordmark is going there, and there is no safe-area gate on this file —
+§1.7 covers the hero alone. The prompt keeps everything of interest clear of the top and bottom edges so
+the 16:9 to 1.905:1 crop is harmless.
 
 ```text
 TURBINE house style. Photographic, low-key, documentary rather than advertising. The palette is
@@ -792,8 +855,8 @@ No HDR, no bloom, no lens flare, no colour grading toward teal-and-orange clich�
 finish. Absolutely no text, letters, numbers, signage, logos, watermarks, captions or subtitles anywhere
 in the image. No recognisable individual, no identifiable face, no likeness of any real person.
 
-A wide, strongly asymmetric composition inside a decommissioned coal power station at night, built to have
-words placed over its left side. The left sixty percent of the frame is near-black and almost empty: haze,
+A wide, strongly asymmetric composition inside a decommissioned coal power station at night, weighted
+entirely to the right. The left sixty percent of the frame is near-black and almost empty: haze,
 a faint suggestion of a concrete floor, no object, no edge, no highlight, no detail that draws the eye,
 holding a flat very dark tone throughout. The right forty percent carries the whole subject: the flank of
 a single enormous turbine casing, riveted and paint-worn, lit hard from the right by one sodium-orange
@@ -812,23 +875,76 @@ equivalent, camera level. No people, no crowd, no stage, no lighting rig, no tex
 
 ## 7. Acceptance checks
 
-Run before the pack is considered done. The first four are automated by `scripts/check-assets.mjs`; the
-last two need a person.
+Run before the pack is considered done:
+
+```bash
+npm run check:assets        # node scripts/check-assets.mjs
+```
+
+The first five are automated by that script, which prints every number it measured, pass or fail. The
+last two need a person. It is an author-time gate and is deliberately not wired into `checks/run.mjs`:
+nothing it measures can be fixed by editing the site, only by editing a prompt here and regenerating.
 
 1. **Dimensions.** Every file matches the exact pixel size declared above. No exceptions, because the
    Playwright screenshot diff will otherwise drift for reasons that have nothing to do with the code.
-2. **Weight.** `hero-hall.jpg` under 400 KB, `og-card.jpg` under 200 KB, each portrait under 90 KB, each
-   texture under 30 KB. Lighthouse performance is a gate in `checks/`, and an unoptimised hero is the
+2. **Weight.** `hero-hall.jpg` under 400 KB, each venue image under 200 KB, `og-card.jpg` under 200 KB,
+   each portrait under 120 KB, `texture-grain.png` under 64 KB and `texture-scanline.png` under 40 KB.
+   Every one of those numbers was measured from the encode the pipeline actually produces and then given
+   headroom — the current maxima are 246 KB, 181 KB, 57 KB, 89 KB, 57 KB and 35 KB. A budget the pipeline
+   cannot meet is not a gate, it is a regeneration loop that never terminates, which is worth saying in a
+   workshop about loops. Lighthouse performance is a gate in `checks/`, and an unoptimised hero is the
    usual reason it fails.
-3. **Safe areas.** `hero-hall.jpg` and `og-card.jpg` pass `scripts/check-image-safe-areas.mjs` at 4.5:1
-   against `#F2F4F7`.
-4. **Tiling.** Both textures pass the seam check in both axes.
-5. **No text.** Open all eighteen at full size and look. Image models produce plausible-looking lettering
-   on signage and equipment even when told not to, and it is usually small, usually in the background, and
-   usually gibberish. Any image with a glyph in it is regenerated, not retouched.
-6. **The grid.** Put the twelve portraits side by side at 800 px and check two things at once: that they
-   read as one set, and that no two are interchangeable. If three of them are the same silhouette against
-   the same smoke, go back to the variation matrix in §4 and push the framing further apart.
+3. **Safe area.** `hero-hall.jpg` passes `scripts/check-image-safe-areas.mjs` under the tile rule in §1.7.
+4. **Tiling.** Both textures are seamless in both axes: the wrap-around edge pair differs no more than
+   three times as much as a typical interior neighbour pair. Comparing the two edges to each other alone
+   proves nothing — in fine grain every adjacent column pair is different.
+5. **No matte.** The model occasionally returns a photograph mounted on a white card instead of a
+   photograph. It survives a thumbnail and ruins a full-bleed hero or a card that crops. The check fails
+   any image whose 4 px border is flat (standard deviation under 4) and more than 40 levels lighter than
+   the picture inside it. Only a light border counts: this pack is low-key, and a flat near-black edge is
+   the house style.
+6. **No text, no faces.** Open all sixteen at full size and look. Image models produce plausible-looking
+   lettering on signage and equipment even when told not to, and it is usually small, usually in the
+   background, and usually gibberish. They also resolve a silhouette into a readable face given half a
+   chance, which the preamble forbids and no gate here can measure. Any image with a glyph or a face in it
+   is regenerated, not retouched.
+7. **The grid.** Put the twelve portraits side by side at 800 px, which is the whole frame the 1:1 card
+   shows, and check two things at once: that they read as one set, and that no two are interchangeable.
+   If three of them are the same silhouette against the same smoke, go back to the variation matrix in §4
+   and push the framing further apart.
+
+### 7.1 What the gate says today
+
+Honest state of the committed pack, as `npm run check:assets` reports it. Five of fifty-six checks fail,
+and all five need an API key and a regeneration rather than an edit:
+
+| Failing | Why | Fix |
+|---|---|---|
+| `artist-04`, `artist-06`, `artist-07`, `artist-12` | returned as a photograph on a white mount: a flat 255 border, standard deviation under 0.5 | regenerate, about USD 0.54 |
+| `hero-hall.jpg` safe area | 4.47% of lower-half tiles below 4.5:1 against a 2% allowance, darkest-case tile 1.09:1 | the prompt asked for sodium pools across the floor and then demanded the floor be near-black. Fixed above: the lamps are now rigged high on the piers and every pool stays in the upper half. Regenerate, about USD 0.24 |
+
+`artist-04`'s prompt also changed, for a defect no gate here can measure: the returned image resolved its
+shadowed shoulder into a readable face, which the preamble forbids and check 6 catches only by eye. The
+prompt now refuses the profile explicitly. It is in the same regeneration.
+
+Three of those prompts changed in this pass, so the script already queues them — `--dry-run` reports
+three to generate at about USD 0.51. The other three failures are a bad roll of the dice against an
+unchanged prompt, so they need `--force`. Note that `--only` takes one id or one glob and `*` is its only
+wildcard: every other regular-expression character is escaped, so a character class does not work here.
+
+```bash
+node scripts/generate-images.mjs --all                                 # hero, artist-04, og-card
+node scripts/generate-images.mjs --only artist-06-substation-9 --force
+node scripts/generate-images.mjs --only artist-07-hiroko-vane  --force
+node scripts/generate-images.mjs --only artist-12-vitrine      --force
+npm run check:assets
+```
+
+About USD 0.91 in total, and the last line is how you know it worked.
+
+This section exists rather than being tidied away because the alternative is thirty people finding it in
+the room. A gate whose failures are written down is doing its job; a pack that claims to be done because
+nobody ran the gate is the failure this workshop is about.
 
 ---
 
@@ -837,9 +953,11 @@ last two need a person.
 The generation script reads this file, so edit the prompt here and run the script; there is no second copy
 to keep in sync.
 
+From the repository root:
+
 ```bash
-cd /home/szymon/Projects/waysconf-2026-agentic-loops
-export GEMINI_API_KEY="…"          # never commit this; see docs/CANON.md §11 on what is out of scope
+export GEMINI_API_KEY="…"          # never commit this. `.env.example` shows where it goes,
+                                   # and `.gitignore` already excludes `.env`
 node scripts/generate-images.mjs --all
 ```
 
@@ -872,11 +990,17 @@ npm run gen:images        # equivalent to: node scripts/generate-images.mjs --al
 Behaviour worth knowing before you run it:
 
 - By default the script **skips** any image whose file already exists and whose prompt hash matches
-  `design/assets/manifest.json`. Running `--all` on a clean checkout therefore costs nothing.
+  `design/assets/manifest.json`. Running `--all` on a clean checkout therefore costs nothing, except for
+  entries whose prompt has been edited since the last run — right now that is the three in §7.1, about
+  USD 0.51. `--dry-run` always tells you the number before you spend it.
 - Generated files are committed to the repository. Workshop participants must not need an API key, a
   billing account or a network round trip to build the site.
-- Every run appends to `evidence/asset-generation.log`: timestamp, model id, image id, prompt hash, tier,
-  and the reported cost. That log is what makes the pack reproducible rather than merely repeatable.
+- Every successful generation appends one tab-separated line to `evidence/asset-generation.log`:
+  timestamp, model id, image id, prompt hash, tier, output dimensions, output size in bytes, elapsed
+  seconds, and the list price of that tier from the table in §1.4. The API does not report a cost, so that
+  last field is arithmetic, not a receipt. A `--dry-run`, a `--manifest` run and a failed call write
+  nothing. The log is committed — `.gitignore` excludes `*.log` and then re-admits `evidence/*.log` — and
+  it is what makes the pack reproducible rather than merely repeatable.
 - The API is not deterministic. Two runs of the same prompt return different images. If a portrait is
   replaced, the Playwright baseline screenshots for the lineup section have to be re-approved, so
   regenerate deliberately and not as a reflex.
@@ -885,9 +1009,10 @@ Behaviour worth knowing before you run it:
 
 ## 9. Provenance
 
-Every image in `design/assets/` is synthetic, generated by `gemini-3-pro-image` from the prompts in this
-file, and carries a SynthID watermark. The building, the crowd, the equipment and the twelve artists do
-not exist. As required by `docs/CANON.md` §1, `CREDITS.md` and the site footer both carry the line:
+Every image in `design/assets/` is synthetic. Sixteen of the eighteen were generated by
+`gemini-3-pro-image` from the prompts in this file and carry a SynthID watermark; the two textures were
+written by `scripts/generate-textures.mjs`, with no model involved and so no watermark to carry (§5).
+The building, the crowd, the equipment and the twelve artists do not exist. As required by `docs/CANON.md` §1, `CREDITS.md` and the site footer both carry the line:
 
 > TURBINE is a fictional festival created as teaching material for a conference workshop. Artist names,
 > imagery and copy are invented. Any resemblance to a real event or performer is coincidental.

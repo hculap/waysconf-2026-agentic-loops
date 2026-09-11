@@ -4,10 +4,10 @@
    Three imports and a short base layer. That is deliberately all this file does.
 
    Colour, type, spacing and radius live in design/tokens/tokens.css, which is
-   generated from design/tokens/tokens.json, which is exported from the Figma
-   variables. theme.generated.css is the mechanical bridge that turns those same
-   tokens into Tailwind utility classes — it is generated too, by
-   `node scripts/build-theme.mjs`, and must not be edited by hand.
+   hand-maintained alongside design/tokens/tokens.json. theme.generated.css is
+   the mechanical bridge that turns those same tokens into Tailwind utility
+   classes — that one is generated, by `node scripts/build-theme.mjs`, and must
+   not be edited by hand.
 
    If you need a colour that is not in the token file, the answer is not to add
    one here. The answer is that it is not in the design.
@@ -36,11 +36,15 @@ body {
 /* One focus indicator, defined once, in a colour that actually clears 3:1
    against every surface in the palette. The border tokens do not — 1.45:1 and
    1.98:1 on bg.base, see design/tokens/CONTRAST.md — so they are never used as
-   the visible focus ring. AC-17 measures this. */
+   the visible focus ring. AC-17 measures this.
+
+   No border-radius here. An outline already follows the element's own corner
+   radius, so declaring one would not shape the ring — it would overwrite the
+   element's geometry while it is focused, snapping a pill tab to 4px the moment
+   somebody tabs onto it. */
 :focus-visible {
   outline: 2px solid var(--color-accent-coolant);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
 /* The skip link is the first focusable element on the page (AC-10). Invisible

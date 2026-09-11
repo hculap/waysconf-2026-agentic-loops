@@ -76,9 +76,16 @@ const sizes = {
   sm: 'min-w-[96px] px-6 py-2 text-sm leading-6',
 }
 
+/**
+ * The secondary outline is an inset ring rather than a border. A 1px border is
+ * 1px of extra box on each edge, so a bordered secondary next to an unbordered
+ * primary stands 2px taller and the row of CTAs stops lining up. An inset ring is
+ * painted inside the 48px box, which keeps every variant the height FIGMA-SPEC 4.1
+ * fixes without moving the padding off the spacing scale.
+ */
 const variants = {
   primary: 'bg-accent-sodium text-text-on-accent',
-  secondary: 'border border-border-strong text-text-primary',
+  secondary: 'inset-ring-1 inset-ring-border-strong text-text-primary',
   ghost: 'text-accent-coolant hover:underline',
 }
 

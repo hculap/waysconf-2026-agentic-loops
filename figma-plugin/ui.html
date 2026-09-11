@@ -1,0 +1,333 @@
+<!--
+  TURBINE — build design file. Plugin panel.
+
+  Everything is inline. The plugin declares networkAccess.allowedDomains ["none"],
+  so a webfont, a stylesheet or an icon from a CDN would simply not load. The
+  colours below are the TURBINE palette from design/tokens/tokens.json, written
+  literally because a plugin panel is not part of the design file and has no
+  variables to bind to. The pairings are the ones CANON §4 fixes: light ink on
+  dark surfaces, near-black ink on the sodium button, never white on orange.
+-->
+<style>
+  :root {
+    --bg-base: #0a0b0d;
+    --bg-surface: #131519;
+    --bg-raised: #1c1f25;
+    --border-subtle: #2a2e36;
+    --border-strong: #3d434e;
+    --text-primary: #f2f4f7;
+    --text-secondary: #a7aebb;
+    --accent-sodium: #ff6a1a;
+    --accent-coolant: #2fe6d6;
+    --accent-arc: #7c5cff;
+    --state-danger: #ff4d4d;
+    --state-success: #3ddc84;
+    --mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, monospace;
+    --sans: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 20px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    font: 400 13px/1.5 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .lede {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  .lede code {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-coolant);
+  }
+
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .facts li {
+    padding: 3px 8px;
+    border: 1px solid var(--border-subtle);
+    border-radius: 999px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-secondary);
+  }
+
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  button {
+    font: inherit;
+    font-weight: 600;
+    border: 0;
+    border-radius: 999px;
+    padding: 11px 22px;
+    cursor: pointer;
+    background: var(--accent-sodium);
+    /* CANON §4: near-black ink on sodium is 6.87:1. White would be 2.87:1. */
+    color: var(--bg-base);
+  }
+
+  button:hover:not(:disabled) {
+    background: #ff7d38;
+  }
+
+  button:disabled {
+    background: var(--bg-raised);
+    color: var(--text-secondary);
+    cursor: default;
+  }
+
+  button.ghost {
+    background: none;
+    color: var(--accent-coolant);
+    padding: 11px 8px;
+  }
+
+  button.ghost:hover:not(:disabled) {
+    background: var(--bg-raised);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-coolant);
+    outline-offset: 2px;
+  }
+
+  .replace {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: auto;
+    color: var(--text-secondary);
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .replace input {
+    width: 15px;
+    height: 15px;
+    accent-color: var(--accent-coolant);
+    cursor: pointer;
+  }
+
+  .progress {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+  }
+
+  .bar {
+    height: 4px;
+    border-radius: 999px;
+    background: var(--bg-raised);
+    overflow: hidden;
+  }
+
+  .bar span {
+    display: block;
+    height: 100%;
+    width: 0%;
+    background: var(--accent-coolant);
+    transition: width 160ms linear;
+  }
+
+  .status {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    min-height: 16px;
+  }
+
+  .status[data-tone='ok'] {
+    color: var(--state-success);
+  }
+
+  .status[data-tone='error'] {
+    color: var(--state-danger);
+  }
+
+  #log {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    margin: 0;
+    padding: 10px 12px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+  }
+
+  #log p {
+    margin: 0;
+  }
+
+  #log p.warn {
+    color: var(--accent-sodium);
+  }
+
+  #log p.error {
+    color: var(--state-danger);
+  }
+
+  #log p.done {
+    color: var(--state-success);
+  }
+
+  #log p::before {
+    content: '· ';
+    color: var(--border-strong);
+  }
+
+  footer {
+    color: var(--text-secondary);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+</style>
+
+<h1>Turbine</h1>
+
+<p class="lede">
+  Builds the file <code>design/FIGMA-SPEC.md</code> describes — variables, text styles, components and
+  the eleven sections at three widths — from the same tokens and copy the code reads. Run it in an
+  empty file. It takes a minute or two and everything it makes is undoable in one step.
+</p>
+
+<ul class="facts" id="facts"></ul>
+
+<div class="controls">
+  <button id="build" type="button">Build design file</button>
+  <button id="close" type="button" class="ghost">Close</button>
+  <label class="replace" for="replace">
+    <input id="replace" type="checkbox" />
+    Replace existing
+  </label>
+</div>
+
+<div class="progress">
+  <div class="bar"><span id="fill"></span></div>
+  <div class="status" id="status">Ready</div>
+</div>
+
+<div id="log" role="log" aria-live="polite"></div>
+
+<footer>
+  One of two routes to the design. The other is the committed PNGs in <code>design/export/</code>.
+</footer>
+
+<script>
+  var logEl = document.getElementById('log')
+  var statusEl = document.getElementById('status')
+  var fillEl = document.getElementById('fill')
+  var buildEl = document.getElementById('build')
+  var replaceEl = document.getElementById('replace')
+  var factsEl = document.getElementById('facts')
+
+  function line(text, kind) {
+    var p = document.createElement('p')
+    p.textContent = text
+    if (kind) p.className = kind
+    logEl.appendChild(p)
+    logEl.scrollTop = logEl.scrollHeight
+  }
+
+  function status(text, tone) {
+    statusEl.textContent = text
+    if (tone) statusEl.setAttribute('data-tone', tone)
+    else statusEl.removeAttribute('data-tone')
+  }
+
+  buildEl.addEventListener('click', function () {
+    logEl.textContent = ''
+    fillEl.style.width = '0%'
+    buildEl.disabled = true
+    status('Building')
+    parent.postMessage({ pluginMessage: { type: 'build', replace: replaceEl.checked } }, '*')
+  })
+
+  document.getElementById('close').addEventListener('click', function () {
+    parent.postMessage({ pluginMessage: { type: 'close' } }, '*')
+  })
+
+  onmessage = function (event) {
+    var message = event.data.pluginMessage
+    if (!message) return
+    var payload = message.payload
+
+    if (message.type === 'ready') {
+      var facts = [
+        payload.colours + ' colour variables',
+        payload.styles + ' text styles',
+        payload.artists + ' artists',
+        payload.exports + ' exports',
+      ]
+      for (var i = 0; i < facts.length; i++) {
+        var li = document.createElement('li')
+        li.textContent = facts[i]
+        factsEl.appendChild(li)
+      }
+    } else if (message.type === 'log') {
+      line(payload)
+    } else if (message.type === 'warn') {
+      line(payload, 'warn')
+    } else if (message.type === 'progress') {
+      fillEl.style.width = Math.round((payload.done / payload.total) * 100) + '%'
+      status(payload.done + '/' + payload.total + '  ' + payload.label)
+    } else if (message.type === 'needs-replace') {
+      buildEl.disabled = false
+      status('This file already has a TURBINE build', 'error')
+      line('Tick "Replace existing" to clear it and build again.', 'warn')
+    } else if (message.type === 'done') {
+      buildEl.disabled = false
+      fillEl.style.width = '100%'
+      if (payload.ok) {
+        status('Done in ' + payload.seconds + 's', 'ok')
+        line(payload.message, 'done')
+        line('Next: publish the file, then open Dev Mode and check section-tickets returns variable names, not hex.')
+      } else {
+        status('Failed', 'error')
+        line(payload.message, 'error')
+      }
+    }
+  }
+</script>

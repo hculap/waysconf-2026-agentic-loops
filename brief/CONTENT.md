@@ -3,8 +3,8 @@
 **For:** the implementing agent. **Authority:** `docs/CANON.md` wins over this file on any fact.
 This file wins over your judgement on any string.
 
-Every user-facing word on the TURBINE landing page is in this document. If a string you need is not
-here, that is a question for us, not a gap for you to fill: do not write copy, do not paraphrase, do
+Every user-facing word on the TURBINE landing page is in this document, with the single exception
+recorded in §14. If a string you need is not here, that is a question for us, not a gap for you to fill: do not write copy, do not paraphrase, do
 not shorten a line to make it fit. Text in fenced blocks is verbatim — copy it character for
 character, including the en dashes (`–`), the middots (`·`), the euro signs and the diacritic in
 *Ilse Rüm*.
@@ -72,7 +72,7 @@ Remaining head values:
 | `og:url` and canonical | `https://turbine.fm/` |
 | `og:site_name` | `TURBINE` |
 | `og:locale` | `en_GB` |
-| `og:image` | `/og-turbine.jpg` — 1200 × 630, alt text in §13 |
+| `og:image` | `/images/og-card.jpg` — 1200 × 630, alt text in §13 |
 | `twitter:card` | `summary_large_image` |
 
 No other meta tags: no analytics, no site-verification tokens, no third-party embeds (brief §8).
@@ -216,7 +216,7 @@ strip is `aria-hidden="true"` and this sentence sits beside it, visually hidden,
 equivalent:
 
 ```
-Genres across the three nights: industrial techno, deep ambient, drone, modular live, hardware techno, field recording, tape loops, dub techno, neoclassical electronic, percussive ambient, generative and glassy IDM.
+Genres across the three nights: industrial techno, deep ambient, drone, modular live, hardware techno, field recording, tape loops, dub techno, neoclassical electronic, percussive ambient, generative and glassy IDM. Between them, two words for the room: concrete and steel, sodium light.
 ```
 
 Under `prefers-reduced-motion: reduce` the strip does not animate. The tags stay still and the strip
@@ -495,6 +495,7 @@ Daytime line, shown above the Saturday table:
 
 ```
 14:00 – 17:00 · Boiler Room · Modular synthesis workshop with Mara Teschke. Full Pass + Workshop only, 40 places.
+Workshop entry from 13:30 at the gate. The hall opens to everyone at 19:00.
 ```
 
 Table caption:
@@ -618,7 +619,7 @@ Line under the four entries:
 There is no parking on site and the streets around it are permit-only. The drop-off point is on the corner of ul. Kotłowa and ul. Węglowa, fifty metres from the gate.
 ```
 
-**Map caption**, below the static map image:
+**Map caption**, below the static map placeholder:
 
 ```
 Hall E, the gate on ul. Kotłowa, and the Elektrownia tram stop two streets north. The river runs along the southern edge of the site.
@@ -782,8 +783,9 @@ Eight things people write to us about.
 
 Eight items, in this order, all collapsed on load. Native `<details>` and `<summary>` satisfy both
 the keyboard requirement and the no-JavaScript requirement without script; if you build a custom
-accordion instead, it has to match that behaviour. Each item keeps the `id` given here — the footer
-links to three of them.
+accordion instead, it has to match that behaviour. The question text sits in an `h3` inside the
+interactive element, so that `h3` is the accessible name of the control and the outline in §15 holds.
+Each item keeps the `id` given here — the footer links to three of them.
 
 ### 1. `id="faq-times"`
 
@@ -838,7 +840,7 @@ What is the site like if I have access needs?
 Answer:
 
 ```
-Step-free from the gate to all three stages, a lift to the Boiler Room and to the Cooling Tower balcony, and a raised viewing platform in the Turbine Hall with its own bar and toilet. Accessible toilets on every level. A quiet room next to the gate stays open all night with the sound at conversation level, and ear defenders are free at the info desk. There is haze on all three stages and strobe in the Turbine Hall after midnight. Companion tickets for personal assistants are free: write to access@turbine.fm.
+Step-free from the gate to all three stages. A lift serves the Boiler Room and the Cooling Tower balcony. The Turbine Hall has a raised viewing platform with its own bar and toilet. Accessible toilets on every level. A quiet room next to the gate stays open all night with the sound at conversation level, and ear defenders are free at the info desk. There is haze on all three stages and strobe in the Turbine Hall after midnight. Companion tickets for personal assistants are free: write to access@turbine.fm.
 ```
 
 `access@turbine.fm` is a `mailto:` link.
@@ -912,7 +914,7 @@ Three emails a year
 **Pitch, one line:**
 
 ```
-Set times, the day tickets go on sale, and the lineup once it is locked. Nothing else.
+Changes to set times, and the dates for the fifth edition. Nothing else.
 ```
 
 **Field label** — visible, above the input, never a placeholder standing in for a label:
@@ -1072,122 +1074,145 @@ TURBINE is a fictional festival created as teaching material for a conference wo
 
 ## 13. Image manifest and alt text
 
-`design/assets/` holds the files below. Use them as supplied; do not source, generate or substitute
-images (brief §5). The wordmark is live text everywhere it appears and is never an image, so it has
-no entry here.
+`design/assets/` holds the files below, already generated and committed — the photographic ones by
+`scripts/generate-images.mjs` from the prompts in `design/assets/PROMPTS.md`, the two textures by
+`scripts/generate-textures.mjs`. Use them as supplied: do not source, substitute or commission
+imagery of your own (brief §5). The wordmark is live text everywhere it appears and is never an
+image, so it has no entry here.
 
-The alt text is also the shot brief: if a supplied file does not show what its alt text describes,
-that is a discrepancy to raise, not an alt text to rewrite.
+The alt text below is quoted from `design/assets/PROMPTS.md`, which generated these files and
+records the alt string next to the prompt that made each one. That file is the origin; this one is
+where the implementing agent reads it. If a supplied file does not show what its alt text describes,
+that is a discrepancy to raise against both, not an alt text to rewrite.
+
+Portrait alt never repeats the artist name. The card `h3` already carries it, and repeating it makes
+a screen reader announce the same name twice (`PROMPTS.md` §1.6). None of the portraits shows an
+identifiable face: the house style that generated them forbids one, so no alt here describes a
+person's expression, gaze or likeness.
 
 | Path | Where | Intrinsic size |
 |---|---|---|
-| `design/assets/hero-hall-e.webp` | Hero, full-bleed | 2400 × 1350 |
-| `design/assets/artists/<slug>.webp` | Lineup cards, twelve files | 800 × 1000 |
-| `design/assets/venue-boiler-room.webp` | Venue, left column | 1600 × 1200 |
-| `design/assets/map-powerhouse.svg` | Venue, static map placeholder | 1200 × 800 |
-| `design/assets/og-turbine.jpg` | Social card, published at `/og-turbine.jpg` | 1200 × 630 |
-| `design/assets/texture-grain.png` | Decorative overlay | tiles |
+| `design/assets/hero-hall.jpg` | Hero, full-bleed | 2400 × 1350 |
+| `design/assets/artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg` | Lineup cards, twelve files | 800 × 800 |
+| `design/assets/venue-exterior.jpg` | Venue, left column | 1600 × 1200 |
+| `design/assets/og-card.jpg` | Social card, published at `/images/og-card.jpg` | 1200 × 630 |
+| `design/assets/texture-grain.png` | Decorative overlay | 256 × 256, tiles |
 
-Artist slugs, in CANON §2 order: `kasimir-volt`, `lena-orbis`, `nullset`, `auric-drift`,
-`mara-teschke`, `substation-9`, `hiroko-vane`, `cold-cathode`, `ilse-rum`, `tape-decay`,
-`odalys-ferrer`, `vitrine`.
+`npm run build` copies these files into `public/images/`, so the page references each one as
+`/images/<filename>` (brief §5) — `/images/hero-hall.jpg`, `/images/artist-01-kasimir-volt.jpg`,
+`/images/og-card.jpg` and so on. No image is referenced from `design/assets/` at runtime.
+
+Filenames are numbered in CANON §2 order and carry the artist slug, diacritics stripped:
+`artist-01-kasimir-volt`, `artist-02-lena-orbis`, `artist-03-nullset`, `artist-04-auric-drift`,
+`artist-05-mara-teschke`, `artist-06-substation-9`, `artist-07-hiroko-vane`,
+`artist-08-cold-cathode`, `artist-09-ilse-rum`, `artist-10-tape-decay`,
+`artist-11-odalys-ferrer`, `artist-12-vitrine`. The stripping is in the filename only: `Ilse Rüm`
+keeps its umlaut in every piece of visible text. `design/assets/manifest.json`
+records the same list with the dimensions of each file.
+
+Two supplied files the design does not place: `venue-detail.jpg` and `texture-scanline.png`. They are
+in the directory because the image pack generated them; leave them out of the page rather than find a
+slot for them.
+
+The static map in the Venue section is not an image and has no file. `design/FIGMA-SPEC.md` §5.6
+specifies a bordered box on `color.bg.raised` standing in for it, because CANON §11 rules out a real
+map: every embeddable one is a third-party request. The box carries no visible label of its own — the
+mono label in the design file is a note to the designer, and AC-40 fails the word it uses if it
+reaches the page. The map caption in §8 sits below the box and is the only text there.
 
 ### Alt text
 
-`hero-hall-e.webp`:
+`hero-hall.jpg`:
 
 ```
-The empty floor of Hall E at night, four concrete turbine plinths lit from above by sodium lamps, steel roof trusses in the dark overhead.
+The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze.
 ```
 
-`artists/kasimir-volt.webp`:
+`artist-01-kasimir-volt.jpg`:
 
 ```
-KASIMIR VOLT behind a mixing desk, lit from one side in orange, both hands on the faders.
+A figure in hard silhouette against dense smoke, rimmed by a single orange lamp directly behind the head.
 ```
 
-`artists/lena-orbis.webp`:
+`artist-02-lena-orbis.jpg`:
 
 ```
-Lena Orbis at a table of hardware in a dark hall, eyes closed, one hand held over a filter.
+A standing figure almost entirely dissolved into cold cyan fog, low and small in an otherwise empty frame.
 ```
 
-`artists/nullset.webp`:
+`artist-03-nullset.jpg`:
 
 ```
-NULLSET seen from behind, facing a modular rack whose patch cables cross in front of a bank of green meters.
+A fine lattice of cyan and violet light lines drawn in empty black space, fraying toward the edges.
 ```
 
-`artists/auric-drift.webp`:
+`artist-04-auric-drift.jpg`:
 
 ```
-Auric Drift standing still at a table of pedals, the room behind him lost in haze.
+A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering from the left.
 ```
 
-`artists/mara-teschke.webp`:
+`artist-05-mara-teschke.jpg`:
 
 ```
-Mara Teschke leaning over a modular case, one patch cable between her teeth while she plugs in another.
+Two hands patching cables into a dark modular synthesiser panel under a single orange lamp.
 ```
 
-`artists/substation-9.webp`:
+`artist-06-substation-9.jpg`:
 
 ```
-SUBSTATION 9 crouched over three drum machines on flight cases, lit only by their displays.
+A figure seen from behind facing a wall of old electrical switchgear, edged by a single orange rim light.
 ```
 
-`artists/hiroko-vane.webp`:
+`artist-07-hiroko-vane.jpg`:
 
 ```
-Hiroko Vane in headphones, holding a field recorder at arm's length towards a concrete wall.
+A small silhouetted figure holding a pole aloft against a large, evenly glowing pale cyan window panel.
 ```
 
-`artists/cold-cathode.webp`:
+`artist-08-cold-cathode.jpg`:
 
 ```
-Cold Cathode at a mixer in blue light, one hand on a delay unit, smoke crossing the beam.
+A figure smeared and abstracted behind fogged wired safety glass, backlit by a cyan tube light.
 ```
 
-`artists/ilse-rum.webp`:
+`artist-09-ilse-rum.jpg`:
 
 ```
-Ilse Rüm at an upright piano with a tape machine on top of it and a microphone lowered to the strings.
+A single hand resting still on the keys of an old piano keyboard, lit warmly from one side, the rest in darkness.
 ```
 
-`artists/tape-decay.webp`:
+`artist-10-tape-decay.jpg`:
 
 ```
-TAPE DECAY between two reel-to-reel machines, a loop of tape running across the stage from one to the other.
+A loop of magnetic tape running diagonally between spools, its edge catching an orange highlight, one spool blurred by motion.
 ```
 
-`artists/odalys-ferrer.webp`:
+`artist-11-odalys-ferrer.jpg`:
 
 ```
-Odalys Ferrer seated among metal bowls and hand drums, a mallet resting on the rim of the largest.
+A long-exposure frame of a figure mid-strike, one arm smeared into an orange trail above the lit rims of metal percussion.
 ```
 
-`artists/vitrine.webp`:
+`artist-12-vitrine.jpg`:
 
 ```
-VITRINE lit from below through a sheet of glass, both hands flat on a control surface.
+The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction.
 ```
 
-`venue-boiler-room.webp`:
+`venue-exterior.jpg`:
 
 ```
-The Boiler Room: brick vaults two levels below ground, a low ceiling, and a row of iron furnace doors along one wall.
+A long brick power station with tall arched windows at blue hour, orange light leaking from inside, a chimney and cooling tower behind it.
 ```
 
-`map-powerhouse.svg`:
+The static map placeholder has no alt text, because it is a box and a label rather than an image.
+Its caption is in §8.
+
+`og-card.jpg` — used as `og:image:alt`:
 
 ```
-Map of the Powerhouse site: Hall E and its gate on ulica Kotłowa, the Elektrownia tram stop two streets north, and the river along the southern edge.
-```
-
-`og-turbine.jpg` — used as `og:image:alt`:
-
-```
-The TURBINE wordmark over the floor of Hall E, with the dates 12 to 14 June 2027 and the venue, The Powerhouse, Hall E, Kraków.
+The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness.
 ```
 
 `texture-grain.png` — decorative. Empty alt (`alt=""`) and hidden from assistive technology. It
@@ -1197,7 +1222,8 @@ carries no information and must never be given a description.
 
 ## 14. Interface microcopy and accessible names
 
-Every remaining user-facing string on the page. If you need one that is not here, stop and ask.
+Every remaining user-facing string on the page. If you need one that is not here, it is a question
+for us: record it and the reading you chose in `loop/PROGRESS.md` and carry on. Do not write copy.
 
 | Where | String | Notes |
 |---|---|---|
@@ -1213,12 +1239,20 @@ Every remaining user-facing string on the page. If you need one that is not here
 | Empty programme cell | `No set` | visually hidden; the visible `—` is `aria-hidden="true"` |
 | Ticket card 2 | `Most popular` | real text, not a background image |
 | Sold-out button | `Workshop sold out` | `aria-disabled="true"`, stays focusable |
-| FAQ items | questions in §10 | the `summary` text is the question, unchanged |
+| FAQ items | questions in §10 | the question sits in an `h3` inside the control, unchanged |
 | Newsletter messages | see §11 | announced politely, never as an alert dialog |
 | Footer landmark heading | `Site footer` | visually hidden `h2` |
 | Main landmark | `id="main"` on the element that starts at the hero | the skip link target |
+| Wordmark link target | `#top` | `id="top"` on the outermost page wrapper is optional; `#top` resolves to the top of the document under the HTML fragment rules with or without it |
 
 No string on the page says `Click here`, `Learn more`, `Read more` or `Submit`.
+
+**The one exception to the first line of this section.** `design/FIGMA-SPEC.md` §5.4 to §5.8 place an
+eyebrow above five of the `h2` headings — `Twelve artists`, `Three nights`, `The building`,
+`Three ways in` and `Before you come`. Those five belong to the design file and are the only visible
+strings in it that this document does not carry. Everywhere else the two disagree, this document wins:
+the spec describes layout, hierarchy and spacing, and its copy is stale. Do not build a string from
+the spec that is not here, and do not treat its absence as a defect in this file.
 
 ---
 

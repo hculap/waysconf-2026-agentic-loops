@@ -1,0 +1,285 @@
+---
+/**
+ * Footer — CANON §7 section 11.
+ *
+ * Brand lockup and four link columns, a rule, the socials beside the first two
+ * legal lines, and the fiction disclaimer last (FIGMA-SPEC §4.10, stacking from
+ * §6 and §7). Sixteen links, three socials, three legal lines: CONTENT.md §12
+ * fixes every label and every target, and none of them is a judgement call.
+ *
+ * `footer/brand` is the one element CONTENT.md §12 does not enumerate, because §12
+ * lists the copy the footer carries and the lockup is structure: FIGMA-SPEC §4.10
+ * makes it a real frame and §6 and §7 both size it. Neither string in it is new.
+ * The wordmark is CANON §1 and the tagline under it is the same line CONTENT.md §4
+ * already sets in the hero, so nothing here is copy this file decided to write.
+ *
+ * Five decisions are worth the reader's time.
+ *
+ * **No `text.muted` here, and none anywhere else either.** AC-28 names
+ * `[data-legal]` as the one place the token is permitted, and permission is not
+ * instruction. `Legal/Fine` is Inter 400 at 12px, so muted legal copy measures
+ * 4.07:1 on bg.base and 3.78:1 on bg.surface — normal text as far as axe is
+ * concerned, and a real `color-contrast` violation against AC-15, which is
+ * blocking and exempts nothing. Both blocks therefore take `text.secondary`
+ * (8.19:1 on this surface) and the built page renders `text.muted` nowhere.
+ * CONTRAST.md §5 Trap 1 and FIGMA-SPEC §4.10 settle it in the same direction.
+ * `data-legal` still marks the two blocks, because the gate reads the attribute
+ * to know where the ceiling applies rather than to find the colour.
+ *
+ * **The disclaimer is the third legal line and it is last.** CONTENT.md §12 says
+ * in as many words not to rewrite it, shorten it or move it above the legal
+ * lines, so it sits in its own full-width row below `footer/bottom`. AC-44
+ * matches it verbatim inside `[data-section="footer"]`, which is why it is a
+ * single string in the frontmatter and not a paragraph broken over source lines
+ * where a stray newline would become a space in one place and nothing in another.
+ *
+ * **No `<nav>` in here.** Four labelled lists of links look like navigation and
+ * are not allowed to say so: AC-09 admits exactly one navigation landmark and the
+ * header owns it. Each column is an `h3` followed by a plain `ul`, which is the
+ * same information to a screen reader and one landmark fewer to explain.
+ *
+ * **The bottom row reverses rather than reorders.** FIGMA-SPEC §7 puts the
+ * socials above the legal lines at 390 and §4.10 puts them to the right of them
+ * at 1440. The socials are first in the DOM, which is the mobile order, and
+ * `flex-row-reverse` swaps the two at desktop. Neither block depends on the other
+ * for meaning, so the sequence stays meaningful at both widths (WCAG 1.3.2), and
+ * the links keep their place in the tab order ahead of the static tail.
+ *
+ * **The icons are drawn, not imported.** FIGMA-SPEC §4.10 asks for three 24×24
+ * glyphs in `color/text/secondary` and does not draw them. These are simplified
+ * marks built from primitives and stroked in `currentColor`, so they inherit the
+ * link's colour and its focus state; they are not the platforms' own assets, and
+ * all three links point at the fictional domain rather than at a real account
+ * (CONTENT.md §12). Each is `aria-hidden`, and the accessible name comes from the
+ * link (CONTENT.md §14).
+ *
+ * One deliberate divergence, recorded rather than smuggled: FIGMA-SPEC §4.10
+ * gives the footer padding Y `space/24` (96) at 1440, where Section's shared
+ * rhythm is 64/96/128. The rhythm is set in Section and nowhere else, on purpose,
+ * so this file does not open a second source of it for a 32px difference at one
+ * width. If the 96 is load-bearing, it belongs in Section as a footer case.
+ */
+import Section from '../components/Section.astro'
+
+interface FooterLink {
+  label: string
+  href: string
+}
+
+interface FooterColumn {
+  heading: string
+  links: FooterLink[]
+}
+
+/** CONTENT.md §12, in order. The four `small print` targets are the fictional
+    domain and do not resolve; §12 prefers an honest dead external URL to an inert
+    `#`, which AC-49 rejects and which a keyboard user cannot tell from a bug. */
+const columns: FooterColumn[] = [
+  {
+    heading: 'Festival',
+    links: [
+      { label: 'Lineup', href: '#lineup' },
+      { label: 'Programme', href: '#programme' },
+      { label: 'Venue', href: '#venue' },
+      { label: 'Tickets', href: '#tickets' },
+    ],
+  },
+  {
+    heading: 'Visit',
+    links: [
+      { label: 'Getting here', href: '#venue' },
+      { label: 'Accessibility', href: '#faq-accessibility' },
+      { label: 'What to bring', href: '#faq-bring' },
+      { label: 'Lockers and cloakroom', href: '#faq-lockers' },
+    ],
+  },
+  {
+    heading: 'Contact',
+    links: [
+      { label: 'hello@turbine.fm', href: 'mailto:hello@turbine.fm' },
+      { label: 'access@turbine.fm', href: 'mailto:access@turbine.fm' },
+      { label: 'Three emails a year', href: '#newsletter' },
+      { label: 'Questions', href: '#faq' },
+    ],
+  },
+  {
+    heading: 'Small print',
+    links: [
+      { label: 'Terms of entry', href: 'https://turbine.fm/terms' },
+      { label: 'Privacy', href: 'https://turbine.fm/privacy' },
+      { label: 'House rules', href: 'https://turbine.fm/house-rules' },
+      { label: 'Credits', href: 'https://turbine.fm/credits' },
+    ],
+  },
+]
+
+interface Social extends FooterLink {
+  glyph: 'instagram' | 'bandcamp' | 'mastodon'
+}
+
+/** CONTENT.md §12. The label is the accessible name; the glyph carries none. */
+const socials: Social[] = [
+  { label: 'TURBINE on Instagram', href: 'https://turbine.fm/instagram', glyph: 'instagram' },
+  { label: 'TURBINE on Bandcamp', href: 'https://turbine.fm/bandcamp', glyph: 'bandcamp' },
+  { label: 'TURBINE on Mastodon', href: 'https://turbine.fm/mastodon', glyph: 'mastodon' },
+]
+
+/** CONTENT.md §12, middots and en dash intact. */
+const legalLines = [
+  '© 2027 TURBINE · The Powerhouse, Hall E · ul. Kotłowa 3 · 30-702 Kraków',
+  'Fourth edition · 12–14 June 2027 · 18+',
+]
+
+/** CANON §1, verbatim. AC-44 compares this string and nothing near it. */
+const disclaimer =
+  'TURBINE is a fictional festival created as teaching material for a conference workshop. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental.'
+
+/**
+ * Visually hidden, still announced. Deliberately not Tailwind's `sr-only`, which
+ * declares `margin: -1px`: 1px is not a step on the spacing scale and AC-32 reads
+ * it as an off-scale margin. Same clipping, no box value to fall off the scale.
+ * Absolute positioning also takes it out of the flex flow, so the container gap
+ * does not open 48px above the first visible row.
+ */
+const visuallyHidden = 'absolute h-px w-px overflow-hidden whitespace-nowrap [clip-path:inset(50%)]'
+
+/** Label/Eyebrow. The 133% leading is one of the five loose numbers FIGMA-SPEC §3
+    records; the five-step leading scale has no step there. */
+const columnHeading = 'text-xs font-semibold uppercase leading-[1.33] tracking-[0.06em] text-text-secondary'
+
+/**
+ * Body/Small on text.primary, with the 8px of vertical padding FIGMA-SPEC §4.10
+ * asks for. That padding is also what carries the target past AC-23: a 14px line
+ * box at 150% is 21px, and 8 + 21 + 8 is 37.
+ *
+ * The hover fade names `color` rather than using `transition-colors`, which would
+ * also transition `outline-color` and fade the focus ring in from the link's own
+ * text colour — an indicator that is briefly the wrong colour when AC-17 measures
+ * it.
+ */
+const columnLink =
+  'block py-2 text-sm leading-normal text-text-primary no-underline ' +
+  'transition-[color] duration-150 hover:text-accent-coolant'
+
+/** 12px of padding around a 24px glyph is 48 square, well clear of AC-23. */
+const socialLink =
+  'inline-flex items-center justify-center rounded-pill p-3 text-text-secondary ' +
+  'transition-[color] duration-150 hover:text-text-primary'
+
+/** Legal/Fine. text.secondary on bg.surface is 8.19:1; see the note above. */
+const legalLine = 'text-xs leading-normal text-text-secondary'
+---
+
+<Section name="footer" as="footer" tone="surface" class="border-t border-border-subtle">
+  <h2 class={visuallyHidden}>Site footer</h2>
+
+  {/* footer/top. Brand full width over a 2×2 of columns below 1440, then one row
+      of 384 + 4×180 with the 24 gutter, which is the 1200 container exactly. */}
+  <div class="grid grid-cols-2 gap-4 tablet:gap-6 desktop:grid-cols-[384px_repeat(4,minmax(0,1fr))]">
+    <div class="col-span-2 flex flex-col gap-3 desktop:col-span-1">
+      {/* Live text, never an image (CONTENT.md §13). Typed in capitals because the
+          wordmark is a proper noun in all caps (CANON §1); the letter spacing is
+          the style's, not the string's. */}
+      <p
+        class="font-display text-xl leading-tight font-bold tracking-wordmark text-text-primary"
+      >TURBINE</p>
+      <p class="text-sm leading-normal text-text-secondary">Three nights inside the machine</p>
+    </div>
+
+    {
+      columns.map((column) => (
+        <div class="flex flex-col gap-3">
+          <h3 class={columnHeading}>{column.heading}</h3>
+
+          <ul class="flex flex-col gap-3">
+            {column.links.map((link) => (
+              <li>
+                <a href={link.href} class={columnLink}>
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+
+  {/* footer/divider. A rule rather than a border on the next row, because the row
+      below it stacks and a border would follow the socials up the page. Both
+      utilities are load-bearing: preflight gives an <hr> height 0 and a 1px top
+      border in `currentColor`, which here would paint the rule in text.primary. */}
+  <hr class="h-px w-full border-0 bg-border-subtle" />
+
+  {/* footer/bottom. See the note above on why this reverses rather than reorders. */}
+  <div class="flex flex-col gap-4 desktop:flex-row-reverse desktop:items-center desktop:justify-between">
+    <ul class="flex items-center gap-2">
+      {
+        socials.map((social) => (
+          <li>
+            <a href={social.href} aria-label={social.label} class={socialLink}>
+              {social.glyph === 'instagram' && (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M16.8 7.2h.01" stroke-linecap="round" />
+                </svg>
+              )}
+
+              {social.glyph === 'bandcamp' && (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M3.5 17.5 10.5 6.5h10l-7 11z" />
+                </svg>
+              )}
+
+              {social.glyph === 'mastodon' && (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M12 3c4.4 0 7 2.1 7 5.3V13c0 2.9-2.1 4.7-5 4.7h-1l.3 3.3-1.3-1-1.3 1 .3-3.3h-1c-2.9 0-5-1.8-5-4.7V8.3C5 5.1 7.6 3 12 3Z" />
+                  <path d="M8.7 13V9.9c0-1.5 2-2 2.7-.7l.6 1.1.6-1.1c.7-1.3 2.7-.8 2.7.7V13" />
+                </svg>
+              )}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    {/* AC-28's ceiling. The copy inside it is text.secondary all the same. */}
+    <div data-legal class="flex flex-col gap-1">
+      {legalLines.map((line) => <p class={legalLine}>{line}</p>)}
+    </div>
+  </div>
+
+  {/* footer/disclaimer. Last, full width, and not a word of it rewritten. */}
+  <p data-legal class={legalLine}>{disclaimer}</p>
+</Section>

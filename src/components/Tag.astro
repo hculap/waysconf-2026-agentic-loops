@@ -27,7 +27,13 @@ interface Props {
   class?: string
 }
 
-const { tone = 'coolant', variant = 'plain', as: Tag = 'span', class: className } = Astro.props
+/** See Section.astro: a Props interface with an `as` member needs this annotation. */
+const {
+  tone = 'coolant',
+  variant = 'plain',
+  as: Wrapper = 'span',
+  class: className,
+}: Props = Astro.props
 
 const base = 'inline-flex items-center font-mono text-xs font-bold uppercase tracking-[0.06em]'
 
@@ -57,4 +63,4 @@ const variants = {
 }
 ---
 
-<Tag class:list={[base, variants[variant], className]}><slot /></Tag>
+<Wrapper class:list={[base, variants[variant], className]}><slot /></Wrapper>

@@ -20,7 +20,7 @@
   --color-border-strong: #3D434E; /* Focus ring base, dividers. 1.98:1 on bg.base: usable as an offset or underlay, never as the visible focus indicator on its own. See CONTRAST.md. */
   --color-text-primary: #F2F4F7; /* Headings, body on dark. */
   --color-text-secondary: #A7AEBB; /* Supporting copy. The correct choice wherever a muted grey is wanted. */
-  --color-text-muted: #6B7280; /* Trap. Legal and footer text only, never body copy. 4.07:1 on bg.base, under the 4.5:1 normal-text bar. CANON section 8. */
+  --color-text-muted: #6B7280; /* Trap. CANON section 8. 4.07:1 on bg.base and 3.78:1 on bg.surface, both under the 4.5:1 normal-text bar, so even CANON's one permitted use — legal and footer text, set at 12px — would be a real axe failure. The built page therefore renders this token nowhere and sets the footer legal block in text.secondary; it stays in the palette because it is the colour a model reaches for, and reaching for it has to fail. See CONTRAST.md section 5, Trap 1. */
   --color-text-on-accent: var(--color-bg-base); /* Alias of bg.base. CANON section 4 fixes dark ink, not white, as the text colour on accent.sodium and on every other accent or state fill. */
   --color-accent-sodium: #FF6A1A; /* Primary accent, sodium lamp orange, CTAs. Pair with text.on-accent, never with white. */
   --color-accent-coolant: #2FE6D6; /* Secondary accent: links, active tab. */
@@ -82,7 +82,7 @@
   --breakpoint-desktop: 1440px;
 
   /* shadow */
-  --shadow-sm: [object Object]; /* Resting cards and the sticky nav once it has scrolled. */
-  --shadow-md: [object Object]; /* Hovered lineup cards, the open FAQ panel, the mobile nav sheet. */
-  --shadow-lg: [object Object]; /* The highlighted Full Pass ticket card, lifted clear of the grid. */
+  --shadow-sm: 0px 1px 2px 0px #00000059; /* Resting cards and the sticky nav once it has scrolled. */
+  --shadow-md: 0px 8px 24px -4px #00000073; /* Hovered lineup cards, the open FAQ panel, the mobile nav sheet. */
+  --shadow-lg: 0px 24px 48px -12px #0000008C; /* The highlighted Full Pass ticket card, lifted clear of the grid. */
 }

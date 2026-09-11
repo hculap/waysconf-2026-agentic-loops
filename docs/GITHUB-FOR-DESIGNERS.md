@@ -1,6 +1,6 @@
 # GitHub for designers
 
-Why a design workshop has a GitHub account in the prerequisites, what the eight words mean, and the
+Why a design workshop has a GitHub account in the prerequisites, what the nine words mean, and the
 exact clicks for the three things you have to do on the day.
 
 You can finish this workshop without typing a single `git` command. That is a deliberate property of
@@ -36,19 +36,19 @@ shared one: your deploy has to read from something you control.
 
 ## 2. The minimum model
 
-Eight words. You will use five of them.
+Nine words. You will use five of them, and the last column says which five.
 
-| GitHub calls it | The nearest thing you already have | What it is here |
-|---|---|---|
-| **Repository** | the project file, plus its entire history and settings | one folder, tracked: `src/`, `checks/`, `design/`, `brief/`, everything |
-| **Commit** | a version you named yourself | a snapshot of every file plus a one-line message |
-| **Branch** | duplicating a page to try something without touching the original | `main` is yours; `step-0` … `step-5` are the workshop's checkpoints |
-| **`main`** | the master artboard everything is compared against | the branch your Netlify site publishes from |
-| **Push** | pressing Share, and meaning it | sending your commits from your machine up to GitHub |
-| **Template** | duplicating a starter file | how you get your own copy of this repository |
-| **Fork** | — | a copy that stays attached to the original, for proposing changes back |
-| **Clone** | downloading the file to work on it locally | putting a repository on a machine; Codespaces does this for you |
-| **Pull request** | a share link with a comment thread, attached to a proposed change | optional today |
+| GitHub calls it | The nearest thing you already have | What it is here | On the day |
+|---|---|---|---|
+| **Repository** | the project file, plus its entire history and settings | one folder, tracked: `src/`, `checks/`, `design/`, `brief/`, everything | **yes** |
+| **Commit** | a version you named yourself | a snapshot of every file plus a one-line message | **yes** |
+| **Branch** | duplicating a page to try something without touching the original | `main` is yours; `step-0` … `step-5` are the workshop's checkpoints | **yes** |
+| **`main`** | the master artboard everything is compared against | the branch your Netlify site publishes from | **yes** |
+| **Template** | duplicating a starter file | how you get your own copy of this repository | **yes** |
+| **Push** | pressing Share, and meaning it | sending your commits from your machine up to GitHub | only if you want the tick in §9 |
+| **Fork** | — | a copy that stays attached to the original, for proposing changes back | no — §4 says why not |
+| **Clone** | downloading the file to work on it locally | putting a repository on a machine; Codespaces does this for you | no, it happens for you |
+| **Pull request** | a share link with a comment thread, attached to a proposed change | a proposed change, with a comment thread | no |
 
 Two clarifications that save arguments later.
 
@@ -153,8 +153,8 @@ and a ninety-minute session on the two-core machine this repository asks for is 
 it. Delete the Codespace when you are done if you would rather not think about it.
 
 **You need no terminal knowledge to get this far.** If the terminal panel is unfamiliar, read
-[`TERMINAL-IN-TEN-MINUTES.md`](TERMINAL-IN-TEN-MINUTES.md) — it is exactly the five commands this
-workshop uses.
+[`TERMINAL-IN-TEN-MINUTES.md`](TERMINAL-IN-TEN-MINUTES.md) — the five things you need to know, and
+every command this workshop asks you to type.
 
 ---
 
@@ -170,17 +170,28 @@ one that reliably works. From the terminal in your Codespace:
 ```
 npm run build
 npx netlify login
-npx netlify deploy --prod --dir=dist
+npm run deploy
 ```
+
+`npm run deploy` is this project's name for `netlify deploy --prod --dir=dist`, reached through `npx`,
+which is why nothing has to be installed first. It is the name the rest of this repository uses for the
+deploy as well, so you will not meet a second spelling of it.
 
 `netlify login` prints a URL. Open it, authorise, come back to the terminal — it is waiting. Then
 `deploy` asks whether to create a new site or use an existing one; create a new one. It prints a
 public URL, and that URL is the thing you came here for.
 
 If the browser sign-in is awkward, there is a token route: Netlify → your avatar → **User settings** →
-**Applications** → **Personal access tokens** → **New access token**, then in the terminal
-`export NETLIFY_AUTH_TOKEN=` followed by the token. It is a secret; `.env` is already in
-`.gitignore`, and a token never belongs in a commit.
+**Applications** → **Personal access tokens** → **New access token**, then set it in the terminal. The
+line depends on which shell you are in:
+
+```
+export NETLIFY_AUTH_TOKEN=your-token-here          Codespace, macOS, Git Bash, WSL
+$env:NETLIFY_AUTH_TOKEN = "your-token-here"        PowerShell on Windows
+```
+
+The `$` in the PowerShell line is part of the variable's name and is typed; it is not a prompt. The
+token is a secret; `.env` is already in `.gitignore`, and a token never belongs in a commit.
 
 ### 7.2 Afterwards: connect the repository, deploy on every push
 
@@ -255,7 +266,9 @@ You do not have to do anything with this. Push and look at the tick.
 
 **"Use this template" is not on the page.** You are looking at a fork of the repository, or at a
 different repository. Check that the address is exactly
-`github.com/hculap/waysconf-2026-agentic-loops`.
+`github.com/hculap/waysconf-2026-agentic-loops`. If the address is right and the button still is not
+there, the repository's own **Template repository** switch is off. That one is not fixable from your
+side: say so in the room, and work in a Codespace on the workshop repository until it is.
 
 **`git checkout step-3` says the branch does not exist.** You did not tick "Include all branches" in
 §5. [`../CHECKPOINTS.md`](../CHECKPOINTS.md) §7 fixes it in three commands, and the browser route in
@@ -282,7 +295,7 @@ Use this template → Create a new repository → tick "Include all branches"
 Code → Codespaces → Create codespace on main
 npm run check
 ... work ...
-npm run build && npx netlify deploy --prod --dir=dist
+npx netlify login && npm run build && npm run deploy
 ```
 
 Everything else on this page is context for those five lines.

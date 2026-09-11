@@ -148,5 +148,5 @@ that measured it is in this repository.
 
 ## Licence
 
-Code MIT, design and copy CC BY 4.0. See [`LICENSE`](LICENSE).
+Code MIT, design and copy CC BY 4.0, the three typefaces OFL 1.1. See [`LICENSE`](LICENSE).
 TURBINE is fictional; artists, copy and imagery are invented.

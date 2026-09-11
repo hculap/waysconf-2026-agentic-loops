@@ -1,0 +1,225 @@
+---
+/**
+ * Newsletter — CANON §7 section 10.
+ *
+ * A form with nothing behind it. BRIEF §6 is explicit: it submits nowhere and
+ * confirms inline, and the fixture note under it says so in as many words rather
+ * than letting the page imply a mailing list that does not exist.
+ *
+ * Four decisions are worth the reader's time.
+ *
+ * The consent box ships unchecked and stays unchecked. Nothing here toggles it,
+ * on load or afterwards, which is what AC-24 reads twice — once at load and once
+ * two seconds later, because a pre-tick that arrives late is still a pre-tick.
+ * The submit button says what CONTENT §11 says it says, and the copy next to the
+ * box states the unsubscribe route before the address is given, not after.
+ *
+ * The label is a real <label for>, visible, above the field. The placeholder is
+ * an example address and never stands in for the label: it disappears the moment
+ * somebody types, and a hint that vanishes when it is needed is not a label.
+ *
+ * Native validation is switched off from the script, not from the markup. With
+ * scripting off, `required` and `type="email"` are the only checks there are and
+ * the browser's own messages are the only ones available; with scripting on, the
+ * four strings CONTENT §11 fixes replace them. Writing `novalidate` into the HTML
+ * would have removed the first path to get the second.
+ *
+ * The field sits on bg.base rather than the bg.surface FIGMA-SPEC §4.2 gives the
+ * Input component. The component is specified against a bg.base page, where a
+ * surface fill reads as one step up; this section is the one that uses the
+ * surface tone (§5.9), so the same one step is a step down. It also keeps the
+ * placeholder on the canonical text.secondary-on-bg.base pairing, 8.83:1.
+ *
+ * Both control boundaries are border.strong. FIGMA-SPEC §4.2 asks for
+ * border.subtle on the field and border.strong on the checkbox; neither clears
+ * the 3:1 of WCAG 1.4.11 (1.34:1 and 1.84:1 on bg.surface, CONTRAST.md §4), so
+ * the two are settled to the stronger of them and the affordance is carried by
+ * the always-visible label, the darker fill and a coolant focus ring at 11.67:1.
+ */
+import Button from '../components/Button.astro'
+import Section from '../components/Section.astro'
+
+/**
+ * The four messages from CONTENT §11, handed to the script through data
+ * attributes rather than typed into it. Same reason the lineup tabs carry
+ * `data-tab-status`: CONTENT stays the only file where a user-facing string is
+ * decided, and a script that never holds copy cannot drift from it.
+ */
+const messages = {
+  empty: 'Enter your email address.',
+  malformed: 'That does not look like an email address. Check it and try again.',
+  consent: 'Tick the box to confirm you want the email.',
+  success: 'You are on the list. We will write when there is something to say.',
+}
+
+/** Input/email from FIGMA-SPEC §4.2: 48 tall, 16 inline, radius sm, Body/Base. */
+const field =
+  'h-12 w-full rounded-sm border border-border-strong bg-bg-base px-4 text-base ' +
+  'text-text-primary placeholder:text-text-secondary aria-[invalid=true]:border-state-danger'
+
+/** Body/Small. The message is text and never colour alone, so the error reads the same in greyscale. */
+const errorText = 'text-sm leading-normal text-state-danger'
+
+/** Body/Small on bg.surface: 8.19:1. text.muted would be 3.78:1 and is a footer colour (AC-28). */
+const noteText = 'text-sm leading-normal text-text-secondary'
+---
+
+{/* FIGMA-SPEC §5.9: bg.surface, centred, container 560 at 1440 and 480 at 768.
+    Section owns the vertical rhythm and the heading block; the column below owns
+    the measure, because .container-turbine is capped at 1200 for every section
+    and narrowing it here would fight the one rule AC-33 checks. */}
+<Section
+  name="newsletter"
+  tone="surface"
+  heading="Three emails a year"
+  intro="Changes to set times, and the dates for the fifth edition. Nothing else."
+  containerClass="items-center text-center"
+>
+  <div
+    class="mx-auto flex w-full flex-col gap-6 text-left tablet:max-w-[480px] desktop:max-w-[560px]"
+  >
+    <form
+      class="flex flex-col gap-4"
+      data-newsletter
+      data-message-empty={messages.empty}
+      data-message-malformed={messages.malformed}
+      data-message-consent={messages.consent}
+      data-message-success={messages.success}
+    >
+      <div class="flex flex-col gap-2">
+        <label for="newsletter-email" class="text-sm font-medium leading-normal text-text-primary">
+          Email address
+        </label>
+
+        <input
+          id="newsletter-email"
+          class={field}
+          type="email"
+          name="email"
+          autocomplete="email"
+          placeholder="name@example.com"
+          required
+          aria-describedby="newsletter-email-message"
+          data-newsletter-email
+        />
+
+        {/* Empty and in the tree from the first paint. A live region inserted at the
+            moment it has something to say is announced unreliably, and one that is
+            display:none until then is not announced at all. Holding the row costs
+            8px of gap and buys no layout shift when a message arrives. */}
+        <p id="newsletter-email-message" class={errorText} role="status" data-newsletter-message="email"></p>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        {/* The input sits inside the label, so the whole row is the hit target and the
+            association needs no id to survive (AC-23, AC-24). */}
+        <label class="flex cursor-pointer items-start gap-3">
+          <span class="relative flex-none">
+            <input
+              id="newsletter-consent"
+              class="peer block h-6 w-6 appearance-none rounded-sm border border-border-strong bg-bg-base checked:border-accent-coolant checked:bg-accent-coolant aria-[invalid=true]:border-state-danger"
+              type="checkbox"
+              name="consent"
+              required
+              aria-describedby="newsletter-consent-message"
+              data-newsletter-consent
+            />
+
+            {/* currentColor resolves to text.on-accent — near-black on coolant, 12.57:1. */}
+            <svg
+              class="pointer-events-none absolute inset-0 hidden h-6 w-6 text-text-on-accent peer-checked:block"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M6 12.5 10 16.5 18 7.5"></path>
+            </svg>
+          </span>
+
+          <span class="text-sm leading-normal text-text-secondary">
+            Yes, send me TURBINE festival email. Every message has an unsubscribe link.
+          </span>
+        </label>
+
+        <p id="newsletter-consent-message" class={errorText} role="status" data-newsletter-message="consent"></p>
+      </div>
+
+      <Button type="submit" variant="primary" size="md" fullWidth>Sign up</Button>
+
+      {/* Success belongs to the form rather than to either field, so it sits under
+          the button. Polite, and never an alert dialog (CONTENT §14). */}
+      <p class="text-sm leading-normal text-state-success" role="status" data-newsletter-status></p>
+    </form>
+
+    <div class="flex flex-col gap-2">
+      <p class={noteText}>We do not sell the list and we do not share it.</p>
+      <p class={noteText}>
+        This page is a teaching fixture. The form sends nothing and stores nothing.
+      </p>
+    </div>
+  </div>
+</Section>
+
+<script>
+  /**
+   * Newsletter form — validation and confirmation, added to a form that already
+   * works without it.
+   *
+   * The enhancement is the copy, not the checking. `required` and `type="email"`
+   * do the checking either way; this module reads the validity state the browser
+   * has already computed and renders the CONTENT §11 wording for it, which is why
+   * `noValidate` is set here and not in the markup — switching the native path off
+   * is only safe once there is something to replace it.
+   *
+   * Nothing in here touches `checked`. AC-24 reads the consent box on load and
+   * again two seconds later, and a script that never writes to it cannot fail
+   * that twice.
+   */
+  const form = document.querySelector<HTMLFormElement>('[data-newsletter]')
+  const email = form?.querySelector<HTMLInputElement>('[data-newsletter-email]') ?? null
+  const consent = form?.querySelector<HTMLInputElement>('[data-newsletter-consent]') ?? null
+  const emailMessage = form?.querySelector<HTMLElement>('[data-newsletter-message="email"]') ?? null
+  const consentMessage =
+    form?.querySelector<HTMLElement>('[data-newsletter-message="consent"]') ?? null
+  const status = form?.querySelector<HTMLElement>('[data-newsletter-status]') ?? null
+
+  if (form && email && consent && emailMessage && consentMessage && status) {
+    form.noValidate = true
+
+    const setMessage = (region: HTMLElement, control: HTMLInputElement, text: string): void => {
+      region.textContent = text
+      if (text) control.setAttribute('aria-invalid', 'true')
+      else control.removeAttribute('aria-invalid')
+    }
+
+    /** Empty before malformed: an untouched field is not a typo and should not be told it is. */
+    const emailProblem = (): string => {
+      if (email.validity.valueMissing) return form.dataset.messageEmpty ?? ''
+      if (email.validity.typeMismatch) return form.dataset.messageMalformed ?? ''
+      return ''
+    }
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault()
+
+      const badEmail = emailProblem()
+      const badConsent = consent.checked ? '' : (form.dataset.messageConsent ?? '')
+
+      setMessage(emailMessage, email, badEmail)
+      setMessage(consentMessage, consent, badConsent)
+      status.textContent = badEmail || badConsent ? '' : (form.dataset.messageSuccess ?? '')
+
+      /* Focus follows the first thing that needs fixing. A message nobody is sent to
+         is a message read once and then lost. */
+      if (badEmail) email.focus()
+      else if (badConsent) consent.focus()
+    })
+
+    email.addEventListener('input', () => setMessage(emailMessage, email, ''))
+    consent.addEventListener('change', () => setMessage(consentMessage, consent, ''))
+  }
+</script>

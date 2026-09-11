@@ -41,14 +41,22 @@ The files in `public/fonts/` are Latin-subset `woff2` copies fetched from Google
 [`scripts/fetch-fonts.mjs`](scripts/fetch-fonts.mjs), which also generates the `@font-face` sheet
 beside them. They are self-hosted rather than linked, for a reason that is specific to this project:
 a webfont that arrives late, or does not arrive at all on conference wifi, changes every glyph on the
-page and turns the pixel-diff gate into noise. If you lift `public/fonts/` into a project of your own,
-take each family's OFL text with it — each project publishes one.
+page and turns the pixel-diff gate into noise.
+
+The same script fetches each family's OFL text and writes it beside the fonts, so this repository meets
+that second condition rather than describing it: `public/fonts/OFL-SpaceGrotesk.txt`, `OFL-Inter.txt`
+and `OFL-JetBrainsMono.txt`, upstream files kept verbatim, with each copyright line repeated in the
+header of `fonts.css`. The two other folders the same `woff2` files are copied into — `guideline/fonts/`
+and `deck/public/fonts/` — carry the three texts as well, because both are meant to be published on
+their own. If you lift any of those folders into a project of your own, the OFL files are already in it;
+keep them there.
 
 ---
 
 ## 3. Imagery
 
-Every image under `design/assets/` was generated with Google's **Nano Banana Pro**, model id
+Sixteen of the eighteen files under `design/assets/` — the hero, the two venue frames, the twelve
+artist portraits and the social card — were generated with Google's **Nano Banana Pro**, model id
 **`gemini-3-pro-image`**, through the Gemini API. There are no stock photographs in this repository
 and no image whose origin is unrecorded.
 
@@ -61,12 +69,22 @@ The images depict no real person, venue or event. The building does not exist, t
 exist, and the twelve artists do not exist. Prompts explicitly exclude identifiable faces and any
 likeness of a real person.
 
-The full record is [`design/assets/PROMPTS.md`](design/assets/PROMPTS.md). For each of the eighteen
-images it gives the filename, the exact output dimensions, the generation parameters, the complete
-prompt as sent, and the alt text the page ships with. §9 of that file is the provenance statement this
-section restates; §1.3 is the detail on SynthID. Generation runs append to
-`evidence/asset-generation.log`: timestamp, model id, image id, prompt hash, output tier and reported
-cost.
+The other two files are not model output at all. `texture-grain.png` and `texture-scanline.png` are
+256 × 256 tiles written by [`scripts/generate-textures.mjs`](scripts/generate-textures.mjs) — a seeded
+PRNG and a raised-cosine wave, deterministic and byte-identical on every machine. They were originally
+specified as prompts alongside the rest; the model refused both on a recitation filter, and arithmetic
+turned out to be the better tool for fine noise and thin lines. No model made them, so there is no
+SynthID on them to find. `design/assets/manifest.json` records both as `"present": false` for that
+reason, and `PROMPTS.md` §5 is the whole episode.
+
+The full record is [`design/assets/PROMPTS.md`](design/assets/PROMPTS.md). For each of the sixteen
+generated images it gives the filename, the exact output dimensions, the generation parameters, the
+complete prompt as sent, and the alt text the page ships with. §9 of that file is the provenance
+statement this section restates; §1.3 is the detail on SynthID. Each returned image appends one row to
+`evidence/asset-generation.log` — timestamp, model id, image id, a 16-character prefix of the prompt
+hash, output tier, output dimensions, bytes, elapsed time and reported cost — which is sixteen rows for
+the set as it stands. The log ships with the repository — `.gitignore` makes an exception for it — so a
+clone has the record and not only the claim.
 
 ---
 
@@ -156,9 +174,10 @@ endorsed or been involved in this workshop.
 
 ## 7. Licences and authorship
 
-This repository carries two licences, because it contains two different kinds of thing: the code is
-MIT and the design, copy and imagery are CC BY 4.0. [`LICENSE`](LICENSE) gives the boundary between
-them and the full terms.
+This repository carries three licences, because it contains three different kinds of thing: the code is
+MIT, the design, copy and imagery are CC BY 4.0, and the three typefaces stay under the SIL Open Font
+License 1.1 they arrived with. [`LICENSE`](LICENSE) gives the boundaries between them and the full
+terms.
 
 Written by Szymon Paluch for **WaysConf 2026**, Kraków, 16 September 2026 — the masterclass *Build an
 AI that checks and fixes its own work*.

@@ -28,7 +28,8 @@ agree with the generator is the exact failure this workshop exists to demonstrat
 
 - **Astro 5**, static output. No React, Vue, Svelte or any UI framework.
 - **Tailwind CSS 4**, configured through `@tailwindcss/vite`. Theme values come from
-  `design/tokens/tokens.css`, which is generated from `design/tokens/tokens.json`.
+  `design/tokens/tokens.css`, which is hand-maintained alongside `design/tokens/tokens.json`, and
+  from `src/styles/theme.generated.css`, which `node scripts/build-theme.mjs` writes from it.
 - Plain TypeScript for the small amount of client-side behaviour that is needed (lineup tabs, FAQ
   accordion, mobile nav). Progressive enhancement: the page must be readable and complete with
   JavaScript disabled.
@@ -68,7 +69,8 @@ checks/                     the verifier — READ ONLY for you
 
 The palette is deliberately hostile to careless colour choices. `color.text.muted` is a legal-footer
 colour and fails contrast as body text. White on the sodium accent fails; near-black on sodium passes.
-See `design/tokens/CONTRAST.md` for the measured ratios and use pairings that are marked PASS.
+See `design/tokens/CONTRAST.md` for the measured ratios and use pairings that are marked `PASS-AA`.
+`PASS-AA-LARGE` is not a pass: it is an exemption for type at 24 px or above, or 18.66 px bold.
 
 Every interactive element needs a visible focus indicator. The lineup tabs and the FAQ accordion must be
 fully keyboard operable with correct ARIA. The ticker and any transition longer than 200 ms must respect

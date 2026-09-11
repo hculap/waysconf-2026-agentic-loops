@@ -79,5 +79,4 @@ Everything else, handle quietly.
 
 ## What "done" looks like
 
-They run `npm run check`, it prints green, they run `npx netlify deploy --prod --dir=dist`,
-and they get a URL. That URL goes on the shared board. That is the finish line.
+They run `npm run check`, it prints green, they run `npm run deploy`, and they get a URL. That URL goes on the shared board. That is the finish line.

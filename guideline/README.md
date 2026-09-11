@@ -11,9 +11,9 @@ get asked.
 npx netlify deploy --prod --dir=guideline
 ```
 
-That is the entire deploy. The folder is static: one HTML file, one stylesheet copied out of the design
-system, and three font files. No build step, no framework, no bundler. Dragging the folder onto
-<https://app.netlify.com/drop> does the same thing without a terminal.
+That is the entire deploy. The folder is static: one HTML file, two stylesheets, three font files and the
+three licence texts that travel with them. No build step, no framework, no bundler. Dragging the folder
+onto <https://app.netlify.com/drop> does the same thing without a terminal.
 
 The published address used in `README.md` is `https://turbine-workshop.netlify.app`.
 
@@ -25,6 +25,7 @@ The published address used in `README.md` is `https://turbine-workshop.netlify.a
 | `tokens.css` | `design/tokens/tokens.css`, copied verbatim. Never edited here — regenerate it upstream. |
 | `fonts/*.woff2` | The same three faces the TURBINE site self-hosts, copied from `public/fonts/`. |
 | `fonts/fonts.css` | `@font-face` for those three, with relative paths so the folder works from `file://`, from a Netlify drop and from a subdirectory. |
+| `fonts/OFL-*.txt` | The SIL Open Font License for each family. Required to ship alongside the woff2 files; do not remove them. |
 
 ## Constraints this page holds itself to
 
@@ -34,10 +35,13 @@ The published address used in `README.md` is `https://turbine-workshop.netlify.a
 - **Works with JavaScript off.** The operating-system tabs fall back to three readable blocks, the copy
   buttons are hidden rather than broken, and every command is still on the page.
 - **WCAG 2.2 AA**, the same bar the workshop project is held to: one `h1`, landmark regions, a skip link
-  as the first focusable element, visible focus on everything focusable, and no colour pairing below
-  4.5:1. `color.text.muted` (`#6B7280`) is the one token from `tokens.css` that never appears — it
-  measures 4.07:1 on this background, which is exactly why the festival palette contains it.
-- **Responsive from 390px.** No horizontal scroll at any width; code blocks scroll inside their own box.
+  as the first focusable element, visible focus on everything focusable, no colour pairing below
+  4.5:1, and no content that moves on its own. `color.text.muted` (`#6B7280`) is the one token this
+  page deliberately refuses: it measures 4.07:1 on this background, which is exactly why the festival
+  palette contains it. Several other tokens simply have no use on a setup page.
+- **Responsive from 390px.** No horizontal scroll at any width; long commands wrap with a hanging
+  indent rather than scrolling sideways. The one element that does scroll horizontally is the header
+  nav, which is a single row of links with a fade at both ends.
 
 ## Updating it
 

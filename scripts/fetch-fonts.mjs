@@ -15,6 +15,11 @@
  *     of thirty laptops on a captive portal will produce those.
  *
  * Only the `latin` subset is kept. The page is English-only by CANON section 11.
+ *
+ * All three families are under the SIL Open Font License 1.1, which requires the
+ * copyright notice and the licence text to travel with the font files. This script
+ * therefore fetches each family's OFL text from the same project the woff2 comes
+ * from, writes it beside the fonts, and repeats the copyright line in the sheet.
  */
 
 import { mkdir, writeFile } from 'node:fs/promises'
@@ -30,19 +35,52 @@ const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 
 const FAMILIES = [
-  { family: 'Space Grotesk', query: 'Space+Grotesk:wght@500;700', slug: 'space-grotesk' },
-  { family: 'Inter', query: 'Inter:wght@400;500;600', slug: 'inter' },
-  { family: 'JetBrains Mono', query: 'JetBrains+Mono:wght@400;700', slug: 'jetbrains-mono' },
+  {
+    family: 'Space Grotesk',
+    query: 'Space+Grotesk:wght@500;700',
+    slug: 'space-grotesk',
+    ofl: { dir: 'spacegrotesk', file: 'OFL-SpaceGrotesk.txt' },
+  },
+  {
+    family: 'Inter',
+    query: 'Inter:wght@400;500;600',
+    slug: 'inter',
+    ofl: { dir: 'inter', file: 'OFL-Inter.txt' },
+  },
+  {
+    family: 'JetBrains Mono',
+    query: 'JetBrains+Mono:wght@400;700',
+    slug: 'jetbrains-mono',
+    ofl: { dir: 'jetbrainsmono', file: 'OFL-JetBrainsMono.txt' },
+  },
 ]
+
+/** Google publishes the licence for every family it serves, in its own repository. */
+const OFL_BASE = 'https://raw.githubusercontent.com/google/fonts/main/ofl'
 
 /** The latin subset is the block whose unicode-range covers basic Latin. */
 const LATIN_MARKER = 'U+0000-00FF'
 
-async function main() {
-  await mkdir(OUT_DIR, { recursive: true })
-  /** sha256 prefix -> filename, so identical variable-font payloads are written once. */
-  const written = new Map()
-  const sheet = [
+/**
+ * Fetch each family's OFL text, write it beside the fonts, and return the copyright
+ * line out of each one. Verbatim: the upstream file is the notice, not a summary of it.
+ */
+async function fetchLicences() {
+  const notices = []
+  for (const { family, ofl } of FAMILIES) {
+    const text = await (await fetch(`${OFL_BASE}/${ofl.dir}/OFL.txt`)).text()
+    const copyright = text.split('\n').find((line) => line.startsWith('Copyright'))?.trim()
+    if (!copyright) throw new Error(`no copyright line in the OFL text for ${family}`)
+    await writeFile(join(OUT_DIR, ofl.file), text)
+    console.log(`  ${ofl.file.padEnd(30)} ${(text.length / 1024).toFixed(0)} KB`)
+    notices.push({ family, file: ofl.file, copyright })
+  }
+  return notices
+}
+
+/** Exported so the sheet header can be checked without re-downloading the fonts. */
+export function buildSheetHeader(notices) {
+  const lines = [
     '/* ==========================================================================',
     '   GENERATED FILE — do not edit.',
     '',
@@ -50,9 +88,25 @@ async function main() {
     '   Source:    Google Fonts, latin subset only, woff2',
     '',
     '   Self-hosted on purpose. See the header of the generator for why.',
-    '   ========================================================================== */',
     '',
+    '   All three families are under the SIL Open Font License 1.1, which requires',
+    '   the copyright notice and the licence to travel with the files. Both do:',
   ]
+  for (const { family, file, copyright } of notices) {
+    lines.push('')
+    lines.push(`   ${family} — full licence text in ${file}`)
+    lines.push(`   ${copyright}`)
+  }
+  lines.push('   ========================================================================== */')
+  lines.push('')
+  return lines
+}
+
+async function main() {
+  await mkdir(OUT_DIR, { recursive: true })
+  /** sha256 prefix -> filename, so identical variable-font payloads are written once. */
+  const written = new Map()
+  const sheet = buildSheetHeader(await fetchLicences())
 
   for (const { family, query, slug } of FAMILIES) {
     const cssUrl = `https://fonts.googleapis.com/css2?family=${query}&display=swap`
@@ -105,7 +159,10 @@ async function main() {
   console.log(`\nwrote public/fonts/fonts.css`)
 }
 
-main().catch((err) => {
-  console.error(err)
-  process.exit(1)
-})
+// Importable for the header check; still a script when it is the thing being run.
+if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((err) => {
+    console.error(err)
+    process.exit(1)
+  })
+}

@@ -17,7 +17,7 @@ exists is the cheapest correction in the whole loop.
 
 Two ways to run it, and they teach the same idea:
 
-- `bash loop/ralph.sh` — the minimal version. A bash `while`, a prompt file, a progress file, a hard
+- `bash loop/ralph.sh` — the minimal version. A bash `for` loop, a prompt file, a progress file, a hard
   iteration cap, and `npm run check` as the exit condition. Twelve lines you can read in one sitting.
 - `/loop` — the built-in skill, when you want Claude Code to pace itself between iterations.
 

@@ -13,19 +13,22 @@ import { Gate, BREAKPOINTS } from '../lib/gate'
  * expose — [data-section] and #main — and from standard HTML semantics. No class
  * names, no copy matching: those belong to other gates and would make this one
  * fail for reasons it does not own.
+ *
+ * Two rules this file holds itself to, both learned the hard way:
+ *
+ *   1. Nothing passes by default. Every criterion records that it ran; anything that
+ *      did not run is reported as a failure at flush time. `gate.flush()` writes
+ *      `status: "pass"` whenever the failure list is empty, and checks/run.mjs folds
+ *      that JSON in without reading Playwright's exit code — so a spec that died at
+ *      `page.goto` used to come back green for a page it never loaded.
+ *   2. A check asks for what the criterion says, not for something adjacent that is
+ *      easier to write. A false failure costs the loop three repair attempts and then
+ *      stops it; it is not the safe side to err on.
  */
 
-const gate = new Gate('structure', 'Structure', [
-  'AC-06',
-  'AC-07',
-  'AC-08',
-  'AC-09',
-  'AC-10',
-  'AC-11',
-  'AC-12',
-  'AC-13',
-  'AC-14',
-])
+const CRITERIA = ['AC-06', 'AC-07', 'AC-08', 'AC-09', 'AC-10', 'AC-11', 'AC-12', 'AC-13', 'AC-14'] as const
+
+const gate = new Gate('structure', 'Structure', [...CRITERIA])
 
 /**
  * CANON §7 numbers eleven page sections, but the first of them is the skip link,
@@ -39,6 +42,10 @@ const gate = new Gate('structure', 'Structure', [
  * once each, in this order, and allow an optional data-section="skip-link" in
  * front of them. Hard-coding 11 and reading [data-section] would fail every
  * correct page forever, which is the one failure mode a verifier must not have.
+ *
+ * The failure message carries the contract's number as well as this one, so a
+ * participant can trace the line back to the AC-06 row instead of finding a count
+ * that appears nowhere in brief/ACCEPTANCE.md.
  */
 const CANONICAL_SECTIONS = [
   'nav',
@@ -53,6 +60,9 @@ const CANONICAL_SECTIONS = [
   'footer',
 ] as const
 
+/** What the AC-06 row in brief/ACCEPTANCE.md counts: the ten above plus the skip link. */
+const CONTRACT_SECTION_COUNT = CANONICAL_SECTIONS.length + 1
+
 /** The skip link target, fixed by the hook contract in brief/ACCEPTANCE.md. */
 const SKIP_TARGET = 'main'
 
@@ -61,6 +71,14 @@ const WORDMARK_HREF = '#top'
 
 /** CONTENT §3: the ticket CTA is the nav anchor that targets the tickets section. */
 const CTA_HREF = '#tickets'
+
+/**
+ * The two fragments CONTENT §16 lists that are document anchors rather than sections.
+ * An explicit two-item allowlist, not "any fragment that is not a canonical name":
+ * the wide form exempted every made-up fragment from AC-13's "resolves to a section
+ * id" clause, so a nav of four links into four empty spans in the footer passed.
+ */
+const DOCUMENT_ANCHORS = [WORDMARK_HREF, `#${SKIP_TARGET}`] as const
 
 const EXPECTED_NAV_LINKS = 4
 const EXPECTED_NAV_CTAS = 1
@@ -73,25 +91,47 @@ const DESCRIPTION_MAX = 160
 /** The document outline does not change with viewport; read it once, at desktop. */
 const VIEWPORT = BREAKPOINTS.find((b) => b.name === 'desktop') ?? BREAKPOINTS[BREAKPOINTS.length - 1]!
 
+interface NavAnchor {
+  selector: string
+  text: string
+  hrefAttr: string | null
+  /** Set only for a fragment in this very document. A link off-site resolves to null. */
+  hash: string | null
+  targetExists: boolean
+  /** The data-section value on the target element itself, if it carries one. */
+  targetOwnSection: string | null
+  /** The data-section of the nearest ancestor section, for the failure message. */
+  targetSection: string | null
+  /** What the fragment actually lands on, e.g. `span#x1`, for the failure message. */
+  targetDescription: string | null
+}
+
 interface Snapshot {
   sections: { name: string; selector: string }[]
   h1s: { text: string; selector: string }[]
   headings: { level: number; text: string; selector: string }[]
+  /** Headings dropped from the outline because nobody perceives them. Reported as a note. */
+  hiddenHeadings: { level: number; text: string; selector: string; reason: string }[]
   lang: string | null
   title: string
   description: string | null
-  navAnchors: {
-    selector: string
-    text: string
-    hrefAttr: string | null
-    hash: string | null
-    targetExists: boolean
-    targetSection: string | null
-  }[]
+  navAnchors: NavAnchor[]
   duplicateIds: { id: string; count: number; selectors: string[] }[]
   landmarkSelectors: Record<string, string[]>
+  /** Elements that really are regions in the accessibility tree and carry no name. */
   unnamedRegions: string[]
-  skipTargetExists: boolean
+  /** Plain unnamed <section> elements, which map to `generic` and are legal. A note. */
+  unnamedSections: string[]
+  skipTarget: { selector: string; tag: string; role: string | null; isMainLandmark: boolean } | null
+}
+
+/** Criteria that ran to completion. Anything missing at flush time never ran. */
+const completed = new Set<string>()
+
+const evidence: Record<string, unknown> = {
+  viewport: VIEWPORT.width,
+  canonicalSections: [...CANONICAL_SECTIONS],
+  contractSectionCount: CONTRACT_SECTION_COUNT,
 }
 
 /**
@@ -104,33 +144,108 @@ interface Snapshot {
 test.describe.configure({ mode: 'serial' })
 
 test.afterAll(() => {
-  gate.flush({
-    viewport: VIEWPORT.width,
-    canonicalSections: [...CANONICAL_SECTIONS],
-  })
+  // Anything that never finished is reported as a failure. A criterion that silently
+  // did not run is the one failure mode that would make this whole gate worthless:
+  // the status written here is "pass" whenever nothing was recorded, and the
+  // orchestrator does not look at Playwright's exit code to tell the difference.
+  for (const criterion of CRITERIA) {
+    if (completed.has(criterion)) continue
+    gate.fail({
+      criterion,
+      message: `${criterion} STRUCTURE: this check did not run to completion, so nothing is known about it. Treated as a failure, never as a pass.`,
+      where: 'checks/specs/structure.spec.ts',
+      hint: 'Usually a Playwright timeout or a page that would not load. Re-run with --reporter=list to see where the spec stopped.',
+    })
+  }
+
+  gate.flush(evidence)
 })
 
 test('AC-06..AC-14 — document structure, landmarks and head', async ({ page }) => {
-  await page.setViewportSize({ width: VIEWPORT.width, height: VIEWPORT.height })
-  await page.goto('/', { waitUntil: 'load' })
+  let snapshot: Snapshot
 
-  const snapshot = await readSnapshot(page)
+  try {
+    await page.setViewportSize({ width: VIEWPORT.width, height: VIEWPORT.height })
+    await page.goto('/', { waitUntil: 'load' })
+    snapshot = await readSnapshot(page)
+  } catch (err) {
+    // Nothing was read, so nothing is known — about any of the nine criteria. Say so
+    // once per criterion, mark them accounted for so the flush guard does not repeat
+    // it, and rethrow so Playwright's own exit code reflects the failure too.
+    for (const criterion of CRITERIA) {
+      completed.add(criterion)
+      gate.fail({
+        criterion,
+        message: `${criterion} STRUCTURE: the page could not be read at ${VIEWPORT.width}px, so nothing is known about it: ${errorText(err)}`,
+        where: 'document',
+        expected: 'a loaded page to inspect',
+        actual: errorText(err),
+        hint: 'A check that cannot run proves nothing. This is reported as a failure on purpose.',
+      })
+    }
+    throw err
+  }
 
-  checkSections(snapshot) // AC-06
-  checkSingleH1(snapshot) // AC-07
-  checkHeadingLevels(snapshot) // AC-08
-  await checkLandmarks(page, snapshot) // AC-09
-  await checkSkipLink(page, snapshot) // AC-10
-  checkLang(snapshot) // AC-11
-  checkHead(snapshot) // AC-12
-  checkNav(snapshot) // AC-13
-  checkDuplicateIds(snapshot) // AC-14
+  evidence.headingsInOutline = snapshot.headings.length
+  evidence.headingsIgnored = snapshot.hiddenHeadings.length
+
+  await guarded('AC-06', 'canonical sections', () => checkSections(snapshot))
+  await guarded('AC-07', 'single h1', () => checkSingleH1(snapshot))
+  await guarded('AC-08', 'heading levels', () => checkHeadingLevels(snapshot))
+  await guarded('AC-09', 'landmarks', () => checkLandmarks(page, snapshot))
+  await guarded('AC-10', 'skip link', () => checkSkipLink(page, snapshot))
+  await guarded('AC-11', 'html lang', () => checkLang(snapshot))
+  await guarded('AC-12', 'head metadata', () => checkHead(snapshot))
+  await guarded('AC-13', 'nav destinations', () => checkNav(snapshot))
+  await guarded('AC-14', 'duplicate ids', () => checkDuplicateIds(snapshot))
 
   gate.note(
-    `CANON §7 lists 11 sections; the first is the skip link, which is not a [data-section] and is covered by AC-10. ` +
+    `CANON §7 lists ${CONTRACT_SECTION_COUNT} sections; the first is the skip link, which is not a [data-section] and is covered by AC-10. ` +
       `AC-06 therefore checks ${CANONICAL_SECTIONS.length} [data-section] values, plus an optional leading "skip-link".`,
   )
+
+  if (snapshot.hiddenHeadings.length) {
+    gate.note(
+      `AC-08 read the outline a user perceives: ${snapshot.hiddenHeadings.length} heading(s) are in the DOM but not ` +
+        `rendered or not exposed, and were left out — ` +
+        snapshot.hiddenHeadings.map((h) => `<h${h.level}> "${h.text}" (${h.selector}, ${h.reason})`).join('; ') +
+        '. A hidden heading cannot be used to bridge a level skip.',
+    )
+  }
+
+  if (snapshot.unnamedSections.length) {
+    gate.note(
+      `${snapshot.unnamedSections.length} <section> element(s) carry no accessible name and therefore map to role ` +
+        `generic, not region: ${snapshot.unnamedSections.join(', ')}. AC-09 requires a name of every *region*, so ` +
+        'these are legal — src/components/Section.astro documents leaving a section unnamed as the deliberate ' +
+        'alternative to shipping an anonymous region. Named only if a landmark is wanted there.',
+    )
+  }
 })
+
+const errorText = (err: unknown): string =>
+  (err instanceof Error ? err.message : String(err)).split('\n').slice(0, 3).join(' ').slice(0, 300)
+
+/**
+ * Runs one criterion's checks. A thrown error becomes a reported failure rather than an
+ * aborted run: the point of the gate is to say what is wrong, and "the check exploded"
+ * is something being wrong. It is never a pass, and it never stops the checks after it —
+ * one repair pass should be able to fix several criteria at once.
+ */
+async function guarded(criterion: string, label: string, fn: () => void | Promise<void>): Promise<void> {
+  try {
+    await fn()
+    completed.add(criterion)
+  } catch (err) {
+    gate.fail({
+      criterion,
+      message: `${criterion} STRUCTURE: the ${label} check could not complete: ${errorText(err)}`,
+      where: label,
+      hint: 'A check that cannot run proves nothing. This is reported as a failure on purpose.',
+    })
+    completed.add(criterion)
+  }
+}
 
 // ── AC-06 ─────────────────────────────────────────────────────────────────────
 
@@ -201,7 +316,8 @@ function checkSections(s: Snapshot): void {
     gate.fail({
       criterion: 'AC-06',
       message:
-        `AC-06 STRUCTURE: expected ${canonical.length} sections in canonical order, found ${observed.length}. ` +
+        `AC-06 STRUCTURE: expected ${CONTRACT_SECTION_COUNT} sections in canonical order ` +
+        `(${canonical.length} [data-section] values plus the skip link, which AC-10 checks), found ${observed.length}. ` +
         `First mismatch at position ${i + 1}: expected "${expected ?? '(nothing more)'}", found "${found ?? '(nothing)'}"`,
       where: (found !== undefined ? s.sections.find((x) => x.name === found)?.selector : undefined) ?? 'document',
       expected: canonical.join(' → '),
@@ -230,6 +346,11 @@ function checkSingleH1(s: Snapshot): void {
 function checkHeadingLevels(s: Snapshot): void {
   // Every skip is reported, not just the first. A page that jumps h1 → h3 in two
   // places has two edits to make, and the loop should get both in one pass.
+  //
+  // s.headings is the outline a user or a screen reader gets, not every heading tag in
+  // the file: see readSnapshot. Walking the DOM blindly made `<h2 hidden>spacer</h2>`
+  // between an h1 and an h3 the cheapest possible repair for a real AC-08 failure, and
+  // the cheapest repair is the one an agent finds.
   for (let i = 1; i < s.headings.length; i++) {
     const prev = s.headings[i - 1]!
     const next = s.headings[i]!
@@ -285,15 +406,19 @@ async function checkLandmarks(page: Page, s: Snapshot): Promise<void> {
   }
 
   if (s.unnamedRegions.length) {
-    // Deliberately computed from the DOM, not from getByRole('region'): an unnamed
-    // <section> is mapped to role generic, so a tree query would only ever return
-    // regions that already have a name and this check could never go red.
+    // The clause is "every region has an accessible name", and only an element that is
+    // actually a region is held to it — an explicit role="region". A plain <section>
+    // with no name is not a region at all; it maps to `generic`, and demanding a label
+    // on it would red-line markup the contract permits and add a landmark to the
+    // screen-reader rotor for every band of content on the page. Those are noted
+    // instead, in the test body.
     gate.fail({
       criterion: 'AC-09',
       message: `AC-09 STRUCTURE: landmark region count is ${s.unnamedRegions.length}, expected 0 without an accessible name. Unnamed region(s): ${unnamed}`,
       where: unnamed,
-      expected: 'every <section> / [role="region"] labelled with aria-label or aria-labelledby',
+      expected: 'every [role="region"] labelled with aria-label or aria-labelledby',
       actual: `${s.unnamedRegions.length} unnamed`,
+      hint: 'Either give the region a name, or drop role="region" so the element is not a landmark.',
     })
   }
 }
@@ -316,12 +441,28 @@ async function checkSkipLink(page: Page, s: Snapshot): Promise<void> {
       const cls = Array.from(node.classList).slice(0, 2).map((c) => `.${c}`).join('')
       return `${node.tagName.toLowerCase()}${id}${cls}`
     }
+    // Same-document or nothing. `new URL(a.href).hash` alone accepts
+    // https://example.com/other-page#main, which satisfies "resolves to #main" and
+    // sends a keyboard user off the site on the very first Tab.
+    let hash: string | null = null
+    if (anchor) {
+      try {
+        const url = new URL(anchor.href, document.baseURI)
+        const here = new URL(document.baseURI)
+        const sameDocument =
+          url.origin === here.origin && url.pathname === here.pathname && url.search === here.search
+        hash = sameDocument && url.hash ? url.hash : null
+      } catch {
+        hash = null
+      }
+    }
     return {
       selector: describe(el),
       text: (el.textContent ?? '').trim().replace(/\s+/g, ' '),
       isAnchor: anchor !== null,
       hrefAttr: anchor?.getAttribute('href') ?? null,
-      hash: anchor ? new URL(anchor.href, document.baseURI).hash : null,
+      resolvedHref: anchor?.href ?? null,
+      hash,
     }
   })
 
@@ -330,7 +471,7 @@ async function checkSkipLink(page: Page, s: Snapshot): Promise<void> {
       criterion: 'AC-10',
       message: `AC-10 STRUCTURE: first focusable element is ${selector} ("${text}"), expected a skip link whose href resolves to #${SKIP_TARGET}`,
       where: selector,
-      expected: `<a href="#${SKIP_TARGET}">`,
+      expected: `<a href="#${SKIP_TARGET}"> pointing at the <main> element`,
       actual,
     })
   }
@@ -340,15 +481,38 @@ async function checkSkipLink(page: Page, s: Snapshot): Promise<void> {
     return
   }
 
-  if (!first.isAnchor || first.hash !== `#${SKIP_TARGET}`) {
-    failure(first.selector, first.text, first.hrefAttr === null ? `${first.selector} is not a link` : `href="${first.hrefAttr}"`)
+  if (!first.isAnchor) {
+    failure(first.selector, first.text, `${first.selector} is not a link`)
     return
   }
 
-  // The link is right; now prove the destination is real. A skip link that points at
-  // nothing is worse than no skip link, because it looks like a pass.
-  if (!s.skipTargetExists) {
+  if (first.hash !== `#${SKIP_TARGET}`) {
+    // The raw href, not the computed hash: an off-site link ending in #main resolves
+    // to no in-page fragment at all, and the repair prompt needs to show where it goes.
+    failure(
+      first.selector,
+      first.text,
+      `href="${first.hrefAttr ?? '(absent)'}"${first.resolvedHref && first.hrefAttr !== first.resolvedHref ? ` (resolves to ${first.resolvedHref})` : ''}`,
+    )
+    return
+  }
+
+  // The link is right; now prove the destination is real, and is the destination the
+  // hook contract names. "#main on the <main> element" is the whole point: a skip link
+  // that lands on a decoy <span> in the footer moves a keyboard user past the content
+  // rather than to it, and only the id was ever checked.
+  if (!s.skipTarget) {
     failure(first.selector, first.text, `href="${first.hrefAttr}" but no element has id="${SKIP_TARGET}"`)
+    return
+  }
+
+  if (!s.skipTarget.isMainLandmark) {
+    failure(
+      first.selector,
+      first.text,
+      `href="${first.hrefAttr}" resolves to <${s.skipTarget.tag}> (${s.skipTarget.selector})` +
+        `${s.skipTarget.role ? ` with role="${s.skipTarget.role}"` : ''}, expected the <main> element`,
+    )
   }
 }
 
@@ -404,12 +568,13 @@ function checkNav(s: Snapshot): void {
 
   // Below 768 the same four links and the same CTA collapse behind a hamburger, and
   // an implementation is free to render that drawer as a second copy of the markup.
-  // "Exposes 4 links plus 1 CTA" is therefore counted over distinct destinations:
-  // duplicating a link does not add a destination, and it is noted below so the
-  // duplication is still visible.
+  // "Exposes 4 links plus 1 CTA" is therefore counted over distinct *destinations* —
+  // which is where the fragment resolves to, not how the href happens to be spelled.
+  // Keying on the raw attribute counted `#lineup` and `/#lineup` as two destinations
+  // and failed a nav that exposes four.
   const seen = new Set<string>()
   const distinct = anchors.filter((a) => {
-    const key = a.hrefAttr ?? `(no href) ${a.text}`
+    const key = a.hash ?? a.hrefAttr ?? `(no href) ${a.text}`
     if (seen.has(key)) return false
     seen.add(key)
     return true
@@ -428,14 +593,16 @@ function checkNav(s: Snapshot): void {
   // anchor that is not an in-page fragment at all — neither resolves to a section id.
   const unresolved = distinct.filter((a) => !a.hash || !a.targetExists)
 
+  // "Every nav link resolves to a section id" read literally: the element the fragment
+  // lands on carries [data-section]. The old rule exempted every fragment whose name
+  // was not itself a canonical section name, which let four links into four empty
+  // spans pass — nothing was unresolved and nothing was misdirected.
   const misdirected = distinct.filter((a) => {
     if (!a.hash || !a.targetExists) return false
+    if ((DOCUMENT_ANCHORS as readonly string[]).includes(a.hash)) return false
     const name = a.hash.slice(1)
-    // Only canonical section names are held to this. #top and #main are document
-    // anchors by CONTENT §16, not sections, and demanding a [data-section] on them
-    // would be inventing a requirement the brief does not make.
-    if (!(CANONICAL_SECTIONS as readonly string[]).includes(name)) return false
-    return a.targetSection !== name
+    if (a.targetOwnSection === null) return true
+    return (CANONICAL_SECTIONS as readonly string[]).includes(name) && a.targetOwnSection !== name
   })
 
   const countsWrong = links.length !== EXPECTED_NAV_LINKS || ctas.length !== EXPECTED_NAV_CTAS
@@ -444,9 +611,16 @@ function checkNav(s: Snapshot): void {
     const hrefs = unresolved.length
       ? unresolved.map((a) => `"${a.hrefAttr ?? '(no href)'}" (${a.selector})`).join(', ')
       : 'none'
+    // With nothing unresolved, "expected 4 and 1" alone names no location to go and
+    // look at. List what was counted, so the repair has somewhere to start.
+    const counted = links.length
+      ? ` Counted as links: ${links.map((a) => `"${a.hrefAttr ?? '(no href)'}" (${a.selector})`).join(', ')}.`
+      : ' No anchor in [data-section="nav"] was counted as a link.'
     gate.fail({
       criterion: 'AC-13',
-      message: `AC-13 STRUCTURE: nav exposes ${links.length} links and ${ctas.length} CTA(s), expected ${EXPECTED_NAV_LINKS} and ${EXPECTED_NAV_CTAS}. Unresolved target(s): ${hrefs}`,
+      message:
+        `AC-13 STRUCTURE: nav exposes ${links.length} links and ${ctas.length} CTA(s), expected ${EXPECTED_NAV_LINKS} and ${EXPECTED_NAV_CTAS}. ` +
+        `Unresolved target(s): ${hrefs}.${counted}`,
       where: '[data-section="nav"]',
       expected: `${EXPECTED_NAV_LINKS} links + ${EXPECTED_NAV_CTAS} CTA to ${CTA_HREF}, every href resolving to an existing id`,
       actual:
@@ -460,12 +634,21 @@ function checkNav(s: Snapshot): void {
   }
 
   for (const a of misdirected) {
+    const name = a.hash!.slice(1)
+    const isCanonical = (CANONICAL_SECTIONS as readonly string[]).includes(name)
     gate.fail({
       criterion: 'AC-13',
-      message: `AC-13 STRUCTURE: nav link "${a.hrefAttr}" resolves to an element outside [data-section="${a.hash!.slice(1)}"]. Every nav link must resolve to a section id`,
+      message:
+        `AC-13 STRUCTURE: nav link "${a.hrefAttr}" resolves to ${a.targetDescription ?? 'an element'}` +
+        `${a.targetSection ? ` inside [data-section="${a.targetSection}"]` : ' outside every [data-section]'}, ` +
+        `which is not a section id. Every nav link must resolve to an element carrying [data-section]` +
+        `${isCanonical ? `, and "#${name}" must resolve to [data-section="${name}"]` : ''}`,
       where: a.selector,
-      expected: `an element inside [data-section="${a.hash!.slice(1)}"]`,
-      actual: a.targetSection ? `inside [data-section="${a.targetSection}"]` : 'outside every [data-section]',
+      expected: isCanonical ? `[data-section="${name}"]` : 'an element carrying [data-section]',
+      actual: a.targetOwnSection
+        ? `[data-section="${a.targetOwnSection}"]`
+        : `${a.targetDescription ?? 'an element'}${a.targetSection ? ` inside [data-section="${a.targetSection}"]` : ' outside every [data-section]'}`,
+      hint: `CONTENT §16 lists ${DOCUMENT_ANCHORS.join(' and ')} as the only in-page anchors that are not sections.`,
     })
   }
 }
@@ -524,39 +707,68 @@ async function readSnapshot(page: Page): Promise<Snapshot> {
         selector: describe(el),
       }))
 
+      /**
+       * Why a heading can be absent from the outline this gate validates.
+       *
+       * AC-08 is about the outline a person perceives. A heading that is not rendered
+       * and not in the accessibility tree is in nobody's outline, so counting it lets
+       * an invisible element bridge a level skip that every user still experiences.
+       */
+      const hiddenReason = (el: HTMLElement): string | null => {
+        if (el.closest('[aria-hidden="true"]')) return 'inside aria-hidden'
+        if (el.closest('[hidden]')) return 'hidden attribute'
+        if (el.getClientRects().length === 0) return 'not rendered'
+        if (getComputedStyle(el).visibility === 'hidden') return 'visibility:hidden'
+        return null
+      }
+
       // [role="heading"][aria-level] is included alongside h1-h6 because a page that
       // reaches for it can skip a level exactly the same way, and a gate that only
       // knows about native tags would call that page clean.
-      const headings = Array.from(
+      const allHeadings = Array.from(
         document.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6, [role="heading"][aria-level]'),
       ).map((el) => {
         const native = /^H([1-6])$/.exec(el.tagName)
         const ariaLevel = Number(el.getAttribute('aria-level'))
         const level = native ? Number(native[1]) : Number.isFinite(ariaLevel) ? ariaLevel : 0
-        return { level, text: textOf(el), selector: describe(el) }
+        return { level, text: textOf(el), selector: describe(el), reason: hiddenReason(el) }
       })
+
+      const headings = allHeadings
+        .filter((h) => h.reason === null)
+        .map(({ level, text, selector }) => ({ level, text, selector }))
+      const hiddenHeadings = allHeadings
+        .filter((h) => h.reason !== null)
+        .map(({ level, text, selector, reason }) => ({ level, text, selector, reason: reason! }))
+
+      const here = new URL(document.baseURI)
+      /** A fragment counts only when following it stays on this very document. */
+      const sameDocumentHash = (a: HTMLAnchorElement): string | null => {
+        try {
+          const url = new URL(a.href, document.baseURI)
+          const sameDocument =
+            url.origin === here.origin && url.pathname === here.pathname && url.search === here.search
+          return sameDocument && url.hash ? url.hash : null
+        } catch {
+          return null
+        }
+      }
 
       const navAnchors = Array.from(
         document.querySelectorAll<HTMLAnchorElement>('[data-section="nav"] a'),
       ).map((a) => {
         const hrefAttr = a.getAttribute('href')
-        let hash: string | null = null
-        try {
-          const url = new URL(a.href, document.baseURI)
-          const here = new URL(document.baseURI)
-          // Only same-document fragments count as in-page targets.
-          hash = url.pathname === here.pathname && url.hash ? url.hash : null
-        } catch {
-          hash = null
-        }
-        const target = hash ? document.getElementById(hash.slice(1)) : null
+        const hash = sameDocumentHash(a)
+        const target = hash ? document.getElementById(decodeURIComponent(hash.slice(1))) : null
         return {
           selector: describe(a),
           text: textOf(a),
           hrefAttr,
           hash,
           targetExists: target !== null,
+          targetOwnSection: target?.getAttribute('data-section') ?? null,
           targetSection: target?.closest('[data-section]')?.getAttribute('data-section') ?? null,
+          targetDescription: target ? `<${target.tagName.toLowerCase()}> ${describe(target)}` : null,
         }
       })
 
@@ -594,14 +806,26 @@ async function readSnapshot(page: Page): Promise<Snapshot> {
         return false
       }
 
-      const unnamedRegions = Array.from(document.querySelectorAll('section, [role="region"]'))
+      // An explicit role="region" is a landmark whether or not it is named, so an
+      // unnamed one is the defect AC-09 describes. A bare <section> without a name is
+      // mapped to `generic` by HTML-AAM and is not a region at all — reported
+      // separately as a note, never as an AC-09 failure.
+      const unnamedRegions = Array.from(document.querySelectorAll('[role="region"]'))
         .filter((el) => !hasAccessibleName(el))
         .map(describe)
+
+      const unnamedSections = Array.from(document.querySelectorAll('section:not([role])'))
+        .filter((el) => !hasAccessibleName(el))
+        .map(describe)
+
+      const skip = document.getElementById(skipTarget)
+      const skipRole = skip?.getAttribute('role') ?? null
 
       return {
         sections,
         h1s,
         headings,
+        hiddenHeadings,
         lang: document.documentElement.getAttribute('lang'),
         title: document.title,
         description:
@@ -610,7 +834,17 @@ async function readSnapshot(page: Page): Promise<Snapshot> {
         duplicateIds,
         landmarkSelectors,
         unnamedRegions,
-        skipTargetExists: document.getElementById(skipTarget) !== null,
+        unnamedSections,
+        skipTarget: skip
+          ? {
+              selector: describe(skip),
+              tag: skip.tagName.toLowerCase(),
+              role: skipRole,
+              // The hook contract is "#main on the <main> element". An id on a decoy
+              // div satisfies getElementById and moves nobody to the main landmark.
+              isMainLandmark: (skip.tagName === 'MAIN' && skipRole === null) || skipRole === 'main',
+            }
+          : null,
       }
     },
     { skipTarget: SKIP_TARGET },

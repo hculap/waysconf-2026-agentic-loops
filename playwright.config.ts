@@ -11,11 +11,21 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: 0,
   workers: process.env.CI ? 2 : undefined,
+  // Traces, screenshots and the JSON report all go into the run's own directory when
+  // checks/run.mjs supplies one. Sharing a fixed path lets a concurrent browser
+  // session write into a run it has nothing to do with — see evidence/INCIDENTS.md.
   reporter: [
     ['list'],
-    ['json', { outputFile: 'checks/.results/playwright.json' }],
+    [
+      'json',
+      {
+        outputFile: process.env.CHECK_RUN_DIR
+          ? `${process.env.CHECK_RUN_DIR}/playwright.json`
+          : 'checks/.results/playwright.json',
+      },
+    ],
   ],
-  outputDir: 'checks/.results/artifacts',
+  outputDir: process.env.PLAYWRIGHT_OUTPUT_DIR || 'checks/.results/artifacts',
   timeout: 60_000,
   expect: {
     timeout: 10_000,

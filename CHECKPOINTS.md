@@ -19,8 +19,8 @@ are not there, jump.
 
 | Branch | What the repository is at that point | What `npm run check` does there |
 |---|---|---|
-| **`step-0`** | The starter, exactly as the template ships it. The Astro project builds and serves a page with no sections on it. The design tokens, the brief, the content, the acceptance criteria and all nine gates are present and complete. Nothing has been built. | Everything fails, and the failures are the task list. This is the first demonstration of the session, not a broken state. |
-| **`step-1`** | The page shell plus the first two sections: skip link, sticky nav, hero. Tokens wired into Tailwind, fonts self-hosted and loading, exactly one `h1`. | The build gate passes. Everything that counts sections — structure, content, links, visual, perf — still fails, because nine of the eleven are missing and the gates count them rather than take your word for it. |
+| **`step-0`** | The starter, exactly as the template ships it. The Astro project builds and serves a page with no sections on it. The design tokens, the brief, the content, the acceptance criteria and all nine gates — the programs that read the finished page and decide, without asking a model, whether it passed — are present and complete. Nothing has been built. | Everything fails, and the failures are the task list. This is the first demonstration of the session, not a broken state. |
+| **`step-1`** | The page shell plus the first three sections: skip link, sticky nav, hero. Tokens wired into Tailwind, fonts self-hosted and loading, exactly one `h1`. | The build gate passes. Everything that counts sections — structure, content, links, visual, perf — still fails, because eight of the eleven are missing and the gates count them rather than take your word for it. |
 | **`step-2`** | The ticker, the lineup and the programme built on top of `step-1`: twelve artist cards with a working day filter, and the three-days-by-three-stages timetable. | Same shape as `step-1`, with substantially fewer failures. That the failure count falls in a straight line is the thing worth noticing. |
 | **`step-3`** | All eleven canonical sections present and in canonical order, and deliberately imperfect. Supporting copy uses `color.text.muted`; the sodium buttons use white text on orange. Both are real mistakes that real models make with this palette. | Structure, content and links pass. **The accessibility and token gates fail, genuinely**, and the report names the selector and the expected value. The visual diff also registers the wrong colours as changed pixels — without being able to tell you which direction is the improvement. This is the branch the self-repair section runs from. |
 | **`step-4`** | The repairs applied, and nothing else changed. `text.muted` is back in the footer legal block where it belongs; the buttons use near-black on sodium. | Every local gate green. Deploy has not been run. |
@@ -37,23 +37,27 @@ the palette was built this way. See [`docs/CANON.md`](docs/CANON.md) §8.
 
 ## 2. Where each checkpoint sits in the ninety minutes
 
-The session runs 14:55 to 16:25. Times are approximate — the clock in the room is the presenter's —
-but the block names are what you will hear.
+The session runs 14:55 to 16:25. The blocks and the clock below are the presenter's own run of show,
+[`deck/notes/TIMING.md`](deck/notes/TIMING.md) — that file is where these rows come from and where they
+should be corrected if the shape of the day changes. Times are approximate, because the clock in the
+room is the presenter's, but the block names are what you will hear.
 
-| Block | Clock | Minute | You should have |
+| Block | Clock | Elapsed | You should have |
 |---|---|---|---|
-| 1. Why a loop needs something that can say no | 14:55 | 0 | a Codespace open, on `main` |
-| 2. The brief, the criteria, and a page that fails everything | 15:05 | 10 | `npm run check` run once — **`step-0`** |
-| 3. Design in, first sections out | 15:15 | 20 | nav and hero built by the agent — **`step-1`** by 15:30 |
-| 4. Lineup and programme | 15:30 | 35 | twelve cards and the timetable — **`step-2`** by 15:45 |
-| 5. Everything else, and the gates going red for real | 15:45 | 50 | all eleven sections, a11y and tokens failing — **`step-3`** by 15:55 |
-| 6. Self-repair | 15:55 | 60 | the loop closing those failures — **`step-4`** by 16:10 |
-| 7. Deploy, and proving what shipped is what passed | 16:10 | 75 | a live URL — **`step-5`** by 16:20 |
-| 8. What the gates do not catch | 16:20 | 85 | nothing to do but listen |
+| 1. The case | 14:55 | 0:00 | a Codespace open, on `main` |
+| 2. Checkpoint 0 | 15:03 | 0:08 | a terminal open in that Codespace. The starter as it ships is **`step-0`** |
+| 3. Design in | 15:10 | 0:15 | a prompt in front of an agent. This is the one hard gate of the session |
+| 4. Plan, then build — Sprint 1 | 15:20 | 0:25 | the plan read, then skip link, nav and hero built by the agent — **`step-1`** by 15:35 |
+| 5. The verifier | 15:35 | 0:40 | `npm run check` run against what you built. The live contrast repair at 15:42 is a demonstration; nothing to type |
+| 6. The loop and workflows — Sprint 2 | 15:50 | 0:55 | your loop running. It passes through **`step-2`** and **`step-3`**, and should reach **`step-4`** by 16:05 |
+| 7. Ship it — Sprint 3 | 16:05 | 1:10 | every local gate green — **`step-4`** — and then a live URL — **`step-5`** by 16:17 |
+| 8. Honesty | 16:17 | 1:22 | nothing to do but listen |
 
-The self-rescue rule, so you do not have to ask: **look at the clock, find the row, and if you are
-not where that row says, check out the branch it names.** At 15:47 with no lineup on the page, the
-answer is `git checkout step-2`. It takes fifteen seconds and you rejoin the room immediately.
+The self-rescue rule, so you do not have to ask: **look at the clock, find the last row that has
+started, and if you are not where that row says, check out the branch it names.** At 15:47 the last row
+that has started is 5, which expects the nav and hero of **`step-1`** already behind you; with nothing
+of your own rendering, the answer is `git checkout step-1`. It takes fifteen seconds and you rejoin the
+room immediately.
 
 ---
 
@@ -197,12 +201,16 @@ git fetch workshop
 git checkout -b step-3 workshop/step-3
 ```
 
-Once you have two remotes carrying the same branch names, plain `git checkout step-3` becomes
-ambiguous and git will say so. Use the explicit form for each one you need:
+After that first one, the plain form works again for the rest:
 
 ```
-git checkout -b step-4 workshop/step-4
+git checkout step-4
 ```
+
+The name now exists on exactly one remote, and git creates the local branch from it without being
+asked. The exception is if you did tick "Include all branches" and are adding the workshop remote for
+some other reason: then both remotes carry the same names, git will tell you the name is ambiguous, and
+the explicit `git checkout -b step-4 workshop/step-4` is the way through.
 
 Or skip all of it and use the fresh-Codespace route in §5.2, pointed at
 `hculap/waysconf-2026-agentic-loops` rather than at your own repository.

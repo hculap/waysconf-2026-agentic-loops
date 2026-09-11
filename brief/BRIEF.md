@@ -3,8 +3,13 @@
 **For:** the implementing agent. **From:** TURBINE festival, Kraków.
 
 **Authority:** `docs/CANON.md` is the source of truth for every fact about the festival. Where this brief
-and CANON disagree, CANON wins. Where this brief and the design disagree, this brief wins. A fact that is
-in neither CANON nor `brief/CONTENT.md` is a question for us, not a gap for you to fill.
+and CANON disagree, CANON wins. Where this brief and the design disagree, this brief wins. Where this
+brief and `brief/CONTENT.md` disagree about a string or a link target, CONTENT.md wins. A fact that is in
+neither CANON nor `brief/CONTENT.md` is a question for us, not a gap for you to fill: write the question
+and the reading you chose in `loop/PROGRESS.md`, mark that section blocked, and carry on. Do not invent
+the fact, and do not stop the loop waiting for an answer.
+
+Any term here that is new to you is defined in plain language in `docs/GLOSSARY.md`.
 
 ---
 
@@ -31,14 +36,14 @@ When two goals conflict, the lower-numbered one wins.
 
 1. **The facts are right.** Observable: name, dates, venue, city, all twelve artists with day and stage,
    and all three prices appear in the rendered HTML and match `docs/CANON.md` exactly.
-2. **Everyone can use it.** Observable: zero serious or critical axe violations at 390, 768 and 1440 px;
-   every interactive element operable by keyboard with a visible focus ring; ticker frozen under
-   `prefers-reduced-motion`.
-3. **It matches the design.** Observable: no colour, spacing, radius, font size or breakpoint in the
-   compiled CSS falls outside `design/tokens/tokens.json`, and screenshots at the three widths match
-   `design/export/` within the pixel budget.
-4. **It sounds like TURBINE.** Observable: every user-facing string traces to `brief/CONTENT.md`, and no
-   banned word from CANON §10 appears on the page.
+2. **Everyone can use it.** Observable: zero axe violations at 390, 768 and 1440 px, in every state the
+   gate tests; every interactive element operable by keyboard with a visible focus ring; ticker frozen
+   under `prefers-reduced-motion`.
+3. **It matches the design.** Observable: no colour, spacing, radius or font size the page computes at
+   the three canonical widths falls outside `design/tokens/tokens.json`, and screenshots at those widths
+   match `design/export/` within the budget in `brief/ACCEPTANCE.md` AC-34 and AC-35.
+4. **It sounds like TURBINE.** Observable: every string in `brief/CONTENT.md` appears on the page, and no
+   banned word from CANON §10 appears on it.
 5. **It is fast on a phone.** Observable: the Lighthouse gate passes on the mobile profile.
 
 ## 4. Page sections, in canonical order
@@ -62,55 +67,69 @@ Build all eleven, in this order. None may be dropped, merged or reordered.
 | You need | Read | Contract |
 |---|---|---|
 | Facts | `docs/CANON.md` | Authoritative over everything, including this brief. |
-| Copy | `brief/CONTENT.md` | Every user-facing string: headings, body, labels, alt text, FAQ answers. A missing string is a question for us; do not write copy. |
-| Tokens | `design/tokens/tokens.json` | The only source of colour, spacing, radius, type scale and breakpoints, consumed through the generated `tokens.css`. No raw hex, px or rem in components. Use only pairings marked PASS in `design/tokens/CONTRAST.md`. |
-| Imagery | `design/assets/` | Already generated and committed. Copy what you need into `public/images/`. Do not hotlink, substitute or generate images. |
-| The design | Figma (link supplied with the kit) | Primary reference for layout, hierarchy and spacing. |
-| Fallback and baseline | `design/export/` | Full-page exports at 390, 768 and 1440. They stand in for Figma when you have no seat, and the visual gate diffs your screenshots against them. |
+| Copy | `brief/CONTENT.md` | Every user-facing string: headings, body, labels, alt text, FAQ answers. A missing string is a question for us: record it in `loop/PROGRESS.md` and do not write copy. |
+| Tokens | `design/tokens/tokens.json` | The only source of colour, spacing, radius, type scale and breakpoints. Custom properties reach the page through `design/tokens/tokens.css`; Tailwind's utilities come from `src/styles/theme.generated.css`. Both are generated from `tokens.json` by `node scripts/build-theme.mjs`, and neither is edited by hand. No raw hex, px or rem in components. Use only pairings marked `PASS-AA` in `design/tokens/CONTRAST.md`; `PASS-AA-LARGE` is not a pass, it is an exemption for type at 24 px or above, or 18.66 px bold. |
+| Imagery | `design/assets/` | Already generated and committed, under the filenames `design/assets/manifest.json` lists; `brief/CONTENT.md` §13 carries the alt text for each. `npm run build` copies them into `public/images/` for you. Do not hotlink, substitute or generate images. If a file the manifest lists is not there, stop and record it in `loop/PROGRESS.md`. |
+| Layout and spacing | `design/FIGMA-SPEC.md` | The design stated literally: every frame, grid, component and section, with numbers. §5 covers 1440, §6 768, §7 390. Authoritative for anything the tokens do not fix, and the file to read when you cannot open Figma. |
+| The design, if you have a seat | Figma (optional) | The same design, drawn. `figma-plugin/` builds it from the tokens. Nothing in it is needed to pass a gate. |
+| Baseline | `design/export/` | Full-page renders of the reference build at 390, 768 and 1440, regenerated with `npm run baseline`. The visual gate diffs your screenshots against them. They answer whether your build matches the reference build, not whether it matches the design; for layout intent, read `design/FIGMA-SPEC.md`. |
 
 Two token pairings are traps, fixed by CANON §4: supporting copy uses `color.text.secondary`, never
 `color.text.muted`; the sodium button uses dark text on orange, never white.
 
 ## 6. Technical constraints
 
-- **Astro 5**, static output. **Tailwind CSS 4** through `@tailwindcss/vite`, themed from `tokens.css`.
+- **Astro 5**, static output. **Tailwind CSS 4** through `@tailwindcss/vite`, themed from the generated
+  `src/styles/theme.generated.css`.
 - **No UI framework.** No React, Vue, Svelte or Solid. Nav, lineup filter and FAQ accordion are plain
   TypeScript, progressively enhanced: with JavaScript off, all twelve artists are visible and every FAQ
   answer readable.
 - **No backend.** No API routes, no server rendering, no database, no runtime environment variables. The
-  newsletter form submits nowhere and confirms inline; ticket CTAs link to `#tickets`.
-- **No new dependencies, no third-party requests at runtime.** Everything you need is in `package.json`;
-  fonts are self-hosted Space Grotesk, Inter and JetBrains Mono.
-- **Images** carry explicit width and height, lazy-load below the fold, and ship in a modern format.
-- **Netlify:** `npm run build`, then `npm run deploy`, publishing `dist/`.
+  newsletter form submits nowhere and confirms inline; the nav CTA and the hero primary CTA link to
+  `#tickets`, and the three ticket card buttons use the dead external URL in `brief/CONTENT.md` §16.
+- **No new dependencies, no third-party requests at runtime.** Everything the page needs is in
+  `package.json`; fonts are self-hosted Space Grotesk, Inter and JetBrains Mono. The Netlify CLI is the
+  one exception, and it never runs in the page: `npm run deploy` reaches it through `npx`.
+- **Images** carry explicit width and height, lazy-load below the fold, and stay inside the AC-56
+  budgets: total transfer at most 1500 KB, largest single image at most 400 KB.
+- **Netlify:** `npm run build`, then `npm run deploy`, publishing `dist/`. Deploying needs an account
+  once: run `npx netlify login`, or put `NETLIFY_AUTH_TOKEN` in the environment. See `.env.example`.
 
 ## 7. Definition of done
 
-**`npm run check` exits 0.** That is the whole definition — not your reading of the code, not the page
-looking right in a browser. On failure it writes `checks/report.md`, and that report is the input to your
-next iteration. `brief/ACCEPTANCE.md` maps every criterion to its gate and carries the exact thresholds.
+**`npm run check` exits 0, and the deploy gate is green.** That is the whole definition — not your reading
+of the code, not the page looking right in a browser. On failure it writes `checks/report.md`, and that
+report is the input to your next iteration. `brief/ACCEPTANCE.md` maps every criterion to its gate and
+carries the exact thresholds.
 
-The gates:
+The nine gates:
 
 1. **build** — `astro build` completes with no errors.
 2. **structure** — the eleven canonical sections present, in order; one `h1`, no skipped heading levels,
    landmark regions present, `lang="en"`.
-3. **content** — every string on the page traces to `brief/CONTENT.md`; no invented copy, no banned words.
-4. **tokens** — every colour, spacing, radius, font size and breakpoint in the compiled CSS resolves to
-   `design/tokens/tokens.json`. Stray values fail by name and location.
+3. **content** — every string in `brief/CONTENT.md` appears on the page; no placeholder text, no banned
+   words. It checks that the canonical copy is present, not that nothing else is: copy you invented is
+   caught by the copy-checker agent and by the human pass, not by this gate.
+4. **tokens** — every colour, spacing, radius and font size the page computes at the three widths
+   resolves to `design/tokens/tokens.json`, and no colour literal is written outside the token layer.
+   Stray values fail by name and location.
 5. **links** — every internal anchor resolves to a section that exists.
-6. **a11y** — axe-core at 390, 768 and 1440 px: zero violations at serious or critical severity.
-7. **visual** — full-page screenshots at the three widths, diffed against `design/export/` within budget.
+6. **a11y** — axe-core (`wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`, `wcag22aa`) at 390, 768 and 1440 px,
+   in the default state, with each lineup tab selected and with the accordion open: zero violations at
+   any severity (AC-15), plus the keyboard and focus criteria AC-16 to AC-25.
+7. **visual** — full-page screenshots at the three widths, diffed against `design/export/` within the
+   AC-34 and AC-35 budgets.
 8. **perf** — Lighthouse on the mobile profile, scores and metric budgets per `brief/ACCEPTANCE.md`.
-
-Then deploy: the published URL returns 200.
+9. **deploy** — runs once the other eight are green: `netlify deploy --prod` succeeds, the published URL
+   returns 200 as HTML, the deployed HTML is byte-identical to the build that passed, and a live axe and
+   anchor run at 1440 is clean (AC-57 to AC-60).
 
 ## 8. Not included
 
 Out of scope means: do not build it, do not scaffold it, do not leave a placeholder for it.
 
-- **No commerce.** No checkout, cart, payment or ticket inventory. CTAs link to `#tickets` or the dead
-  external URL given in CONTENT.md.
+- **No commerce.** No checkout, cart, payment or ticket inventory. The nav CTA and the hero primary CTA
+  link to `#tickets`; the three ticket card buttons use the dead external URL in `brief/CONTENT.md` §16.
 - **No CMS, database, backend or API route.** Content is files in this repository.
 - **No login, accounts or user state.** Nothing persists between visits.
 - **No cookie banner, analytics or third-party script.** Nothing to consent to, so nothing to ask.
@@ -124,17 +143,18 @@ Out of scope means: do not build it, do not scaffold it, do not leave a placehol
 ## 9. How to work
 
 Plan before you build. Write the short plan AGENTS.md asks for — sections in canonical order, and the
-criteria each one satisfies — and have it agreed before you edit anything. Keep `loop/PROGRESS.md`
-current; the next iteration will not share your context.
+criteria each one satisfies — into `loop/PROGRESS.md` before your first edit. When a person is driving,
+wait for them to agree it; when you are running unattended, record your assumptions and proceed. Keep
+`loop/PROGRESS.md` current either way; the next iteration will not share your context.
 
 Build one section at a time, in canonical order. After each: `npm run build`, then `npm run check`. A
 section that does not pass its gates is not finished, and you do not move on.
 
 When a gate fails, read `checks/report.md` and address the failures it names, one at a time, as named. Fix
-the cause, not the symptom: a contrast failure is fixed by moving to a pairing marked PASS in
+the cause, not the symptom: a contrast failure is fixed by moving to a pairing marked `PASS-AA` in
 `design/tokens/CONTRAST.md`, not by nudging a hex until the number moves. Make the smallest change that
-turns the gate green. If the same gate fails three times on the same cause, stop and write down what you
-tried.
+turns the gate green. If the same criterion id fails three times for the same reason, stop and write what
+you tried, and what happened each time, into `loop/PROGRESS.md`.
 
 **Never edit anything under `checks/` to make a gate pass.** Thresholds, rule suppressions, skipped
 assertions and edits to `tokens.json` are off limits. The gates are our acceptance criteria in executable

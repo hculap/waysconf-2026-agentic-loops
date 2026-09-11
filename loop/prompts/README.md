@@ -39,8 +39,11 @@ placeholder convention in this directory: if you do not see any, there is nothin
 | 06 | `06-explain-to-designer.md` | At the end, or whenever the room stops following | An account of what happened, in language a designer can check |
 
 The subagents in `.claude/agents/` — `design-critic`, `a11y-auditor`, `copy-checker` — are the narrow
-version of 04. Use them after the gates are green, on one question each. 04 is the broad version: one
-agent, told to attack the whole page. Both open items; neither closes one.
+version of 04, and they are the one thing here that is Claude Code only: `.claude/agents/` is a Claude Code
+directory and Codex does not read it, so on Codex send `04-adversarial-review.md` instead. In Claude Code
+you ask for one by name, in ordinary words — *Use the design-critic subagent on the built page.* Use them
+after the gates are green, on one question each. 04 is the broad version: one agent, told to attack the
+whole page. Both open items; neither closes one.
 
 ## What makes them work
 
@@ -95,9 +98,11 @@ small retry while you keep the sections that passed.
 **`03-fix-from-report.md` — "Hand over the failure report verbatim", plus "Ask for the smallest change
 that turns the gate green".**
 This is the repair half of the loop and the most-used prompt in the workshop. It refuses paraphrase,
-because paraphrase drops the selector and the selector is the useful part. It fixes the first failing
-family only, because the gates run cheapest first and a broken build makes every number below it
-meaningless. The three-strikes rule is §2 *the loop oscillates*: a criterion that fails three times the
+because paraphrase drops the selector and the selector is the useful part. It fixes one family at a time,
+and it names the order — BUILD, STRUCTURE, RUNTIME, LINKS, CONTENT, TOKENS, A11Y, VISUAL, PERF — rather
+than trusting the report's own sequence, which is alphabetical. That distinction is the point: an agent
+that repairs a single stale link while two sections are missing is §2 *the loop oscillates* happening on
+stage. The three-strikes rule is the same failure named directly: a criterion that fails three times the
 same way usually means two gates contradict each other, and iteration does not resolve a contradiction.
 The prohibition on editing `checks/` is §2 *the loop edits the test* — the most common failure, and the one
 that feels most like success.

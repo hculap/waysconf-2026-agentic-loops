@@ -19,8 +19,9 @@
  *    of the licence this gate takes, and each fold in it is justified where it is made.
  *
  * Nothing in this file consults a model, and no check passes because it could not run:
- * a missing input (no brief/CONTENT.md, no dist, no page) is reported as a failure with
- * the reason, never skipped quietly.
+ * a missing input (no brief/CONTENT.md, no page) is reported as a failure with the
+ * reason, never skipped quietly. Every check collects all of its defects instead of
+ * stopping at the first, so one iteration of the loop can repair many of them.
  */
 
 import { test } from '@playwright/test'
@@ -75,11 +76,7 @@ const ACCESS_NOTE =
 const FICTION_DISCLAIMER =
   'TURBINE is a fictional festival created as teaching material for a conference workshop. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental.'
 
-/**
- * CANON §3. `places` is the state of `data-places-left` that each string belongs to;
- * AC-41 checks that the card's availability line agrees with its own attribute, which is
- * the only part of the sold-out behaviour that can be verified from a static page.
- */
+/** CANON §3 and CONTENT.md §9. */
 const TIERS = [
   {
     key: 'single',
@@ -194,8 +191,10 @@ const BANNED_WORDS = /\b(?:immersive|journeys?|unleash(?:es|ed|ing)?|elevat(?:e|
  *
  *  - **NFC.** "Ilse Rüm" reaches the DOM as U+00FC from one editor and as u + U+0308 from
  *    another. Same word, same pixels, same screen reader output.
- *  - **Invisible characters** — soft hyphen, zero-width space/joiners, BOM. A hyphenation
- *    hint or a zero-width break inserted by a build step is not a change of copy.
+ *  - **Invisible characters** — soft hyphen, zero-width space/joiners, word joiner, BOM.
+ *    A hyphenation hint or a zero-width break inserted by a build step is not a change of
+ *    copy, and it is invisible in a failure message, which makes it the worst possible
+ *    thing to fail a page on.
  *  - **Quote characters.** CONTENT.md writes `hall's` with a straight apostrophe; a
  *    typographic build renders U+2019. Curly quotes, primes and guillemets fold to their
  *    ASCII equivalents on both sides, which is the single most common source of a false
@@ -207,20 +206,24 @@ const BANNED_WORDS = /\b(?:immersive|journeys?|unleash(?:es|ed|ing)?|elevat(?:e|
  *  - **Dashes, only when `foldDashes` is set.** AC-42 compares with dashes intact because
  *    the en dash in "12–14 June 2027" is a criterion in its own right. Everywhere else a
  *    hyphen-for-en-dash would be reported as a whole missing sentence, sending the loop
- *    off to rewrite a paragraph when one character is wrong.
+ *    off to rewrite a paragraph when one character is wrong. AC-38 notes the difference
+ *    instead, so it is visible without being fatal.
  *
  * What is never folded: **case**. brief/ACCEPTANCE.md, CONTENT family preamble:
  * "Whitespace is normalised; case and punctuation are not."
  */
 function normalise(input: string, { foldDashes = true }: { foldDashes?: boolean } = {}): string {
   let s = input.normalize('NFC')
-  s = s.replace(/[­​‌‍⁠﻿]/g, '')
-  s = s.replace(/[‘’‚‛′ʼ]/g, "'")
-  s = s.replace(/[“”„‟″«»]/g, '"')
-  if (foldDashes) s = s.replace(/[‐‑‒–—―−﹘﹣－]/g, '-')
+  s = s.replace(/[\u00AD\u200B\u200C\u200D\u2060\uFEFF]/g, '')
+  s = s.replace(/[\u2018\u2019\u201A\u201B\u2032\u02BC]/g, "'")
+  s = s.replace(/[\u201C\u201D\u201E\u201F\u2033\u00AB\u00BB]/g, '"')
+  if (foldDashes) s = s.replace(/[\u2010\u2011\u2012\u2013\u2014\u2015\u2212\uFE58\uFE63\uFF0D]/g, '-')
   s = s.replace(/\s+/g, ' ').trim()
   return s
 }
+
+/** Dash characters that `normalise` folds, used to explain an AC-38 near miss. */
+const DASH_CHARACTERS = /[\u2010\u2011\u2012\u2013\u2014\u2015\u2212\uFE58\uFE63\uFF0D]/
 
 type MatchKind = 'exact' | 'case' | 'near' | 'missing'
 
@@ -254,7 +257,7 @@ function truncate(s: string, max = 120): string {
   return s.length <= max ? s : `${s.slice(0, max - 1)}…`
 }
 
-/** Key used to compare `data-day` / `data-stage` values. See the comment at AC-39. */
+/** Key used to compare `data-day` / `data-stage` values. See the comment in `checkArtists`. */
 function slugKey(value: string): string {
   return value
     .normalize('NFC')
@@ -268,6 +271,15 @@ function dayKey(value: string): string {
   if (k.startsWith('sat')) return 'sat'
   if (k.startsWith('sun')) return 'sun'
   return k
+}
+
+/** The sentence a banned token sits in, for a failure message someone can act on. */
+function sentenceAround(value: string, index: number, length: number): string {
+  const before = value.lastIndexOf('. ', index)
+  const afterDot = value.indexOf('. ', index + length)
+  const start = before === -1 ? 0 : before + 2
+  const end = afterDot === -1 ? value.length : afterDot + 1
+  return truncate(value.slice(start, end).trim(), 160)
 }
 
 // ── brief/CONTENT.md ──────────────────────────────────────────────────────────
@@ -579,90 +591,20 @@ function harvestPage(): Harvest {
   }
 }
 
-// ── AC-46: the NOVA scan on disk ──────────────────────────────────────────────
-
-const NOVA = /\bnova\b/i
-
-/**
- * AC-46 scopes itself deliberately, and the scope is the whole point of the criterion.
- * `NOVA` is quoted in docs/CANON.md §12 and in brief/ACCEPTANCE.md, because both explain
- * why it must not be used. A gate that failed on its own contract would teach the room
- * that gates are noise to be switched off, so those two files are out of scope by design
- * rather than by oversight.
- *
- * ACCEPTANCE.md names `site/src/**`; this repository root *is* the Astro project, so the
- * scope is src/, design/ and brief/CONTENT.md.
- */
-const NOVA_DIRECTORIES = ['src', 'design']
-const NOVA_FILES = ['brief/CONTENT.md']
-const TEXT_EXTENSIONS = new Set([
-  '.astro', '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.cjs', '.svg', '.ts', '.tsx',
-  '.txt', '.yaml', '.yml',
-])
-const SKIP_DIRECTORIES = new Set(['node_modules', 'dist', '.git', '.astro', '.results'])
-
-function* walkTextFiles(dir: string): Generator<string> {
-  let entries
-  try {
-    entries = readdirSync(dir, { withFileTypes: true })
-  } catch {
-    return
-  }
-  for (const entry of entries) {
-    const full = join(dir, entry.name)
-    if (entry.isDirectory()) {
-      if (SKIP_DIRECTORIES.has(entry.name)) continue
-      yield* walkTextFiles(full)
-    } else if (entry.isFile() && TEXT_EXTENSIONS.has(extname(entry.name).toLowerCase())) {
-      yield full
-    }
-  }
+/** Everything the criteria below read. Built once, after the page has settled. */
+interface Context {
+  harvest: Harvest
+  /** Rendered text plus copy-bearing attributes, dash variants folded. */
+  looseText: string
+  /** The same text with dashes intact, for AC-42. */
+  strictText: string
+  /** Text nodes and copy attributes, each with a selector, for the token scans. */
+  scanSurface: ScanItem[]
 }
 
-// ── The gate ──────────────────────────────────────────────────────────────────
+// ── AC-38: every commissioned string is on the page ───────────────────────────
 
-let completed = false
-
-test('content', async ({ page }) => {
-  test.setTimeout(120_000)
-
-  // One fixed width. The DOM of a static page does not change with the viewport, and
-  // pinning it keeps two runs of this gate on the same input.
-  await page.setViewportSize({ width: 1440, height: 900 })
-
-  let harvest: Harvest
-  try {
-    const response = await page.goto('/', { waitUntil: 'load' })
-    if (!response || !response.ok()) {
-      gate.fail({
-        criterion: 'AC-38',
-        message: `CONTENT: the page could not be loaded (HTTP ${response ? response.status() : 'no response'}). No content criterion was evaluated.`,
-        where: page.url(),
-        hint: 'Run npm run build, then npm run check. A gate that cannot read the page reports that, it does not pass.',
-      })
-      return
-    }
-    await page.waitForLoadState('networkidle').catch(() => {
-      /* an idle timeout is not a content defect; the DOM is already parsed. */
-    })
-    harvest = await page.evaluate(harvestPage)
-  } catch (error) {
-    gate.fail({
-      criterion: 'AC-38',
-      message: `CONTENT: the page could not be read. No content criterion was evaluated. ${String(error).slice(0, 300)}`,
-      where: page.url(),
-    })
-    return
-  }
-
-  // Two haystacks, one licence apart. `loose` folds dash variants, `strict` keeps them,
-  // because AC-42 is the criterion that owns the en dash.
-  const attributeText = harvest.copyAttributes.map((a) => a.value).join('\n')
-  const looseText = normalise(`${harvest.text}\n${attributeText}`)
-  const strictText = normalise(`${harvest.text}\n${attributeText}`, { foldDashes: false })
-  const renderedOnly = normalise(harvest.text)
-
-  // ── AC-38: every commissioned string is on the page ────────────────────────
+function checkCopyStrings(ctx: Context): void {
   const contentMdPath = join(ROOT, 'brief/CONTENT.md')
   if (!existsSync(contentMdPath)) {
     gate.fail({
@@ -670,68 +612,170 @@ test('content', async ({ page }) => {
       message: `AC-38 CONTENT: brief/CONTENT.md not found at ${contentMdPath}; the copy contract could not be read.`,
       where: 'brief/CONTENT.md',
     })
-  } else {
-    const copyStrings = parseCopyStrings(readFileSync(contentMdPath, 'utf8'))
-    const seen = new Set<string>()
-    let checked = 0
-
-    for (const item of copyStrings) {
-      const needle = normalise(item.text)
-      if (!needle || seen.has(needle)) continue
-      seen.add(needle)
-      checked++
-
-      const result = locate(looseText, needle)
-      if (result.kind === 'exact') continue
-
-      const failure = {
-        criterion: 'AC-38',
-        message: `AC-38 CONTENT: string ${item.index} from brief/CONTENT.md not found on the page: "${truncate(item.text)}"`,
-        where: `brief/CONTENT.md:${item.line} (§${item.section})`,
-        expected: item.text,
-      }
-      if (result.kind === 'case') {
-        gate.fail({
-          ...failure,
-          actual: result.observed,
-          hint: 'The page carries this string with different casing. CONTENT.md is verbatim, and ACCEPTANCE.md normalises whitespace but not case: put the exact characters in the DOM rather than relying on text-transform.',
-        })
-      } else if (result.kind === 'near') {
-        gate.fail({
-          ...failure,
-          actual: truncate(result.observed ?? '', 200),
-          hint: 'The page starts this string and then diverges. Do not paraphrase or shorten commissioned copy.',
-        })
-      } else {
-        gate.fail(failure)
-      }
-    }
-    gate.note(`AC-38: ${checked} distinct copy strings extracted from the fenced blocks of brief/CONTENT.md.`)
+    return
   }
 
-  // ── AC-39: the twelve artists ──────────────────────────────────────────────
-  if (harvest.artistScope === 'document') {
+  const copyStrings = parseCopyStrings(readFileSync(contentMdPath, 'utf8'))
+  const seen = new Set<string>()
+  const dashOnly: number[] = []
+  let checked = 0
+
+  for (const item of copyStrings) {
+    const needle = normalise(item.text)
+    if (!needle || seen.has(needle)) continue
+    seen.add(needle)
+    checked++
+
+    const result = locate(ctx.looseText, needle)
+    if (result.kind === 'exact') {
+      // The string is on the page, but it may have got there with a hyphen where
+      // CONTENT.md has an en dash. That is reported rather than failed: AC-42 is the
+      // criterion that enforces the dash, and turning a one-character punctuation
+      // difference into "this whole sentence is missing" is how a gate sends the loop
+      // off to rewrite a paragraph that was almost right.
+      if (DASH_CHARACTERS.test(item.text)) {
+        const strictNeedle = normalise(item.text, { foldDashes: false })
+        if (!ctx.strictText.includes(strictNeedle)) dashOnly.push(item.index)
+      }
+      continue
+    }
+
+    const failure = {
+      criterion: 'AC-38',
+      message: `AC-38 CONTENT: string ${item.index} from brief/CONTENT.md not found on the page: "${truncate(item.text)}"`,
+      where: `brief/CONTENT.md:${item.line} (§${item.section})`,
+      expected: item.text,
+    }
+    if (result.kind === 'case') {
+      gate.fail({
+        ...failure,
+        actual: result.observed,
+        hint: 'The page carries this string with different casing. CONTENT.md is verbatim, and ACCEPTANCE.md normalises whitespace but not case: put the exact characters in the DOM rather than relying on text-transform.',
+      })
+    } else if (result.kind === 'near') {
+      gate.fail({
+        ...failure,
+        actual: truncate(result.observed ?? '', 200),
+        hint: 'The page starts this string and then diverges. Do not paraphrase or shorten commissioned copy.',
+      })
+    } else {
+      gate.fail(failure)
+    }
+  }
+
+  gate.note(`AC-38: ${checked} distinct copy strings extracted from the fenced blocks of brief/CONTENT.md.`)
+  if (dashOnly.length) {
+    gate.note(`AC-38: string(s) ${dashOnly.join(', ')} matched only after folding dash variants — brief/CONTENT.md writes an en dash (U+2013) there and the page does not. Not a failure here; AC-42 enforces the dash in "12–14 June 2027".`)
+  }
+}
+
+// ── AC-39: the twelve artists ─────────────────────────────────────────────────
+
+/**
+ * `data-day` and `data-stage` are compared on a letters-and-digits key: CANON §2 writes
+ * "Fri" and "Turbine Hall", CONTENT.md §6 writes "Friday", and a slug is a reasonable
+ * attribute encoding of either. The gate checks that the card claims the right day and
+ * the right stage, which is the fact AC-39 is about; it does not invent a spelling for an
+ * attribute value the contract left open.
+ */
+function checkArtistCard(artist: CanonArtist, card: ArtistCard): void {
+  const canonRow = `CANON §2 row ${artist.row}: ${artist.day}, ${artist.stage}, ${artist.genre}`
+  const cardText = normalise(card.text)
+
+  if (card.name !== artist.name) {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — data-artist reads "${card.name}". ${canonRow}`,
+      where: card.selector,
+      expected: artist.name,
+      actual: card.name,
+    })
+  }
+
+  const nameOnCard = locate(cardText, normalise(artist.name))
+  if (nameOnCard.kind !== 'exact') {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — the name is not in the card's own text with this spelling. ${canonRow}`,
+      where: card.selector,
+      expected: artist.name,
+      actual: nameOnCard.observed ?? 'not present in the card',
+      hint: nameOnCard.kind === 'case' ? 'The card carries the name with different casing. Put the canonical spelling in the DOM, not in a text-transform.' : undefined,
+    })
+  }
+
+  if (card.day === null) {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — no data-day on the card or its ancestors. ${canonRow}`,
+      where: card.selector,
+      expected: `data-day="${artist.day}"`,
+      actual: 'absent',
+    })
+  } else if (dayKey(card.day) !== dayKey(artist.day)) {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — data-day is "${card.day}". ${canonRow}`,
+      where: card.selector,
+      expected: artist.day,
+      actual: card.day,
+    })
+  }
+
+  if (card.stage === null) {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — no data-stage on the card or its ancestors. ${canonRow}`,
+      where: card.selector,
+      expected: `data-stage="${artist.stage}"`,
+      actual: 'absent',
+    })
+  } else if (slugKey(card.stage) !== slugKey(artist.stage)) {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — data-stage is "${card.stage}". ${canonRow}`,
+      where: card.selector,
+      expected: artist.stage,
+      actual: card.stage,
+    })
+  }
+
+  const genre = locate(cardText, normalise(artist.genre))
+  if (genre.kind !== 'exact') {
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${artist.name}" — genre tag "${artist.genre}" is not in the card text. ${canonRow}`,
+      where: card.selector,
+      expected: artist.genre,
+      actual: genre.observed ?? 'not present in the card',
+      hint: genre.kind === 'case' ? 'The genre is on the card with different casing. CANON §2 spelling is exact.' : undefined,
+    })
+  }
+}
+
+function checkArtists(ctx: Context): void {
+  if (ctx.harvest.artistScope === 'document') {
     gate.note('AC-39: no [data-section="lineup"] element, so [data-artist] was read from the whole document.')
   }
+
   const byName = new Map<string, ArtistCard[]>()
-  for (const card of harvest.artists) {
+  for (const card of ctx.harvest.artists) {
     const key = normalise(card.name)
     byName.set(key, [...(byName.get(key) ?? []), card])
   }
 
   for (const artist of ARTISTS) {
     const canonRow = `CANON §2 row ${artist.row}: ${artist.day}, ${artist.stage}, ${artist.genre}`
-    const key = normalise(artist.name)
-    const cards = byName.get(key) ?? []
+    const cards = byName.get(normalise(artist.name)) ?? []
 
     if (cards.length === 0) {
-      // A near match is worth naming: "KASIMIR Volt" and "Kasimir Volt" are different
-      // defects from "this artist is not on the page at all".
-      const loose = harvest.artists.find((c) => slugKey(c.name) === slugKey(artist.name))
+      // A near match is worth naming: "Kasimir Volt" is a different defect from "this
+      // artist is not on the page at all", and it has a different one-line repair.
+      const loose = ctx.harvest.artists.find((c) => slugKey(c.name) === slugKey(artist.name))
       gate.fail({
         criterion: 'AC-39',
         message: `AC-39 CONTENT: artist "${artist.name}" — no [data-artist] card with this exact spelling. ${canonRow}`,
-        where: harvest.artistScope,
+        where: ctx.harvest.artistScope,
         expected: `[data-artist="${artist.name}"]`,
         actual: loose ? `[data-artist="${loose.name}"]` : 'no card',
         hint: loose ? 'A card with the same letters and different casing or spacing exists. CANON §2 spelling is exact.' : undefined,
@@ -749,103 +793,28 @@ test('content', async ({ page }) => {
       })
     }
 
-    const card = cards[0]!
-    const cardText = normalise(card.text)
-
-    if (card.name !== artist.name) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — data-artist reads "${card.name}". ${canonRow}`,
-        where: card.selector,
-        expected: artist.name,
-        actual: card.name,
-      })
-    }
-
-    const nameOnCard = locate(cardText, normalise(artist.name))
-    if (nameOnCard.kind !== 'exact') {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — the name is not in the card's own text with this spelling. ${canonRow}`,
-        where: card.selector,
-        expected: artist.name,
-        actual: nameOnCard.observed ?? 'not present in the card',
-        hint: nameOnCard.kind === 'case' ? 'The card carries the name with different casing. Put the canonical spelling in the DOM, not in a text-transform.' : undefined,
-      })
-    }
-
-    // `data-day` and `data-stage` are compared on a letters-and-digits key: CANON §2
-    // writes "Fri" and "Turbine Hall", CONTENT.md §6 writes "Friday", and a slug is a
-    // reasonable attribute encoding of either. The gate checks that the card claims the
-    // right day and stage, which is the fact AC-39 is about; it does not invent a
-    // spelling for an attribute value the contract left open.
-    if (card.day === null) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — no data-day on the card or its ancestors. ${canonRow}`,
-        where: card.selector,
-        expected: `data-day="${artist.day}"`,
-        actual: 'absent',
-      })
-    } else if (dayKey(card.day) !== dayKey(artist.day)) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — data-day is "${card.day}". ${canonRow}`,
-        where: card.selector,
-        expected: artist.day,
-        actual: card.day,
-      })
-    }
-
-    if (card.stage === null) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — no data-stage on the card or its ancestors. ${canonRow}`,
-        where: card.selector,
-        expected: `data-stage="${artist.stage}"`,
-        actual: 'absent',
-      })
-    } else if (slugKey(card.stage) !== slugKey(artist.stage)) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — data-stage is "${card.stage}". ${canonRow}`,
-        where: card.selector,
-        expected: artist.stage,
-        actual: card.stage,
-      })
-    }
-
-    const genre = locate(cardText, normalise(artist.genre))
-    if (genre.kind !== 'exact') {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${artist.name}" — genre tag "${artist.genre}" is not in the card text. ${canonRow}`,
-        where: card.selector,
-        expected: artist.genre,
-        actual: genre.observed ?? 'not present in the card',
-        hint: genre.kind === 'case' ? 'The genre is on the card with different casing. CANON §2 spelling is exact.' : undefined,
-      })
-    }
+    checkArtistCard(artist, cards[0]!)
   }
 
-  for (const card of harvest.artists) {
+  for (const card of ctx.harvest.artists) {
     const key = normalise(card.name)
-    if (!ARTISTS.some((a) => normalise(a.name) === key)) {
-      gate.fail({
-        criterion: 'AC-39',
-        message: `AC-39 CONTENT: artist "${card.name}" — not in CANON §2. The lineup is exactly the twelve artists in that table.`,
-        where: card.selector,
-        expected: 'one of the 12 canonical names',
-        actual: card.name,
-      })
-    }
+    if (ARTISTS.some((a) => normalise(a.name) === key)) continue
+    gate.fail({
+      criterion: 'AC-39',
+      message: `AC-39 CONTENT: artist "${card.name}" — not in CANON §2. The lineup is exactly the twelve artists in that table.`,
+      where: card.selector,
+      expected: 'one of the 12 canonical names',
+      actual: card.name,
+    })
   }
+}
 
-  // ── AC-40: placeholder text ────────────────────────────────────────────────
-  const scanSurface: ScanItem[] = [...harvest.scan, ...harvest.copyAttributes]
+// ── AC-40: placeholder text ───────────────────────────────────────────────────
+
+function checkPlaceholderText(ctx: Context): void {
   for (const token of PLACEHOLDER_TOKENS) {
     const pattern = new RegExp(`\\b${token.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i')
-    for (const item of scanSurface) {
+    for (const item of ctx.scanSurface) {
       const value = normalise(item.value)
       const match = pattern.exec(value)
       if (!match) continue
@@ -858,24 +827,112 @@ test('content', async ({ page }) => {
       })
     }
   }
+}
 
-  // ── AC-41: ticket tiers ────────────────────────────────────────────────────
-  const tierExpectation = 'Expected Single Night €45, Full Pass €110 (flagged most popular), Full Pass + Workshop €165'
-  const tierFail = (tier: string, problem: string, extra: Record<string, unknown> = {}): void => {
-    gate.fail({
-      criterion: 'AC-41',
-      message: `AC-41 CONTENT: ticket tier "${tier}" — ${problem}. ${tierExpectation}`,
-      ...extra,
+// ── AC-41: ticket tiers ───────────────────────────────────────────────────────
+
+const TIER_EXPECTATION =
+  'Expected Single Night €45, Full Pass €110 (flagged most popular), Full Pass + Workshop €165'
+
+function tierFail(tier: string, problem: string, extra: Record<string, unknown> = {}): void {
+  gate.fail({
+    criterion: 'AC-41',
+    message: `AC-41 CONTENT: ticket tier "${tier}" — ${problem}. ${TIER_EXPECTATION}`,
+    ...extra,
+  })
+}
+
+/**
+ * The sold-out warning must be driven by `data-places-left`, which means the attribute has
+ * to exist and the card's text has to agree with it. That is the only part of the
+ * three-state behaviour a static page can be held to, and it is worth holding: a
+ * hard-coded warning is a string that will be wrong the first time the number moves.
+ */
+function checkWorkshopAvailability(name: string, card: TierCard, cardText: string): void {
+  if (!card.hasPlacesLeft) {
+    tierFail(name, 'no data-places-left attribute, so the sold-out warning is not driven by anything', {
+      where: card.selector,
+      expected: 'data-places-left="{integer}"',
+      actual: 'absent',
+      hint: 'CANON §3: the sold-out warning appears below 10 places. CONTENT.md §9 gives the string for each state.',
     })
+    return
   }
 
+  const raw = card.placesLeft ?? ''
+  if (!/^\d+$/.test(raw.trim())) {
+    tierFail(name, `data-places-left is "${raw}", which is not a non-negative integer`, {
+      where: card.selector,
+      expected: 'an integer from 0 to 40',
+      actual: raw,
+    })
+    return
+  }
+
+  const places = Number.parseInt(raw, 10)
+  const showsLow = cardText.includes(normalise(LOW_PLACES_LINE))
+  const showsSoldOut = cardText.includes(normalise(SOLD_OUT_LINE))
+  const buttonSoldOut = card.controls.some((c) => normalise(c).includes(normalise(SOLD_OUT_BUTTON)))
+
+  if (places === 0) {
+    if (!showsSoldOut) {
+      tierFail(name, `data-places-left="0" but the card does not say "${SOLD_OUT_LINE}"`, {
+        where: card.selector,
+        expected: SOLD_OUT_LINE,
+        actual: 'no sold-out line',
+      })
+    }
+    if (!buttonSoldOut) {
+      tierFail(name, `data-places-left="0" but no control reads "${SOLD_OUT_BUTTON}"`, {
+        where: card.selector,
+        expected: SOLD_OUT_BUTTON,
+        actual: card.controls.map((c) => normalise(c)).join(' | ') || 'no controls',
+      })
+    } else if (!card.controlsDisabled.some((c) => normalise(c).includes(normalise(SOLD_OUT_BUTTON)))) {
+      tierFail(name, 'the sold-out button is not marked aria-disabled="true"', {
+        where: card.selector,
+        expected: 'aria-disabled="true", still focusable',
+        actual: 'no aria-disabled on the sold-out control',
+      })
+    }
+  } else if (places < 10) {
+    if (!showsLow) {
+      tierFail(name, `data-places-left="${places}" but the card does not say "${LOW_PLACES_LINE}"`, {
+        where: card.selector,
+        expected: LOW_PLACES_LINE,
+        actual: 'no low-places line',
+      })
+    }
+    if (showsSoldOut) {
+      tierFail(name, `data-places-left="${places}" but the card shows the sold-out line`, {
+        where: card.selector,
+        expected: LOW_PLACES_LINE,
+        actual: SOLD_OUT_LINE,
+      })
+    }
+    // CONTENT.md §9 says to ship the default state. Which integer ships is a content
+    // decision the acceptance contract does not gate, so this is a note, not a failure —
+    // a gate must not invent a requirement its own contract left open.
+    gate.note(`AC-41: the workshop card ships with data-places-left="${places}". CONTENT.md §9 asks for the default state (10 or more).`)
+  } else if (showsLow || showsSoldOut) {
+    tierFail(name, `data-places-left="${places}" but the card shows an availability warning`, {
+      where: card.selector,
+      expected: 'no availability line above 9 places left',
+      actual: showsSoldOut ? SOLD_OUT_LINE : LOW_PLACES_LINE,
+    })
+  }
+}
+
+function checkTicketTiers(ctx: Context): void {
   for (const spec of TIERS) {
-    const matches = harvest.tiers.filter((t) => t.tier === spec.key)
+    const matches = ctx.harvest.tiers.filter((t) => t.tier === spec.key)
     if (matches.length === 0) {
       tierFail(spec.name, `no [data-tier="${spec.key}"] card on the page`, {
         where: '[data-section="tickets"]',
         expected: `[data-tier="${spec.key}"]`,
-        actual: harvest.tiers.length ? harvest.tiers.map((t) => `[data-tier="${t.tier}"]`).join(', ') : 'no ticket cards',
+        actual: ctx.harvest.tiers.length
+          ? ctx.harvest.tiers.map((t) => `[data-tier="${t.tier}"]`).join(', ')
+          : 'no ticket cards',
       })
       continue
     }
@@ -935,111 +992,33 @@ test('content', async ({ page }) => {
       })
     }
 
-    if (spec.key !== 'workshop') continue
-
-    // The sold-out warning must be driven by data-places-left, which means the attribute
-    // has to exist and the card's text has to agree with it. This is the only part of the
-    // three-state behaviour a static page can be held to, and it is worth holding: a
-    // hard-coded warning is a string that will be wrong the first time the number moves.
-    if (!card.hasPlacesLeft) {
-      tierFail(spec.name, 'no data-places-left attribute, so the sold-out warning is not driven by anything', {
-        where: card.selector,
-        expected: 'data-places-left="{integer}"',
-        actual: 'absent',
-        hint: 'CANON §3: the sold-out warning appears below 10 places. CONTENT.md §9 gives the string for each state.',
-      })
-    } else {
-      const raw = card.placesLeft ?? ''
-      const places = Number.parseInt(raw, 10)
-      if (!/^\d+$/.test(raw.trim())) {
-        tierFail(spec.name, `data-places-left is "${raw}", which is not a non-negative integer`, {
-          where: card.selector,
-          expected: 'an integer from 0 to 40',
-          actual: raw,
-        })
-      } else {
-        const showsLow = cardText.includes(normalise(LOW_PLACES_LINE))
-        const showsSoldOut = cardText.includes(normalise(SOLD_OUT_LINE))
-        const buttonSoldOut = card.controls.some((c) => normalise(c).includes(normalise(SOLD_OUT_BUTTON)))
-
-        if (places === 0) {
-          if (!showsSoldOut) {
-            tierFail(spec.name, `data-places-left="0" but the card does not say "${SOLD_OUT_LINE}"`, {
-              where: card.selector,
-              expected: SOLD_OUT_LINE,
-              actual: 'no sold-out line',
-            })
-          }
-          if (!buttonSoldOut) {
-            tierFail(spec.name, `data-places-left="0" but no control reads "${SOLD_OUT_BUTTON}"`, {
-              where: card.selector,
-              expected: SOLD_OUT_BUTTON,
-              actual: card.controls.map((c) => normalise(c)).join(' | ') || 'no controls',
-            })
-          } else if (!card.controlsDisabled.some((c) => normalise(c).includes(normalise(SOLD_OUT_BUTTON)))) {
-            tierFail(spec.name, 'the sold-out button is not marked aria-disabled="true"', {
-              where: card.selector,
-              expected: 'aria-disabled="true", still focusable',
-              actual: 'no aria-disabled on the sold-out control',
-            })
-          }
-        } else if (places < 10) {
-          if (!showsLow) {
-            tierFail(spec.name, `data-places-left="${places}" but the card does not say "${LOW_PLACES_LINE}"`, {
-              where: card.selector,
-              expected: LOW_PLACES_LINE,
-              actual: 'no low-places line',
-            })
-          }
-          if (showsSoldOut) {
-            tierFail(spec.name, `data-places-left="${places}" but the card shows the sold-out line`, {
-              where: card.selector,
-              expected: LOW_PLACES_LINE,
-              actual: SOLD_OUT_LINE,
-            })
-          }
-        } else {
-          if (showsLow || showsSoldOut) {
-            tierFail(spec.name, `data-places-left="${places}" but the card shows an availability warning`, {
-              where: card.selector,
-              expected: 'no availability line above 9 places left',
-              actual: showsSoldOut ? SOLD_OUT_LINE : LOW_PLACES_LINE,
-            })
-          }
-        }
-
-        if (places < 10) {
-          // CONTENT.md §9 says to ship the default state. Which integer ships is a content
-          // decision the acceptance contract does not gate, so this is a note, not a
-          // failure — a gate must not invent a requirement its own contract left open.
-          gate.note(`AC-41: the workshop card ships with data-places-left="${places}". CONTENT.md §9 asks for the default state (10 or more).`)
-        }
-      }
-    }
+    if (spec.key === 'workshop') checkWorkshopAvailability(spec.name, card, cardText)
   }
 
-  for (const card of harvest.tiers) {
-    if (!TIERS.some((t) => t.key === card.tier)) {
-      tierFail(card.tier || '(empty)', `data-tier="${card.tier}" is not one of single, full, workshop`, {
-        where: card.selector,
-        expected: 'single | full | workshop',
-        actual: card.tier,
-      })
-    }
+  for (const card of ctx.harvest.tiers) {
+    if (TIERS.some((t) => t.key === card.tier)) continue
+    tierFail(card.tier || '(empty)', `data-tier="${card.tier}" is not one of single, full, workshop`, {
+      where: card.selector,
+      expected: 'single | full | workshop',
+      actual: card.tier,
+    })
   }
+}
 
-  // ── AC-42: event facts ─────────────────────────────────────────────────────
+// ── AC-42: event facts ────────────────────────────────────────────────────────
+
+function checkEventFacts(ctx: Context): void {
   for (const fact of EVENT_FACTS) {
     const candidates = [fact.expected, ...(fact.accept ?? [])].map((c) => normalise(c, { foldDashes: false }))
-    if (candidates.some((c) => strictText.includes(c))) continue
+    if (candidates.some((c) => ctx.strictText.includes(c))) continue
 
     let observed = 'not found in the rendered text'
     if (fact.nearMiss) {
-      const near = fact.nearMiss.exec(strictText)
+      const near = fact.nearMiss.exec(ctx.strictText)
       if (near) observed = near[0]
     }
     if (observed === 'not found in the rendered text') {
-      const loose = locate(looseText, normalise(fact.expected))
+      const loose = locate(ctx.looseText, normalise(fact.expected))
       if (loose.kind !== 'missing' && loose.observed) observed = truncate(loose.observed, 120)
     }
 
@@ -1052,58 +1031,61 @@ test('content', async ({ page }) => {
       hint: fact.field === 'dates' ? 'The separator is an en dash (U+2013), not a hyphen: 12–14 June 2027.' : undefined,
     })
   }
+}
 
-  // ── AC-43: access note, inside the tickets section ─────────────────────────
-  const ticketsText = normalise(harvest.sections['tickets'] ?? '')
+// ── AC-43 and AC-44: two strings that have to be in one section each ──────────
+
+function checkAccessNote(ctx: Context): void {
+  const ticketsText = normalise(ctx.harvest.sections['tickets'] ?? '')
   const accessNote = normalise(ACCESS_NOTE)
-  if (!ticketsText.includes(accessNote)) {
-    const elsewhere = looseText.includes(accessNote)
-    gate.fail({
-      criterion: 'AC-43',
-      message: `AC-43 CONTENT: access note missing from the tickets section. Expected verbatim: "${ACCESS_NOTE}"`,
-      where: '[data-section="tickets"]',
-      expected: ACCESS_NOTE,
-      actual: harvest.sections['tickets'] === undefined
-        ? 'there is no [data-section="tickets"] element'
-        : elsewhere
-          ? 'present on the page but outside the tickets section'
-          : 'not present',
-      hint: 'CONTENT.md §9 places it under the comparison list and above the small print, so it sits with the prices.',
-    })
-  }
+  if (ticketsText.includes(accessNote)) return
 
-  // ── AC-44: fiction disclaimer, in the footer ───────────────────────────────
-  const footerText = normalise(harvest.sections['footer'] ?? '')
+  gate.fail({
+    criterion: 'AC-43',
+    message: `AC-43 CONTENT: access note missing from the tickets section. Expected verbatim: "${ACCESS_NOTE}"`,
+    where: '[data-section="tickets"]',
+    expected: ACCESS_NOTE,
+    actual: ctx.harvest.sections['tickets'] === undefined
+      ? 'there is no [data-section="tickets"] element'
+      : ctx.looseText.includes(accessNote)
+        ? 'present on the page but outside the tickets section'
+        : 'not present',
+    hint: 'CONTENT.md §9 places it under the comparison list and above the small print, so it sits with the prices.',
+  })
+}
+
+function checkFictionDisclaimer(ctx: Context): void {
+  const footerText = normalise(ctx.harvest.sections['footer'] ?? '')
   const disclaimer = normalise(FICTION_DISCLAIMER)
-  if (!footerText.includes(disclaimer)) {
-    const partial = locate(footerText, disclaimer)
-    gate.fail({
-      criterion: 'AC-44',
-      message: 'AC-44 CONTENT: fiction disclaimer missing or altered in the footer. Expected the CANON §1 wording verbatim',
-      where: '[data-section="footer"]',
-      expected: FICTION_DISCLAIMER,
-      actual: harvest.sections['footer'] === undefined
-        ? 'there is no [data-section="footer"] element'
-        : partial.kind === 'missing'
-          ? looseText.includes(disclaimer)
-            ? 'present on the page but outside the footer'
-            : 'not present'
-          : truncate(partial.observed ?? '', 220),
-    })
-  }
+  if (footerText.includes(disclaimer)) return
 
-  // ── AC-45: banned words and exclamation marks ──────────────────────────────
-  const sentenceAround = (value: string, index: number, length: number): string => {
-    const before = value.lastIndexOf('. ', index)
-    const afterDot = value.indexOf('. ', index + length)
-    const start = before === -1 ? 0 : before + 2
-    const end = afterDot === -1 ? value.length : afterDot + 1
-    return truncate(value.slice(start, end).trim(), 160)
-  }
+  // A disclaimer that is present and edited is a different problem from one that is
+  // missing, and the difference matters: CANON §1 requires this wording unaltered.
+  const partial = locate(footerText, disclaimer)
+  gate.fail({
+    criterion: 'AC-44',
+    message: 'AC-44 CONTENT: fiction disclaimer missing or altered in the footer. Expected the CANON §1 wording verbatim',
+    where: '[data-section="footer"]',
+    expected: FICTION_DISCLAIMER,
+    actual: ctx.harvest.sections['footer'] === undefined
+      ? 'there is no [data-section="footer"] element'
+      : partial.kind === 'missing'
+        ? ctx.looseText.includes(disclaimer)
+          ? 'present on the page but outside the footer'
+          : 'not present'
+        : truncate(partial.observed ?? '', 220),
+  })
+}
 
+// ── AC-45: banned words and exclamation marks ─────────────────────────────────
+
+function checkBannedTokens(ctx: Context): void {
   let bannedHits = 0
-  for (const item of scanSurface) {
+
+  for (const item of ctx.scanSurface) {
     const value = normalise(item.value)
+    const where = item.kind === 'text' ? item.selector : `${item.selector} [${item.kind}]`
+
     BANNED_WORDS.lastIndex = 0
     let match: RegExpExecArray | null
     while ((match = BANNED_WORDS.exec(value)) !== null) {
@@ -1111,17 +1093,21 @@ test('content', async ({ page }) => {
       gate.fail({
         criterion: 'AC-45',
         message: `AC-45 CONTENT: banned token "${match[0]}" in ${item.selector}: "${sentenceAround(value, match.index, match[0].length)}"`,
-        where: item.kind === 'text' ? item.selector : `${item.selector} [${item.kind}]`,
+        where,
         hint: 'CANON §10 bans immersive, journey, unleash, elevate and curated experience. Use the copy in brief/CONTENT.md.',
       })
     }
-    const bang = value.indexOf('!')
-    if (bang >= 0) {
-      bannedHits++
+
+    // Count every exclamation mark in the node, not just the first: the reconciliation
+    // below compares these counts against the whole page and must not see a phantom gap.
+    const bangs = value.split('!').length - 1
+    if (bangs > 0) {
+      bannedHits += bangs
       gate.fail({
         criterion: 'AC-45',
-        message: `AC-45 CONTENT: banned token "!" in ${item.selector}: "${sentenceAround(value, bang, 1)}"`,
-        where: item.kind === 'text' ? item.selector : `${item.selector} [${item.kind}]`,
+        message: `AC-45 CONTENT: banned token "!" in ${item.selector}: "${sentenceAround(value, value.indexOf('!'), 1)}"`,
+        where,
+        actual: bangs > 1 ? `${bangs} exclamation marks in this element` : undefined,
         hint: 'CANON §10: no exclamation marks anywhere on the page.',
       })
     }
@@ -1131,7 +1117,7 @@ test('content', async ({ page }) => {
   // scanning would miss it, so the whole rendered text is checked as well and anything
   // the per-element pass did not already account for is reported without a selector.
   BANNED_WORDS.lastIndex = 0
-  const wholePageHits = (looseText.match(BANNED_WORDS) ?? []).length + (looseText.split('!').length - 1)
+  const wholePageHits = (ctx.looseText.match(BANNED_WORDS) ?? []).length + (ctx.looseText.split('!').length - 1)
   if (wholePageHits > bannedHits) {
     gate.fail({
       criterion: 'AC-45',
@@ -1140,12 +1126,54 @@ test('content', async ({ page }) => {
       hint: 'Search the built HTML for immersive, journey, unleash, elevate, curated experience and "!".',
     })
   }
+}
 
-  // ── AC-46: NOVA ────────────────────────────────────────────────────────────
+// ── AC-46: NOVA ───────────────────────────────────────────────────────────────
+
+const NOVA = /\bnova\b/i
+
+/**
+ * AC-46 scopes itself deliberately, and the scope is the whole point of the criterion.
+ * `NOVA` is quoted in docs/CANON.md §12 and in brief/ACCEPTANCE.md, because both explain
+ * why it must not be used. A gate that failed on its own contract would teach the room
+ * that gates are noise to be switched off, so those two files are out of scope by design
+ * rather than by oversight.
+ *
+ * ACCEPTANCE.md names `site/src/**`; this repository root *is* the Astro project, so the
+ * scope is src/, design/ and brief/CONTENT.md.
+ */
+const NOVA_DIRECTORIES = ['src', 'design']
+const NOVA_FILES = ['brief/CONTENT.md']
+const TEXT_EXTENSIONS = new Set([
+  '.astro', '.css', '.html', '.js', '.json', '.jsx', '.md', '.mjs', '.cjs', '.svg', '.ts', '.tsx',
+  '.txt', '.yaml', '.yml',
+])
+const SKIP_DIRECTORIES = new Set(['node_modules', 'dist', '.git', '.astro', '.results'])
+
+function* walkTextFiles(dir: string): Generator<string> {
+  let entries
+  try {
+    entries = readdirSync(dir, { withFileTypes: true })
+  } catch {
+    return
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name)
+    if (entry.isDirectory()) {
+      if (SKIP_DIRECTORIES.has(entry.name)) continue
+      yield* walkTextFiles(full)
+    } else if (entry.isFile() && TEXT_EXTENSIONS.has(extname(entry.name).toLowerCase())) {
+      yield full
+    }
+  }
+}
+
+function checkNova(ctx: Context): void {
   const novaTargets: string[] = [
     ...NOVA_DIRECTORIES.flatMap((dir) => {
       const full = join(ROOT, dir)
       if (!existsSync(full)) {
+        // A scope that cannot be read is reported, never assumed clean.
         gate.fail({
           criterion: 'AC-46',
           message: `AC-46 CONTENT: ${dir}/ does not exist, so it could not be scanned for "NOVA". See CANON §12`,
@@ -1170,7 +1198,8 @@ test('content', async ({ page }) => {
       })
     }
   }
-  for (const item of scanSurface) {
+
+  for (const item of ctx.scanSurface) {
     if (!NOVA.test(item.value)) continue
     gate.fail({
       criterion: 'AC-46',
@@ -1179,17 +1208,25 @@ test('content', async ({ page }) => {
       actual: truncate(normalise(item.value), 160),
     })
   }
-  gate.note('AC-46 scope: src/, design/, brief/CONTENT.md and the rendered page. docs/CANON.md §12 and brief/ACCEPTANCE.md quote the name in order to forbid it and are excluded on purpose.')
 
-  // ── AC-47: eight questions, twelve sets ────────────────────────────────────
-  const faqCount = harvest.faq.summaries > 0 ? harvest.faq.summaries : harvest.faq.expandables
+  gate.note(`AC-46 scope: ${novaTargets.length} text file(s) under src/, design/ and brief/CONTENT.md, plus the rendered page. docs/CANON.md §12 and brief/ACCEPTANCE.md quote the name in order to forbid it and are excluded on purpose.`)
+}
 
-  // Counted by matching the canon rather than by counting cells: CONTENT.md §7 renders
-  // every set twice, once in the desktop table and once in the stacked mobile list, so a
-  // cell count would read 24 on a correct page. Asking "is each of the twelve sets
-  // listed, on the right day and the right stage" is the question AC-47 is actually about.
+// ── AC-47: eight questions, twelve sets ───────────────────────────────────────
+
+function checkCounts(ctx: Context): { faqCount: number; foundSets: number } {
+  const { faq, programme } = ctx.harvest
+  // `summary` is the question control of a native accordion and the one CONTENT.md §10
+  // asks for; a custom accordion is counted by aria-expanded instead. Counting both at
+  // once would double every native item that script has also marked up.
+  const faqCount = faq.summaries > 0 ? faq.summaries : faq.expandables
+
+  // Sets are counted by matching the canon rather than by counting cells: CONTENT.md §7
+  // renders every set twice, once in the desktop table and once in the stacked mobile
+  // list, so a cell count would read 24 on a correct page. "Is each of the twelve sets
+  // listed, on the right day and the right stage" is the question AC-47 is about.
   const foundSets = ARTISTS.filter((artist) =>
-    harvest.programme.cells.some(
+    programme.cells.some(
       (cell) =>
         cell.stage !== null &&
         slugKey(cell.stage) === slugKey(artist.stage) &&
@@ -1198,8 +1235,8 @@ test('content', async ({ page }) => {
         normalise(cell.text).includes(normalise(artist.name)),
     ),
   )
-  const days = new Set(harvest.programme.days.map(dayKey))
-  const stages = new Set(harvest.programme.stages.map(slugKey))
+  const days = new Set(programme.days.map(dayKey))
+  const stages = new Set(programme.stages.map(slugKey))
 
   if (faqCount !== 8 || foundSets.length !== 12 || days.size !== 3 || stages.size !== 3) {
     const missing = ARTISTS.filter((a) => !foundSets.includes(a)).map((a) => `${a.name} (${a.day}, ${a.stage})`)
@@ -1211,11 +1248,79 @@ test('content', async ({ page }) => {
       actual: `${faqCount} questions; ${foundSets.length} sets, ${days.size} days, ${stages.size} stages`,
       hint: missing.length
         ? `Not found on the right day and stage: ${missing.join('; ')}. Programme cells carry data-day and data-stage (ACCEPTANCE.md, "The contract the page must expose").`
-        : `FAQ questions were counted by ${harvest.faq.basis}.`,
+        : `FAQ questions were counted by ${faq.basis}.`,
     })
   }
 
-  gate.note(`Counted ${harvest.artists.length} [data-artist] cards, ${harvest.tiers.length} [data-tier] cards, ${faqCount} FAQ questions, ${foundSets.length}/12 programme sets.`)
+  return { faqCount, foundSets: foundSets.length }
+}
+
+// ── The gate ──────────────────────────────────────────────────────────────────
+
+let completed = false
+
+test('content', async ({ page }) => {
+  test.setTimeout(120_000)
+
+  // One fixed width. The DOM of a static page does not change with the viewport, and
+  // pinning it keeps two runs of this gate on the same input.
+  await page.setViewportSize({ width: 1440, height: 900 })
+
+  let harvest: Harvest
+  try {
+    const response = await page.goto('/', { waitUntil: 'load' })
+    if (!response || !response.ok()) {
+      gate.fail({
+        criterion: 'AC-38',
+        message: `CONTENT: the page could not be loaded (HTTP ${response ? response.status() : 'no response'}). No content criterion was evaluated.`,
+        where: page.url(),
+        hint: 'Run npm run build, then npm run check. A gate that cannot read the page reports that, it does not pass.',
+      })
+      return
+    }
+    await page.waitForLoadState('networkidle').catch(() => {
+      /* an idle timeout is not a content defect; the DOM is already parsed. */
+    })
+    // The ::before/::after text this gate reads only exists once the stylesheets have been
+    // applied. document.fonts.ready settles after style resolution, so waiting on it stops
+    // the "·" separators from being present on one run and missing on the next. A gate that
+    // flickers is a bug in the gate (ACCEPTANCE.md), so the race is closed here.
+    await page.evaluate(() => document.fonts.ready.then(() => true)).catch(() => {
+      /* no font loading API: computed styles are still resolved by the time load fires. */
+    })
+    harvest = await page.evaluate(harvestPage)
+  } catch (error) {
+    gate.fail({
+      criterion: 'AC-38',
+      message: `CONTENT: the page could not be read. No content criterion was evaluated. ${String(error).slice(0, 300)}`,
+      where: page.url(),
+    })
+    return
+  }
+
+  const attributeText = harvest.copyAttributes.map((a) => a.value).join('\n')
+  const ctx: Context = {
+    harvest,
+    looseText: normalise(`${harvest.text}\n${attributeText}`),
+    strictText: normalise(`${harvest.text}\n${attributeText}`, { foldDashes: false }),
+    scanSurface: [...harvest.scan, ...harvest.copyAttributes],
+  }
+
+  // Every criterion runs, every time. None of them throws, so a defect in one section of
+  // the page cannot hide the defects in the next one, and a single iteration of the loop
+  // gets the whole list.
+  checkCopyStrings(ctx)
+  checkArtists(ctx)
+  checkPlaceholderText(ctx)
+  checkTicketTiers(ctx)
+  checkEventFacts(ctx)
+  checkAccessNote(ctx)
+  checkFictionDisclaimer(ctx)
+  checkBannedTokens(ctx)
+  checkNova(ctx)
+  const counts = checkCounts(ctx)
+
+  gate.note(`Counted ${harvest.artists.length} [data-artist] cards, ${harvest.tiers.length} [data-tier] cards, ${counts.faqCount} FAQ questions, ${counts.foundSets}/12 programme sets.`)
   completed = true
 })
 

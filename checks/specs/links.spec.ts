@@ -31,7 +31,13 @@ const DIST = join(ROOT, 'dist')
  * `aria-describedby` and `aria-controls` are ID *lists*, so each token is resolved
  * separately — one bad token in a list of three is still a broken reference.
  */
-const IDREF_ATTRIBUTES: { attribute: string; selector: string; list: boolean }[] = [
+interface IdrefSpec {
+  attribute: string
+  selector: string
+  list: boolean
+}
+
+const IDREF_ATTRIBUTES: IdrefSpec[] = [
   { attribute: 'aria-controls', selector: '[aria-controls]', list: true },
   { attribute: 'aria-labelledby', selector: '[aria-labelledby]', list: true },
   { attribute: 'aria-describedby', selector: '[aria-describedby]', list: true },
@@ -48,7 +54,12 @@ const IDREF_ATTRIBUTES: { attribute: string; selector: string; list: boolean }[]
  * an anchor href is a destination, not an asset, and the ones on this page are fragments,
  * mailto: links and the deliberately dead external URLs from CONTENT.md §16.
  */
-const ASSET_ATTRIBUTES: { selector: string; attribute: string }[] = [
+interface AssetSpec {
+  selector: string
+  attribute: string
+}
+
+const ASSET_ATTRIBUTES: AssetSpec[] = [
   { selector: 'img[src]', attribute: 'src' },
   { selector: 'script[src]', attribute: 'src' },
   { selector: 'source[src]', attribute: 'src' },
@@ -68,7 +79,9 @@ interface AnchorRef {
   selector: string
   href: string
   raw: string
+  /** Percent-decoded, because `#faq-r%C3%BCm` and `#faq-rüm` are the same target. */
   fragment: string
+  exists: boolean
 }
 
 interface IdrefIssue {
@@ -100,9 +113,11 @@ interface LinkHarvest {
 
 /**
  * One pass over the document, in the page. Everything that needs the DOM happens here;
- * everything that needs the filesystem happens in Node afterwards.
+ * everything that needs the filesystem happens in Node afterwards. The attribute tables
+ * are passed in rather than repeated here, so there is one place to read what this gate
+ * considers an IDREF and what it considers an asset.
  */
-function harvestLinks(): LinkHarvest {
+function harvestLinks(specs: { idrefs: IdrefSpec[]; assets: AssetSpec[] }): LinkHarvest {
   function selectorFor(el: Element | null): string {
     if (!el) return '(document)'
     const parts: string[] = []
@@ -137,7 +152,7 @@ function harvestLinks(): LinkHarvest {
   const pageOrigin = window.location.origin
 
   // ── AC-48 and AC-49: anchors ───────────────────────────────────────────────
-  const anchors: AnchorRef[] = []
+  const anchors: { selector: string; href: string; raw: string; fragment: string }[] = []
   const badHrefs: { selector: string; href: string | null }[] = []
 
   for (const el of Array.from(document.querySelectorAll('a, area'))) {
@@ -176,18 +191,7 @@ function harvestLinks(): LinkHarvest {
   }
 
   const idrefs: IdrefIssue[] = []
-  const IDREF_SPECS: { attribute: string; selector: string; list: boolean }[] = [
-    { attribute: 'aria-controls', selector: '[aria-controls]', list: true },
-    { attribute: 'aria-labelledby', selector: '[aria-labelledby]', list: true },
-    { attribute: 'aria-describedby', selector: '[aria-describedby]', list: true },
-    { attribute: 'for', selector: 'label[for], output[for]', list: false },
-    {
-      attribute: 'form',
-      selector: 'button[form], fieldset[form], input[form], label[form], object[form], output[form], select[form], textarea[form]',
-      list: false,
-    },
-  ]
-  for (const spec of IDREF_SPECS) {
+  for (const spec of specs.idrefs) {
     for (const el of Array.from(document.querySelectorAll(spec.selector))) {
       const value = el.getAttribute(spec.attribute) ?? ''
       const tokens = spec.list ? value.trim().split(/\s+/).filter(Boolean) : [value.trim()].filter(Boolean)
@@ -231,7 +235,7 @@ function harvestLinks(): LinkHarvest {
     assets.push({ selector, origin, attribute, raw: value, resolved, sameOrigin, scheme })
   }
 
-  for (const spec of ASSET_SPECS()) {
+  for (const spec of specs.assets) {
     for (const el of Array.from(document.querySelectorAll(spec.selector))) {
       pushRef(selectorFor(el), 'attribute', spec.attribute, el.getAttribute(spec.attribute) ?? '', document.baseURI)
     }
@@ -287,27 +291,9 @@ function harvestLinks(): LinkHarvest {
     }
   }
 
-  function ASSET_SPECS(): { selector: string; attribute: string }[] {
-    return [
-      { selector: 'img[src]', attribute: 'src' },
-      { selector: 'script[src]', attribute: 'src' },
-      { selector: 'source[src]', attribute: 'src' },
-      { selector: 'audio[src]', attribute: 'src' },
-      { selector: 'video[src]', attribute: 'src' },
-      { selector: 'video[poster]', attribute: 'poster' },
-      { selector: 'iframe[src]', attribute: 'src' },
-      { selector: 'embed[src]', attribute: 'src' },
-      { selector: 'track[src]', attribute: 'src' },
-      { selector: 'input[type="image"][src]', attribute: 'src' },
-      { selector: 'object[data]', attribute: 'data' },
-      { selector: 'link[href]', attribute: 'href' },
-      { selector: 'use[href]', attribute: 'href' },
-    ]
-  }
-
   // Fragment resolution happens here, where the document is, so that AC-48 compares
   // against the same id set AC-50 used.
-  const resolvedAnchors = anchors.map((a) => {
+  const resolvedAnchors: AnchorRef[] = anchors.map((a) => {
     let decoded = a.fragment
     try {
       decoded = decodeURIComponent(a.fragment)
@@ -315,7 +301,7 @@ function harvestLinks(): LinkHarvest {
       /* a malformed escape is reported as an unresolved fragment below */
     }
     const exists = ids.has(a.fragment) || ids.has(decoded) || names.has(a.fragment) || names.has(decoded)
-    return { ...a, fragment: decoded, exists } as AnchorRef & { exists: boolean }
+    return { ...a, fragment: decoded, exists }
   })
 
   return {
@@ -376,7 +362,7 @@ test('links', async ({ page }) => {
   test.setTimeout(120_000)
   await page.setViewportSize({ width: 1440, height: 900 })
 
-  let harvest: LinkHarvest & { anchors: (AnchorRef & { exists?: boolean })[] }
+  let harvest: LinkHarvest
   try {
     const response = await page.goto('/', { waitUntil: 'load' })
     if (!response || !response.ok()) {
@@ -390,7 +376,22 @@ test('links', async ({ page }) => {
     await page.waitForLoadState('networkidle').catch(() => {
       /* idle timeouts are not link defects; the DOM is parsed by now. */
     })
-    harvest = await page.evaluate(harvestLinks)
+    // Stylesheets have to be parsed before the CSSOM can be walked for url() references.
+    // document.fonts.ready settles only once style resolution has finished, which is the
+    // cheapest honest signal that the sheets are in.
+    await page.evaluate(() => document.fonts.ready.then(() => true)).catch(() => {
+      /* no font loading API, or no fonts: the harvest below is still valid. */
+    })
+
+    harvest = await page.evaluate(harvestLinks, { idrefs: IDREF_ATTRIBUTES, assets: ASSET_ATTRIBUTES })
+    if (harvest.unreadableStylesheets.length) {
+      // A sheet that is still loading and a sheet that cannot be read look identical for
+      // one frame. Gates must be idempotent (ACCEPTANCE.md), so the harvest is repeated
+      // once after a pause: a genuinely cross-origin sheet is still unreadable, a slow
+      // one is not, and the second reading is the one that gets reported.
+      await page.waitForTimeout(500)
+      harvest = await page.evaluate(harvestLinks, { idrefs: IDREF_ATTRIBUTES, assets: ASSET_ATTRIBUTES })
+    }
   } catch (error) {
     gate.fail({
       criterion: 'AC-48',

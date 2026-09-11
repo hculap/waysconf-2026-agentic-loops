@@ -7,8 +7,8 @@
 #   MAX=3 bash loop/ralph.sh           # stop sooner
 #
 # The shape is Geoffrey Huntley's: put the instruction in a file, run the agent
-# against it, let it fail, run it again. What makes it work is not the while
-# loop — it is the two things around it.
+# against it, let it fail, run it again. What makes it work is not the loop
+# itself — it is the two things around it.
 #
 #   1. The exit condition is `npm run check`, which is a program. It returns 0 or
 #      it does not. The model is not consulted about whether the work is done.
@@ -19,8 +19,9 @@
 #      notes does not.
 #
 # Everything else here is a guard rail: a hard iteration cap so it cannot run all
-# night, a transcript per iteration so you can see what happened, and a refusal to
-# start if the working tree is dirty, so you can always get back.
+# night, a transcript per iteration so you can see what happened, a refusal to
+# start if the working tree is dirty, so you can always get back, and a refusal to
+# commit an iteration that edited the verifier.
 
 set -uo pipefail
 cd "$(dirname "$0")/.."
@@ -88,6 +89,18 @@ for i in $(seq 1 "$MAX"); do
       "$AGENT" "$(cat loop/PROMPT.md)" > "$RUN_DIR/agent-$i.log" 2>&1
       ;;
   esac
+
+  # The agent is told never to touch checks/ or .github/. This is what makes that
+  # an enforced rule rather than a request: an iteration that moved the measure is
+  # not committed, and the run stops for a person to look at.
+  if [ -n "$(git status --porcelain -- checks/ .github/)" ]; then
+    echo "Iteration $i changed the verifier:"
+    git status --short -- checks/ .github/
+    echo
+    echo "Stopping. A gate the generator can edit is not a gate. Read the diff, then"
+    echo "'git checkout -- checks/ .github/' to put the verifier back."
+    exit 1
+  fi
 
   # A commit per iteration. Not for the history — for the ability to see exactly
   # what each pass changed, and to bisect the one that made things worse.

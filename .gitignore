@@ -13,7 +13,12 @@ test-results/
 playwright-report/
 .DS_Store
 *.log
+# ...except the image-generation provenance record, which has to travel with a clone
+# or design/assets/PROMPTS.md §8 is claiming a reproducibility nobody can check.
+!evidence/*.log
 deck/dist/
 deck/node_modules/
+# Copied from deck/diagrams/ by deck's sync:diagrams script so Slidev can serve them.
+deck/public/diagrams/
 evidence/**/node_modules/
 .scratch/

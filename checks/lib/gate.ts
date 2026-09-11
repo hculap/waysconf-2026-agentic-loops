@@ -3,7 +3,22 @@ import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..')
-const GATE_DIR = join(ROOT, 'checks/.results/gates')
+
+/**
+ * Where this run's gate results go.
+ *
+ * checks/run.mjs stamps CHECK_RUN_DIR with a directory unique to the run before it
+ * spawns Playwright. Without that, every concurrent run shares one directory, and a
+ * second browser session writing into it mid-aggregation gets folded into the first
+ * run's report — which is how a report once came back describing a page from an
+ * entirely different website. A verifier that can be contaminated by something else
+ * on the machine is not a verifier. See evidence/INCIDENTS.md.
+ *
+ * The fallback path keeps a spec runnable on its own with `npx playwright test`.
+ */
+const GATE_DIR = process.env.CHECK_RUN_DIR
+  ? join(process.env.CHECK_RUN_DIR, 'gates')
+  : join(ROOT, 'checks/.results/gates')
 
 export interface Failure {
   /** Acceptance criterion id from brief/ACCEPTANCE.md, e.g. "AC-14". */

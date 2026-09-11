@@ -3,26 +3,30 @@
 Plain-language definitions of every term used in this workshop. No prior terminal or GitHub experience
 is assumed. Entries are alphabetical; each says what the thing is and where it turns up here.
 
-Anything in `monospace` is something you type or a file you can open.
+Anything in `monospace` is a command you can type, a file you can open, or a value written the way the
+project writes it. `<angle brackets>` mark a placeholder you replace.
 
 ---
 
 ## A
 
-**Accessibility gate** — The part of `npm run check` that fails the build when the page breaks
-accessibility rules. In this workshop: usually the first gate to go red, because the TURBINE palette
-contains a grey that fails contrast on purpose.
+**Accessibility gate** — The part of `npm run check` that fails the run when the page breaks
+accessibility rules. In this workshop: the gate the session is built around. At `step-3` structure and
+content have gone green and this one is still red, because the TURBINE palette contains a grey that
+fails contrast on purpose.
 
 **Adversarial review** — A review in which every candidate defect is handed to reviewers instructed to
 refute it, so only findings that survive get reported. In this workshop:
-`loop/workflows/adversarial-review.mjs`, run after the deterministic gates are green.
+`loop/workflows/adversarial-review.mjs`, run after the deterministic gates — the ones that are programs
+rather than judgements — are green.
 
 **Agent** — A model that can act rather than only answer: it reads files, runs commands, and reacts to
 what comes back. In this workshop: the agent writes the site, runs the gates, and reads its own failure
 report.
 
 **Agentic loop** — Build, check, read the failure, fix, check again, until a program says it is done. In
-this workshop: this is the entire subject. `loop/ralph.sh` is the twelve-line version.
+this workshop: this is the entire subject. `loop/ralph.sh` is the whole of it: a dozen lines of logic
+wrapped in guard rails and comments.
 
 **Astro** — A website framework that turns the files in `src/` into finished HTML. In this workshop: it
 builds the TURBINE page. `npm run build` is Astro running. No React, Vue or Svelte is involved.
@@ -42,9 +46,16 @@ anyway.
 
 ## C
 
+**CLS (Cumulative Layout Shift)** — How much the page jumps around while it loads, as one number. In this
+workshop: `brief/ACCEPTANCE.md` AC-56 budgets it at 0.10 or less, which in practice means images and fonts
+that reserve their space before they arrive.
+
 **Checkout** — Switching the files in front of you to a different branch or saved point. In this
 workshop: `git checkout step-2` moves you to the workshop's step 2 if you fall behind. See
 `CHECKPOINTS.md`.
+
+**Chromium** — The open-source browser that Chrome is built from. In this workshop: the browser
+Playwright drives and Lighthouse measures, already installed in your Codespace.
 
 **CI (continuous integration)** — A server that runs your checks again, automatically, after every push.
 In this workshop: `.github/workflows/checks.yml` runs `npm run check` on GitHub, so the verifier also
@@ -54,16 +65,18 @@ exists somewhere you cannot quietly edit it.
 clicking. In this workshop: `claude`, `codex`, `npm`, `git` and `netlify` are all CLIs.
 
 **Clone** — Making your own local copy of a repository, history included. In this workshop: Codespaces
-does it for you. Nobody has to clone anything by hand.
+does it for you, and that is the path most of the room takes.
 
 **Codespaces** — A ready-made computer running in GitHub's cloud that you open in a browser tab. In this
-workshop: everyone works there, so nobody spends the session installing Node, Chromium or Playwright.
+workshop: most people work there, so almost nobody spends the session installing Node, Chromium or
+Playwright. Working on your own machine is supported — see the README.
 
 **Coding agent** — An agent specialised in working inside a code repository: reading files, editing
 them, running the build. In this workshop: Claude Code or Codex, whichever you signed into.
 
 **Command** — One instruction typed into the terminal and run by pressing Enter. In this workshop:
-`npm run check` is a command; anything after it is options that change what it does.
+`npm run check` is a command. Options go after it, and with `npm run` they need a `--` separator first or
+npm keeps them for itself: `npm run check -- --skip-perf`.
 
 **Commit** — A saved snapshot of the repository with a short message describing the change. In this
 workshop: commit whenever the gates go green, so there is always a state worth returning to.
@@ -79,7 +92,8 @@ background. In this workshop: body text needs at least 4.5:1. Every measured TUR
 ## D
 
 **Deploy** — Publishing the built site so it has a public address. In this workshop: `npm run deploy`,
-which only runs once the gates have passed.
+and only once `npm run check` has exited 0. Nothing in the command enforces that order; deploying an
+unverified build is the one step a `git reset` cannot undo.
 
 **Design token** — A named design decision stored as data, such as `color.accent.sodium = #FF6A1A`,
 rather than a hex code retyped in twenty places. In this workshop: `design/tokens/tokens.json` is the
@@ -95,11 +109,25 @@ arrives with everything already installed.
 **Directory** — A folder. In this workshop: `src/` holds the site, `checks/` holds the verifier,
 `design/` holds tokens and exports. The trailing slash is convention, not part of the name.
 
+**DOM** — The page's real text and structure as the browser holds it, as opposed to the pixels finally
+painted on screen. A heading in the DOM can be selected, translated, resized and read aloud; the same
+words painted into a photograph cannot. In this workshop: the a11y and contrast gates read the DOM, which
+is why `design/assets/PROMPTS.md` keeps every word out of the imagery.
+
+## E
+
+**Exit code** — The number a program returns when it finishes. Zero means it succeeded; anything else
+means it failed, and the number says which way. In this workshop: `npm run check` exits 0 only when every
+gate passed, and that number — not a sentence from a model — is what `loop/ralph.sh` reads to decide
+whether to stop.
+
 ## F
 
 **Figma Dev Mode** — The Figma view that exposes measurements, variables and generated code for a
 selection instead of editing tools. In this workshop: the handover point for spacing and token values.
-Without a paid seat, `design/export/` and `tokens.json` cover the same ground.
+Without a paid seat you lose nothing here: `design/FIGMA-SPEC.md` carries the measurements frame by
+frame, `design/tokens/` carries the values and `design/export/` carries the reference screenshots.
+`loop/MCP.md` has a route to the live file that works on a free account.
 
 ## G
 
@@ -115,16 +143,25 @@ Codespaces. In this workshop: the project lives there, and your Codespace opens 
 
 ## L
 
+**LCP (Largest Contentful Paint)** — The moment the biggest thing on the first screen — usually the hero
+image or headline — has finished drawing. In this workshop: `brief/ACCEPTANCE.md` AC-56 budgets it at 2.5
+seconds on Lighthouse's throttled phone profile, which is the point a visitor stops feeling they are waiting.
+
 **Lighthouse** — Google's automated page audit, scoring performance, accessibility, best practice and
 SEO out of 100. In this workshop: one gate, run against a local preview of the built site, and the
 slowest one to finish.
+
+**Landmark** — An HTML element that names a region of the page for assistive technology: `header`,
+`nav`, `main`, `footer`, `aside`. In this workshop: a screen reader user jumps between landmarks the way
+a sighted reader skims headings, and the structure gate checks they are present.
 
 **Linter** — A program that reads code and flags mistakes and rule violations without running it. In
 this workshop: the structure and token gates behave like linters, but for the rendered page rather than
 the source.
 
-**localhost** — The name your own machine uses for itself. In this workshop: `http://localhost:4321` is
-the dev server on your computer. Nobody else can open that address, not even over the same wifi.
+**localhost** — The name a machine uses for itself. In this workshop: `http://localhost:4321` is the dev
+server on whichever machine is running it — usually your Codespace, which forwards the address to a tab in
+your browser. Nobody else reaches it unless you make that forwarded port public.
 
 ## M
 
@@ -141,7 +178,12 @@ the rest.
 ## N
 
 **Netlify** — A hosting service that takes a folder of built files and serves it at a public URL. In
-this workshop: the deploy target. The final gate checks that the URL actually returns 200.
+this workshop: the deploy target. Deploying sits outside `npm run check`; what follows it is AC-57 to
+AC-60 in `brief/ACCEPTANCE.md` — the URL has to return 200 with `content-type: text/html`, and the HTML it
+serves has to hash identical to the build that passed.
+
+**Node** — The program that runs JavaScript outside a browser. In this workshop: what actually executes
+`npm`, Astro, the gates and every other `.mjs` file here.
 
 **npm** — Node's package manager and task runner. In this workshop: `npm install` fetches dependencies
 and `npm run <name>` runs one of the scripts listed in `package.json`.
@@ -163,8 +205,17 @@ workshop: the `pixelmatch` package does the counting, and too many changed pixel
 workshop: start here. A human reading the plan before any code exists is the cheapest correction in the
 whole loop.
 
+**Playwright** — A tool that drives a real browser from code: open the page, click, type, take a
+screenshot, read what is on screen. In this workshop: it is how the gates see the page the way a visitor
+would, rather than by reading the HTML. `checks/specs/` holds what it runs, axe-core runs inside it, and
+it is why your Codespace arrives with Chromium installed.
+
 **Port** — A numbered door on a machine, so several programs can serve at once without colliding. In
 this workshop: 4321 is the dev server. Your Codespace forwards it so a browser tab can reach it.
+
+**Progressive enhancement** — Building so the page works without JavaScript, then adding JavaScript to
+make it nicer. In this workshop: with scripts off, all twelve artists are still visible and every FAQ
+answer still readable; the filter tabs and the accordion are the enhancement.
 
 **Prompt** — The instructions the model is working from, including the files it has been told to obey.
 In this workshop: `AGENTS.md` and `docs/CANON.md` are prompts that apply on every turn, not one-off
@@ -186,6 +237,8 @@ everything you touch lives in one repository, and the repository is the unit the
 
 **Static site** — A site made of pre-built HTML, CSS and images, with no server logic when someone
 visits. In this workshop: TURBINE is one. No database, no backend, no accounts — see `docs/CANON.md` §11.
+"Static output" is the Astro setting that produces it: the whole page is written to `dist/` at build
+time, and what deploys is those files.
 
 **Subagent** — A separate agent with a narrow remit and its own context, called by the main one. In this
 workshop: `design-critic`, `a11y-auditor` and `copy-checker`, used after the deterministic gates are
@@ -194,8 +247,13 @@ green rather than instead of them.
 ## T
 
 **Tailwind** — A CSS framework where styling is applied as small utility classes in the markup. In this
-workshop: its theme is fed from `design/tokens/tokens.css`, so a utility resolves to a canonical TURBINE
-value instead of a guessed hex.
+workshop: its theme is fed from `src/styles/theme.generated.css`, which `scripts/build-theme.mjs` writes
+out of `design/tokens/tokens.json`, so a utility resolves to a canonical TURBINE value instead of a
+guessed hex.
+
+**TBT (Total Blocking Time)** — How long the page spends unable to answer a tap or a key press while it
+loads, because scripts are busy. In this workshop: `brief/ACCEPTANCE.md` AC-56 budgets it at 200ms, which a
+page with this little JavaScript should never come close to.
 
 **Template repository** — A repository marked as a starting point, so anyone can generate their own copy
 in one click. In this workshop: how each participant gets a private TURBINE repository with a history of
@@ -224,8 +282,10 @@ from it. In this workshop: everything under `checks/`, off limits to the agent. 
 agree with the generator is the failure this workshop exists to show.
 
 **Visual regression** — Checking that a change did not alter the appearance of the page where it was not
-supposed to. In this workshop: screenshots at 390, 768 and 1440 px, compared against agreed baselines
-from `design/export/`.
+supposed to. In this workshop: screenshots at 390, 768 and 1440 px, compared against the reference
+images in `design/export/`. Those ship rendered from the reference build rather than exported from Figma,
+so today the gate asks whether your build matches the reference build — `design/export/README.md` explains
+why that distinction matters.
 
 ## W
 
@@ -233,6 +293,6 @@ from `design/export/`.
 back to. In this workshop: the target is WCAG 2.2 AA, and the accessibility gate fails anything short of
 it.
 
-**Workflow** — A scripted sequence of agent steps with fan-out and verification, instead of one long
-conversation. In this workshop: `loop/workflows/` holds two — one builds page sections in parallel, one
-runs adversarial review.
+**Workflow** — A scripted sequence of agent steps in which some steps fan out to several agents working
+in parallel, and every step is checked, instead of one long conversation. In this workshop:
+`loop/workflows/` holds two — one builds page sections in parallel, one runs adversarial review.

@@ -14,7 +14,7 @@
  * needs.
  *
  * So: one agent per section, each holding one section's worth of context, each
- * owning exactly one file.
+ * owning a set of files no other agent touches.
  *
  * WHAT THIS IS NOT FOR
  *
@@ -30,7 +30,7 @@ export const meta = {
   whenToUse: 'Once the plan is agreed and src/ is still the starter state. Turns an empty page into eleven mounted sections in one pass, then hands the result to npm run check.',
   phases: [
     { title: 'Scaffold', detail: 'One agent builds the primitives that more than one section consumes' },
-    { title: 'Build', detail: 'Eleven agents, one per canonical section, each owning exactly one file' },
+    { title: 'Build', detail: 'Eleven agents, one per canonical section, each owning a disjoint set of files' },
     { title: 'Verify', detail: 'Each section is read back against its own criteria and repaired in place' },
     { title: 'Integrate', detail: 'Mount the sections in canonical order, build, and run npm run check' },
   ],
@@ -96,9 +96,11 @@ const SECTIONS = [
     design: 'design/FIGMA-SPEC.md section 5.12',
     criteria: ['AC-06', 'AC-10', 'AC-16', 'AC-17', 'AC-25', 'AC-48'],
     mustDo: [
+      'This one already half exists. src/layouts/Base.astro ships <a class="skip-link" href="#main">Skip to content</a> inline, and src/styles/global.css styles .skip-link — off-screen by transform, in view on :focus. Render that same anchor, that same class and that same string in your component, and add data-section="skip-link". Do not restyle it and do not invent a second class.',
+      'The integration step deletes the inline anchor from Base.astro and mounts your component in its place. You may edit neither file, so the page having exactly one link to #main is the integrator\'s job and not yours — but shipping markup that differs from the anchor it replaces is how the page ends up with two.',
       'Visually hidden until it receives focus, then plainly visible — not opacity 0, not a 1px clip that stays clipped on focus.',
-      'href resolves to #main. The <main id="main"> element itself belongs to the integration step, not to you.',
-      'It has to be the first focusable element in the document, so it carries no positive tabindex and nothing before it in DOM order may be focusable.',
+      'href resolves to #main. The <main id="main"> element itself is in Base.astro already and is not yours either.',
+      'It has to be the first focusable element in the document, so it carries no positive tabindex and nothing may precede it in DOM order.',
       'Focus indicator with at least 3:1 contrast against whatever is behind it when it appears.',
     ],
   },
@@ -115,7 +117,8 @@ const SECTIONS = [
       'Wordmark left, all caps, +0.18em tracking. Never the words "Turbine Festival" in the lockup.',
       'Sticky. Hamburger below 768 with aria-expanded on the toggle, and no focus trap when the panel is open.',
       'Every transition at most 200ms, and none of them run under prefers-reduced-motion: reduce.',
-      'The nav is the navigation landmark inside the single banner landmark. Do not add a second one.',
+      'This section provides the page\'s single banner landmark — a <header> — with the navigation landmark inside it. src/layouts/Base.astro deliberately does not: it renders sections into named slots so that AC-06 is satisfied in one place. One banner, one navigation, and no second of either.',
+      'src/scripts/nav.ts already ships the disclosure behaviour, and its header comment writes out the markup it expects and why focus is not trapped. Render against that contract. Do not rewrite the module and do not add a second one.',
       'Touch targets at least 24x24 CSS px at 390.',
     ],
   },
@@ -147,7 +150,7 @@ const SECTIONS = [
     mustDo: [
       'No heading. CONTENT section 15 is explicit that the ticker contributes nothing to the heading outline.',
       'Under prefers-reduced-motion: reduce the computed animation-name must be none. Slowing it down is not honouring the preference, and AC-21 reads the computed value.',
-      'A marquee usually duplicates its tag run to loop seamlessly. The duplicate is aria-hidden so a screen reader hears each genre once.',
+      'A marquee repeats its tag run so the loop has no visible gap. The repeat is aria-hidden, so a screen reader reads each genre once rather than twice.',
       'No horizontal overflow at 390. AC-36 checks scrollWidth against the viewport, and a marquee is the usual offender.',
     ],
   },
@@ -155,14 +158,15 @@ const SECTIONS = [
     slug: 'lineup',
     title: 'Lineup',
     file: 'src/sections/Lineup.astro',
-    owns: ['src/components/ArtistCard.astro', 'src/components/TabBar.astro', 'src/scripts/lineup.ts'],
+    owns: ['src/components/ArtistCard.astro', 'src/components/TabBar.astro', 'src/scripts/tabs.ts'],
     copy: 'brief/CONTENT.md section 6',
     design: 'design/FIGMA-SPEC.md sections 4.4, 4.5 and 5.4',
     criteria: ['AC-06', 'AC-08', 'AC-15', 'AC-18', 'AC-20', 'AC-22', 'AC-23', 'AC-39', 'AC-50'],
     mustDo: [
       'Twelve cards, each with data-artist spelled exactly as CANON section 2 spells it, plus data-day and data-stage from the same table. Ilse Rum is spelled with an umlaut.',
       'The day filter is the WAI-ARIA tabs pattern: roving tabindex, ArrowLeft, ArrowRight, Home and End move selection, exactly one aria-selected="true", aria-controls resolving to a labelled tabpanel.',
-      'With JavaScript disabled all twelve artists are visible. The tabs must not hide eleven-twelfths of the lineup behind a script that did not load.',
+      'src/scripts/tabs.ts already implements that pattern and its header comment writes out the markup it expects, down to the attribute names. Render against that contract rather than writing a second module. Read it before you start: it records why there is one tabpanel and not four — four panels means four copies of the twelve cards, and the duplicate data-artist values and duplicate ids that follow fail AC-39 and AC-14.',
+      'With JavaScript disabled all twelve artists are visible. The tab list therefore ships carrying hidden and the script unhides it; the tabs must not hide eleven-twelfths of the lineup behind a script that did not load.',
       'h2 "Lineup", one h3 per artist. No skipped levels.',
       'Portrait alt text comes from brief/CONTENT.md section 13. It is not the filename and not the artist name repeated.',
     ],
@@ -219,15 +223,16 @@ const SECTIONS = [
     slug: 'faq',
     title: 'FAQ',
     file: 'src/sections/Faq.astro',
-    owns: ['src/components/FaqRow.astro', 'src/scripts/faq.ts'],
+    owns: ['src/components/FaqRow.astro', 'src/scripts/accordion.ts'],
     copy: 'brief/CONTENT.md section 10',
     design: 'design/FIGMA-SPEC.md sections 4.8 and 5.8',
     criteria: ['AC-06', 'AC-08', 'AC-15', 'AC-19', 'AC-47', 'AC-50'],
     mustDo: [
       'Exactly eight items, with the ids brief/CONTENT.md section 10 gives them — other sections link to faq-accessibility, faq-bring and faq-lockers.',
-      'Each question is a button whose aria-expanded toggles on both Enter and Space, and focus stays on the button. AC-19 drives all eight with both keys.',
-      'aria-controls resolves to the panel it names. AC-50 checks every IDREF on the page.',
-      'With JavaScript disabled every answer is readable. A details/summary element gives you that for free; a div and a click handler does not.',
+      'AC-19 accepts two shapes and only two: a summary inside a details, or a button carrying aria-expanded. brief/CONTENT.md section 10 and design/FIGMA-SPEC.md section 4.8 both name the native pair first, because it satisfies the keyboard requirement and the no-JavaScript requirement without a line of script. Whichever you build, the expanded state has to toggle on both Enter and Space with focus staying on the control — AC-19 drives all eight items with both keys.',
+      'If you build the custom accordion instead of the native pair, do not write the module: src/scripts/accordion.ts already ships it, and its header comment writes out the markup it expects. It renders every answer open with its trigger reporting aria-expanded="true" and closes them on load, which is how that path keeps the answers readable with JavaScript off. Render against that contract.',
+      'A div with a click handler is the one shape neither AC-19 nor CANON section 9 allows. It is not a keyboard control and it takes the answers away when the script does not load.',
+      'Every aria-controls, if you use them, resolves to the panel it names. AC-50 checks every IDREF on the page whichever shape you built.',
       'h2 "Questions", one h3 per question.',
     ],
   },
@@ -256,7 +261,7 @@ const SECTIONS = [
     design: 'design/FIGMA-SPEC.md sections 4.10 and 5.10',
     criteria: ['AC-06', 'AC-08', 'AC-09', 'AC-28', 'AC-44', 'AC-49'],
     mustDo: [
-      'This is the single contentinfo landmark on the page.',
+      'This section provides the page\'s single contentinfo landmark — a <footer>. src/layouts/Base.astro deliberately does not; it renders this section into a named slot. Nothing else on the page may carry that role.',
       'Four columns with the sixteen links from brief/CONTENT.md section 12, plus socials and legal lines.',
       'A visually hidden h2 "Site footer" and four h3 column headings, so the outline in CONTENT section 15 holds.',
       'The fiction disclaimer from CANON section 1, verbatim and unaltered. AC-44 compares it exactly.',
@@ -335,6 +340,12 @@ const INTEGRATE_SCHEMA = {
 // the fan-out safe afterwards is narrow — a component used by more than one
 // section is built here, a component used by exactly one section belongs to that
 // section's agent. Nothing is written twice, so nothing needs merging.
+//
+// Most of that shared layer is already in the tree. `git ls-files src/` lists
+// Button, Section, SectionHeading and Tag, each committed with a header comment
+// recording the gate decision behind it. This phase therefore has one file left
+// to write, and its more important job is telling the agent to read the four it
+// must not touch.
 
 phase('Scaffold')
 log('Scaffolding the primitives more than one section consumes.')
@@ -345,29 +356,33 @@ right now; eleven section agents start the moment you finish, and they will cons
 
 ${PROJECT_RULES}
 
-Write exactly these files and nothing else:
+WRITE EXACTLY ONE FILE
 
-  src/components/Button.astro         design/FIGMA-SPEC.md section 4.1
-  src/components/VisuallyHidden.astro a utility used by the skip link and the footer heading
+  src/components/VisuallyHidden.astro  the standard clip-rect utility: removed from the visual
+                                       layer, still in the accessibility tree, not display:none.
+                                       Used by the skip link and by the footer's hidden h2.
 
-Button is used by the nav, the hero, the tickets section and the newsletter, which is why it is here
-rather than in any one of them. Get these right, because four sections inherit whatever you decide:
+Four of the five shared primitives already ship in this repository, built and committed:
 
-- Variants and sizes exactly as FIGMA-SPEC section 4.1 defines them.
-- The primary variant is bg.base text on accent.sodium. Not white. AC-29 measures the pair.
-- A focus indicator that is visible against both bg.base and bg.surface, at least 3:1 (AC-17), and
-  that actually changes at least 0.5% of the element's pixels when focused (AC-16).
-- At least 24x24 CSS px at 390 (AC-23).
-- Any transition at most 200ms, and none under prefers-reduced-motion: reduce (AC-21).
-- No colour, size, spacing or radius literal. Everything through the theme.
-- It renders as a button or an anchor depending on whether it was given an href, and never as an
-  anchor with href="#" — AC-49 rejects that.
+  src/components/Button.astro          FIGMA-SPEC 4.1, in three variants and two sizes
+  src/components/Section.astro         the shell every section is built inside
+  src/components/SectionHeading.astro  kicker, heading, intro, with the level as a prop
+  src/components/Tag.astro             the mono label: ticker tags, genre tags, tier badges
 
-VisuallyHidden is the standard clip-rect utility: removed from the visual layer, still in the
-accessibility tree, and not display:none.
+Read all four before you write anything, and change none of them. Each opens with a header comment
+recording the gate decision behind it, and those decisions are not rediscoverable from the spec:
+Button rounds the 28px and 20px inline padding FIGMA-SPEC 4.1 asks for up to 32 and 24 because
+those two values are not on the ten-step spacing scale AC-32 enforces, and it ships its hover
+overlay at opacity 0 so the colour the page actually paints at rest stays on-palette for AC-26.
+Section spells data-section and id once so that eleven agents cannot spell them eleven ways.
+Rewriting any of that loses the reasoning and turns green gates red.
 
-Also create the empty directories the section agents will write into: src/sections/,
-src/components/, src/scripts/, src/data/.
+What you report back is the inventory the eleven builders work from. In summary, say which of the
+five exist, and in buttonVariants list the variants Button.astro actually declares — read them out
+of the file rather than guessing, because four sections are about to use them.
+
+Also create the empty directories the section agents will write into: src/sections/ and src/data/.
+src/components/ and src/scripts/ already exist.
 
 ${NO_BUILD_RULE}`,
   {
@@ -386,10 +401,11 @@ ${NO_BUILD_RULE}`,
 )
 
 if (!scaffold) {
-  // Aborting loudly is the right failure here. Without a shared Button, eleven
-  // agents each invent their own, and the divergence this phase exists to
-  // prevent is exactly what you get — with no error to explain it.
-  throw new Error('Scaffold agent returned nothing. Without src/components/Button.astro the section fan-out would produce eleven different buttons. Re-run the workflow.')
+  // Aborting loudly is the right failure here. Without src/components/VisuallyHidden.astro
+  // the skip link and the footer's hidden h2 each invent their own, and the
+  // divergence this phase exists to prevent is exactly what you get — with no
+  // error to explain it.
+  throw new Error('Scaffold agent returned nothing, so src/components/VisuallyHidden.astro may not exist and nobody has read the four committed primitives back. Re-run the workflow.')
 }
 
 log(`Scaffold wrote ${scaffold.filesWritten.length} file(s). Fanning out to ${SECTIONS.length} sections.`)
@@ -411,7 +427,8 @@ log(`Scaffold wrote ${scaffold.filesWritten.length} file(s). Fanning out to ${SE
 // day by three stage timetable with a responsive collapse. The barrier makes the
 // skip-link verifier wait for the programme builder, and every verifier finishes
 // its wait at the same moment, so the second barrier queues eleven agents against
-// a concurrency cap that only lets about ten run. Wall clock for a barrier pair
+// a concurrency cap of min(16, CPUs - 2), which on a typical laptop is six to
+// eight and never eleven. Wall clock for a barrier pair
 // is (slowest build) + (slowest verify). Wall clock for a pipeline is the slowest
 // single build-then-verify chain. With a spread this wide those are not close.
 //
@@ -459,8 +476,26 @@ to another section, or anything under checks/ or design/. If you need something 
 your files, write it down as an open question and carry on. The integration step will wire your
 section into the page; you do not mount it yourself.
 
-  src/components/Button.astro and src/components/VisuallyHidden.astro already exist. Use them.
-  Do not create a second Button.
+FIVE SHARED PRIMITIVES ALREADY EXIST. USE THEM, DO NOT REBUILD THEM
+
+  src/components/Section.astro         the shell your section is built inside. Pass it
+                                       name="${section.slug}" and it writes data-section and id for
+                                       you (AC-06), applies .container-turbine (AC-33) and names the
+                                       landmark (AC-09). Do not hand-write any of those three. Its
+                                       \`as\` prop renders header, footer, nav or div instead of
+                                       section — which is how the nav and the footer become their
+                                       landmarks. The skip link is the one section not built inside
+                                       it: it is a bare anchor and carries its own data-section.
+  src/components/SectionHeading.astro  your h2 and any h3 under it. The level is a prop, so use it
+                                       rather than writing a heading wrapper of your own (AC-08).
+  src/components/Button.astro          every control and CTA, in three variants and two sizes.
+  src/components/Tag.astro             the mono label: ticker tags, genre tags, billing and tier
+                                       badges, already carrying on-accent ink (AC-29).
+  src/components/VisuallyHidden.astro  the clip-rect utility.
+
+Read the header comment of each one you touch. Each records the gate decision behind it. Do not
+create a second Button, a second section wrapper or a second heading component: eleven agents each
+inventing one is the exact divergence these five exist to prevent.
 
 WHERE YOUR CONTENT AND YOUR LAYOUT COME FROM
 
@@ -600,11 +635,23 @@ ${SECTIONS.map((s, i) => `  ${String(i + 1).padStart(2, '0')}  ${s.slug.padEnd(1
 CANON section 7 fixes that order and AC-06 reads [data-section] in DOM order and compares it to the
 same list. A section in the wrong place fails as loudly as a section that is missing.
 
-  src/layouts/Base.astro   the skip link goes first inside <body>, before anything focusable, and
-                           the layout provides <main id="main"> plus the single banner and
-                           contentinfo landmarks. Nav sits inside banner, footer is contentinfo,
-                           everything from hero to newsletter sits inside main.
-  src/pages/index.astro    replace the starter placeholder entirely. Nothing about the starter state
+Read src/layouts/Base.astro before you mount anything. It does less than you may assume, and its
+header comment says why: the header and footer are sections too, rendered by the page rather than by
+the layout, so that AC-06 is satisfied in exactly one place. What it provides is <main id="main">,
+a named header slot, a named footer slot, and — for now — a hard-coded skip-link anchor.
+
+  src/layouts/Base.astro   one edit only: delete the inline
+                           <a class="skip-link" href="#main">Skip to content</a> and put
+                           <slot name="skip-link" /> in its place, first inside <body>. Leave the
+                           .skip-link rule in src/styles/global.css alone; the component uses it.
+                           Do not add a <header> or a <footer> wrapper around the slots. The banner
+                           landmark comes from the Nav section and the contentinfo landmark from the
+                           Footer section, and wrapping the slots as well makes AC-09 report two of
+                           each.
+  src/pages/index.astro    mount SkipLink into the skip-link slot, Nav into the header slot, Footer
+                           into the footer slot, and everything from hero to newsletter into the
+                           default slot, which is inside <main>. Then replace the starter
+                           placeholder entirely. Nothing about the starter state
                            survives: not the "Nothing is built yet" heading, not the missing-section
                            list, not its title or description.
 
@@ -675,11 +722,22 @@ const summary = {
 
 log('Result:\n' + JSON.stringify(summary, null, 2))
 
-// This bare expression is the script's result, and it is deliberately not a
-// `return` statement. Top-level `return` works in the Workflow runtime, which
-// wraps the script body in an async function — but it is illegal in a plain ES
-// module, so a file that used it could not be checked with `node --check`. These
-// two scripts are teaching material before they are tooling, and a reader being
-// able to run `node --check loop/workflows/build-sections.mjs` is worth more than
-// one keyword. The summary above is logged either way.
+// Read this one carefully, because it is the kind of claim this repository keeps
+// telling you to check.
+//
+// This script returns NOTHING to the Workflow tool. The runtime splices the body
+// into `async () => { 'use strict'; <body> }`, so a trailing expression statement
+// is evaluated and then discarded; only a `return` produces a result. The bare
+// `summary` below therefore does not reach the caller, and the line above it is
+// how the summary actually gets out: `log()` prints the whole object into the run
+// log, where the invoking agent and the person watching both read it.
+//
+// It is written this way on purpose. Top-level `return` is legal in the Workflow
+// runtime — the loader parses with allowReturnOutsideFunction — and illegal in a
+// plain ES module, so a file that used it could not be checked with
+// `node --check`. These two scripts are teaching material before they are
+// tooling, and a reader being able to run
+// `node --check loop/workflows/build-sections.mjs` is worth more than a return
+// value that the log already carries. The bare expression stays as the marker of
+// where the result would go.
 summary

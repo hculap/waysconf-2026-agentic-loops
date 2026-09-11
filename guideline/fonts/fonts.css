@@ -7,6 +7,19 @@
 
    Paths are relative on purpose: the page then works from a file:// URL, from
    a Netlify drop and from a subdirectory, without being rebuilt.
+
+   All three families are under the SIL Open Font License 1.1, which requires
+   the copyright notice and the licence to travel with the files. Both are in
+   this folder, so the drag-and-drop copy carries them too:
+
+   Space Grotesk — full licence text in OFL-SpaceGrotesk.txt
+   Copyright 2020 The Space Grotesk Project Authors (https://github.com/floriankarsten/space-grotesk)
+
+   Inter — full licence text in OFL-Inter.txt
+   Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+   JetBrains Mono — full licence text in OFL-JetBrainsMono.txt
+   Copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono)
    ========================================================================== */
 
 @font-face {

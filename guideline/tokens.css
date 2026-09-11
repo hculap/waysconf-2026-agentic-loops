@@ -1,13 +1,16 @@
 /* ==========================================================================
    TURBINE — design tokens
    --------------------------------------------------------------------------
-   Exported from the Figma variables of the TURBINE file.
+   The Figma variables whose values docs/CANON.md sections 4, 5 and 6 fix.
    Source of truth: docs/CANON.md sections 4, 5 and 6. If a value here
    disagrees with CANON, CANON wins.
 
-   Generated from: design/tokens/tokens.json
+   Hand-maintained. Nothing generates this file: scripts/build-theme.mjs writes
+   src/styles/theme.generated.css, not this one. When a value in
+   design/tokens/tokens.json changes, change it here in the same commit.
+
    Contrast matrix: design/tokens/CONTRAST.md
-   Exported:       2026-09-11
+   Updated:        2026-09-11
 
    Import this file once, before any component styles:
        @import "../../design/tokens/tokens.css";
@@ -114,9 +117,10 @@
   /* ------------------------------------------------------------------------
      BREAKPOINTS — CANON section 6
      These three widths are the only ones screenshotted and diffed.
-     Custom properties cannot be used inside a media query condition, so these
-     exist for documentation and for JS that reads them; the media queries
-     themselves must repeat the literal values.
+     Custom properties cannot be used inside a media query condition. Prefer the
+     Tailwind variants these same three values generate through
+     src/styles/theme.generated.css — `mobile:`, `tablet:`, `desktop:`. Only
+     hand-written CSS outside Tailwind has to repeat the literal.
      ------------------------------------------------------------------------ */
   --breakpoint-mobile: 390px;
   --breakpoint-tablet: 768px;        /* nav collapses and the table stacks below this */
@@ -131,9 +135,10 @@
 
   /* ------------------------------------------------------------------------
      SHADOW — implementation extension, not in CANON
-     CANON does not fix elevation, so these are derived from the palette
-     rather than exported from Figma. The design-token diff check ignores
-     this group. On a near-black ground a shadow reads as absence of light.
+     CANON does not fix elevation, so these have no Figma variable and sit
+     outside the Figma-to-tokens name diff. The colours are plain black at low
+     alpha, not palette values; AC-26 accepts them inside box-shadow and
+     nowhere else. On a near-black ground a shadow reads as absence of light.
      ------------------------------------------------------------------------ */
   --shadow-sm: 0 1px 2px 0 #00000059;
   --shadow-md: 0 8px 24px -4px #00000073;
@@ -154,5 +159,6 @@
      --color-text-muted      on --color-bg-base         4.07:1  FAIL for body copy
      #ffffff                 on --color-accent-sodium   2.87:1  FAIL
 
-   Full matrix, all 40 combinations: design/tokens/CONTRAST.md
+   Full matrix, 40 text pairings and 24 non-text pairings:
+   design/tokens/CONTRAST.md
    ========================================================================== */

@@ -1,0 +1,11 @@
+{
+  "id": "turbine-waysconf-2026-build-design-file",
+  "name": "TURBINE — build design file",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": ["figma"],
+  "networkAccess": {
+    "allowedDomains": ["none"]
+  }
+}

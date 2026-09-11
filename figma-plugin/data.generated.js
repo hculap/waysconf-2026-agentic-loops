@@ -1047,6 +1047,13 @@ const TURBINE_DATA = {
     "Mobile 390",
     "Exports"
   ],
+  "eyebrows": {
+    "lineup": "Twelve artists",
+    "programme": "Three nights",
+    "venue": "The building",
+    "tickets": "Three ways in",
+    "faq": "Before you come"
+  },
   "cover": {
     "width": 1600,
     "height": 960,
@@ -1605,7 +1612,7 @@ const TURBINE_DATA = {
         "GLASSY IDM"
       ],
       "separator": "·",
-      "accessibleText": "Genres across the three nights: industrial techno, deep ambient, drone, modular live, hardware techno, field recording, tape loops, dub techno, neoclassical electronic, percussive ambient, generative and glassy IDM."
+      "accessibleText": "Genres across the three nights: industrial techno, deep ambient, drone, modular live, hardware techno, field recording, tape loops, dub techno, neoclassical electronic, percussive ambient, generative and glassy IDM. Between them, two words for the room: concrete and steel, sodium light."
     },
     "lineup": {
       "heading": "Lineup",
@@ -1821,7 +1828,7 @@ const TURBINE_DATA = {
         {
           "label": "Saturday 13 June",
           "doors": "Doors 19:00 · Last set ends 04:00 · Hall clears 04:30",
-          "daytime": "14:00 – 17:00 · Boiler Room · Modular synthesis workshop with Mara Teschke. Full Pass + Workshop only, 40 places.",
+          "daytime": "14:00 – 17:00 · Boiler Room · Modular synthesis workshop with Mara Teschke. Full Pass + Workshop only, 40 places.\nWorkshop entry from 13:30 at the gate. The hall opens to everyone at 19:00.",
           "caption": "Saturday 13 June, set times by stage",
           "columns": [
             "Time",
@@ -2100,7 +2107,7 @@ const TURBINE_DATA = {
         {
           "id": "faq-accessibility",
           "question": "What is the site like if I have access needs?",
-          "answer": "Step-free from the gate to all three stages, a lift to the Boiler Room and to the Cooling Tower balcony, and a raised viewing platform in the Turbine Hall with its own bar and toilet. Accessible toilets on every level. A quiet room next to the gate stays open all night with the sound at conversation level, and ear defenders are free at the info desk. There is haze on all three stages and strobe in the Turbine Hall after midnight. Companion tickets for personal assistants are free: write to access@turbine.fm."
+          "answer": "Step-free from the gate to all three stages. A lift serves the Boiler Room and the Cooling Tower balcony. The Turbine Hall has a raised viewing platform with its own bar and toilet. Accessible toilets on every level. A quiet room next to the gate stays open all night with the sound at conversation level, and ear defenders are free at the info desk. There is haze on all three stages and strobe in the Turbine Hall after midnight. Companion tickets for personal assistants are free: write to access@turbine.fm."
         },
         {
           "id": "faq-bring",
@@ -2126,7 +2133,7 @@ const TURBINE_DATA = {
     },
     "newsletter": {
       "heading": "Three emails a year",
-      "pitch": "Set times, the day tickets go on sale, and the lineup once it is locked. Nothing else.",
+      "pitch": "Changes to set times, and the dates for the fifth edition. Nothing else.",
       "label": "Email address",
       "placeholder": "name@example.com",
       "consent": "Yes, send me TURBINE festival email. Every message has an unsubscribe link.",
@@ -2250,57 +2257,144 @@ const TURBINE_DATA = {
       "disclaimer": "TURBINE is a fictional festival created as teaching material for a conference workshop. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental."
     },
     "images": {
-      "alt": {
-        "hero-hall-e.webp": "The empty floor of Hall E at night, four concrete turbine plinths lit from above by sodium lamps, steel roof trusses in the dark overhead.",
-        "artists/kasimir-volt.webp": "KASIMIR VOLT behind a mixing desk, lit from one side in orange, both hands on the faders.",
-        "artists/lena-orbis.webp": "Lena Orbis at a table of hardware in a dark hall, eyes closed, one hand held over a filter.",
-        "artists/nullset.webp": "NULLSET seen from behind, facing a modular rack whose patch cables cross in front of a bank of green meters.",
-        "artists/auric-drift.webp": "Auric Drift standing still at a table of pedals, the room behind him lost in haze.",
-        "artists/mara-teschke.webp": "Mara Teschke leaning over a modular case, one patch cable between her teeth while she plugs in another.",
-        "artists/substation-9.webp": "SUBSTATION 9 crouched over three drum machines on flight cases, lit only by their displays.",
-        "artists/hiroko-vane.webp": "Hiroko Vane in headphones, holding a field recorder at arm's length towards a concrete wall.",
-        "artists/cold-cathode.webp": "Cold Cathode at a mixer in blue light, one hand on a delay unit, smoke crossing the beam.",
-        "artists/ilse-rum.webp": "Ilse Rüm at an upright piano with a tape machine on top of it and a microphone lowered to the strings.",
-        "artists/tape-decay.webp": "TAPE DECAY between two reel-to-reel machines, a loop of tape running across the stage from one to the other.",
-        "artists/odalys-ferrer.webp": "Odalys Ferrer seated among metal bowls and hand drums, a mallet resting on the rim of the largest.",
-        "artists/vitrine.webp": "VITRINE lit from below through a sheet of glass, both hands flat on a control surface.",
-        "venue-boiler-room.webp": "The Boiler Room: brick vaults two levels below ground, a low ceiling, and a row of iron furnace doors along one wall.",
-        "map-powerhouse.svg": "Map of the Powerhouse site: Hall E and its gate on ulica Kotłowa, the Elektrownia tram stop two streets north, and the river along the southern edge.",
-        "og-turbine.jpg": "The TURBINE wordmark over the floor of Hall E, with the dates 12 to 14 June 2027 and the venue, The Powerhouse, Hall E, Kraków.",
+      "hero": {
+        "file": "hero-hall.jpg",
+        "alt": "The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze."
+      },
+      "venue": {
+        "file": "venue-exterior.jpg",
+        "alt": "A long brick power station with tall arched windows at blue hour, orange light leaking from inside, a chimney and cooling tower behind it."
+      },
+      "og": {
+        "file": "og-card.jpg",
+        "alt": "The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness."
+      },
+      "artists": [
+        {
+          "slug": "kasimir-volt",
+          "name": "KASIMIR VOLT",
+          "file": "artist-01-kasimir-volt.jpg",
+          "alt": "A figure in hard silhouette against dense smoke, rimmed by a single orange lamp directly behind the head."
+        },
+        {
+          "slug": "lena-orbis",
+          "name": "Lena Orbis",
+          "file": "artist-02-lena-orbis.jpg",
+          "alt": "A standing figure almost entirely dissolved into cold cyan fog, low and small in an otherwise empty frame."
+        },
+        {
+          "slug": "nullset",
+          "name": "NULLSET",
+          "file": "artist-03-nullset.jpg",
+          "alt": "A fine lattice of cyan and violet light lines drawn in empty black space, fraying toward the edges."
+        },
+        {
+          "slug": "auric-drift",
+          "name": "Auric Drift",
+          "file": "artist-04-auric-drift.jpg",
+          "alt": "A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering from the left."
+        },
+        {
+          "slug": "mara-teschke",
+          "name": "Mara Teschke",
+          "file": "artist-05-mara-teschke.jpg",
+          "alt": "Two hands patching cables into a dark modular synthesiser panel under a single orange lamp."
+        },
+        {
+          "slug": "substation-9",
+          "name": "SUBSTATION 9",
+          "file": "artist-06-substation-9.jpg",
+          "alt": "A figure seen from behind facing a wall of old electrical switchgear, edged by a single orange rim light."
+        },
+        {
+          "slug": "hiroko-vane",
+          "name": "Hiroko Vane",
+          "file": "artist-07-hiroko-vane.jpg",
+          "alt": "A small silhouetted figure holding a pole aloft against a large, evenly glowing pale cyan window panel."
+        },
+        {
+          "slug": "cold-cathode",
+          "name": "Cold Cathode",
+          "file": "artist-08-cold-cathode.jpg",
+          "alt": "A figure smeared and abstracted behind fogged wired safety glass, backlit by a cyan tube light."
+        },
+        {
+          "slug": "ilse-rum",
+          "name": "Ilse Rüm",
+          "file": "artist-09-ilse-rum.jpg",
+          "alt": "A single hand resting still on the keys of an old piano keyboard, lit warmly from one side, the rest in darkness."
+        },
+        {
+          "slug": "tape-decay",
+          "name": "TAPE DECAY",
+          "file": "artist-10-tape-decay.jpg",
+          "alt": "A loop of magnetic tape running diagonally between spools, its edge catching an orange highlight, one spool blurred by motion."
+        },
+        {
+          "slug": "odalys-ferrer",
+          "name": "Odalys Ferrer",
+          "file": "artist-11-odalys-ferrer.jpg",
+          "alt": "A long-exposure frame of a figure mid-strike, one arm smeared into an orange trail above the lit rims of metal percussion."
+        },
+        {
+          "slug": "vitrine",
+          "name": "VITRINE",
+          "file": "artist-12-vitrine.jpg",
+          "alt": "The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction."
+        }
+      ],
+      "other": [
+        {
+          "file": "texture-grain.png",
+          "alt": ""
+        }
+      ],
+      "all": {
+        "hero-hall.jpg": "The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze.",
+        "artist-01-kasimir-volt.jpg": "A figure in hard silhouette against dense smoke, rimmed by a single orange lamp directly behind the head.",
+        "artist-02-lena-orbis.jpg": "A standing figure almost entirely dissolved into cold cyan fog, low and small in an otherwise empty frame.",
+        "artist-03-nullset.jpg": "A fine lattice of cyan and violet light lines drawn in empty black space, fraying toward the edges.",
+        "artist-04-auric-drift.jpg": "A tall shaft of orange light falling down a dark concrete wall, with a shoulder in shadow entering from the left.",
+        "artist-05-mara-teschke.jpg": "Two hands patching cables into a dark modular synthesiser panel under a single orange lamp.",
+        "artist-06-substation-9.jpg": "A figure seen from behind facing a wall of old electrical switchgear, edged by a single orange rim light.",
+        "artist-07-hiroko-vane.jpg": "A small silhouetted figure holding a pole aloft against a large, evenly glowing pale cyan window panel.",
+        "artist-08-cold-cathode.jpg": "A figure smeared and abstracted behind fogged wired safety glass, backlit by a cyan tube light.",
+        "artist-09-ilse-rum.jpg": "A single hand resting still on the keys of an old piano keyboard, lit warmly from one side, the rest in darkness.",
+        "artist-10-tape-decay.jpg": "A loop of magnetic tape running diagonally between spools, its edge catching an orange highlight, one spool blurred by motion.",
+        "artist-11-odalys-ferrer.jpg": "A long-exposure frame of a figure mid-strike, one arm smeared into an orange trail above the lit rims of metal percussion.",
+        "artist-12-vitrine.jpg": "The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction.",
+        "venue-exterior.jpg": "A long brick power station with tall arched windows at blue hour, orange light leaking from inside, a chimney and cooling tower behind it.",
+        "og-card.jpg": "The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness.",
         "texture-grain.png": ""
       },
       "manifest": [
         {
-          "path": "design/assets/hero-hall-e.webp",
+          "path": "design/assets/hero-hall.jpg",
           "where": "Hero, full-bleed",
           "size": "2400 × 1350"
         },
         {
-          "path": "design/assets/artists/<slug>.webp",
+          "path": "design/assets/artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg",
           "where": "Lineup cards, twelve files",
-          "size": "800 × 1000"
+          "size": "800 × 800"
         },
         {
-          "path": "design/assets/venue-boiler-room.webp",
+          "path": "design/assets/venue-exterior.jpg",
           "where": "Venue, left column",
           "size": "1600 × 1200"
         },
         {
-          "path": "design/assets/map-powerhouse.svg",
-          "where": "Venue, static map placeholder",
-          "size": "1200 × 800"
-        },
-        {
-          "path": "design/assets/og-turbine.jpg",
-          "where": "Social card, published at `/og-turbine.jpg`",
+          "path": "design/assets/og-card.jpg",
+          "where": "Social card, published at `/images/og-card.jpg`",
           "size": "1200 × 630"
         },
         {
           "path": "design/assets/texture-grain.png",
           "where": "Decorative overlay",
-          "size": "tiles"
+          "size": "256 × 256, tiles"
         }
-      ]
+      ],
+      "map": null
     },
     "microcopy": [
       {
@@ -2366,7 +2460,7 @@ const TURBINE_DATA = {
       {
         "where": "FAQ items",
         "string": "questions in §10",
-        "note": "the `summary` text is the question, unchanged"
+        "note": "the question sits in an `h3` inside the control, unchanged"
       },
       {
         "where": "Newsletter messages",
@@ -2382,6 +2476,11 @@ const TURBINE_DATA = {
         "where": "Main landmark",
         "string": "`id=\"main\"` on the element that starts at the hero",
         "note": "the skip link target"
+      },
+      {
+        "where": "Wordmark link target",
+        "string": "#top",
+        "note": "`id=\"top\"` on the outermost page wrapper is optional; `#top` resolves to the top of the document under the HTML fragment rules with or without it"
       }
     ]
   }

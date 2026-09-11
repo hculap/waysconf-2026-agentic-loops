@@ -111,6 +111,9 @@
         font-family: var(--font-mono);
       }
 
+      /* Inline code, in the middle of a sentence. It does not wrap: a short
+         command split across two lines with half a border on each reads as two
+         commands. Anything long enough to need wrapping belongs in a block. */
       :where(p, li, dd) code {
         font-size: 0.9em;
         color: var(--color-text-primary);
@@ -118,7 +121,19 @@
         border: 1px solid var(--color-border-subtle);
         border-radius: var(--radius-sm);
         padding: 0.1em 0.35em;
-        word-break: break-word;
+        white-space: nowrap;
+      }
+
+      /* Steps and self-test rows are list items, so the rule above would
+         otherwise paint a box behind every command block inside them. */
+      .code pre code {
+        font-size: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        border-radius: 0;
+        padding: 0;
+        white-space: inherit;
       }
 
       strong {
@@ -291,8 +306,22 @@
         min-width: 0;
         overflow-x: auto;
         scrollbar-width: none;
-        -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px);
-        mask-image: linear-gradient(to right, transparent 0, #000 16px);
+        /* Fades both ends, so that a row which scrolls looks like a row that
+           scrolls rather than one that has been cut off. */
+        -webkit-mask-image: linear-gradient(
+          to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 20px),
+          transparent 100%
+        );
+        mask-image: linear-gradient(
+          to right,
+          transparent 0,
+          #000 16px,
+          #000 calc(100% - 20px),
+          transparent 100%
+        );
       }
 
       .site__nav::-webkit-scrollbar {
@@ -363,12 +392,22 @@
         );
         -webkit-mask-image: radial-gradient(circle, transparent 18%, #000 34%, transparent 68%);
         mask-image: radial-gradient(circle, transparent 18%, #000 34%, transparent 68%);
-        animation: rotor 120s linear infinite;
       }
 
-      @keyframes rotor {
-        to {
-          transform: rotate(360deg);
+      /* The rotor is deliberately static. It used to rotate once every two minutes,
+         which WCAG 2.2 SC 2.2.2 (Pause, Stop, Hide, Level A) does not allow without a
+         control to stop it: automatic motion, longer than five seconds, alongside the
+         content. Honouring prefers-reduced-motion is not that control, and axe cannot
+         see this class of failure, so a green axe run would not have caught it either.
+         A page that claims AA on a workshop about automated checking does not get to
+         keep the animation. Do not restore it without adding a pause control. */
+
+      /* On a phone the rotor sits directly behind the headline. Decoration that
+         competes with the one thing a visitor came to read does not survive the
+         narrow layout. The glow, which is smooth and low-contrast, stays. */
+      @media (max-width: 767px) {
+        .hero__rotor {
+          display: none;
         }
       }
 
@@ -820,6 +859,9 @@
         padding-top: 2px;
       }
 
+      /* Step titles are h3 under a section h2, and h4 inside an OS panel that
+         already has an h3. Same look, correct level in both places. */
+      .steps h3,
       .steps h4 {
         font-family: var(--font-display);
         font-weight: var(--font-weight-bold);
@@ -836,6 +878,7 @@
 
       .steps .code {
         margin-block: var(--space-3);
+        max-width: 76ch;
       }
 
       /* ---------- OS tabs --------------------------------------------------------- */
@@ -1127,7 +1170,9 @@
         padding-top: var(--space-6);
         border-top: 1px solid var(--color-border-subtle);
         font-size: var(--text-xs);
+        line-height: 1.7;
         color: var(--color-text-secondary);
+        max-width: 100ch;
       }
 
       /* ---------- motion ---------------------------------------------------------------- */
@@ -1183,13 +1228,13 @@
           <p class="lede">
             Ninety minutes, thirty people, one loop. A coding agent is handed a design and a brief, writes a
             website, and is then told by a program &mdash; not by itself &mdash; everything that is wrong with
-            it. Then it fixes those things and is told again. This page is the preparation for that, it takes
-            about fifteen minutes, and it goes much better at home than on conference wifi.
+            it. Then it fixes those things and is told again. This page is the preparation. It takes about
+            fifteen minutes, and it goes much better at home than on conference wifi.
           </p>
 
           <p class="promise">
-            You leave with a live URL for a site an agent built from a design, failed its own accessibility
-            and design-token checks on, and repaired without being told how.
+            You leave with a live URL for a site an agent built from a design, then failed the
+            project&rsquo;s accessibility and design-token checks on, then repaired without being told how.
           </p>
 
           <dl class="facts">
@@ -1265,10 +1310,10 @@
           <div class="grid-2">
             <!-- 01 GitHub -->
             <article class="card account">
-              <p class="account__top">
+              <div class="account__top">
                 <span>01 &mdash; Account</span>
                 <span class="badge badge--free">Free</span>
-              </p>
+              </div>
               <h3>
                 <label><input type="checkbox" data-tick="github" /> GitHub</label>
               </h3>
@@ -1277,18 +1322,18 @@
                 Codespaces both sign you in with this one account, so it is the only login you actually have
                 to remember on the day.
               </p>
-              <p class="account__foot">
+              <div class="account__foot">
                 <a class="btn btn--ghost btn--sm" href="https://github.com/signup">Create a GitHub account</a>
                 <span class="account__time">2 min &middot; confirm the email</span>
-              </p>
+              </div>
             </article>
 
             <!-- 02 Netlify -->
             <article class="card account">
-              <p class="account__top">
+              <div class="account__top">
                 <span>02 &mdash; Account</span>
                 <span class="badge badge--free">Free</span>
-              </p>
+              </div>
               <h3>
                 <label><input type="checkbox" data-tick="netlify" /> Netlify</label>
               </h3>
@@ -1297,29 +1342,28 @@
                 <strong>Sign up with GitHub</strong> and there is nothing else to fill in. No card, no trial,
                 no project to configure in advance.
               </p>
-              <p class="account__foot">
+              <div class="account__foot">
                 <a class="btn btn--ghost btn--sm" href="https://app.netlify.com/signup"
                   >Create a Netlify account</a
                 >
                 <span class="account__time">2 min &middot; sign in with GitHub</span>
-              </p>
+              </div>
             </article>
 
             <!-- 03 Coding agent -->
             <article class="card account span-2">
-              <p class="account__top">
+              <div class="account__top">
                 <span>03 &mdash; Subscription, pick one of two</span>
                 <span class="badge badge--paid">About 20 USD per month</span>
-              </p>
+              </div>
               <h3>
                 <label><input type="checkbox" data-tick="agent" /> One coding agent</label>
               </h3>
               <p class="account__why">
                 This is the only thing on the page that costs money, and you need exactly one of the two below
                 &mdash; not both. <strong>They are equals here.</strong> Every prompt used in the workshop was
-                written and run against both, the loop takes the agent as a one-word argument, and the room is
-                usually split down the middle. Pick the one you already pay for. If you pay for neither, pick
-                either and cancel afterwards.
+                written and run against both, and the loop takes the agent as a one-word argument. Pick the
+                one you already pay for. If you pay for neither, pick either and cancel afterwards.
               </p>
 
               <div class="grid-2">
@@ -1336,10 +1380,10 @@
                     </div>
                     <pre><code>npm install -g @anthropic-ai/claude-code</code></pre>
                   </div>
-                  <p class="account__foot">
+                  <div class="account__foot">
                     <a class="btn btn--ghost btn--sm" href="https://claude.ai/">Create account</a>
                     <a href="https://www.anthropic.com/pricing">Plans and prices</a>
-                  </p>
+                  </div>
                 </div>
 
                 <div class="option">
@@ -1355,10 +1399,10 @@
                     </div>
                     <pre><code>npm install -g @openai/codex</code></pre>
                   </div>
-                  <p class="account__foot">
+                  <div class="account__foot">
                     <a class="btn btn--ghost btn--sm" href="https://chatgpt.com/">Create account</a>
                     <a href="https://openai.com/chatgpt/pricing/">Plans and prices</a>
-                  </p>
+                  </div>
                 </div>
               </div>
 
@@ -1371,10 +1415,10 @@
 
             <!-- 04 Figma -->
             <article class="card account span-2">
-              <p class="account__top">
+              <div class="account__top">
                 <span>04 &mdash; Account</span>
                 <span class="badge badge--free">Free is enough</span>
-              </p>
+              </div>
               <h3>
                 <label><input type="checkbox" data-tick="figma" /> Figma</label>
               </h3>
@@ -1386,12 +1430,16 @@
                 reads those files. A paid seat adds Figma&rsquo;s Dev Mode, which lets the agent read the live
                 file directly &mdash; a nicer way in, not a required one, and not the route the checks were
                 written against. There is also a route that works on a free account using a personal access
-                token; it is written up in <code>loop/MCP.md</code> in the repository.
+                token; it is written up in
+                <a href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/loop/MCP.md"
+                  >loop/MCP.md</a
+                >
+                in the repository.
               </p>
-              <p class="account__foot">
+              <div class="account__foot">
                 <a class="btn btn--ghost btn--sm" href="https://www.figma.com/signup">Create a Figma account</a>
                 <span class="account__time">2 min &middot; no upgrade needed</span>
-              </p>
+              </div>
             </article>
           </div>
 
@@ -1472,6 +1520,18 @@
                       <pre><code>npm install -g @openai/codex</code></pre>
                     </div>
                     <p>
+                      If that says <code>EACCES: permission denied</code>, do not put <code>sudo</code> in
+                      front of it. The installer from nodejs.org puts npm&rsquo;s global folder somewhere you
+                      do not own; point npm at a folder you do own instead, then run the install line again.
+                    </p>
+                    <div class="code">
+                      <div class="code__bar">
+                        <span class="code__label">Only if you saw permission denied</span>
+                        <button class="code__copy" type="button" hidden>Copy</button>
+                      </div>
+                      <pre><code class="lines"><span class="ln">mkdir -p ~/.npm-global &amp;&amp; npm config set prefix ~/.npm-global</span><span class="ln">echo 'export PATH="$HOME/.npm-global/bin:$PATH"' &gt;&gt; ~/.zprofile</span><span class="ln">source ~/.zprofile</span></code></pre>
+                    </div>
+                    <p>
                       The first time you run either one it opens a browser to sign you in. Do that once now,
                       not at 14:55.
                     </p>
@@ -1514,8 +1574,7 @@
                         <span class="code__label">PowerShell</span>
                         <button class="code__copy" type="button" hidden>Copy</button>
                       </div>
-                      <pre><code>winget install OpenJS.NodeJS.LTS
-winget install Git.Git</code></pre>
+                      <pre><code class="lines"><span class="ln">winget install OpenJS.NodeJS.LTS</span><span class="ln">winget install Git.Git</span></code></pre>
                     </div>
                     <p>
                       No winget, or it refuses? Download the <strong>LTS</strong> installer for Windows from
@@ -1590,8 +1649,7 @@ winget install Git.Git</code></pre>
                         <span class="code__label">Debian and Ubuntu</span>
                         <button class="code__copy" type="button" hidden>Copy</button>
                       </div>
-                      <pre><code>curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-sudo apt-get install -y nodejs git</code></pre>
+                      <pre><code class="lines"><span class="ln">curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -</span><span class="ln">sudo apt-get install -y nodejs git</span></code></pre>
                     </div>
                     <div class="code">
                       <div class="code__bar">
@@ -1621,9 +1679,7 @@ sudo apt-get install -y nodejs git</code></pre>
                         <span class="code__label">Once, before installing</span>
                         <button class="code__copy" type="button" hidden>Copy</button>
                       </div>
-                      <pre><code>mkdir -p ~/.npm-global &amp;&amp; npm config set prefix ~/.npm-global
-echo 'export PATH="$HOME/.npm-global/bin:$PATH"' &gt;&gt; ~/.profile
-source ~/.profile</code></pre>
+                      <pre><code class="lines"><span class="ln">mkdir -p ~/.npm-global &amp;&amp; npm config set prefix ~/.npm-global</span><span class="ln">echo 'export PATH="$HOME/.npm-global/bin:$PATH"' &gt;&gt; ~/.profile</span><span class="ln">source ~/.profile</span></code></pre>
                     </div>
                     <p>Then one of these two. Not both.</p>
                     <div class="code">
@@ -1670,21 +1726,29 @@ source ~/.profile</code></pre>
               <a href="https://github.com/hculap/waysconf-2026-agentic-loops"
                 >github.com/hculap/waysconf-2026-agentic-loops</a
               >
-              with <strong>Use this template &rarr; Create a new repository</strong>, then:
+              with <strong>Use this template &rarr; Create a new repository</strong>. Tick
+              <strong>Include all branches</strong> before you create it: that box is what makes
+              <code>git checkout step-3</code> work if you fall behind on the day. Then:
             </p>
             <div class="code" style="margin-top: var(--space-4)">
               <div class="code__bar">
                 <span class="code__label">Terminal or PowerShell</span>
                 <button class="code__copy" type="button" hidden>Copy</button>
               </div>
-              <pre><code>git clone https://github.com/YOUR-USERNAME/my-turbine.git
-cd my-turbine
-npm install
-npx playwright install chromium</code></pre>
+              <pre><code class="lines"><span class="ln">git clone https://github.com/YOUR-USERNAME/my-turbine.git</span><span class="ln">cd my-turbine</span><span class="ln">npm install</span><span class="ln">npx playwright install chromium</span></code></pre>
             </div>
             <p class="prose" style="margin-top: var(--space-4)">
-              Replace <code>YOUR-USERNAME</code> with yours. If you have the GitHub CLI, the copy and the clone
-              are one line: <code>gh repo create my-turbine --template hculap/waysconf-2026-agentic-loops --public --clone</code>.
+              Replace <code>YOUR-USERNAME</code> with your own. If you already have the GitHub CLI, the copy
+              and the clone are a single line instead:
+            </p>
+            <div class="code" style="margin-top: var(--space-4)">
+              <div class="code__bar">
+                <span class="code__label">Only if you have the GitHub CLI</span>
+                <button class="code__copy" type="button" hidden>Copy</button>
+              </div>
+              <pre><code>gh repo create my-turbine --template hculap/waysconf-2026-agentic-loops --public --clone --include-all-branches</code></pre>
+            </div>
+            <p class="prose" style="margin-top: var(--space-4)">
               Either way you end up in the same place, and you arrive on Wednesday with nothing left to
               download.
             </p>
@@ -1700,15 +1764,15 @@ npx playwright install chromium</code></pre>
             <h2 id="browser-h">Or skip all of that</h2>
             <p class="lede">
               GitHub Codespaces gives you the whole environment in a browser tab: Node, the project, the
-              browser the tests drive, and both agent CLIs, all installed before you arrive. Several people
-              take this route every time it is run, and nothing in the workshop is unavailable there.
+              browser the tests drive, and both agent CLIs, all installed before you arrive. It is the route
+              to take whenever anything else is uncertain, and nothing in the workshop is unavailable there.
             </p>
           </div>
 
           <ol class="steps">
             <li>
               <div>
-                <h4>Open the repository</h4>
+                <h3>Open the repository</h3>
                 <p>
                   <a href="https://github.com/hculap/waysconf-2026-agentic-loops"
                     >github.com/hculap/waysconf-2026-agentic-loops</a
@@ -1718,7 +1782,7 @@ npx playwright install chromium</code></pre>
             </li>
             <li>
               <div>
-                <h4>Click &ldquo;Use this template&rdquo;, then &ldquo;Create a new repository&rdquo;</h4>
+                <h3>Click &ldquo;Use this template&rdquo;, then &ldquo;Create a new repository&rdquo;</h3>
                 <p>
                   The button is green, at the top right of the file list. This gives you your own copy to break.
                 </p>
@@ -1726,16 +1790,25 @@ npx playwright install chromium</code></pre>
             </li>
             <li>
               <div>
-                <h4>Name it, then click &ldquo;Create repository&rdquo;</h4>
+                <h3>
+                  Name it, tick &ldquo;Include all branches&rdquo;, then click &ldquo;Create repository&rdquo;
+                </h3>
                 <p>
                   <code>my-turbine</code> is a fine name. Public or private both work; Codespaces and Netlify
-                  do not care which you pick.
+                  do not care which you pick. <strong>Include all branches</strong> is the one that does
+                  matter, and it is unticked by default: it is what makes <code>git checkout step-3</code> work
+                  if you fall behind on the day. The whole click path, written for people who have never used
+                  GitHub, is in
+                  <a
+                    href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/docs/GITHUB-FOR-DESIGNERS.md"
+                    >docs/GITHUB-FOR-DESIGNERS.md</a
+                  >.
                 </p>
               </div>
             </li>
             <li>
               <div>
-                <h4>On your new repository: Code &rarr; Codespaces &rarr; Create codespace on main</h4>
+                <h3>On your new repository: Code &rarr; Codespaces &rarr; Create codespace on main</h3>
                 <p>
                   The green <strong>Code</strong> button, then the <strong>Codespaces</strong> tab next to
                   Local, then <strong>Create codespace on main</strong>. A new tab opens with an editor in it.
@@ -1744,7 +1817,7 @@ npx playwright install chromium</code></pre>
             </li>
             <li>
               <div>
-                <h4>Wait about three minutes for the first boot</h4>
+                <h3>Wait about three minutes for the first boot</h3>
                 <p>
                   It installs the project, the Chromium build the checks drive, and both agent CLIs. It only
                   does this once. The terminal prints <code>Environment ready.</code> when it is done.
@@ -1753,7 +1826,7 @@ npx playwright install chromium</code></pre>
             </li>
             <li>
               <div>
-                <h4>Prove it works</h4>
+                <h3>Prove it works</h3>
                 <p>In the terminal at the bottom of that tab:</p>
                 <div class="code">
                   <div class="code__bar">
@@ -1805,10 +1878,11 @@ npx playwright install chromium</code></pre>
             <article class="card span-2">
               <h3>Take this route if</h3>
               <p class="prose" style="margin-top: var(--space-3)">
-                Your laptop is managed by your employer and you cannot install software. You are on Windows
-                without WSL. Your Node install did not work within ten minutes. Or you would simply rather
-                spend ninety minutes watching a loop repair a website than debugging a PATH variable, which is
-                a completely reasonable preference and the reason this route was built first.
+                Your laptop is managed by your employer and you cannot install software. Your Node install
+                did not work within ten minutes. You are on Windows and would rather not find out on
+                Wednesday morning whether you need WSL. Or you would simply rather spend ninety minutes
+                watching a loop repair a website than debugging a PATH variable, which is a completely
+                reasonable preference and most of the reason this route exists.
               </p>
             </article>
           </div>
@@ -1943,8 +2017,10 @@ npx playwright install chromium</code></pre>
                 <span class="expect__label">You should see</span>
                 <samp>netlify-cli/26.0.2 linux-arm64 node-v22.22.3</samp>
                 <p>
-                  Your operating system and processor will read differently; the version at the front is the
-                  part that matters. The first run asks permission to download the CLI. Say yes.
+                  Any 26.x or newer; on a clean machine it will be a higher number than ours. Your operating
+                  system and processor will read differently too. What matters is that the line starts with
+                  <code>netlify-cli/</code> rather than an error. The first run asks permission to download the
+                  CLI. Say yes.
                 </p>
               </div>
             </li>
@@ -1962,11 +2038,20 @@ npx playwright install chromium</code></pre>
               </div>
               <div class="expect">
                 <span class="expect__label">You should see it fail</span>
-                <samp>a long list of failures, and a non-zero exit</samp>
+                <samp>7/9 gates failed &mdash; 427 failures.</samp>
                 <p>
-                  This one is meant to go red. Nothing has been built yet, so every gate has something to
-                  complain about, and those complaints are the workshop&rsquo;s task list. If this prints
-                  failures, your setup is correct and you are completely ready.
+                  It runs for a couple of minutes and prints a great deal; the last two lines are the ones
+                  above, plus <code>Read checks/report.md, then fix the page.</code> Your two numbers will
+                  differ from ours. That is the correct answer: nothing has been built yet, so every gate has
+                  something to complain about, and those complaints are the workshop&rsquo;s task list.
+                </p>
+                <p>
+                  If instead you get <code>npm error &hellip; Could not read package.json</code> or
+                  <code>Missing script: &quot;check&quot;</code>, that is not a gate failing. It means you are
+                  not inside the project folder. This is the only probe that needs the copy of the repository
+                  made in <a href="#install">section 02</a>, under &ldquo;Then, if you have ten more
+                  minutes&rdquo;. Make that copy and run the line again from inside it, or skip this probe: the
+                  six above it are what decide whether you are ready.
                 </p>
               </div>
             </li>
@@ -1988,7 +2073,8 @@ npx playwright install chromium</code></pre>
             <p class="section__index"><b>05</b> &mdash; The ones people actually ask</p>
             <h2 id="faq-h">Questions</h2>
             <p class="lede">
-              Asked by people who came to earlier runs of this, answered the way they were answered then.
+              The ones that come up whenever people are asked to install something before a workshop,
+              answered plainly, including where the answer is inconvenient.
             </p>
           </div>
 
@@ -1997,15 +2083,24 @@ npx playwright install chromium</code></pre>
               <summary>I have never used a terminal</summary>
               <div class="faq__a">
                 <p>
-                  Neither had most of the room last time. A terminal is a box where you type one line and
+                  Neither will most of the room; this is a workshop for designers, researchers and product
+                  people, and it is built for that. A terminal is a box where you type one line and
                   press Enter, and the computer answers. You will type perhaps eight lines in ninety minutes,
-                  every one of them is on this page or on a slide, and you can paste all of them.
+                  every one of them is on this page or on a slide, and you can paste all of them. If you would
+                  like the whole of it in advance,
+                  <a
+                    href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/docs/TERMINAL-IN-TEN-MINUTES.md"
+                    >docs/TERMINAL-IN-TEN-MINUTES.md</a
+                  >
+                  is ten minutes long and assumes you have never opened one.
                 </p>
                 <p>
-                  Nothing here deletes files, changes your system settings or needs an administrator. If you
-                  would still rather not have one on your own laptop, the
-                  <a href="#browser">browser route</a> gives you a terminal inside a tab that you can throw
-                  away afterwards.
+                  Nothing the workshop itself asks you to type deletes files or changes system settings.
+                  Installing the tools is the one exception: on Windows it asks for administrator permission,
+                  and on Linux the install lines use <code>sudo</code>. If you cannot give that permission, or
+                  would rather not have a terminal on your own laptop at all, the
+                  <a href="#browser">browser route</a> needs none of it &mdash; it gives you a terminal inside
+                  a tab that you can throw away afterwards.
                 </p>
               </div>
             </details>
@@ -2019,7 +2114,7 @@ npx playwright install chromium</code></pre>
                   design and research skill, not a programming one.
                 </p>
                 <p>
-                  In practice the developers in the room finish the code faster and the acceptance criteria
+                  Expect the developers in the room to finish the code faster and the acceptance criteria
                   slower. Writing a criterion that a machine can decide, spotting the one that no machine can,
                   and noticing the requirement the agent quietly dropped: that is the part that transfers to
                   your Monday, and it has nothing to do with syntax.
@@ -2059,10 +2154,17 @@ npx playwright install chromium</code></pre>
                 </p>
                 <p>
                   What a paid seat adds is Figma&rsquo;s Dev Mode, which lets the agent read the live file
-                  through an MCP server. It is a nicer way in. It is not required, and its absence blocks
-                  nothing. There is also a route that works on a free account using a personal access token;
-                  <code>loop/MCP.md</code> in the repository has the commands and is honest about what each
-                  route does and does not give you.
+                  through an MCP server &mdash; a small program that gives the agent real access to one
+                  outside system, defined along with everything else unfamiliar in
+                  <a
+                    href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/docs/GLOSSARY.md"
+                    >docs/GLOSSARY.md</a
+                  >. It is a nicer way in. It is not required, and its absence blocks nothing. There is also a
+                  route that works on a free account using a personal access token;
+                  <a href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/loop/MCP.md"
+                    >loop/MCP.md</a
+                  >
+                  has the commands and is honest about what each route does and does not give you.
                 </p>
               </div>
             </details>
@@ -2115,6 +2217,17 @@ npx playwright install chromium</code></pre>
                   <pre><code>git checkout step-3</code></pre>
                 </div>
                 <p>
+                  If git answers
+                  <code>pathspec 'step-3' did not match any file(s) known to git</code>, the branches were not
+                  copied: <strong>Include all branches</strong> was left unticked when you made your copy from
+                  the template. It is recoverable in three lines, which are in
+                  <a
+                    href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/CHECKPOINTS.md"
+                    >CHECKPOINTS.md</a
+                  >
+                  section 7. Ticking the box now is faster than reading it on the day.
+                </p>
+                <p>
                   Nobody is stuck for more than one section. And there is nothing to catch up on afterwards:
                   the repository you leave with contains the finished state of every stage.
                 </p>
@@ -2133,7 +2246,10 @@ npx playwright install chromium</code></pre>
                 <p>
                   The part that transfers is the shape, not the festival: one artifact, one program that
                   returns pass or fail without consulting a model, and a loop that stops on an exit code.
-                  <code>docs/TIPS.md</code> ends with five places to start in your own work, each smaller than
+                  <a href="https://github.com/hculap/waysconf-2026-agentic-loops/blob/main/docs/TIPS.md"
+                    >docs/TIPS.md</a
+                  >
+                  ends with five places to start in your own work, each smaller than
                   this workshop and the same shape.
                 </p>
               </div>
@@ -2213,7 +2329,7 @@ npx playwright install chromium</code></pre>
             <ol class="steps">
               <li>
                 <div>
-                  <h4>Write down what it actually printed</h4>
+                  <h3>Write down what it actually printed</h3>
                   <p>
                     Run the line from <a href="#ready">the self-test</a> and copy the output, exactly, including
                     the parts that look like noise. That output is the difference between a question that can
@@ -2223,7 +2339,7 @@ npx playwright install chromium</code></pre>
               </li>
               <li>
                 <div>
-                  <h4>Try the browser route</h4>
+                  <h3>Try the browser route</h3>
                   <p>
                     It removes every category of problem on this page in about four minutes and needs nothing
                     from your laptop. If you are reading this at 14:40 on Wednesday,
@@ -2233,7 +2349,7 @@ npx playwright install chromium</code></pre>
               </li>
               <li>
                 <div>
-                  <h4>Ask, with the output attached</h4>
+                  <h3>Ask, with the output attached</h3>
                   <p>
                     Send the output from step one, your operating system, and which of the two agents you
                     chose. Or come to ROOM-PM at 14:45: we will be there, and the first ten minutes exist for
@@ -2357,7 +2473,17 @@ npx playwright install chromium</code></pre>
           var code = block.querySelector('code');
           if (!button || !code) return;
 
-          var text = code.textContent.replace(/\s+$/, '');
+          /* Multi-line blocks are one <span class="ln"> per command, so that a
+             wrapped line can be given a hanging indent. Rebuild the newlines
+             the clipboard needs from those spans. */
+          var lines = block.querySelectorAll('.ln');
+          var text = lines.length
+            ? Array.prototype.map
+                .call(lines, function (line) {
+                  return line.textContent;
+                })
+                .join('\n')
+            : code.textContent.replace(/\s+$/, '');
           button.hidden = false;
           button.setAttribute('aria-label', 'Copy to clipboard: ' + text.split('\n')[0]);
 

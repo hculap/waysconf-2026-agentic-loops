@@ -1,4 +1,6 @@
-Two licences apply to this repository, because it contains two different kinds of thing.
+Three licences apply to this repository, because it contains three different
+kinds of thing: code, design material, and three typefaces that are somebody
+else's work and stay under their own terms.
 
 ────────────────────────────────────────────────────────────────────────
 CODE — MIT
@@ -31,7 +33,8 @@ SOFTWARE.
 DESIGN, COPY AND IMAGERY — CC BY 4.0
 ────────────────────────────────────────────────────────────────────────
 
-Applies to: everything under design/, brief/, docs/, deck/ and guideline/.
+Applies to: everything under design/, brief/, docs/, deck/, guideline/ and
+public/, except the font files covered below.
 
 Licensed under the Creative Commons Attribution 4.0 International License.
 You may share and adapt this material for any purpose, including commercially,
@@ -40,13 +43,39 @@ provided you give appropriate credit.
 Full text: https://creativecommons.org/licenses/by/4.0/
 
 ────────────────────────────────────────────────────────────────────────
+TYPEFACES — SIL Open Font License 1.1
+────────────────────────────────────────────────────────────────────────
+
+Applies to: the woff2 files for Space Grotesk, Inter and JetBrains Mono,
+wherever they appear in this repository — public/fonts/, guideline/fonts/ and
+deck/public/fonts/ — and to any copy of them you take elsewhere.
+
+These three families are third-party work redistributed unmodified under the
+SIL Open Font License, Version 1.1. Neither the MIT grant nor the CC BY grant
+above applies to them. The OFL permits use, study, modification and
+redistribution, including commercially; it does not permit selling the fonts on
+their own, and it requires the copyright notice and the licence text to travel
+with the files.
+
+The full licence text ships beside the fonts in each of those three folders:
+
+  OFL-SpaceGrotesk.txt   Copyright 2020 The Space Grotesk Project Authors
+                         (https://github.com/floriankarsten/space-grotesk)
+  OFL-Inter.txt          Copyright 2020 The Inter Project Authors
+                         (https://github.com/rsms/inter)
+  OFL-JetBrainsMono.txt  Copyright 2020 The JetBrains Mono Project Authors
+                         (https://github.com/JetBrains/JetBrainsMono)
+
+────────────────────────────────────────────────────────────────────────
 A note on the generated images
 ────────────────────────────────────────────────────────────────────────
 
-Images under design/assets/ were generated with Google's Nano Banana Pro
-(gemini-3-pro-image) from the prompts recorded in design/assets/PROMPTS.md.
-They carry an invisible SynthID watermark identifying them as AI-generated.
-They depict no real person, venue or event.
+Sixteen of the eighteen images under design/assets/ were generated with
+Google's Nano Banana Pro (gemini-3-pro-image) from the prompts recorded in
+design/assets/PROMPTS.md, and carry an invisible SynthID watermark identifying
+them as AI-generated. The two textures were produced procedurally by
+scripts/generate-textures.mjs, with no model involved and so no watermark.
+None of them depicts a real person, venue or event.
 
 TURBINE is a fictional festival created as teaching material. Artist names,
 copy and imagery are invented. Any resemblance to a real event or performer

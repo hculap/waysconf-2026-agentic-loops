@@ -261,16 +261,24 @@ async function postProcess(bytes, entry) {
   if (entry.crop && entry.crop !== 'none') {
     // crop="centre:W×H" — centre-crop to that box before resizing.
     const m = entry.crop.match(/centre:(\d+)[x×](\d+)/i)
-    if (m) {
-      const meta = await img.metadata()
-      const [cw, ch] = [Number(m[1]), Number(m[2])]
-      img = img.extract({
-        left: Math.max(0, Math.round((meta.width - cw) / 2)),
-        top: Math.max(0, Math.round((meta.height - ch) / 2)),
-        width: Math.min(cw, meta.width),
-        height: Math.min(ch, meta.height),
-      })
+    if (!m) {
+      // PROMPTS.md §1.8: reject an attribute we cannot read rather than guessing a
+      // default. Falling through here would silently ignore the declared crop and
+      // leave `fit: 'cover'` to produce a plausible-looking file from a broken
+      // marker, which is the worst of both outcomes.
+      throw new Error(
+        `${entry.id}: crop="${entry.crop}" is not understood. ` +
+          `Use crop="none" or crop="centre:WIDTHxHEIGHT".`,
+      )
     }
+    const meta = await img.metadata()
+    const [cw, ch] = [Number(m[1]), Number(m[2])]
+    img = img.extract({
+      left: Math.max(0, Math.round((meta.width - cw) / 2)),
+      top: Math.max(0, Math.round((meta.height - ch) / 2)),
+      width: Math.min(cw, meta.width),
+      height: Math.min(ch, meta.height),
+    })
   }
 
   img = img.resize(entry.width, entry.height, { fit: 'cover', position: 'centre' })

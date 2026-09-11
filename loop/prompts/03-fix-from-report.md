@@ -12,11 +12,15 @@ looking around.
 
 How to work:
 
-1. **Fix the first failing gate family only**, in the order the report lists its items. The gates run
-   cheapest first, so a broken build makes every number below it meaningless, and fixing one early item
-   often clears several later ones.
-2. **Fix the cause, not the symptom.** A contrast failure is fixed by moving to a pairing marked PASS in
-   `design/tokens/CONTRAST.md`, not by nudging a hex until the number moves.
+1. **Fix one gate family at a time**, and pick the family by this order rather than by where it sits in the
+   report: BUILD, STRUCTURE, RUNTIME, LINKS, CONTENT, TOKENS, A11Y, VISUAL, PERF. The report prints its
+   failing families alphabetically, which is not a repair order — a section that is missing fails STRUCTURE
+   and also poisons the a11y, token and pixel numbers underneath it, so fixing STRUCTURE first often clears
+   several later items at once. Within the family you chose, work the items in the order the report lists
+   them.
+2. **Fix the cause, not the symptom.** A contrast failure is fixed by moving to a pairing marked
+   `PASS-AA` in `design/tokens/CONTRAST.md`, not by nudging a hex until the number moves. `PASS-AA-LARGE`
+   is not a pass: it applies only to type at 24 px or above, or 18.66 px bold.
 3. **Make the smallest change that turns the item green.** Do not refactor code that was already passing.
 4. **One item at a time.** Change, build, re-check, then the next.
 

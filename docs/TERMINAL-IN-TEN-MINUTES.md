@@ -5,7 +5,8 @@ Everything this workshop asks you to type, and nothing else.
 If you have never opened a terminal, this page is enough to get through the ninety minutes without
 being lost. It covers what the thing is, three ways to open one, five commands, how copy and paste
 behaves differently on every platform, and the three problems that account for nearly every raised
-hand in the room.
+hand in the room. Any word it uses and does not explain is in [`GLOSSARY.md`](GLOSSARY.md), which
+defines every term the workshop leans on.
 
 It deliberately does not teach you the rest. There is a lot of rest.
 
@@ -46,6 +47,10 @@ A Codespace is a computer running in GitHub's cloud that you drive from a browse
 with Node, both agents, the browser the gates need and every dependency already installed, which is
 why the workshop uses it. The click path to get one is in
 [`GITHUB-FOR-DESIGNERS.md`](GITHUB-FOR-DESIGNERS.md) §6.
+
+The **gates**, since the word is about to come up constantly: the programs that read the finished page
+and decide, without asking a model, whether it passed. There are nine of them and they are the subject
+of the session.
 
 Once the Codespace is open you are looking at VS Code in a browser tab. The terminal is the panel
 along the bottom. If it is not there:
@@ -184,7 +189,8 @@ These are all the commands the workshop uses:
 | `npm run dev` | start the development server on `http://localhost:4321`; runs until stopped |
 | `npm run build` | produce the finished site in `dist/` |
 | `npm run check` | run every gate against the built site and write `checks/report.md` |
-| `npm run deploy` | publish `dist/` to Netlify |
+| `npx netlify login` | opens a browser to sign you in; the terminal waits until you come back |
+| `npm run deploy` | publish `dist/` to Netlify. Sign in first, once, with the line above |
 | `bash loop/ralph.sh` | run the loop: check, hand the failures to the agent, repeat |
 | `claude` or `codex` | start your coding agent in this folder |
 | `git checkout step-3` | jump to a workshop checkpoint — see [`../CHECKPOINTS.md`](../CHECKPOINTS.md) |
@@ -402,9 +408,8 @@ q                    leave a pager that has taken over the screen
 
 No prompt at the bottom?   A program is running. That is usually correct.
 "command not found"?       The shell found no program by that name. See section 6.
-npm cannot find            You are not in the project folder. Run pwd.
-package.json?
+npm: no package.json?      You are not in the project folder. Run pwd.
 ```
 
-Two pages exist for when this one runs out: [`GLOSSARY.md`](GLOSSARY.md) defines every term the
-workshop uses, and [`../CHECKPOINTS.md`](../CHECKPOINTS.md) gets you back on track if you fall behind.
+Two pages exist for when this one runs out: [`GLOSSARY.md`](GLOSSARY.md) for any word you meet and do
+not recognise, and [`../CHECKPOINTS.md`](../CHECKPOINTS.md) to get back on track if you fall behind.

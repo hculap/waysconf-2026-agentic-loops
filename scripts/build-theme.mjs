@@ -40,11 +40,35 @@ function deref(value) {
   return value.replace(/\{([^}]+)\}/g, (_, ref) => `var(--${ref.split('.').join('-')})`)
 }
 
+/**
+ * DTCG composite shadow -> the CSS `box-shadow` order.
+ *
+ * tokens.json carries the three shadow steps as objects rather than strings so that
+ * the token gate can read the `color` field on its own and accept it inside
+ * `box-shadow` without making plain black a legal text colour. Tailwind needs the
+ * composed string, so the composing happens here.
+ */
+function shadowValue(v) {
+  const parts = [v.offsetX, v.offsetY, v.blur, v.spread, v.color]
+  if (parts.some((p) => p === undefined)) {
+    throw new Error(`shadow token is missing a field: ${JSON.stringify(v)}`)
+  }
+  return parts.map((p) => String(deref(p))).join(' ')
+}
+
 function cssValue(token) {
   const v = token.$value
   if (Array.isArray(v)) {
     // font stacks: quote any family containing a space
     return v.map((f) => (/\s/.test(f) ? `'${f}'` : f)).join(', ')
+  }
+  if (v !== null && typeof v === 'object') {
+    // String(object) is "[object Object]", which is valid CSS syntax and invalid at
+    // computed-value time, so it fails silently. Refuse instead.
+    if (token.$type !== 'shadow') {
+      throw new Error(`cannot serialise a composite $value of $type "${token.$type}": ${JSON.stringify(v)}`)
+    }
+    return shadowValue(v)
   }
   return String(deref(v))
 }

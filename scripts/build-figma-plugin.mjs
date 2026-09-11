@@ -395,6 +395,21 @@ const FIGMA_SPEC = {
   /* §8.1 — the slug is the Figma layer name, the section id and the export filename. */
   exportSections: ['nav', 'hero', 'ticker', 'lineup', 'programme', 'venue', 'tickets', 'faq', 'newsletter', 'footer'],
 
+  /* §5.4 to §5.8 — the section eyebrows.
+     These are the one set of visible strings on the composed page that brief/CONTENT.md
+     does not carry: CONTENT.md owns the headings and the body copy, FIGMA-SPEC owns the
+     eyebrow above each h2. They are listed here, with their section, so that the string
+     on the page can be traced to a document rather than to someone's judgement. If the
+     copy deck ever grows an eyebrow of its own, delete the line here and read it from
+     CONTENT.md instead. */
+  eyebrows: {
+    lineup: 'Twelve artists',
+    programme: 'Three nights',
+    venue: 'The building',
+    tickets: 'Three ways in',
+    faq: 'Before you come',
+  },
+
   /* §1.1 — the cover frame. */
   cover: {
     width: 1600,
@@ -760,22 +775,57 @@ function buildContent(md) {
     disclaimer: legalF[2],
   }
 
-  /* §13 Alt text */
+  /* §13 Images.
+     Resolved by role, never by literal filename. The asset pack has already been
+     renamed once — hero-hall-e.webp became hero-hall.jpg, the per-artist files
+     gained a CANON-order number, the map stopped being an image at all — and a
+     plugin that hard-codes those strings silently loses its alt text the next time
+     somebody re-cuts the pack. Matching on the artist slug and on the role word
+     survives a rename; a literal does not. */
   const imageBody = section('Image manifest and alt text')
   const altSub = splitByHeading(imageBody, 3).find((s) => s.title === 'Alt text')
   const alt = {}
   const altRe = /`([^`]+\.(?:webp|svg|jpg|jpeg|png))`[^\n]*:\s*\n+```\n([\s\S]*?)\n```/g
   let am
   while ((am = altRe.exec(altSub.body)) !== null) alt[am[1]] = am[2].trim()
-  /* texture-grain.png is described in prose rather than a fenced block, because §13
-     requires it to carry an empty alt and never a description. Record that decision
-     here rather than let the count come up one short and look like a parse failure. */
-  alt['texture-grain.png'] = ''
-  expect(
-    Object.keys(alt).length === 17,
-    `§13 expected 17 alt entries (hero, twelve artists, venue, map, og, grain), found ${Object.keys(alt).length}`
-  )
-  const manifest = tableWithHeader(imageBody, 'Path').rows.map((r) => ({ path: r[0], where: r[1], size: r[2] }))
+
+  /* A decorative image is described in prose and must never be given a description,
+     so it has no fenced block. It still belongs in the manifest, with an empty alt. */
+  const decoRe = /`([^`]+\.(?:webp|svg|jpe?g|png))`[^\n]*decorative/gi
+  let dm
+  while ((dm = decoRe.exec(altSub.body)) !== null) alt[dm[1]] = ''
+
+  const altKeys = Object.keys(alt)
+  const claimed = new Set()
+  const roleOf = (pattern, what) => {
+    const key = altKeys.find((k) => pattern.test(k) && !claimed.has(k))
+    expect(key, `§13: no image matching ${pattern} for the ${what}`)
+    claimed.add(key)
+    return { file: key, alt: alt[key] }
+  }
+
+  const artistImages = artists.map((artist) => {
+    const key = altKeys.find((k) => k.indexOf(artist.slug) >= 0)
+    expect(key, `§13: no image whose filename contains the slug "${artist.slug}" (${artist.name})`)
+    claimed.add(key)
+    return { slug: artist.slug, name: artist.name, file: key, alt: alt[key] }
+  })
+
+  const images = {
+    hero: roleOf(/hero/i, 'hero'),
+    venue: roleOf(/venue/i, 'venue image'),
+    og: roleOf(/(^|[^a-z])og[-_.]/i, 'social card'),
+    artists: artistImages,
+    /* Anything left over is decorative or unplaced. §13 names two supplied files
+       the design does not place; they are listed, not positioned. */
+    other: altKeys.filter((k) => !claimed.has(k)).map((k) => ({ file: k, alt: alt[k] })),
+    all: alt,
+    manifest: tableWithHeader(imageBody, 'Path').rows.map((r) => ({ path: r[0], where: r[1], size: r[2] })),
+    /* §13 is explicit that the venue map is a bordered placeholder box and not a
+       file. Kept as a field so the plugin does not have to infer its absence. */
+    map: altKeys.some((k) => /map/i.test(k)) ? roleOf(/map/i, 'map') : null,
+  }
+  expect(images.artists.length === 12, `§13 expected 12 artist images, matched ${images.artists.length}`)
 
   /* §14 Microcopy */
   const microTable = tableWithHeader(section('Interface microcopy and accessible names'), 'Where')
@@ -794,7 +844,7 @@ function buildContent(md) {
     faq,
     newsletter,
     footer,
-    images: { alt, manifest },
+    images,
     microcopy,
   }
 }
@@ -853,6 +903,7 @@ const data = {
     styleCandidates: FIGMA_SPEC.styleCandidates[s.weight],
   })),
   pages: FIGMA_SPEC.pageOrder,
+  eyebrows: FIGMA_SPEC.eyebrows,
   cover: FIGMA_SPEC.cover,
   skipLink: FIGMA_SPEC.skipLink,
   breakpoints: FIGMA_SPEC.breakpoints,
