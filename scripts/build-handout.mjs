@@ -23,12 +23,12 @@ const OUT = join(ROOT, 'docs/handout')
 
 const LINKS = [
   {
-    label: 'Workshop repo',
-    hint: 'Everything. Start here.',
-    url: 'https://github.com/hculap/waysconf-2026-agentic-loops',
+    label: 'The prompts',
+    hint: 'All eight. Copy from here.',
+    url: 'https://turbine-workshop.netlify.app/workshop/',
   },
   {
-    label: 'Setup page',
+    label: 'Before you come',
     hint: 'Accounts and installs.',
     url: 'https://turbine-workshop.netlify.app',
   },
@@ -159,9 +159,9 @@ const html = `<!doctype html>
 
   <footer>
     <div class="commands">
-      <b>npm run check</b> &nbsp;run every gate<br>
-      <b>bash loop/ralph.sh</b> &nbsp;run the loop<br>
-      <b>git checkout step-3</b> &nbsp;catch up
+      <b>mkdir turbine &amp;&amp; cd turbine</b> &nbsp;everything starts here<br>
+      <b>claude</b> &nbsp;or <b>codex</b> &nbsp;the agent<br>
+      <b>/goal npm run check exits 0</b> &nbsp;the loop
     </div>
     <div style="text-align:right">
       Code MIT · design &amp; copy CC BY 4.0<br>
@@ -199,7 +199,7 @@ const html = `<!doctype html>
 
   <footer>
     <div>Questions afterwards: the repository has an issues tab, and I read it.</div>
-    <div style="text-align:right">hculap/waysconf-2026-agentic-loops</div>
+    <div style="text-align:right">github.com/hculap/waysconf-2026-agentic-loops</div>
   </footer>
 </section>
 

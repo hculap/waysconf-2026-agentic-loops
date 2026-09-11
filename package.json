@@ -23,9 +23,9 @@
     "check:visual": "playwright test checks/specs/visual.spec.ts",
     "check:perf": "node checks/gates/lighthouse.mjs",
     "check:assets": "node scripts/check-assets.mjs",
+    "check:guideline": "node checks/guideline.mjs",
     "gen:images": "node scripts/generate-images.mjs --all",
     "baseline": "node checks/baseline.mjs",
-    "loop": "bash loop/ralph.sh",
     "deploy": "npx netlify deploy --prod --dir=dist",
     "check:imagecontrast": "node checks/gates/image-contrast.mjs"
   },

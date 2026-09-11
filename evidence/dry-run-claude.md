@@ -1,5 +1,9 @@
 # Dry run — claude
 
+**Historical.** This trial measured the older shape of the workshop, where participants
+cloned a repository that already contained a verifier and checkpoint branches. They no
+longer do. The current trial — the prompts, in an empty folder — is `prompt-trial.md`.
+
 **This trial did not run.** Not "ran and failed" — did not run, and this file exists so
 that absence is recorded rather than left as a gap somebody fills in with an assumption.
 

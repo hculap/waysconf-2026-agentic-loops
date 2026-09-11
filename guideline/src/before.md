@@ -9,6 +9,19 @@ people. You will type a handful of commands and say a lot of things in English.
 
 ---
 
+## What we are going to build
+
+::diagram:01-the-loop::
+
+An agent writes a page. A **program** — not the agent — checks it against the design, the
+contrast rules and the copy, and writes down what is wrong. The agent reads that and fixes
+it. Round and round until the program says nothing is wrong, and then it goes live.
+
+The interesting box is the one that refuses. Everything below is what you need installed so
+you can build one of those on Wednesday.
+
+---
+
 ## What you need
 
 ::accounts::

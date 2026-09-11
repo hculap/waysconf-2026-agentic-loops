@@ -14,8 +14,8 @@ A participant never opens this repository. They get the Figma file, a design pac
 run writes its own project, its own page and its own checker. Nothing here is cloned.
 
 If you are changing anything under `prompts/`, remember it will be read by a designer who
-has never used a terminal, and that `guideline/prompts/index.html` is generated from it by
-`node scripts/build-prompts-page.mjs` — never edit the HTML by hand.
+has never used a terminal, and that the participant site is generated from it by
+`node scripts/build-guideline.mjs` — never edit the HTML by hand.
 
 ## Plan mode
 
@@ -50,7 +50,7 @@ see `evidence/INCIDENTS.md`.
 | File | Generator |
 |---|---|
 | `src/styles/theme.generated.css` | `node scripts/build-theme.mjs` |
-| `guideline/prompts/index.html` | `node scripts/build-prompts-page.mjs` |
+| `guideline/index.html`, `guideline/workshop/index.html` | `node scripts/build-guideline.mjs` |
 | `design-pack/` | `node scripts/build-design-pack.mjs` |
 | `figma-plugin/data.generated.js` | `node scripts/build-figma-plugin.mjs` |
 | `public/fonts/` | `node scripts/fetch-fonts.mjs` |

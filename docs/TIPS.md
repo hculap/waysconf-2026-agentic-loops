@@ -42,8 +42,8 @@ order, an invented artist, a decision to "start simple" that drops six requireme
 
 **Make it state its assumptions in writing.** Ambiguity is not the enemy; silent resolution of it is.
 
-> Where the brief is ambiguous, write the reading you chose into `loop/PROGRESS.md` under "Assumptions"
-> and continue. Do not stall, and do not pick silently.
+> Where the brief is ambiguous, write the reading you chose into `notes.md` under "Assumptions" and
+> continue. Do not stall, and do not pick silently.
 
 **Hand over the failure report verbatim.** Do not compress seven failures into "some contrast issues".
 Paraphrase drops the selector, and the selector is the useful part.
@@ -110,9 +110,9 @@ gate that cannot run reports SKIP, and a skip does not turn the run red. `--skip
 Lighthouse finds no browser to launch, leaves AC-52 to AC-55 unmeasured and the run green. CI installs
 Chromium for that reason — it runs the family a laptop can quietly drop.
 
-**Durable state in a file.** `loop/PROGRESS.md` is written by each iteration and read by the next. Context
-is not memory; it is a buffer that gets summarised and truncated. If the next iteration needs it, it goes
-on disk, including what was tried and failed.
+**Durable state in a file.** `notes.md` is written by each iteration and read by the next — prompts 05 and
+08 both say so. Context is not memory; it is a buffer that gets summarised and truncated. If the next
+iteration needs it, it goes on disk, including what was tried and failed.
 
 **A fresh context each iteration, usually.** A long context carries every wrong turn the loop already took,
 and the model keeps weighting its own earlier reasoning. A fresh context with the canon, the progress file
@@ -191,8 +191,8 @@ diagnose.
   `npm run check` as its precondition, and AC-59 then compares the sha256 of the fetched page against the
   build that passed. Everything else proves *a* page passed; that proves the page that passed is the page
   that shipped. Note what it costs: in this repository that precondition lives in
-  `loop/prompts/05-deploy.md` as an instruction rather than a program, and an instruction is the weaker of
-  the two things this page is about.
+  `prompts/06-deploy.md` as an instruction rather than a program, and an instruction is the weaker of the
+  two things this page is about.
 - **Install global packages or change system state.** Global installs are invisible in the diff and break
   the next person's machine.
 - **Edit its own verification code.** Thresholds, suppressions, skipped assertions, baseline images, the

@@ -1,5 +1,11 @@
 # Do the checkpoints do what `CHECKPOINTS.md` says?
 
+**Historical.** The `step-0`…`step-5` branches and `CHECKPOINTS.md` were removed when the
+workshop stopped shipping participants a repository — there is nothing to catch up *to* when
+each prompt stands alone. The run below happened while they existed and is kept for what it
+measured: a document making behavioural claims, checked against the branches rather than
+trusted.
+
 Six branches are promised to a room of thirty people as a way of catching up when they
 fall behind. A checkpoint that does not build, or that does not fail in the way the
 document claims, is worse than no checkpoint: it strands the person already behind.

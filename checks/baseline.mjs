@@ -45,9 +45,9 @@ const MIN_REASON_LENGTH = 12
 /**
  * Environment that means an agent, not a person, is holding the keyboard.
  *
- * loop/ralph.sh runs the agent with --permission-mode acceptEdits and commits whatever it produced, so
- * "the loop cannot move the target" has to be enforced by something the loop runs into, not by a line
- * in a prompt. These are the markers the runners in this repository set, plus the usual CI ones.
+ * An agent looping under `/goal` accepts its own edits and keeps going, so "the loop cannot move the
+ * target" has to be enforced by something the loop runs into, not by a line in a prompt. These are the
+ * markers the agent runners set, plus the usual CI ones.
  */
 const AGENT_MARKERS = [
   'CI',
@@ -475,8 +475,7 @@ async function main() {
   /**
    * And it has to be a person giving it.
    *
-   * An agent running under loop/ralph.sh can type any flag it likes; what it cannot do is be at a
-   * terminal. This is a speed bump rather than a security boundary — everything under checks/ is
+   * A looping agent can type any flag it likes; what it cannot do is be at a terminal. This is a speed bump rather than a security boundary — everything under checks/ is
    * off limits to the implementing agent by AGENTS.md, and this is what that rule looks like when it
    * is enforced by code instead of by a paragraph.
    */

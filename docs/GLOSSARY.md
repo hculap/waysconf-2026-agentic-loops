@@ -82,8 +82,8 @@ npm keeps them for itself: `npm run check -- --skip-perf`.
 workshop: commit whenever the gates go green, so there is always a state worth returning to.
 
 **Context window** — How much text a model can hold at once: instructions, files, command output and the
-conversation so far. In this workshop: long gate reports fill it quickly, which is why `loop/PROGRESS.md`
-exists.
+conversation so far. In this workshop: long gate reports fill it quickly, which is why prompt 05 tells the
+agent to write what is left into `notes.md` before you start a fresh session.
 
 **Contrast ratio** — A number between 1 and 21 describing how far a text colour sits from its
 background. In this workshop: body text needs at least 4.5:1. Every measured TURBINE pairing is listed in

@@ -1291,7 +1291,7 @@ function finish(extraNotes = []) {
   // brief/ACCEPTANCE.md is described: a program that returns 0 or 1 and prints a message.
   //
   // A SKIP exits 1 as well. These criteria are blocking, checks/run.mjs aborts only on
-  // FAIL, and loop/ralph.sh stops on an exit code — so a skip that exited 0 was a pass with
+  // FAIL, and a loop stops on an exit code — so a skip that exited 0 would be a pass with
   // better manners, and every unevaluated path in this file was a way to stop AC-01 or
   // AC-02 blocking. Only a real PASS exits 0.
   process.exitCode = gateStatus === STATUS.PASS ? 0 : 1

@@ -180,37 +180,41 @@ browser path immediately rather than one at a time.
 
 ---
 
-# Two doors, same room
+# You need two things
 
 <div class="cols mt-8">
 <div>
 
-### On your machine
+### The design
 
-```bash
-gh repo create my-turbine \
-  --template hculap/waysconf-2026-agentic-loops \
-  --public --clone
-cd my-turbine
-npm install
-npm run dev
-```
+The TURBINE file in Figma, and a **design pack** — the same design as three PNGs, every
+colour and size, and every word.
 
-Node 20.11 or newer. Nothing else.
+### The prompts
+
+<p class="mt-2" style="color: var(--turbine-coolant)">
+turbine-workshop.netlify.app
+</p>
+
+Eight of them, with a copy button on each.
 
 </div>
 <div>
 
-### In your browser
+### And an empty folder
 
-**Use this template** → **Create a new repository**
+```bash
+mkdir turbine && cd turbine
+claude          # or: codex
+```
 
-**Code** → **Codespaces** → **Create codespace**
-
-Three minutes. Node, both agents and the browser the gates need are already installed.
+<p class="mt-6 text-xl">
+There is <b>nothing to clone</b> and no code to read.
+</p>
 
 <p class="mt-4" style="color: var(--turbine-coolant)">
-No install. No admin rights. Works on a locked-down work laptop.
+The project, the page, and the program that checks the page — the agent makes all
+three for itself.
 </p>
 
 </div>
@@ -223,27 +227,22 @@ because they have to will otherwise spend the session feeling behind.
 
 ---
 
-# GitHub, for people who have never used it
+# Two shapes, and neither is a script
 
-<div class="mt-6">
-
-| You already know this as | GitHub calls it |
-|---|---|
-| A shared folder that remembers every version | a **repository** |
-| Save, with a note about what changed | a **commit** |
-| Duplicating a file so you can experiment safely | a **branch** |
-| Sending your version back for review | a **pull request** |
-| The folder your website is published from | **the thing Netlify reads** |
-
+<div class="mt-4">
+  <img src="/diagrams/07-loop-vs-workflow.svg" alt="A loop defined by its exit condition, beside a workflow defined by its phases" class="w-full">
 </div>
 
-<p class="mt-8 text-xl">
-For the next ninety minutes you need the first two. That is genuinely all.
-</p>
-
 <!--
-Do not teach git. Teach the mental model and move on. docs/GITHUB-FOR-DESIGNERS.md
-is in the repo for afterwards; say that it exists.
+This is the slide people will still be using in a year, when the tools have all
+changed names.
+
+A loop: you define the exit condition. A workflow: you define the phases and the bar
+between them. Both are things you SAY. That is why changing one is a sentence rather
+than an edit, a test run and a redeploy.
+
+Point at phase 4 and say: a loop lives inside a workflow. That nesting is the usual
+arrangement and nobody draws it.
 -->
 
 ---
@@ -449,28 +448,32 @@ gesture teaches more than the slide.
 <div>
 
 ```bash
-# 1. point your agent at the repo
+mkdir turbine && cd turbine
 claude          # or: codex
-
-# 2. give it the first prompt
-loop/prompts/01-plan.md
-
-# 3. read the plan, then let it build
-#    the nav and the hero
 ```
+
+Then, from the prompts page:
+
+<p class="mt-2 text-xl">
+<b>01</b> start &nbsp;→&nbsp; <b>02</b> look at the design &nbsp;→&nbsp; <b>03</b> build
+</p>
+
+<p class="mt-4" style="color: var(--turbine-coolant)">
+Prompt 02 writes nothing. Read what it says it found before you let it near a file.
+</p>
 
 </div>
 <div>
 
-<p class="text-xl">Falling behind is normal and planned for.</p>
+<p class="text-xl">Falling behind cannot hurt you.</p>
 
-```bash
-git checkout step-1
-```
+<blockquote>
+Stop where you are. Leave whatever is unfinished. I want to move on.
+</blockquote>
 
-<p class="mt-6" style="color: var(--turbine-muted)">
-Every stage of this session is a branch.<br>
-CHECKPOINTS.md lists all six.
+<p class="mt-4" style="color: var(--turbine-text-2)">
+Every prompt stands alone. A half-built page with a working checker teaches more than
+a finished page with none.
 </p>
 
 </div>
@@ -714,28 +717,31 @@ along, not with an opinion.
 
 <div class="mt-6">
 
-I ran this before the conference, twice, in a fresh worktree with nothing shared — no
-`node_modules`, no `dist`, no notes. One agent, pointed at `step-3`, which ships with two
-deliberate mistakes.
+I ran the prompts before the conference, in an **empty folder** outside every repository.
+No starter, no `node_modules`, no notes — exactly what you have in front of you now.
 
 </div>
 
 <div class="mt-8">
 
-| Codex CLI, from `step-3` | |
+| Codex CLI, empty folder | |
 |---|---|
-| Failures at the start | **86**, across the accessibility and design-token gates |
-| Agent passes to green | **1** |
-| Time in the agent | 520s |
-| Time in the verifier | 172s, then 205s |
-| Criteria cleared | AC-15, AC-23, AC-28, AC-29, AC-52, AC-53 |
-| Anything regressed | none |
-| **Verifier modified** | **no** |
+| 01 — a project exists | **107s** |
+| 03 — a hero, from the values given | **41s** |
+| 04 — **the agent writes its own checker** | **495s** |
+| 05 — the loop runs | **46s** |
+| What prompt 04 produced | `check.mjs`, 264 lines — plus tests for the checker and a document explaining it, neither of which was asked for |
+| What it decided on its own | to treat axe's *incomplete* results as failures |
 
 </div>
 
 <p class="mt-6" style="color: var(--turbine-muted)">
-evidence/dry-run-codex.md — measured by a program, not reported by the agent
+evidence/prompt-trial.md — eleven minutes, unattended, measured by a program
+</p>
+
+<p class="mt-2" style="color: var(--turbine-coolant)">
+It found the axe blind spot from one sentence in the prompt: <b>&ldquo;a check that cannot
+run is a failure, never a skip&rdquo;</b>. That took me an afternoon by hand.
 </p>
 
 <p class="mt-2" style="color: var(--turbine-muted)">
@@ -745,10 +751,12 @@ evidence/dry-run-claude.md.
 </p>
 
 <!--
-Numbers come from evidence/dry-run-codex.md. Refill this table from that file before the
+Numbers come from evidence/prompt-trial.md. Refill this table from that file before the
 talk rather than from memory — the whole point of the slide is that it is measured.
 
-The row that matters is the last one. Somebody always asks whether the agent cheats.
+The row that matters is the last one. Nobody asked for the incomplete-results decision;
+it fell out of one sentence in prompt 04. That is the argument for writing the standard
+into the prompt rather than trusting the agent to hold it.
 
 Say the Claude line out loud rather than skipping it. "I promised two agents and I am
 showing you one, and here is exactly why" is worth more than a second column of numbers,
@@ -762,7 +770,7 @@ the conference, replace this with the second column and drop the caveat.
 
 <div class="mt-6 text-lg">
 
-Twelve incidents while building this. **Eight were failures of the verifier or the harness, not of the page.**
+Thirteen incidents while building this. **Nine were failures of the verifier or the harness, not of the page.**
 
 </div>
 
@@ -774,19 +782,21 @@ Twelve incidents while building this. **Eight were failures of the verifier or t
 | **axe passed a blank page.** Zero violations, three breakpoints, green | A measurement of nothing looks exactly like a measurement of perfection |
 | The loop hung for an hour on a stdin nobody closed | Third unbounded wait in one project |
 | The **evidence harness fabricated** four clean iterations out of a killed run | Absence read as success — fourth time, and the only one that invented a table |
+| The gate was green and **the hero was illegible** — five of nine pieces of text below the legal minimum | axe does not fail text over a photograph. It marks it *incomplete* |
 
 </div>
 
 <p class="mt-6" style="color: var(--turbine-muted)">
-evidence/INCIDENTS.md — all twelve, written down at the time
+evidence/INCIDENTS.md — all thirteen, written down at the time
 </p>
 
 <!--
 Do not rush this slide and do not apologise for it. It is the most credible thing in
 the deck, and the "427 failures about someone else's site" story lands every time.
 
-The punchline, if you want one: the guideline page we sent participants was quoting
-that 427 as their expected output, until somebody noticed where the number came from.
+The last row is the one to end on, because it is the only one a careful person could
+not have avoided. Everything above it was a bug. That one was the tool working exactly
+as documented, and the documentation being somewhere nobody reads.
 -->
 
 ---
@@ -807,25 +817,35 @@ is where the fifteen minutes comes from.
 
 # Start your loop now, then listen
 
-```bash
-bash loop/ralph.sh
-```
-
-<div class="mt-8 text-xl">
-
-It will run for several minutes. Leave it. I will talk over it, and when it stops we will
-look at what it did.
-
+<div class="mt-4 text-xl">
+Paste <b>prompt 05</b>. Then leave it alone — I will talk over it, and when it stops we
+will look at what it did.
 </div>
 
 <div class="mt-6">
 
-```bash
-AGENT=codex bash loop/ralph.sh    # if you are on ChatGPT Plus
-MAX=3 bash loop/ralph.sh          # if you would rather it stopped sooner
+```text
+Run npm run check. If it exits 0, stop and tell me.
+If it does not, read check-report.md, fix what it names, run it again.
+Repeat until it exits 0.
+
+NEVER change check.mjs to make a check pass.
 ```
 
 </div>
+
+<div class="mt-6 text-xl">
+On Claude Code you can make it structural instead of trusted:
+</div>
+
+```text
+/goal npm run check exits 0
+```
+
+<p class="mt-4" style="color: var(--turbine-coolant)">
+The session cannot end until that command actually exits 0. Codex has no equivalent —
+there, the paragraph is the mechanism.
+</p>
 
 <!--
 Give them ninety seconds to get it started. Check that at least two thirds of the
@@ -834,37 +854,34 @@ room has it running before you continue, by show of hands.
 
 ---
 
-# The whole loop
+# The whole loop is four sentences
 
-```bash
-for i in $(seq 1 "$MAX"); do
+<div class="mt-6">
 
-  # the verifier runs FIRST: if the gates are green there is nothing to do,
-  # and an agent asked to improve passing work will invent a reason
-  if npm run --silent check; then
-    echo "All gates passed on iteration $i."; exit 0
-  fi
+| | |
+|---|---|
+| **Check first** | Run the check *before* you fix anything. An agent asked to improve passing work will find a reason. |
+| **Hand back the report** | Unchanged. The file a program wrote, not your summary of it. |
+| **Never touch the checker** | The moment the thing being judged can edit the judge, every green result afterwards means nothing. |
+| **Stop on a program** | Not when it feels finished. When something exits 0. |
 
-  # hand the report back, unchanged
-  claude -p "$(cat loop/PROMPT.md)" --permission-mode acceptEdits
-
-  # a commit per pass, so you can see exactly what each one did
-  git add -A && git commit -q -m "loop: iteration $i"
-done
-```
-
-<div class="mt-6 text-xl">
-That is it. The rest of <code>ralph.sh</code> is guard rails.
 </div>
+
+<p class="mt-8 text-xl">
+No script. Nothing to install. You can say this to any agent, today.
+</p>
 
 <!--
 Credit where it is due: this shape is Geoffrey Huntley's, widely known as the
-"Ralph Wiggum" technique. Say so.
+"Ralph Wiggum" technique — a shell loop feeding a prompt file to an agent forever.
+
+What changed is that you no longer need the shell loop. Say the four sentences, or use
+/goal, and the harness holds it for you.
 
 The three things that make it work, in order of how often they are missed:
   1. the exit condition is a program
   2. state is in files, so a fresh context is not a handicap
-  3. there is a hard cap, so it cannot run all night
+  3. there is a limit, so it cannot run all night
 -->
 
 ---
@@ -891,7 +908,7 @@ Reasoning gets worse as it fills.
 
 Reads `checks/report.md` — the current failures.
 
-Reads `loop/PROGRESS.md` — what was already tried, and what it cost.
+Reads `notes.md` — what was already tried, and what it cost.
 
 Reads the brief.
 
@@ -903,8 +920,9 @@ Notes on disk beat memory in context.
 </div>
 
 <!--
-PROGRESS.md is the underrated artifact in this repo. It is how iteration 7 knows
-that iteration 3 already tried the obvious thing and why it did not work.
+notes.md is the underrated artifact in the whole method, and the one nobody demos.
+It is how iteration 7 knows that iteration 3 already tried the obvious thing and why
+it did not work. Prompts 05 and 08 both tell the agent to keep it.
 -->
 
 ---

@@ -1223,7 +1223,7 @@ carries no information and must never be given a description.
 ## 14. Interface microcopy and accessible names
 
 Every remaining user-facing string on the page. If you need one that is not here, it is a question
-for us: record it and the reading you chose in `loop/PROGRESS.md` and carry on. Do not write copy.
+for us: record it and the reading you chose in `notes.md` and carry on. Do not write copy.
 
 | Where | String | Notes |
 |---|---|---|

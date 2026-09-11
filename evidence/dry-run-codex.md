@@ -1,5 +1,9 @@
 # Dry run — codex
 
+**Historical.** This trial measured the older shape of the workshop, where participants
+cloned a repository that already contained a verifier and checkpoint branches. They no
+longer do. The current trial — the prompts, in an empty folder — is `prompt-trial.md`.
+
 Every gate passed after **1 agent pass**.
 
 Started from `step-3` in a fresh git worktree with a clean `npm ci`.

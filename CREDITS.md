@@ -158,13 +158,13 @@ as **"Ralph Wiggum"**: put the instruction in a file, run a coding agent against
 fail, and run it again — doing the work through repetition with a fresh context each time, rather than
 through one long conversation that degrades as it grows.
 
-What this repository borrows is that shape: the prompt lives in `loop/PROMPT.md` and does not change
-between iterations, state lives in `loop/PROGRESS.md` rather than in the conversation, and each
-iteration starts clean.
+What this repository borrows is that shape: the instruction does not change between iterations, state
+lives in a file rather than in the conversation, and each iteration starts clean.
 
-What it changes is the exit condition. The loop here is bounded — a hard iteration cap, twelve by
-default — and it stops when `npm run check` exits 0, which is a program reading the built site rather
-than a person watching or a model deciding. That substitution is the subject of the workshop, and it
+What it changes is two things. The exit condition is a program — it stops when `npm run check` exits 0,
+which is something reading the built site rather than a person watching or a model deciding. And the
+loop is no longer a script: participants say it in a paragraph, or hand Claude Code
+`/goal npm run check exits 0` and let the harness hold it. That substitution is the subject of the workshop, and it
 is ours; the credit above is for the idea we started from, not for the thing built on top of it.
 
 Neither Geoffrey Huntley nor any other person, project or company named in this file has reviewed,

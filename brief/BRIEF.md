@@ -6,7 +6,7 @@
 and CANON disagree, CANON wins. Where this brief and the design disagree, this brief wins. Where this
 brief and `brief/CONTENT.md` disagree about a string or a link target, CONTENT.md wins. A fact that is in
 neither CANON nor `brief/CONTENT.md` is a question for us, not a gap for you to fill: write the question
-and the reading you chose in `loop/PROGRESS.md`, mark that section blocked, and carry on. Do not invent
+and the reading you chose in `notes.md`, mark that section blocked, and carry on. Do not invent
 the fact, and do not stop the loop waiting for an answer.
 
 Any term here that is new to you is defined in plain language in `docs/GLOSSARY.md`.
@@ -67,9 +67,9 @@ Build all eleven, in this order. None may be dropped, merged or reordered.
 | You need | Read | Contract |
 |---|---|---|
 | Facts | `docs/CANON.md` | Authoritative over everything, including this brief. |
-| Copy | `brief/CONTENT.md` | Every user-facing string: headings, body, labels, alt text, FAQ answers. A missing string is a question for us: record it in `loop/PROGRESS.md` and do not write copy. |
+| Copy | `brief/CONTENT.md` | Every user-facing string: headings, body, labels, alt text, FAQ answers. A missing string is a question for us: record it in `notes.md` and do not write copy. |
 | Tokens | `design/tokens/tokens.json` | The only source of colour, spacing, radius, type scale and breakpoints. Custom properties reach the page through `design/tokens/tokens.css`; Tailwind's utilities come from `src/styles/theme.generated.css`. Both are generated from `tokens.json` by `node scripts/build-theme.mjs`, and neither is edited by hand. No raw hex, px or rem in components. Use only pairings marked `PASS-AA` in `design/tokens/CONTRAST.md`; `PASS-AA-LARGE` is not a pass, it is an exemption for type at 24 px or above, or 18.66 px bold. |
-| Imagery | `design/assets/` | Already generated and committed, under the filenames `design/assets/manifest.json` lists; `brief/CONTENT.md` §13 carries the alt text for each. `npm run build` copies them into `public/images/` for you. Do not hotlink, substitute or generate images. If a file the manifest lists is not there, stop and record it in `loop/PROGRESS.md`. |
+| Imagery | `design/assets/` | Already generated and committed, under the filenames `design/assets/manifest.json` lists; `brief/CONTENT.md` §13 carries the alt text for each. `npm run build` copies them into `public/images/` for you. Do not hotlink, substitute or generate images. If a file the manifest lists is not there, stop and record it in `notes.md`. |
 | Layout and spacing | `design/FIGMA-SPEC.md` | The design stated literally: every frame, grid, component and section, with numbers. §5 covers 1440, §6 768, §7 390. Authoritative for anything the tokens do not fix, and the file to read when you cannot open Figma. |
 | The design, if you have a seat | Figma (optional) | The same design, drawn. `figma-plugin/` builds it from the tokens. Nothing in it is needed to pass a gate. |
 | Baseline | `design/export/` | Full-page renders of the reference build at 390, 768 and 1440, regenerated with `npm run baseline`. The visual gate diffs your screenshots against them. They answer whether your build matches the reference build, not whether it matches the design; for layout intent, read `design/FIGMA-SPEC.md`. |
@@ -143,9 +143,9 @@ Out of scope means: do not build it, do not scaffold it, do not leave a placehol
 ## 9. How to work
 
 Plan before you build. Write the short plan AGENTS.md asks for — sections in canonical order, and the
-criteria each one satisfies — into `loop/PROGRESS.md` before your first edit. When a person is driving,
+criteria each one satisfies — into `notes.md` before your first edit. When a person is driving,
 wait for them to agree it; when you are running unattended, record your assumptions and proceed. Keep
-`loop/PROGRESS.md` current either way; the next iteration will not share your context.
+`notes.md` current either way; the next iteration will not share your context.
 
 Build one section at a time, in canonical order. After each: `npm run build`, then `npm run check`. A
 section that does not pass its gates is not finished, and you do not move on.
@@ -154,7 +154,7 @@ When a gate fails, read `checks/report.md` and address the failures it names, on
 the cause, not the symptom: a contrast failure is fixed by moving to a pairing marked `PASS-AA` in
 `design/tokens/CONTRAST.md`, not by nudging a hex until the number moves. Make the smallest change that
 turns the gate green. If the same criterion id fails three times for the same reason, stop and write what
-you tried, and what happened each time, into `loop/PROGRESS.md`.
+you tried, and what happened each time, into `notes.md`.
 
 **Never edit anything under `checks/` to make a gate pass.** Thresholds, rule suppressions, skipped
 assertions and edits to `tokens.json` are off limits. The gates are our acceptance criteria in executable

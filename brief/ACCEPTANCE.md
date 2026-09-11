@@ -59,12 +59,12 @@ BUILD runs first and alone: nothing measured downstream means anything if the si
 browser families then run under Playwright, which schedules them in parallel, so the order of the table is
 the order of the criterion ids — an order for reading, not a cost ranking and not an execution sequence.
 `checks/report.md` lists its failing families alphabetically, which is not a repair order either;
-`loop/prompts/03-fix-from-report.md` carries that. The loop repairs **one failing family at a time**, and
-re-runs from the top. Three failed repair attempts on the same criterion stop the loop and hand the
-problem to a person. That limit is an instruction to the agent, in `loop/prompts/03-fix-from-report.md`,
-rather than a counter in `loop/ralph.sh`, which bounds the number of iterations and nothing else. It
-exists because an agent that cannot fix something in three tries is usually not fixing the thing the
-message describes.
+the loop is told the repair order instead. It repairs **one failing family at a time** and re-runs from
+the top. Three failed repair attempts on the same criterion stop the loop and hand the problem to a
+person. That limit is a sentence said to the agent rather than a counter in a script, which is the whole
+argument of the workshop: an iteration cap bounds how long it runs, and only the instruction bounds what
+it does. It exists because an agent that cannot fix something in three tries is usually not fixing the
+thing the message describes.
 
 Each gate writes `checks/.results/gates/{id}.json` through `checks/lib/gate.ts`, and `checks/run.mjs`
 folds those files into `checks/report.json` and `checks/report.md`:
@@ -476,8 +476,8 @@ Two constraints make it safe to keep in the loop:
 
 1. **Every claim must cite a selector or a file and line.** A criticism that cannot point at something is
    discarded unread.
-2. **Its output never sets pass or fail.** It opens items in `checks/adversarial-report.md`, in the shape
-   of `checks/report.md`, for a person to triage. Determinism is the property that makes the rest of this
+2. **Its output never sets pass or fail.** It opens items in a report of its own, in the shape of
+   `checks/report.md`, for a person to triage. Determinism is the property that makes the rest of this
    file trustworthy, and one model with veto power removes it.
 
 The pattern to take home is smaller than the toolchain: **the thing that checks the work must not be the

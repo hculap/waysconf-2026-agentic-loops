@@ -1,7 +1,10 @@
 # `loop/ralph.sh`, run end to end
 
-The twelve-line loop on the slide, executed rather than described. This is the same
-mechanism a participant runs, invoked the same way, with nothing stubbed.
+**Historical.** `loop/ralph.sh` was a twelve-line bash loop — check, hand the report back,
+commit, repeat — and it was removed when the workshop stopped shipping participants a
+repository. Participants now say the loop instead, or use `/goal`; see `prompts/05-loop.md`.
+This page is kept because the run below actually happened, and because the mechanism it
+measures is the one the sentence describes.
 
 ```
 $ git worktree add .ralph-test step-3

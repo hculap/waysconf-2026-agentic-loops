@@ -60,8 +60,8 @@ checks/                     the verifier — READ ONLY for you
    failures it names. Do not guess at what might be wrong.
 4. **Make the smallest change that turns the gate green.** Resist rewriting neighbouring code that was
    already passing.
-5. **Record progress in `loop/PROGRESS.md`.** Anything you learn that the next iteration needs belongs in
-   that file, because the next iteration may not share your context.
+5. **Write down anything the next iteration needs.** A `notes.md` at the root, kept current. The next
+   iteration may not share your context, and a context window is a buffer, not a memory.
 6. **State your assumptions.** If the brief is ambiguous, write down the reading you chose and carry on;
    do not stall, and do not silently pick one.
 

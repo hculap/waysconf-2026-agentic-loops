@@ -118,7 +118,12 @@ read — everything else, your agent makes for itself.</p>
 <p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a
 prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
 <hr>
-<p>Everything on the slides, on one page, so you can read it back afterwards instead of photographing a screen.</p>
+<p>Everything on the slides, on one page, so you can read it back afterwards instead of photographing a screen. The pictures are the same ones on the wall, and they are yours to reuse.</p>
+<hr>
+<h2>The ninety minutes</h2>
+<figure class="fig"><img src="../diagrams/06-ninety-minutes.svg" alt="The ninety minutes: three hands-on stretches between four blocks of talking" loading="lazy" width="1800" height="700"></figure>
+<p>Three hands-on stretches, and the middle one runs on your machine while I talk over it. Nothing here needs the previous thing to have worked — <strong>every prompt stands alone</strong>, and falling behind costs you nothing but the part you skipped.</p>
+<p><strong>What you leave with:</strong> a URL that is live on the internet, a folder containing a page and a program that checks it, and eight prompts that work on Monday against something that is not a festival site.</p>
 <hr>
 <h2>Most AI demos stop at <em>wow</em></h2>
 <p>A prompt goes in. Something impressive comes out. Everyone claps. Then somebody asks a question the demo was not built to survive:</p>
@@ -132,7 +137,7 @@ prompt down to its first sentence is the commonest way to get a disappointing an
 <p>The arrow going back is driven by a <strong>file</strong> — a report a program wrote — not by the agent's impression of its own work. That is the whole difference.</p>
 <hr>
 <h2>A real loop and a fake one</h2>
-<figure class="fig"><img src="../diagrams/02-fake-loop-vs-real-loop.svg" alt="A model grading its own output, beside a model judged by a separate program" loading="lazy" width="1600" height="900"></figure>
+<figure class="fig"><img src="../diagrams/02-fake-loop-vs-real-loop.svg" alt="A model grading its own output, beside a model judged by a separate program" loading="lazy" width="1600" height="960"></figure>
 <p>The fake loop feels productive. It produces sentences like <em>&quot;I have reviewed my work and improved it&quot;</em>, which are indistinguishable from the real thing right up until something external disagrees.</p>
 <p>The same model writes the same page in both diagrams. What changes is <strong>who is allowed to say no.</strong></p>
 <hr>
@@ -147,15 +152,59 @@ prompt down to its first sentence is the commonest way to get a disappointing an
 <p>Neither is a script. Both are things you <strong>say</strong> — which is why changing one is a sentence rather than an edit, a test run and a redeploy.</p>
 <p>They nest. The workflow gets you from nothing to nearly-right; a loop inside one of its phases closes the last gap.</p>
 <hr>
+<h2>Plan first, and read the plan</h2>
+<p>The cheapest correction in the whole loop is the one made before any code exists.</p>
+<p>In <strong>Claude Code</strong>, press <code>Shift+Tab</code> until the footer says <em>plan mode on</em>. It cannot edit anything until you approve. In <strong>Codex</strong>, ask for the plan and refuse to accept code until you have read it:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Do not write any code yet. Tell me what you found and what you intend to build,
+section by section, and wait.</code></pre></div>
+<p>That is what prompt 02 is. It writes nothing at all — it looks at the design and reports back. A designer reading three paragraphs and saying <em>&quot;no, the lineup comes before the tickets&quot;</em> has just saved twenty minutes of confident, wrong building.</p>
+<blockquote>The best time to catch a misunderstanding is while it is still a sentence.</blockquote>
+<hr>
 <h2>Three tiers of checking</h2>
-<figure class="fig"><img src="../diagrams/03-verification-tiers.svg" alt="Three tiers of checking: deterministic gates, measured comparison, adversarial review" loading="lazy" width="1600" height="900"></figure>
+<figure class="fig"><img src="../diagrams/03-verification-tiers.svg" alt="Three tiers of checking: deterministic gates, measured comparison, adversarial review" loading="lazy" width="1600" height="980"></figure>
 <p>The bottom tier is cheap, certain and narrow. The top tier catches what the others cannot and is the least reliable thing in the stack. Neither replaces the other, and a system with only the top tier is a system that agrees with itself.</p>
 <hr>
+<h2>The failure report is the interface</h2>
+<p>This is the part people skip, and it is the part that makes the loop work. What comes back from the checker is a <strong>file</strong>, and it is written for two readers at once: a person at 2am, and an agent that has no memory of the last iteration.</p>
+<pre class="plain"><code>**3. [AC-28] color.text.muted (#6B7280) used outside the footer legal block**
+
+- Where: section[data-section=&quot;lineup&quot;] .artist-card p
+- Expected: color.text.secondary (#A7AEBB)
+- Actual: #6B7280 — 4.07:1 against #0A0B0D, minimum 4.5:1
+- Hint: supporting copy uses text.secondary; muted is legal text only</code></pre>
+<p>No model wrote that. A program measured it and printed it. Every line of it is something an agent can act on without guessing: which criterion, which element, what was expected, what was actually there.</p>
+<p>Compare it with what a model says about its own work — <em>&quot;I've improved the contrast in the lineup section&quot;</em> — and you can see the difference between a report and a reassurance.</p>
+<p><strong>The rule that holds all of it up:</strong> the agent may never edit the checker. Say it out loud in the prompt, and mean it. The moment the thing being judged can edit the judge, every green result after that means nothing.</p>
+<hr>
+<h2>Why a fresh context beats a long one</h2>
+<p>A context window is a buffer, not a memory. Forty minutes in, it holds three abandoned approaches, the original brief from sixty thousand tokens ago, and every wrong turn the loop already took — and the model keeps weighting its own earlier reasoning.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>A long conversation</th><th>A fresh pass</th></tr></thead><tbody><tr><td>Remembers everything, badly</td><td>Reads <code>check-report.md</code> — the current failures</td></tr><tr><td>Weights its own old reasoning</td><td>Reads <code>notes.md</code> — what was already tried, and what it cost</td></tr><tr><td>Gets vaguer and slower</td><td>Reads the design notes</td></tr></tbody></table></div>
+<p>So when it starts drifting:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2">Copy</button></div><pre id="p2"><code>Write what is left to do into notes.md, in ten lines. What you tried, what worked,
+what did not, and why.</code></pre></div>
+<p>Then start a fresh session, paste <code>notes.md</code>, and carry on. <strong>Notes on disk beat memory in context.</strong> It is how iteration 7 knows that iteration 3 already tried the obvious thing.</p>
+<hr>
 <h2>Giving the agent the design, not a picture of it</h2>
-<figure class="fig"><img src="../diagrams/04-mcp-topology.svg" alt="An agent connected to a design file, a browser and a deploy target" loading="lazy" width="1600" height="900"></figure>
+<figure class="fig"><img src="../diagrams/04-mcp-topology.svg" alt="An agent connected to a design file, a browser and a deploy target" loading="lazy" width="1600" height="980"></figure>
 <p>An agent given a screenshot infers every colour and every measurement from pixels. It will be <em>nearly</em> right — an orange, some spacing — and nearly right is what fails a contrast check and looks subtly wrong beside the real design.</p>
 <p>Given the token file, it infers nothing. <code>#FF6A1A</code> is in the file.</p>
 <p>That is the entire argument for connecting an agent to Figma, or for handing it <code>tokens.json</code>. <strong>MCP</strong> is just the standard way to make that connection: a coding agent calling tools that are not inside it — a design file, a browser, a deploy target.</p>
+<hr>
+<h2>When one agent is not enough</h2>
+<figure class="fig"><img src="../diagrams/05-dynamic-workflow.svg" alt="Three review passes fanning out, every finding sent to be refuted, and a majority filter" loading="lazy" width="1800" height="1000"></figure>
+<p>The top tier of that pyramid is a model checking a model, and a model asked <em>&quot;is this good?&quot;</em> will say yes. The fix is structural: <strong>several passes with different jobs, and a round whose only purpose is to argue the findings down.</strong></p>
+<p>One pass looks for design problems, one for accessibility, one for copy. Every candidate must cite a specific element — a claim that cannot point at something is discarded unread. Then each finding goes back out to be <em>refuted</em>, and only what survives is reported.</p>
+<p>Prompt 07 is the one-agent version of exactly this, collapsed into a single message: look through several lenses, then argue against each finding from three angles — <strong>is it true, does it matter, is it already handled</strong> — before saying it out loud. Weaker than three independent agents, and it needs nothing installed.</p>
+<p>It is still the least reliable thing you will do all day. It is worth doing because the alternative is not looking.</p>
+<hr>
+<h2>Shipping: the page that shipped must be the page that passed</h2>
+<pre class="plain"><code>npm run build
+npx netlify deploy --prod --dir=dist</code></pre>
+<p>It asks you to sign in, then to pick or create a site, then prints a URL. That URL is the point of the whole ninety minutes.</p>
+<p>One more step, and it is the one nobody does:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p3">Copy</button></div><pre id="p3"><code>Fetch the URL you just deployed and compare what the server returned with the page in
+dist/. If they differ, tell me exactly how.</code></pre></div>
+<p>Everything before this proves that <em>a</em> page passed. Only that proves the page that passed is the page that shipped. They come apart more often than you would think — a stale build, the wrong folder, a host that injects its own markup.</p>
 <hr>
 <h2>The thing that will happen to you</h2>
 <p>The accessibility check on the reference page for this workshop was green. Zero violations, three widths, twice in a row. Perfect Lighthouse score.</p>
@@ -166,6 +215,21 @@ prompt down to its first sentence is the commonest way to get a disappointing an
 <hr>
 <h2>Where loops actually fail</h2>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>It looks like</th><th>It is</th><th>What to do</th></tr></thead><tbody><tr><td>The check goes green and nothing was fixed</td><td>The agent edited the check</td><td>Say so, restore it, and read the diff — it is the most instructive thing you will see all day</td></tr><tr><td>Two wrong states, alternating</td><td>Two requirements that cannot both be true</td><td>Stop it. The contradiction is in the brief, not the code</td></tr><tr><td>It keeps going after it is done</td><td>Nothing runs the check <em>first</em></td><td>Check before you fix, every round</td></tr><tr><td>It gets vaguer and slower</td><td>Context is full</td><td>Write the state to a file, start fresh, paste the file</td></tr><tr><td>&quot;It works now&quot; and it does not</td><td>It is reporting, not measuring</td><td>Only believe the exit code</td></tr><tr><td>Nothing at all, for a long time</td><td>It is waiting on something with no deadline</td><td>Every step needs a time limit. This project lost an hour to it three separate times</td></tr></tbody></table></div>
+<hr>
+<h2>What happened when I ran these prompts</h2>
+<p>Not a rehearsed demo. An empty folder outside every repository, Codex, the prompts pasted in order, nothing else in scope.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Prompt</th><th>Time</th><th>What came out</th></tr></thead><tbody><tr><td>01 — start</td><td>107s</td><td>an Astro + Tailwind project, dev server running</td></tr><tr><td>03 — build</td><td>41s</td><td>the hero, from the values it was given</td></tr><tr><td>04 — <strong>write the checker</strong></td><td>495s</td><td><code>check.mjs</code>, 264 lines — plus tests for the checker and a document explaining it, neither of which was asked for</td></tr><tr><td>05 — the loop</td><td>46s</td><td>ran, and stopped for the right reason</td></tr></tbody></table></div>
+<p>Eleven minutes, unattended, from nothing. The decision worth noticing is one nobody asked for: it chose to treat axe's <em>incomplete</em> results as failures. That came out of a single sentence in prompt 04 — <strong>&quot;a check that cannot run is a failure, never a skip&quot;</strong> — and it is the exact blind spot described above, which took a person an afternoon to find by hand.</p>
+<hr>
+<h2>And what went wrong building this</h2>
+<p>Thirteen incidents. Nine were failures of the <em>verifier</em> or the harness, not of the page.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What happened</th><th>Why it is worth your time</th></tr></thead><tbody><tr><td>Nine gates ran against <strong>somebody else's website</strong> for a whole run — 427 confident, correctly formatted failures</td><td>A verifier that is confident and wrong is worse than none</td></tr><tr><td><strong>axe passed a blank page.</strong> Zero violations, three widths, green</td><td>A measurement of nothing looks exactly like a measurement of perfection</td></tr><tr><td>A loop hung for an hour on an input nobody closed</td><td>Every step needs a deadline. Third time in one project</td></tr><tr><td>The evidence harness <strong>invented four clean iterations</strong> out of a run that was killed</td><td>Absence read as success — and the only one that produced a table</td></tr><tr><td>The gate was green and the hero was illegible</td><td>The tool working exactly as documented, with the documentation somewhere nobody reads</td></tr></tbody></table></div>
+<p>The pattern under all of them is one sentence: <strong>absence of a result is not a passing result.</strong> Write that into your checker before you write anything else.</p>
+<hr>
+<h2>Take this to work on Monday</h2>
+<p>Do not start with a whole landing page. Start with <strong>one gate</strong>.</p>
+<ol><li>Pick the check your team already does by hand and resents.</li><li>Make it a program that exits 0 or 1.</li><li>Put its output somewhere an agent can read — a file, not a terminal it has to remember.</li><li><em>Only then</em> put an agent in front of it.</li></ol>
+<blockquote>The loop is the easy part. The oracle is the work.</blockquote>
 <hr>
 <h2>The honest part</h2>
 <ul><li>Automated accessibility tooling reaches roughly <strong>30–40%</strong> of what WCAG actually</li></ul>
@@ -183,7 +247,7 @@ prompt down to its first sentence is the commonest way to get a disappointing an
   <h2>Start</h2>
   <p>Empty folder in, a website running on your own machine out. Nothing is designed yet; this is just the workbench.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p1">Copy</button></div><pre id="p1"><code>Set up a new website project in this folder.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4">Copy</button></div><pre id="p4"><code>Set up a new website project in this folder.
 
 Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
 database. Node is already installed.
@@ -215,7 +279,7 @@ before and I would like to follow along.</code></pre></div>
 <hr>
 <h2>Route A — you connected Figma</h2>
 <p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex, and the workshop file opens in your browser.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2">Copy</button></div><pre id="p2"><code>Read the TURBINE design file through the Figma MCP server:
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>Read the TURBINE design file through the Figma MCP server:
 &lt;paste the Figma link here&gt;
 
 Do not write any code yet. Tell me what you found, as a list:
@@ -231,7 +295,7 @@ happens to the lineup grid below 500px&quot; is more useful to me than a confide
 <hr>
 <h2>Route B — Figma is free, or the connection refuses</h2>
 <p>The design pack is a folder you downloaded from the setup page. Put it beside your project and unzip it, so that there is a <code>design</code> folder next to your <code>src</code> folder.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p3">Copy</button></div><pre id="p3"><code>There is a folder called design next to this project. It contains:
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>There is a folder called design next to this project. It contains:
 
 - three PNGs: the page as it should look at 390, 768 and 1440 pixels wide
 - tokens.json: every colour, text size, spacing value and radius, by name
@@ -267,7 +331,7 @@ state I have no values for&quot; is more useful to me than a confident guess.</c
   <h2>Build it</h2>
   <p>Now it writes the page. Section by section, stopping after each one, so that you are looking at a design review rather than a wall of output.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4">Copy</button></div><pre id="p4"><code>Build the page now, from the design you just read.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7">Copy</button></div><pre id="p7"><code>Build the page now, from the design you just read.
 
 One section at a time, in the order they appear down the page. After each section: reload
 the page, tell me what you built in one sentence, and then STOP and wait for me to say
@@ -304,7 +368,7 @@ assumption than discover six.</code></pre></div>
   <p><strong>This is the workshop.</strong> Everything before it was getting a page onto a screen. Everything after it depends on what happens here.</p>
 <p>You are about to ask the agent to build the thing that will judge its own work — and then, in the next prompt, forbid it from ever touching that thing again.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>Now write a program that checks your own work.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8">Copy</button></div><pre id="p8"><code>Now write a program that checks your own work.
 
 It must be a program, not an opinion. It runs, it looks at the real page in a real
 browser, and it exits with code 0 if everything is right and a non-zero code if anything
@@ -365,7 +429,7 @@ When it is written, run it and show me the output.</code></pre></div>
   <p>You have a page and you have something that can say no to it. This is the sentence that puts them in a circle.</p>
 <p>There is no script here, and there is nothing to install. The loop is a paragraph.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Run npm run check.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9">Copy</button></div><pre id="p9"><code>Run npm run check.
 
 If it exits 0, stop and tell me — we are finished.
 
@@ -391,7 +455,7 @@ Keep going on your own. Do not ask me to confirm each round.</code></pre></div>
 <hr>
 <h2>Claude Code: make it stick</h2>
 <p>Claude Code has this built in. Instead of trusting the agent to keep going, you can make it structurally unable to stop:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7">Copy</button></div><pre id="p7"><code>/goal npm run check exits 0</code></pre></div>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10">Copy</button></div><pre id="p10"><code>/goal npm run check exits 0</code></pre></div>
 <p>The session will not end until that is true. Not &quot;until the agent believes it is true&quot; — the command actually runs, and its exit code decides. Paste the prompt above first, then the <code>/goal</code> line.</p>
 <p><strong>Codex does not have this.</strong> There, the paragraph is the mechanism: it works, it just relies on the agent doing as it was told rather than on the harness enforcing it. Watch the output and say <code>keep going</code> if it stops early.</p>
 <hr>
@@ -412,7 +476,7 @@ Keep going on your own. Do not ask me to confirm each round.</code></pre></div>
   <h2>Ship it</h2>
   <p>A URL you can send to someone. This is the bit that makes the afternoon real.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8">Copy</button></div><pre id="p8"><code>Put this on the internet.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11">Copy</button></div><pre id="p11"><code>Put this on the internet.
 
 Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
 am not logged in, tell me what to click rather than doing it silently.
@@ -445,7 +509,7 @@ Then give me the URL on its own line so I can copy it.</code></pre></div>
   <p>Your checker is green. That means <em>no known defect</em> — it has never meant finished.</p>
 <p>This prompt goes looking for what the checker structurally cannot see. It is a model checking a model, which makes it the least reliable thing you will do today, and it is still worth doing, because the alternative is not looking.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9">Copy</button></div><pre id="p9"><code>The checks pass. Now try to prove the page is still wrong.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p12">Copy</button></div><pre id="p12"><code>The checks pass. Now try to prove the page is still wrong.
 
 Your job in this message is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that check.mjs cannot catch, and for each one tell me:
@@ -480,7 +544,7 @@ Do not fix anything yet. I want to decide which of these are real first.</code><
 <hr>
 <p><strong>What you should see.</strong> A short list, several items of which are genuinely worth fixing — and at least one that is wrong, or that you disagree with. Both outcomes are the lesson.</p>
 <p>Pick the two you believe and say:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10">Copy</button></div><pre id="p10"><code>Fix findings 2 and 4. Leave the rest. Then run npm run check again — I want to know if
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p13">Copy</button></div><pre id="p13"><code>Fix findings 2 and 4. Leave the rest. Then run npm run check again — I want to know if
 fixing them broke anything that was passing.</code></pre></div>
 <hr>
 <h3>Why you make it argue with itself</h3>
@@ -505,7 +569,7 @@ fixing them broke anything that was passing.</code></pre></div>
 <p>That role is describable. <strong>Phases, what happens in each, and what has to be true before the next one starts</strong> — write those down and the agent runs the sequence itself.</p>
 <p>No script. No tool. It is a message.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11">Copy</button></div><pre id="p11"><code>I want you to do a whole job, in phases I define. Work through them in order, on your own,
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p14">Copy</button></div><pre id="p14"><code>I want you to do a whole job, in phases I define. Work through them in order, on your own,
 and do not skip ahead.
 
 PHASE 1 — LOOK

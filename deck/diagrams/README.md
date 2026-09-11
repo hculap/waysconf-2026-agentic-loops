@@ -47,7 +47,7 @@ with.
 **Also worth embedding in:** `README.md`, beside the ASCII loop; `docs/TIPS.md` §3.
 
 **What not to claim from it:** the picture shows the mechanism, not that the mechanism converges. A
-loop that cannot go green is still a loop, and `loop/ralph.sh` exits 1 when it runs out of iterations.
+loop that cannot go green is still a loop, and a loop that runs out of attempts ends red, not green.
 
 ---
 
@@ -117,7 +117,7 @@ plant.
 The legend distinguishes the three payloads. The line at the top right is the honest one: no MCP server
 takes part in a pass or fail decision.
 
-**Also worth embedding in:** `loop/MCP.md`, at the top.
+**Also worth embedding in:** `docs/CONNECTING-FIGMA.md`, at the top.
 
 ---
 
@@ -126,21 +126,22 @@ takes part in a pass or fail decision.
 **The idea:** a workflow that fans out, argues with itself, and filters — with items moving at their own
 pace rather than in lockstep.
 
-One finder per lens: `design`, `a11y` and `copy` — three of the six lenses declared in
-`loop/workflows/adversarial-review.mjs`, drawn for one round of the up-to-six it runs. The subagents in
-`.claude/agents/` carry similar names and are a different mechanism; this script does not invoke them.
-The three lenses return different numbers of candidate findings — three, four and two — and every
-candidate is a citation, because a claim that cannot point at something is discarded unread. Each finding
-then goes to the same three refuters, whose only instruction is to argue that it is wrong. The result is
-a matrix: one row per finding, one column per refuter, green where the finding stood and red where it
-was refuted. A majority filter passes the five findings that survived two of three, each leaving at its
-own height, into `checks/adversarial-report.md`.
+One finder per lens: `design`, `a11y` and `copy`. The three lenses return different numbers of candidate
+findings — three, four and two — and every candidate is a citation, because a claim that cannot point at
+something is discarded unread. Each finding then goes to the same three refuters, whose only instruction
+is to argue that it is wrong. The result is a matrix: one row per finding, one column per refuter, green
+where the finding stood and red where it was refuted. A majority filter passes the five that survived two
+of three, each leaving at its own height.
 
 The staggered row counts and the independent exits are the argument. There is no barrier between stages,
 and a lens that found two things does not hold up a lens that found four.
 
-**Also worth embedding in:** `CLAUDE.md` under *Workflows*; `docs/GLOSSARY.md` under *Adversarial
-review*. The script it describes is `loop/workflows/adversarial-review.mjs`.
+**What a participant runs is the one-agent version of this.** `prompts/07-review.md` collapses the fan-out
+into a single message: look through several lenses, then argue against each finding from three angles
+before reporting it. Same structure — find, refute, filter — with one agent playing every role, which is
+weaker and needs nothing installed. Draw the diagram, then say that.
+
+**Also worth embedding in:** `docs/GLOSSARY.md` under *Adversarial review*.
 
 **What not to claim from it:** this is the least reliable part of the pipeline. Nothing on the slide sets
 pass or fail; it opens items for a person to triage.
