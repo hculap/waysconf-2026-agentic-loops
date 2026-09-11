@@ -169,19 +169,77 @@ async function main() {
       }
     }
 
+    // ── AC-56 · budgets ───────────────────────────────────────────────────────
+    //
+    // The category scores are a weighted blend and can hide a single bad metric behind
+    // four good ones. These are the numbers a visitor actually experiences, read from
+    // the same runs, so they cost nothing extra and cannot disagree with the scores.
+    const lhr = runs[Math.floor(runs.length / 2)]
+    const numeric = (id) => lhr.audits?.[id]?.numericValue
+    const BUDGETS = [
+      { id: 'largest-contentful-paint', label: 'LCP', value: numeric('largest-contentful-paint'), budget: 2500, unit: 'ms' },
+      { id: 'cumulative-layout-shift', label: 'CLS', value: numeric('cumulative-layout-shift'), budget: 0.1, unit: '' },
+      { id: 'total-blocking-time', label: 'TBT', value: numeric('total-blocking-time'), budget: 200, unit: 'ms' },
+    ]
+
+    const items = lhr.audits?.['resource-summary']?.details?.items ?? []
+    const totalBytes = items.find((i) => i.resourceType === 'total')?.transferSize
+    if (typeof totalBytes === 'number') {
+      BUDGETS.push({ id: 'total-transfer', label: 'total transfer', value: totalBytes / 1024, budget: 1500, unit: 'KB' })
+    }
+
+    const imageItems = lhr.audits?.['network-requests']?.details?.items ?? []
+    const largestImage = imageItems
+      .filter((i) => String(i.mimeType || '').startsWith('image/'))
+      .sort((a, b) => (b.transferSize ?? 0) - (a.transferSize ?? 0))[0]
+    if (largestImage) {
+      BUDGETS.push({
+        id: 'largest-image',
+        label: `largest image (${String(largestImage.url).split('/').pop()})`,
+        value: (largestImage.transferSize ?? 0) / 1024,
+        budget: 400,
+        unit: 'KB',
+      })
+    }
+
+    const budgetEvidence = {}
+    for (const b of BUDGETS) {
+      if (typeof b.value !== 'number' || Number.isNaN(b.value)) {
+        // An unread metric is not a met budget. Say so rather than skipping quietly.
+        failures.push({
+          criterion: 'AC-56',
+          message: `Budget ${b.label} could not be read from the Lighthouse run, so it was not checked.`,
+          where: URL_UNDER_TEST,
+          hint: `Audit id "${b.id}" produced no numeric value.`,
+        })
+        continue
+      }
+      const round = b.unit === '' ? b.value.toFixed(3) : Math.round(b.value)
+      budgetEvidence[b.label] = `${round}${b.unit}`
+      if (b.value > b.budget) {
+        failures.push({
+          criterion: 'AC-56',
+          message: `Budget exceeded — ${b.label} is ${round}${b.unit}, budget ${b.budget}${b.unit}.`,
+          where: URL_UNDER_TEST,
+          expected: `<= ${b.budget}${b.unit}`,
+          actual: `${round}${b.unit}`,
+        })
+      }
+    }
+
     console.log(
       JSON.stringify({
         id: 'perf',
         title: 'Lighthouse',
         status: failures.length ? 'fail' : 'pass',
-        criteria: THRESHOLDS.map((t) => t.criterion),
+        criteria: [...THRESHOLDS.map((t) => t.criterion), 'AC-56'],
         failures,
         notes: [
           `Median of 3 mobile-profile runs: ` +
             THRESHOLDS.map((t) => `${t.label} ${scores[t.key].score}`).join(', '),
           'A perfect accessibility score here still only means axe found nothing. It is a floor, not a ceiling.',
         ],
-        evidence: { scores, url: URL_UNDER_TEST },
+        evidence: { scores, budgets: budgetEvidence, url: URL_UNDER_TEST },
       }),
     )
   } finally {

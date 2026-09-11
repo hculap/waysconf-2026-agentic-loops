@@ -16,6 +16,7 @@
  *   --skip-perf     skip Lighthouse (it is the slow one)
  *   --only <ids>    comma-separated gate ids to run, e.g. --only a11y,tokens (--only=a11y,tokens works too)
  *   --url <url>     check a deployed URL instead of a local preview
+ *   --deploy        also publish the build and verify the live page (AC-57..AC-60)
  */
 
 import { spawn } from 'node:child_process'
@@ -40,6 +41,11 @@ const value = (name, fallback = null) => {
 
 const NO_BUILD = flag('--no-build')
 const SKIP_PERF = flag('--skip-perf')
+/**
+ * The deploy gate publishes. Every other gate only reads, so this one is opt-in: a
+ * verifier that deploys every time somebody runs it is a verifier people stop running.
+ */
+const DEPLOY = flag('--deploy')
 const ONLY = value('--only') ? value('--only').split(',').map((s) => s.trim()) : null
 const REMOTE_URL = value('--url')
 const PROCESS_PORT = process.env.CHECK_PORT ? Number(process.env.CHECK_PORT) : null
@@ -351,6 +357,35 @@ async function main() {
 
     if (!SKIP_PERF && shouldRun('perf')) {
       gates.push(await perfGate(baseUrl))
+    }
+
+    // Publishing is the last thing that happens, and only when asked. The gates above
+    // decide whether there is anything worth publishing.
+    if (DEPLOY && shouldRun('deploy')) {
+      console.log('› deploying')
+      const res = await run('node', ['checks/gates/deploy.mjs'])
+      if (!res.stdout.trim().startsWith('{')) {
+        const tail = (res.stderr || res.stdout).trim().split('\n').slice(-20).join('\n')
+        gates.push(
+          gateResult({
+            id: 'deploy',
+            title: 'Deploy',
+            status: STATUS.FAIL,
+            criteria: ['AC-57', 'AC-58', 'AC-59', 'AC-60'],
+            failures: [
+              {
+                criterion: 'AC-57',
+                message: 'The deploy gate did not run, so nothing is known about the deployed page.',
+                where: 'checks/gates/deploy.mjs',
+                actual: 'exit code ' + res.code,
+                hint: '\n\n' + '\u0060\u0060\u0060\n' + tail + '\n\u0060\u0060\u0060',
+              },
+            ],
+          }),
+        )
+      } else {
+        gates.push(gateResult(JSON.parse(res.stdout.slice(res.stdout.indexOf('{')))))
+      }
     }
   } finally {
     if (server) server.kill('SIGTERM')
