@@ -128,17 +128,18 @@ npm run check
 ```
 
 ```txt
-✓ 9/9 gates passed.
+✓ 10/10 gates passed.
 
-  Build            PASS
-  Runtime          PASS
-  Structure        PASS
-  Accessibility    PASS
-  Design tokens    PASS
-  Visual fidelity  PASS
-  Content          PASS
-  Links            PASS
-  Lighthouse       PASS
+  Build             PASS
+  Runtime           PASS
+  Structure         PASS
+  Accessibility     PASS
+  Design tokens     PASS
+  Visual fidelity   PASS
+  Content           PASS
+  Links             PASS
+  Text over images  PASS
+  Lighthouse        PASS
 ```
 
 </div>
@@ -570,7 +571,7 @@ Top tier: catches what the others cannot, least reliable, never the only gate.
 
 ---
 
-# Nine gates, sixty criteria, no opinions
+# Ten gates, sixty-one criteria, no opinions
 
 <div class="mt-4">
 
@@ -584,7 +585,8 @@ Top tier: catches what the others cannot, least reliable, never the only gate.
 | Visual fidelity | Pixels match the design, within a stated budget | AC-34…37 |
 | Content | The real copy, all twelve artists, no placeholders | AC-38…47 |
 | Links | Nothing points at nothing | AC-48…51 |
-| Lighthouse | Performance, a11y, best practices, SEO | AC-52…55 |
+| Lighthouse | Performance, a11y, best practices, SEO, and five budgets | AC-52…56 |
+| **Text over images** | **The contrast axe refuses to judge** | **AC-61** |
 
 </div>
 
@@ -997,6 +999,64 @@ dragging the dist/ folder onto netlify.com works with no CLI at all.
 -->
 
 ---
+
+# The gate was green. The hero was illegible.
+
+<div class="mt-6 text-lg">
+
+Zero axe violations. Three breakpoints. Six page states. Twice, deterministically.
+Lighthouse accessibility **100**.
+
+</div>
+
+<div class="cols mt-6">
+<div>
+
+Then I measured the hero by hand — screenshot the page with every glyph made transparent,
+sample the brightest patch behind each line, compute the real ratio.
+
+| Text | Measured |
+|---|---|
+| "Fourth edition" | <span class="verdict fail">2.94:1</span> |
+| "Ambient, techno and modular…" | <span class="verdict fail">3.02:1</span> |
+| "The Powerhouse, Hall E" | <span class="verdict fail">4.25:1</span> |
+| "Friday 12 – Sunday 14 June" | <span class="verdict fail">4.41:1</span> |
+
+</div>
+<div>
+
+### Why axe said nothing
+
+It does not evaluate text over a background image. It does not fail it — it marks the pair
+**incomplete**, and in a zero-violations gate that is indistinguishable from correct.
+
+Reading the CSS would not have found it either. The background there is a photograph, two
+scrims and a gradient composited together. No computed style says what colour that is.
+
+<p class="mt-4" style="color: var(--turbine-coolant)">
+So it became AC-61, and there are sixty-one criteria now instead of sixty.
+</p>
+
+</div>
+</div>
+
+<!--
+This is the strongest slide in the deck and the one to slow down on.
+
+The gate was not lying. It was answering a narrower question than the word PASS suggests,
+and nobody had written down which question. That is the entire argument, found inside this
+repository's own verifier, on the most prominent element of the page.
+
+If someone asks how it was found: the repo's own asset checker flagged that 4.47% of tiles
+in the lower half of the hero photograph were too bright for white text. That is a check on
+the *image*. Whether it mattered on the *page* took a separate measurement.
+
+The fix took two attempts. The first darkened the whole frame and erased the photograph —
+worth mentioning, because "make the gate green" and "make the page good" pulled in opposite
+directions for about ten minutes.
+-->
+
+---
 layout: section
 class: section
 ---
@@ -1016,7 +1076,7 @@ class: section
 | The a11y gate is green | Automated rules reach maybe 30–40% of real WCAG failures |
 | The pixel diff passes | It saw no change. It has no idea whether a change would be better |
 | Adversarial review found nothing | Models checking models. Least reliable tier, never the only one |
-| All sixty criteria pass | Nothing here has an opinion about whether the design is good |
+| All sixty-one criteria pass | Nothing here has an opinion about whether the design is good |
 
 </div>
 
