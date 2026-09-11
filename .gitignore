@@ -25,3 +25,6 @@ evidence/**/node_modules/
 
 # Clean-room dry-run worktrees, created by scripts/dry-run.mjs
 .dry-run/
+
+# ralph.sh verification worktree
+.ralph-test/

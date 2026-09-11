@@ -10,6 +10,7 @@ does is a promise, not a demonstration. This directory is the difference.
 | `INCIDENTS.md` | Every real failure hit while building this repository, written down at the time. Most of them are failures of the **verifier**, not of the page. |
 | `dry-run-codex.md` / `.json` | A clean-room trial: the repository exactly as a participant receives it, in a fresh worktree, with Codex CLI pointed at it. Per-iteration timings, gate counts, which criteria each pass cleared, and whether the agent touched the verifier. |
 | `dry-run-claude.md` / `.json` | The same trial with Claude Code, so the two are comparable. |
+| `loop-run.md` | `loop/ralph.sh` executed end to end from `step-3`: 85 failures, one agent pass, all gates green, and the three files it was supposed to touch. |
 | `asset-generation.log` | One line per generated image: timestamp, model id, prompt hash, tier, output size, wall time, cost. What makes the image pack reproducible rather than merely repeatable. |
 
 ## How the trials are run
