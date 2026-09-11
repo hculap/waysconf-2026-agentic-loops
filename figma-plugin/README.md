@@ -18,6 +18,31 @@ Figma lose nothing by taking the second route.
 
 ---
 
+## What has and has not been verified
+
+Everything else in this repository is checked by a program. This is not, and saying so is more useful
+than pretending otherwise.
+
+**Verified, mechanically:**
+
+- `code.js` and `data.generated.js` parse (`node --check`).
+- `data.generated.js` evaluates and contains the full token set, all twelve canonical artists, and
+  every section of `brief/CONTENT.md`.
+- The data file is generated from `design/tokens/tokens.json` by `scripts/build-figma-plugin.mjs`, so
+  no value in it was typed by hand.
+- `manifest.json` matches the fields the Figma plugin manifest requires, and declares no network access.
+
+**Not verified: the plugin has not been run inside Figma.** It was written on a Linux server with no
+Figma desktop app, against the published Plugin API, and no one has watched it build a file. The Plugin
+API is asynchronous in places where getting it wrong produces a plausible-looking failure — fonts that
+were not loaded before a text node is created being the usual one — so expect to fix something the
+first time you run it.
+
+That is the honest state. If this were code the gates covered, it would say `PASS` or `FAIL`; it is not,
+so it says neither. Run it, and if it breaks, the fix belongs in this repository.
+
+---
+
 ## Install it
 
 Figma **desktop app** only — the browser version cannot load a plugin from disk.

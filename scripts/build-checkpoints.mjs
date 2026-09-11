@@ -55,12 +55,61 @@ const STEPS = [
   {
     name: 'step-3',
     sections: ['Nav', 'Hero', 'Ticker', 'Lineup', 'Programme', 'Venue', 'Tickets', 'Faq', 'Newsletter', 'Footer'],
-    title: 'Every section built',
-    when: 'End of sprint 2, about 1:10. Gates are not all green yet.',
+    title: 'Every section built, and deliberately wrong',
+    when: 'Start of the self-repair demo, about 0:47. Structure and content pass; a11y and tokens fail.',
+    regress: true,
+  },
+  {
+    name: 'step-4',
+    sections: 'all',
+    title: 'The repairs applied',
+    when: 'End of sprint 2, about 1:05. Every local gate green.',
+  },
+  {
+    name: 'step-5',
+    sections: 'all',
+    title: 'Deployed',
+    when: 'End of sprint 3, about 1:17. Green, and live.',
+    deployed: true,
   },
 ]
 
-const ALL_SECTIONS = STEPS[STEPS.length - 1].sections
+/**
+ * The two mistakes step-3 ships with.
+ *
+ * They are not invented for the demo. They are the two traps docs/CANON.md §8 builds
+ * into the palette, and they are the two a model reaches for on its own: "use a muted
+ * grey for supporting copy" lands on the one grey that fails, and "white text on the
+ * orange button" is what every designer's instinct says until they measure it.
+ *
+ * Injecting them deliberately means the repair demo runs from a known state at a known
+ * minute, rather than from whatever the room happened to produce. The failures the gates
+ * then report are real failures with real measured ratios — nothing about the red is
+ * staged, only its timing.
+ */
+const REGRESSIONS = [
+  {
+    file: 'src/sections/Programme.astro',
+    from: 'text-text-secondary',
+    to: 'text-text-muted',
+    note: 'supporting copy drops to the 4.07:1 grey — AC-28, and axe colour-contrast',
+  },
+  {
+    file: 'src/sections/Tickets.astro',
+    from: 'text-text-secondary',
+    to: 'text-text-muted',
+    note: 'same, in the section a visitor reads most carefully',
+  },
+  {
+    file: 'src/components/Button.astro',
+    from: "primary: 'bg-accent-sodium text-text-on-accent'",
+    to: "primary: 'bg-accent-sodium text-text-primary'",
+    note: 'near-white on sodium measures 2.87:1 — AC-29',
+  },
+]
+
+/** The full canonical set, taken from the last step that lists them explicitly. */
+const ALL_SECTIONS = [...STEPS].reverse().find((s) => Array.isArray(s.sections) && s.sections.length).sections
 
 /** Rewrite index.astro to import and render only the sections a step has built. */
 function trimIndex(source, keep) {
@@ -146,23 +195,56 @@ const sections = [
 
 function applyStep(step, solutionIndex) {
   const indexPath = join(ROOT, 'src/pages/index.astro')
+  const sections = step.sections === 'all' ? ALL_SECTIONS : step.sections
 
-  if (step.sections.length === 0) {
+  if (sections.length === 0) {
     writeFileSync(indexPath, STARTER_INDEX)
   } else {
-    writeFileSync(indexPath, trimIndex(solutionIndex, step.sections))
+    writeFileSync(indexPath, trimIndex(solutionIndex, sections))
   }
 
   const removed = []
   for (const name of ALL_SECTIONS) {
-    if (step.sections.includes(name)) continue
+    if (sections.includes(name)) continue
     const file = join(ROOT, 'src/sections', `${name}.astro`)
     if (existsSync(file)) {
       rmSync(file)
       removed.push(`src/sections/${name}.astro`)
     }
   }
-  return removed
+
+  const regressed = []
+  if (step.regress) {
+    for (const r of REGRESSIONS) {
+      const path = join(ROOT, r.file)
+      if (!existsSync(path)) continue
+      const before = readFileSync(path, 'utf8')
+      const after = before.split(r.from).join(r.to)
+      if (after === before) {
+        // Say so rather than produce a checkpoint that quietly is not what it claims.
+        console.warn(`  ! ${r.file}: "${r.from}" not found — this regression did not apply`)
+        continue
+      }
+      writeFileSync(path, after)
+      regressed.push(`${r.file} — ${r.note}`)
+    }
+  }
+
+  if (step.deployed) {
+    writeFileSync(
+      join(ROOT, 'DEPLOYED.md'),
+      `# Deployed\n\n` +
+        `This checkpoint is the finished page, built and published.\n\n` +
+        `    https://turbine-festival.netlify.app\n\n` +
+        `That URL is the one deployed when this checkpoint was recorded. Yours will be different, and\n` +
+        `that is the point of the exercise — run:\n\n` +
+        `    npm run build\n` +
+        `    npm run deploy\n\n` +
+        `and take the URL the CLI prints.\n`,
+    )
+  }
+
+  return { removed, regressed }
 }
 
 // ── Main ──────────────────────────────────────────────────────────────────────
@@ -179,7 +261,7 @@ const solutionIndex = readFileSync(join(ROOT, 'src/pages/index.astro'), 'utf8')
 
 console.log(`\nCheckpoints, generated from the finished implementation on ${branch}.\n`)
 for (const step of STEPS) {
-  const kept = step.sections.length ? step.sections.join(', ') : '(none)'
+  const kept = step.sections === 'all' ? 'all ten' : step.sections.length ? step.sections.join(', ') : '(none)'
   console.log(`  ${step.name.padEnd(8)} ${step.title.padEnd(26)} keeps: ${kept}`)
 }
 console.log()
@@ -193,7 +275,7 @@ const startRef = git('rev-parse', 'HEAD')
 
 for (const step of STEPS) {
   execFileSync('git', ['checkout', '-q', '-B', step.name, startRef], { cwd: ROOT })
-  const removed = applyStep(step, solutionIndex)
+  const { removed, regressed } = applyStep(step, solutionIndex)
   execFileSync('git', ['add', '-A'], { cwd: ROOT })
   execFileSync(
     'git',
@@ -211,7 +293,7 @@ for (const step of STEPS) {
     ],
     { cwd: ROOT },
   )
-  console.log(`  created ${step.name}  (${removed.length} section file(s) removed)`)
+  console.log(`  created ${step.name}  (${removed.length} removed${regressed.length ? `, ${regressed.length} regression(s)` : ''})`)
 }
 
 execFileSync('git', ['checkout', '-q', branch], { cwd: ROOT })
