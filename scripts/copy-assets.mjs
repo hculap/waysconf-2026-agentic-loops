@@ -51,6 +51,20 @@ const SERVED = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.svg'])
 const SERVE_AT = [{ match: /^artist-\d+-/, width: 512, quality: 80 }]
 
 /**
+ * Files that need more than one served width.
+ *
+ * The hero is full-bleed, so it renders at 390, 768 or 1440 CSS px depending on the
+ * device — and a phone downloading the 2400px master to paint 390 of them is most of
+ * what stands between this page and a passing performance gate. One file cannot be
+ * right for all three, so three exist and the browser picks.
+ *
+ * Each variant is written as `<stem>-<width><ext>`, which is the naming the `srcset` in
+ * src/sections/Hero.astro expects. The unsuffixed master is copied through as well, as
+ * the `src` fallback.
+ */
+const SRCSET_AT = [{ match: /^hero-hall\./, widths: [800, 1440, 2400], quality: 78 }]
+
+/**
  * utimes writes nanosecond precision and stat reads it back as a float, so a copy
  * that is byte-for-byte current can report an mtime a fraction of a millisecond
  * away from its source. Comparing exactly would mean copying every file on every
@@ -98,6 +112,22 @@ async function main() {
     if (current) {
       skipped++
       continue
+    }
+
+    const srcset = SRCSET_AT.find((r) => r.match.test(entry.name))
+    if (srcset) {
+      const ext = extname(entry.name)
+      const stem = entry.name.slice(0, -ext.length)
+      for (const w of srcset.widths) {
+        const variant = join(TARGET, `${stem}-${w}${ext}`)
+        const out = await sharp(from)
+          .resize({ width: w, withoutEnlargement: true })
+          .jpeg({ quality: srcset.quality, progressive: true, mozjpeg: true })
+          .toBuffer()
+        await writeFile(variant, out)
+        await utimes(variant, src.atime, src.mtime)
+        resized++
+      }
     }
 
     const rule = SERVE_AT.find((r) => r.match.test(entry.name))
