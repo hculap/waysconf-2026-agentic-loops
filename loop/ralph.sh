@@ -1,0 +1,103 @@
+#!/usr/bin/env bash
+#
+# The whole loop. Twelve lines of logic, and every one of them earns its place.
+#
+#   bash loop/ralph.sh                 # Claude Code, up to 12 iterations
+#   AGENT=codex bash loop/ralph.sh     # Codex CLI instead
+#   MAX=3 bash loop/ralph.sh           # stop sooner
+#
+# The shape is Geoffrey Huntley's: put the instruction in a file, run the agent
+# against it, let it fail, run it again. What makes it work is not the while
+# loop — it is the two things around it.
+#
+#   1. The exit condition is `npm run check`, which is a program. It returns 0 or
+#      it does not. The model is not consulted about whether the work is done.
+#
+#   2. State lives in files, not in the conversation. Each iteration starts with a
+#      fresh context and reads loop/PROGRESS.md and checks/report.md to find out
+#      where it is. A long conversation degrades; a short one that reads good
+#      notes does not.
+#
+# Everything else here is a guard rail: a hard iteration cap so it cannot run all
+# night, a transcript per iteration so you can see what happened, and a refusal to
+# start if the working tree is dirty, so you can always get back.
+
+set -uo pipefail
+cd "$(dirname "$0")/.."
+
+MAX="${MAX:-12}"
+AGENT="${AGENT:-claude}"
+RUN_DIR="loop/.runs/$(date +%Y%m%d-%H%M%S)"
+mkdir -p "$RUN_DIR"
+
+# ── Guard rails ───────────────────────────────────────────────────────────────
+
+if ! command -v "$AGENT" >/dev/null 2>&1; then
+  echo "No '$AGENT' on PATH. Install it, or run: AGENT=codex bash loop/ralph.sh"
+  exit 1
+fi
+
+if [ -n "$(git status --porcelain)" ]; then
+  echo "Working tree is dirty. Commit or stash first — an unattended loop should"
+  echo "always be something you can 'git reset --hard' your way out of."
+  echo
+  git status --short
+  exit 1
+fi
+
+START_REF="$(git rev-parse --short HEAD)"
+echo "Loop starting at $START_REF with $AGENT, at most $MAX iterations."
+echo "Transcripts: $RUN_DIR"
+echo
+
+# ── The loop ──────────────────────────────────────────────────────────────────
+
+for i in $(seq 1 "$MAX"); do
+  echo "──── iteration $i/$MAX ────────────────────────────────────────────────"
+
+  # The verifier runs FIRST. If the gates are already green there is nothing to
+  # do, and an agent asked to improve passing work will happily invent a reason.
+  if npm run --silent check > "$RUN_DIR/check-$i.log" 2>&1; then
+    echo "All gates passed on iteration $i."
+    cp checks/report.md "$RUN_DIR/report-final.md" 2>/dev/null || true
+    echo
+    echo "Changed since $START_REF:"
+    git --no-pager diff --stat "$START_REF"
+    exit 0
+  fi
+
+  FAILED=$(grep -c '^\*\*[0-9]' checks/report.md 2>/dev/null || echo '?')
+  echo "$FAILED failure(s). Handing the report back to $AGENT."
+  cp checks/report.md "$RUN_DIR/report-$i.md" 2>/dev/null || true
+
+  # One prompt, unchanged every iteration. The thing that varies is the report
+  # the agent reads, which is exactly the point: the instruction is stable and
+  # the feedback is fresh.
+  case "$AGENT" in
+    claude)
+      claude -p "$(cat loop/PROMPT.md)" \
+        --permission-mode acceptEdits \
+        > "$RUN_DIR/agent-$i.log" 2>&1
+      ;;
+    codex)
+      codex exec "$(cat loop/PROMPT.md)" \
+        --full-auto \
+        > "$RUN_DIR/agent-$i.log" 2>&1
+      ;;
+    *)
+      "$AGENT" "$(cat loop/PROMPT.md)" > "$RUN_DIR/agent-$i.log" 2>&1
+      ;;
+  esac
+
+  # A commit per iteration. Not for the history — for the ability to see exactly
+  # what each pass changed, and to bisect the one that made things worse.
+  git add -A
+  git commit -q -m "loop: iteration $i" --allow-empty
+done
+
+echo
+echo "Hit the cap of $MAX iterations without going green."
+echo "That is a result, not a crash. Read $RUN_DIR/report-$MAX.md and"
+echo "loop/PROGRESS.md — a loop that cannot converge is usually being asked"
+echo "to satisfy a gate that the brief never gave it the information to satisfy."
+exit 1

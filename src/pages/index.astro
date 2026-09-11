@@ -1,0 +1,64 @@
+---
+/**
+ * STARTER STATE.
+ *
+ * There is no festival page here yet. That is the point — building it is the
+ * workshop. Your agent reads brief/BRIEF.md, brief/CONTENT.md and
+ * brief/ACCEPTANCE.md, plus the design (Figma, or design/export/ if you have no
+ * paid Figma seat), and fills this file in with the eleven sections listed in
+ * docs/CANON.md section 7.
+ *
+ * Run `npm run check` right now. Every gate will fail, and the report it writes
+ * is your task list.
+ */
+import Base from '../layouts/Base.astro'
+
+const sections = [
+  'nav',
+  'hero',
+  'ticker',
+  'lineup',
+  'programme',
+  'venue',
+  'tickets',
+  'faq',
+  'newsletter',
+  'footer',
+]
+---
+
+<Base
+  title="TURBINE — starter"
+  description="Starter state for the TURBINE festival landing page. Nothing is built yet; run npm run check to see what is missing."
+>
+  <section class="container-turbine py-24">
+    <p class="font-mono text-sm text-accent-coolant">starter state</p>
+    <h1 class="mt-4 font-display text-5xl font-bold tracking-[-0.02em]">Nothing is built yet.</h1>
+
+    <p class="mt-6 max-w-[60ch] text-lg text-text-secondary">
+      This page is the starting line. The eleven sections below do not exist. Your job, and your
+      agent's job, is to build them from the brief and the design until every gate passes.
+    </p>
+
+    <ol class="mt-10 grid max-w-[60ch] gap-2 font-mono text-sm text-text-secondary">
+      {
+        sections.map((name, i) => (
+          <li class="flex items-center gap-3 rounded-md border border-border-subtle bg-bg-surface px-4 py-3">
+            <span class="text-text-secondary">{String(i + 1).padStart(2, "0")}</span>
+            <span class="text-text-primary">{name}</span>
+            <span class="ml-auto text-state-danger">missing</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <p class="mt-10 max-w-[60ch] text-text-secondary">
+      Start here:
+      <code class="rounded-sm bg-bg-raised px-2 py-1 font-mono text-text-primary">npm run check</code>
+      — then read
+      <code class="rounded-sm bg-bg-raised px-2 py-1 font-mono text-text-primary">checks/report.md</code>.
+    </p>
+  </section>
+</Base>
+
+<div class="shadow-md">probe</div>

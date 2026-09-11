@@ -1,0 +1,64 @@
+---
+/**
+ * The page shell.
+ *
+ * Everything in here is load-bearing for a gate, which is why it ships in the
+ * starter rather than being left for the agent to rediscover:
+ *
+ *   AC-10  the skip link is the first focusable element
+ *   AC-11  <html lang="en">
+ *   AC-12  title length and meta description length
+ *   AC-09  exactly one banner, one main, one contentinfo
+ *
+ * Sections go in the <slot />. The header and footer are sections too — they are
+ * rendered by the page, not by this layout, so that the section contract in
+ * AC-06 has exactly one place it is satisfied.
+ */
+import '../styles/global.css'
+
+interface Props {
+  title: string
+  description: string
+  ogImage?: string
+}
+
+const { title, description, ogImage = '/images/og-card.jpg' } = Astro.props
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://turbine-festival.netlify.app')
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, canonical).href} />
+    <meta property="og:url" content={canonical.href} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <meta name="theme-color" content="#0A0B0D" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    {/* Self-hosted, latin subset only. See scripts/fetch-fonts.mjs for why this is
+        not a Google Fonts <link>. Preloading the body face avoids a flash of
+        fallback text, which would otherwise show up as pixel-diff noise. */}
+    <link rel="preload" href="/fonts/inter-3100e775.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/fonts/fonts.css" />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot name="header" />
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+    <slot name="footer" />
+  </body>
+</html>

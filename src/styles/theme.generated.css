@@ -1,0 +1,88 @@
+/* ==========================================================================
+   GENERATED FILE — do not edit.
+
+   Source:    design/tokens/tokens.json
+   Generator: scripts/build-theme.mjs
+   Regenerate: node scripts/build-theme.mjs
+
+   This is the bridge that turns design tokens into Tailwind utility classes.
+   It is the one place in src/ where colour literals are allowed to appear,
+   because they are copied mechanically from the token file rather than chosen.
+   ========================================================================== */
+
+@theme {
+
+  /* color */
+  --color-bg-base: #0A0B0D; /* Page background. Also the correct ink on accent and state fills. */
+  --color-bg-surface: #131519; /* Cards, nav background. */
+  --color-bg-raised: #1C1F25; /* Hover states, table header. */
+  --color-border-subtle: #2A2E36; /* Hairlines, card borders. Decorative only: 1.45:1 on bg.base, below the 3:1 non-text bar, so it must never be the sole indicator of a control. */
+  --color-border-strong: #3D434E; /* Focus ring base, dividers. 1.98:1 on bg.base: usable as an offset or underlay, never as the visible focus indicator on its own. See CONTRAST.md. */
+  --color-text-primary: #F2F4F7; /* Headings, body on dark. */
+  --color-text-secondary: #A7AEBB; /* Supporting copy. The correct choice wherever a muted grey is wanted. */
+  --color-text-muted: #6B7280; /* Trap. Legal and footer text only, never body copy. 4.07:1 on bg.base, under the 4.5:1 normal-text bar. CANON section 8. */
+  --color-text-on-accent: var(--color-bg-base); /* Alias of bg.base. CANON section 4 fixes dark ink, not white, as the text colour on accent.sodium and on every other accent or state fill. */
+  --color-accent-sodium: #FF6A1A; /* Primary accent, sodium lamp orange, CTAs. Pair with text.on-accent, never with white. */
+  --color-accent-coolant: #2FE6D6; /* Secondary accent: links, active tab. */
+  --color-accent-arc: #7C5CFF; /* Tertiary accent: badges, marquee. */
+  --color-state-danger: #FF4D4D; /* Sold-out, errors. */
+  --color-state-success: #3DDC84; /* Confirmation. */
+
+  /* typography · fontFamily */
+  --font-display: 'Space Grotesk', Inter, system-ui, sans-serif; /* Space Grotesk, Google Fonts. Weights 500 and 700. Display sizes carry letterSpacing.display; the wordmark carries letterSpacing.wordmark. */
+  --font-body: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; /* Inter, Google Fonts. Weights 400, 500 and 600. */
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; /* JetBrains Mono, Google Fonts. Weights 400 and 700. */
+
+  /* typography · fontWeight */
+  --font-weight-regular: 400; /* Available in body and mono. */
+  --font-weight-medium: 500; /* Available in display and body. */
+  --font-weight-semibold: 600; /* Available in body. */
+  --font-weight-bold: 700; /* Available in display and mono. */
+
+  /* typography · fontSize */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
+  --text-4xl: 2.5rem;
+  --text-5xl: 3.5rem;
+  --text-6xl: 4.5rem;
+  --text-7xl: 6rem;
+
+  /* typography · letterSpacing */
+  --tracking-normal: 0em; /* Body copy and anything set in Inter or JetBrains Mono. */
+  --tracking-display: -0.02em; /* Display sizes set in Space Grotesk. */
+  --tracking-wordmark: 0.18em; /* The TURBINE wordmark only. All caps. Never rendered as 'Turbine Festival'. */
+
+  /* spacing */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-24: 96px;
+  --spacing-32: 128px;
+
+  /* radius */
+  --radius-none: 0px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px; /* Fully rounded ends. Used for genre tags and the ticket badges. */
+
+  /* breakpoint */
+  --breakpoint-mobile: 390px;
+  --breakpoint-tablet: 768px; /* The nav collapses to a hamburger below this width; the programme table stacks below it. */
+  --breakpoint-desktop: 1440px;
+
+  /* shadow */
+  --shadow-sm: [object Object]; /* Resting cards and the sticky nav once it has scrolled. */
+  --shadow-md: [object Object]; /* Hovered lineup cards, the open FAQ panel, the mobile nav sheet. */
+  --shadow-lg: [object Object]; /* The highlighted Full Pass ticket card, lifted clear of the grid. */
+}

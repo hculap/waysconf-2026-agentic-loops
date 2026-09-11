@@ -1,0 +1,42 @@
+{
+  "name": "turbine-festival",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TURBINE festival landing page — workshop project for the WaysConf 2026 masterclass 'Build an AI that checks and fixes its own work'",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "node checks/run.mjs",
+    "check:build": "node checks/gates/build.mjs",
+    "check:structure": "node checks/gates/structure.mjs",
+    "check:tokens": "node checks/gates/tokens.mjs",
+    "check:links": "node checks/gates/links.mjs",
+    "check:content": "node checks/gates/content.mjs",
+    "check:a11y": "playwright test checks/specs/a11y.spec.ts",
+    "check:visual": "playwright test checks/specs/visual.spec.ts",
+    "check:perf": "node checks/gates/lighthouse.mjs",
+    "baseline": "node checks/baseline.mjs",
+    "loop": "bash loop/ralph.sh",
+    "deploy": "netlify deploy --prod --dir=dist"
+  },
+  "dependencies": {
+    "astro": "^5.14.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.56.0",
+    "@tailwindcss/vite": "^4.1.14",
+    "lighthouse": "^12.8.2",
+    "pixelmatch": "^7.1.0",
+    "pngjs": "^7.0.0",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.3"
+  }
+}

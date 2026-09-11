@@ -1,0 +1,53 @@
+Two licences apply to this repository, because it contains two different kinds of thing.
+
+────────────────────────────────────────────────────────────────────────
+CODE — MIT
+────────────────────────────────────────────────────────────────────────
+
+Applies to: everything under src/, checks/, scripts/, loop/, figma-plugin/,
+.devcontainer/, .github/, and all configuration files at the repository root.
+
+Copyright (c) 2026 Szymon Paluch
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+────────────────────────────────────────────────────────────────────────
+DESIGN, COPY AND IMAGERY — CC BY 4.0
+────────────────────────────────────────────────────────────────────────
+
+Applies to: everything under design/, brief/, docs/, deck/ and guideline/.
+
+Licensed under the Creative Commons Attribution 4.0 International License.
+You may share and adapt this material for any purpose, including commercially,
+provided you give appropriate credit.
+
+Full text: https://creativecommons.org/licenses/by/4.0/
+
+────────────────────────────────────────────────────────────────────────
+A note on the generated images
+────────────────────────────────────────────────────────────────────────
+
+Images under design/assets/ were generated with Google's Nano Banana Pro
+(gemini-3-pro-image) from the prompts recorded in design/assets/PROMPTS.md.
+They carry an invisible SynthID watermark identifying them as AI-generated.
+They depict no real person, venue or event.
+
+TURBINE is a fictional festival created as teaching material. Artist names,
+copy and imagery are invented. Any resemblance to a real event or performer
+is coincidental.

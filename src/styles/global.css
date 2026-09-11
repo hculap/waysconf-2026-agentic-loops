@@ -1,0 +1,100 @@
+/* ==========================================================================
+   TURBINE — global stylesheet
+
+   Three imports and a short base layer. That is deliberately all this file does.
+
+   Colour, type, spacing and radius live in design/tokens/tokens.css, which is
+   generated from design/tokens/tokens.json, which is exported from the Figma
+   variables. theme.generated.css is the mechanical bridge that turns those same
+   tokens into Tailwind utility classes — it is generated too, by
+   `node scripts/build-theme.mjs`, and must not be edited by hand.
+
+   If you need a colour that is not in the token file, the answer is not to add
+   one here. The answer is that it is not in the design.
+   ========================================================================== */
+
+@import '../../design/tokens/tokens.css';
+@import 'tailwindcss';
+@import './theme.generated.css';
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* One focus indicator, defined once, in a colour that actually clears 3:1
+   against every surface in the palette. The border tokens do not — 1.45:1 and
+   1.98:1 on bg.base, see design/tokens/CONTRAST.md — so they are never used as
+   the visible focus ring. AC-17 measures this. */
+:focus-visible {
+  outline: 2px solid var(--color-accent-coolant);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* The skip link is the first focusable element on the page (AC-10). Invisible
+   until focused, then unmissable. */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-4);
+  z-index: 100;
+  transform: translateY(calc(-100% - var(--space-8)));
+  background-color: var(--color-accent-sodium);
+  color: var(--color-text-on-accent);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  transition: transform 150ms ease-out;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Content container. max-width and gutters are tokens, not opinions (AC-33). */
+.container-turbine {
+  width: 100%;
+  max-width: var(--layout-max-width);
+  margin-inline: auto;
+  padding-inline: var(--layout-gutter-mobile);
+}
+
+@media (min-width: 768px) {
+  .container-turbine {
+    padding-inline: var(--layout-gutter-desktop);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion
+
+   This is a gate, not a courtesy. AC-21 fails the build if anything animates
+   under prefers-reduced-motion, or if any transition exceeds 200ms.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
