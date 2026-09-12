@@ -1,8 +1,14 @@
+/* app.js is one file for both languages, so every word it shows comes off the page it is
+   running on rather than out of this script. */
+var COPY = (document.documentElement.lang === 'pl')
+  ? { done: 'Skopiowane', again: 'Kopiuj' }
+  : { done: 'Copied', again: 'Copy' };
+
 document.querySelectorAll('.copy').forEach(function(b){
   b.addEventListener('click',function(){
     var pre=document.getElementById(b.dataset.for); if(!pre) return;
-    var t=pre.innerText, ok=function(){b.textContent='Copied';b.setAttribute('data-done','');
-      setTimeout(function(){b.textContent='Copy';b.removeAttribute('data-done')},1600)};
+    var t=pre.innerText, ok=function(){b.textContent=COPY.done;b.setAttribute('data-done','');
+      setTimeout(function(){b.textContent=COPY.again;b.removeAttribute('data-done')},1600)};
     if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(ok,function(){fb(t,ok)})}else{fb(t,ok)}
   });
 });
@@ -15,10 +21,16 @@ function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttrib
    longer. The stored choice is a convenience; every read and write is wrapped, because
    localStorage throws in a private window rather than returning nothing. */
 (function(){
-  var LABELS={mac:'macOS',windows:'Windows',linux:'Linux'};
+  var box=document.querySelector('.ospick');
   var radios=document.querySelectorAll('.ospick input[name="os"]');
-  if(!radios.length) return;
+  if(!box||!radios.length) return;
   var hint=document.querySelector('[data-os-hint]');
+  /* Both sentences are written in the locale file with a %s where the system name goes,
+     and handed over on the fieldset. No English in this file. */
+  var LABELS={mac:'macOS',windows:'Windows',linux:'Linux'};
+  try{ LABELS=JSON.parse(box.getAttribute('data-os-labels'))||LABELS }catch(e){}
+  var GUESSED=box.getAttribute('data-os-guessed')||'';
+  var SET=box.getAttribute('data-os-set')||'';
 
   function stored(){try{return localStorage.getItem('sp-os')}catch(e){return null}}
   function store(v){try{localStorage.setItem('sp-os',v)}catch(e){}}
@@ -38,9 +50,8 @@ function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttrib
       r.checked = r.value===os;
     });
     if(hint){
-      hint.textContent = guessed
-        ? 'We guessed ' + LABELS[os] + ' from your browser. Not right? Pick another — everything below changes to match.'
-        : 'Everything below is for ' + LABELS[os] + '.';
+      var template = guessed ? GUESSED : SET;
+      if(template) hint.textContent = template.replace('%s', LABELS[os] || os);
     }
   }
 

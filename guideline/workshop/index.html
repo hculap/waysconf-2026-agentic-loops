@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>During the workshop — Build an AI that checks and fixes its own work</title>
-<meta name="description" content="The ideas and the eight prompts, with a copy button on each. Start in an empty folder and finish with a website an agent built, checked and corrected itself.">
-<meta name="theme-color" content="#0A0B0D">
+<title>The workshop · WaysConf 2026 masterclass</title>
+<meta name="description" content="The ideas, the diagrams and the eight prompts that take an empty folder to a deployed, verified website.">
+<meta name="theme-color" content="#0A0A0A">
+<link rel="alternate" hreflang="en" href="../workshop/">
+<link rel="alternate" hreflang="pl" href="../pl/workshop/">
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 /* Speaker brand — szymonpaluch.com. Source of truth: design/tokens/speaker.css.
@@ -24,7 +26,7 @@ body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.62 Inter,syst
 @media(min-width:768px){.wrap{padding-inline:40px}}
 
 header.top{border-bottom:1px solid var(--line);background:var(--surface);position:sticky;top:0;z-index:10}
-.top .wrap{display:flex;align-items:center;gap:20px;padding-block:14px;flex-wrap:wrap}
+.top .wrap{display:flex;align-items:center;gap:12px;padding-block:14px;flex-wrap:wrap}
 /* The site's own lockup: SP. in white, the session in the accent beside it. The page
    belongs to the speaker; TURBINE is the client it is about. */
 .wordmark{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:15px;text-decoration:none;color:var(--accent);display:inline-flex;gap:9px;align-items:baseline}
@@ -34,6 +36,14 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .tabs a{font-size:14px;font-weight:600;color:var(--fg-3);text-decoration:none;padding:8px 14px;border-radius:999px;border:1px solid transparent;min-height:34px;display:inline-flex;align-items:center}
 .tabs a:hover{color:var(--fg)}
 .tabs a[aria-current="page"]{background:var(--raised);border-color:var(--line-2);color:var(--fg)}
+
+/* EN / PL, the same lockup the main site uses. The current language is a span rather than
+   a link: a link to the page you are already on is a promise the browser does not keep. */
+.lang{display:inline-flex;align-items:center;gap:7px;margin:0;font-family:'Space Grotesk',ui-monospace,monospace;font-size:12px;font-weight:700;letter-spacing:.1em;border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;min-height:34px}
+.lang span{color:var(--accent)}
+.lang a{color:var(--fg-3);text-decoration:none}
+.lang a:hover{color:var(--fg)}
+.lang a::before{content:'/';color:var(--line-2);margin-right:7px}
 
 /* Playfair for the voice, Inter for the information — the split the site makes. */
 h1{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:clamp(36px,6.2vw,58px);line-height:1.03;letter-spacing:-.01em;margin:44px 0 14px}
@@ -182,6 +192,10 @@ footer p{font-size:14px;color:var(--fg-3)}
       <a href="../">Before</a>
       <a href="../workshop/" aria-current="page">During</a>
     </nav>
+    <nav class="lang" aria-label="Language">
+      <span aria-current="true">EN</span>
+      <a href="../pl/workshop/" lang="pl" hreflang="pl">PL</a>
+    </nav>
   </div>
 </header>
 <nav class="toc" aria-label="On this page">
@@ -228,48 +242,34 @@ footer p{font-size:14px;color:var(--fg-3)}
 </nav>
 <main id="main" tabindex="-1"><div class="wrap">
 <h1>During the workshop</h1>
-<p class="lede">You need the design and this page. There is nothing to clone and no code to
-read — everything else, your agent makes for itself.</p>
+<p class="lede">You need the design and this page. There is nothing to clone and no code to read — everything else, your agent makes for itself.</p>
 <div class="need">
   <a href="https://github.com/hculap/waysconf-2026-agentic-loops"><b>The design, in Figma</b><span>The link goes here on the day. You will duplicate it to your own drafts and export from there.</span><em>Link on the day</em></a>
   <a href="#getting-the-design-out-of-figma"><b>Then export it</b><span>Select the frames, Export as SVG, and Figma hands you a zip. That zip is what your agent reads.</span><em>Three clicks · below</em></a>
 </div>
 
-<p class="need__alt">No Figma account, or it is being difficult? The
-<a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design already
-exported — <em>optional</em>, and enough to do the whole workshop.</p>
+<p class="need__alt">No Figma account, or it is being difficult? The <a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design already exported — <em>optional</em>, and enough to do the whole workshop.</p>
 
 <h2 id="getting-the-design-out-of-figma">Getting the design out of Figma</h2>
 
-<p>Your agent cannot see your screen. It needs the design as files, and the three clicks that
-produce them are ones you already know.</p>
+<p>Your agent cannot see your screen. It needs the design as files, and the three clicks that produce them are ones you already know.</p>
 
 
 <ol class="steps">
-  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. You cannot
-  export from a file you only have read access to.</li>
-  <li><b>Select the frames.</b> Click the first frame on the canvas, then shift-click the rest.
-  Select the frames themselves, not the page — selecting the page gives you one enormous file.</li>
-  <li><b>Export as SVG.</b> Right-hand panel, bottom, <strong>Export</strong> → the format dropdown
-  → <strong>SVG</strong> → <strong>Export</strong>.</li>
-  <li><b>Figma gives you a zip.</b> More than one layer at a time always comes down zipped. Unzip it
-  next to your project, in a folder called <code>design</code>.</li>
+  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. You cannot export from a file you only have read access to.</li>
+  <li><b>Select the frames.</b> Click the first frame on the canvas, then shift-click the rest. Select the frames themselves, not the page — selecting the page gives you one enormous file.</li>
+  <li><b>Export as SVG.</b> Right-hand panel, bottom, <strong>Export</strong> → the format dropdown → <strong>SVG</strong> → <strong>Export</strong>.</li>
+  <li><b>Figma gives you a zip.</b> More than one layer at a time always comes down zipped. Unzip it next to your project, in a folder called <code>design</code>.</li>
 </ol>
 
 <div class="rules">
-  <div><b>SVG, not PNG.</b> An SVG keeps every string as text and every fill as a value, so the agent
-  reads the design instead of guessing at a photograph of it. Take the PNGs as well if you want
-  something to look at — they cost nothing.</div>
-  <div><b>Do not tick "outline text".</b> It turns every word into shapes, and the copy stops being
-  readable to anything but an eye.</div>
-  <div><b>The folder goes beside your project, not inside it.</b> Your agent will be told where to
-  look in prompt 02.</div>
+  <div><b>SVG, not PNG.</b> An SVG keeps every string as text and every fill as a value, so the agent reads the design instead of guessing at a photograph of it. Take the PNGs as well if you want something to look at — they cost nothing.</div>
+  <div><b>Do not tick "outline text".</b> It turns every word into shapes, and the copy stops being readable to anything but an eye.</div>
+  <div><b>The folder goes beside your project, not inside it.</b> Your agent will be told where to look in prompt 02.</div>
 </div>
 
-<p class="need__alt">If your agent is connected to Figma directly — <code>figma</code> shows up in
-<code>/mcp</code> — you can skip all of this. Prompt 02 has that route too.</p>
-<p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a
-prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
+<p class="need__alt">If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip all of this. Prompt 02 has that route too.</p>
+<p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
 <hr>
 <p>Everything on the slides, on one page, so you can read it back afterwards instead of photographing a screen. The pictures are the same ones on the wall, and they are yours to reuse.</p>
 <hr>
@@ -394,8 +394,7 @@ dist/. If they differ, tell me exactly how.</code></pre></div>
 <p>  the least reliable part of the whole thing. A second opinion, not an oracle.</p>
 <hr>
 <h2 id="the-eight-prompts">The eight prompts</h2>
-<p>In order. Each one stands alone, so if one is going badly you can say
-<em>&ldquo;stop where you are, I want to move on&rdquo;</em> and paste the next.</p>
+<p>In order. Each one stands alone, so if one is going badly you can say <em>&ldquo;stop where you are, I want to move on&rdquo;</em> and paste the next.</p>
 <section class="step" id="p01">
   <p class="step__no">Prompt 01</p>
   <h2 id="start">Start</h2>
@@ -816,12 +815,10 @@ Rules for the whole run:
 </section>
 </div></main>
 <footer><div class="wrap">
-  <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 ·
-  16 September, 14:55, ROOM-PM · Szymon Paluch</p>
+  <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 September, 14:55, ROOM-PM · Szymon Paluch</p>
   <p>Everything here stays online after the conference. The repository, if you want it:
   <a href="https://github.com/hculap/waysconf-2026-agentic-loops">github.com/hculap/waysconf-2026-agentic-loops</a>.</p>
-  <p>TURBINE is a fictional festival created as teaching material. Artist names, imagery and
-  copy are invented. Any resemblance to a real event or performer is coincidental.</p>
+  <p>TURBINE is a fictional festival created as teaching material. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental.</p>
 </div></footer>
 <script src="../app.js" defer></script>
 </body>

@@ -35,7 +35,8 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 // proved capable of failing. A gate nobody has watched fail is a gate nobody should trust.
 const SITE = (process.argv.includes('--site') && resolve(process.argv[process.argv.indexOf('--site') + 1])) || join(ROOT, 'guideline')
 
-const PAGES = ['/', '/workshop/']
+// Both languages. A locale that is never opened is a locale nobody checked.
+const PAGES = ['/', '/workshop/', '/pl/', '/pl/workshop/']
 const WIDTHS = [390, 1440]
 const IMAGE_DEADLINE_MS = 15_000
 const NAV_DEADLINE_MS = 30_000

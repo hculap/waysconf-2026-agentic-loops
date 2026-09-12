@@ -203,7 +203,7 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
 }
 
 // ── the section rail, on both tabs ───────────────────────────────────────────
-for (const path of ['/', '/workshop/']) {
+for (const path of ['/', '/workshop/', '/pl/', '/pl/workshop/']) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
   await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
@@ -267,6 +267,64 @@ for (const path of ['/', '/workshop/']) {
   }, hash)
   if (landed < 140) ok(`${path}: clicking an entry scrolls to its section`)
   else fail(`${path}: clicking ${hash} left its heading ${Math.round(landed)}px from the top`)
+
+  await context.close()
+}
+
+// ── the language switcher, and the picker in Polish ─────────────────────────
+//
+// Two things that would rot silently. A switcher that drops you on the other language's
+// front page has quietly thrown away which tab you were reading, and the operating-system
+// hint is built from data attributes on the fieldset — the one string on the page that
+// travels through the markup rather than being written into it, so it is the one that can
+// still be English on a Polish page while everything around it is translated.
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await context.newPage()
+
+  for (const [from, expectLang, expectHref] of [
+    ['/', 'pl', '/pl/'],
+    ['/workshop/', 'pl', '/pl/workshop/'],
+    ['/pl/', 'en', '/'],
+    ['/pl/workshop/', 'en', '/workshop/'],
+  ]) {
+    await page.goto(base + from, { waitUntil: 'networkidle', timeout: 30_000 })
+
+    const declared = await page.evaluate(() => document.documentElement.lang)
+    const want = from.startsWith('/pl') ? 'pl' : 'en'
+    if (declared !== want) fail(`${from}: <html lang> is "${declared}", expected "${want}" — screen readers use this to pick a voice`)
+
+    const link = page.locator('.lang a')
+    if ((await link.count()) !== 1) {
+      fail(`${from}: the language switcher has ${await link.count()} links, expected exactly one`)
+      continue
+    }
+    await link.click()
+    await page.waitForLoadState('networkidle')
+    const landed = new URL(page.url()).pathname
+    const nowLang = await page.evaluate(() => document.documentElement.lang)
+    if (landed === expectHref && nowLang === expectLang) {
+      ok(`${from} → ${landed} (${nowLang}) — the switcher keeps the tab`)
+    } else {
+      fail(`${from}: switching landed on ${landed} in "${nowLang}", expected ${expectHref} in "${expectLang}"`)
+    }
+  }
+
+  // the Polish picker must speak Polish, including the hint the script writes
+  await page.goto(base + '/pl/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.locator('.ospick label[for="os-windows"]').click()
+  await page.waitForTimeout(300)
+  const shown = await visibleOses(page)
+  if (shown.length === 1 && shown[0] === 'windows') ok('/pl/: the picker switches')
+  else fail(`/pl/: clicking Windows showed ${shown.join(', ') || 'nothing'}`)
+
+  const hint = (await page.locator('[data-os-hint]').innerText()).trim()
+  if (/[ąćęłńóśźż]/i.test(hint)) ok(`/pl/: the hint is Polish — "${hint.slice(0, 52)}…"`)
+  else fail(`/pl/: the operating-system hint is not Polish: "${hint.slice(0, 70)}"`)
+
+  const button = (await page.locator('.copy').first().innerText()).trim()
+  if (button !== 'Copy') ok(`/pl/: the copy button says "${button}"`)
+  else fail('/pl/: the copy button still says "Copy"')
 
   await context.close()
 }
