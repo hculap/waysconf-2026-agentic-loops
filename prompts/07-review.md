@@ -11,7 +11,7 @@ still worth doing, because the alternative is not looking.
 ```text
 The checks pass. Now try to prove the page is still wrong.
 
-Your job in this message is to attack, not to defend and not to fix. Find five things that
+Your job now is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that your checker cannot catch, and for each one tell me:
 
 - exactly which element, by what I would see on screen

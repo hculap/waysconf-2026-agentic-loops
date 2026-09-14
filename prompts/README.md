@@ -42,9 +42,15 @@ point of this session is that you are allowed to.
 | 05 | **[The loop](05-loop.md)** | Check, fix, check again, until the program says yes | 10 min |
 | 06 | [Ship it](06-deploy.md) | A public URL you can send to someone | 4 min |
 | 07 | [Try to break it](07-review.md) | Find what the checker cannot see | 5 min |
-| 08 | **[The same job, as a workflow](08-workflow.md)** | Everything above, handed over as one instruction with phases | — |
+| 08 | **[The same job, as a workflow](08-workflow.md)** | Prompts 01–07 as one message — phase 01 is prompt 01, word for word — with subagents | — |
 
 Prompts 04 and 05 are the workshop. Prompt 08 is what you do with it on Monday.
+
+Prompt 08 is not a summary of the others. Its seven phases are the seven prompts, in the same
+words, so anything you learned from one prompt is true of its phase. Two things differ, and 08
+says both: phase 03 builds the sections in parallel instead of stopping after each, and the run
+waits for you only after phase 02. `scripts/build-workflow-prompt.mjs` writes 08 from 01–07,
+so they cannot drift apart.
 
 ## The one idea
 

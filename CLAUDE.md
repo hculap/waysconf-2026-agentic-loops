@@ -51,6 +51,7 @@ see `evidence/INCIDENTS.md`.
 |---|---|
 | `src/styles/theme.generated.css` | `node scripts/build-theme.mjs` |
 | `guideline/index.html`, `guideline/workshop/index.html` | `node scripts/build-guideline.mjs` |
+| the ```text block in `prompts/08-workflow.md` and `prompts/pl/08-workflow.md` | `node scripts/build-workflow-prompt.mjs` — built from prompts 01–07; `--check` fails on drift |
 | `design-pack/` | `node scripts/build-design-pack.mjs` |
 | `figma-plugin/data.generated.js` | `node scripts/build-figma-plugin.mjs` |
 | `public/fonts/` | `node scripts/fetch-fonts.mjs` |

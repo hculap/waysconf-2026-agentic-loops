@@ -226,11 +226,9 @@ footer p{font-size:14px;color:var(--fg-3)}
     <li><a href="#we-to-do-pracy-w-poniedzia-ek">Weź to do pracy w poniedziałek</a></li>
     <li><a href="#cz-uczciwa">Część uczciwa</a></li>
     <li><a href="#osiem-prompt-w">Osiem promptów</a></li>
-    <li><a href="#zacznij-od-pustego-folderu">Zacznij od pustego folderu</a></li>
+    <li><a href="#start">Start</a></li>
     <li><a href="#popatrz-na-design">Popatrz na design</a></li>
-    <li><a href="#figma-fig-agent">Figma → .fig → agent</a></li>
-    <li><a href="#droga-a-masz-figm-podpi-t-do-agenta">Droga A — masz Figmę podpiętą do agenta</a></li>
-    <li><a href="#droga-b-plik-fig">Droga B — plik .fig</a></li>
+    <li><a href="#najpierw-w-plik-do-projektu">Najpierw włóż plik do projektu</a></li>
     <li><a href="#zbuduj-to">Zbuduj to</a></li>
     <li><a href="#napisz-checker">Napisz checker</a></li>
     <li><a href="#p-tla-2">Pętla</a></li>
@@ -262,16 +260,14 @@ footer p{font-size:14px;color:var(--fg-3)}
 <ol class="steps">
   <li><b>Zduplikuj.</b> Otwórz plik i wybierz <strong>Duplicate to your drafts</strong>. W pliku, który możesz tylko oglądać, zapisu lokalnej kopii może nie być.</li>
   <li><b>Zapisz lokalną kopię.</b> Otwórz menu główne (ikona Figmy w lewym górnym rogu), potem <strong>File</strong> → <strong>Save local copy…</strong></li>
-  <li><b>Dostajesz jeden plik <code>.fig</code>.</b> Obok projektu załóż folder <code>design</code> i włóż do niego plik.</li>
+  <li><b>Dostajesz jeden plik <code>.fig</code>.</b> W folderze projektu załóż folder <code>design</code> i włóż do niego plik — po tym, jak prompt 01 utworzy projekt.</li>
 </ol>
 
 <div class="rules">
   <div><b>Plik, a nie jego zdjęcie.</b> <code>.fig</code> to sam design — tekst jako tekst, kolory jako wartości, zmienne, komponenty i zdjęcia — więc agent czyta design, zamiast zgadywać ze zdjęcia.</div>
   <div><b>Agent sam go rozkoduje i może do tego potrzebować internetu.</b> Poza Figmą nic nie otwiera plików <code>.fig</code>, więc agent rozgryza format sam, czasem z małą paczką, którą instaluje. Na sali jest sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.</div>
-  <div><b>Folder ląduje obok projektu, nie w środku.</b> Gdzie ma szukać, agent dowie się w prompcie 02.</div>
+  <div><b>W projekcie, nie obok niego.</b> Agent pracuje wewnątrz folderu projektu, a Claude Code pyta, zanim przeczyta cokolwiek spoza niego — plik piętro wyżej zamienia się w pytanie, na którym agent musi się zatrzymać.</div>
 </div>
-
-<p class="need__alt">Jeśli twój agent jest podłączony do Figmy bezpośrednio — <code>figma</code> pojawia się w <code>/mcp</code> — możesz to pominąć. To połączenie wymaga płatnego miejsca w Figmie; prompt 02 ma tę drogę.</p>
 <p>Wklejaj każdy prompt w całości. Reguły w środku znaczą tyle samo co samo polecenie, a skrócenie promptu do pierwszego zdania to najczęstszy sposób na rozczarowującą odpowiedź.</p>
 <hr>
 <p>Wszystko ze slajdów, na jednej stronie, żebyś mógł to przeczytać później, zamiast fotografować ekran. Obrazki są te same, co na ścianie, i możesz ich używać u siebie.</p>
@@ -344,8 +340,8 @@ co zadziałało, co nie i dlaczego.</code></pre></div>
 <h2 id="da-agentowi-design-a-nie-jego-zdj-cie">Dać agentowi design, a nie jego zdjęcie</h2>
 <figure class="fig"><img src="../../diagrams/04-mcp-topology.svg" alt="Agent połączony z plikiem designu, przeglądarką i miejscem publikacji" loading="lazy" width="1600" height="980"></figure>
 <p>Agent, który dostaje zrzut ekranu, wyprowadza każdy kolor i każdy wymiar z pikseli. Będzie <em>prawie</em> trafiał — jakiś pomarańczowy, jakieś odstępy — a prawie to dokładnie to, co oblewa test kontrastu i wygląda subtelnie źle obok prawdziwego designu.</p>
-<p>Kiedy dostaje plik z wartościami, nie wyprowadza niczego. <code>#FF6A1A</code> jest w pliku.</p>
-<p>To jest cały argument za podłączeniem agenta do Figmy albo za daniem mu samego pliku <code>.fig</code>. <strong>MCP</strong> to po prostu standardowy sposób robienia takiego połączenia: agent wołający narzędzia, których nie ma w sobie — plik designu, przeglądarkę, miejsce publikacji.</p>
+<p>Kiedy dostaje plik <code>.fig</code>, nie wyprowadza niczego. <code>#FF6A1A</code> jest w pliku.</p>
+<p>To jest cały argument za daniem agentowi samego pliku. Pewnie słyszałeś o <strong>MCP</strong> — standardowym sposobie, w jaki agent woła narzędzia spoza siebie, w tym żywe połączenie z Figmą. Dziś nie używamy go do designu: wymaga płatnego miejsca, a na darmowym koncie jego budżet to dwadzieścia wywołań miesięcznie, zużytych, zanim agent przeczyta jedną stronę. Plik nie potrzebuje ani jednego, ani drugiego.</p>
 <hr>
 <h2 id="kiedy-jeden-agent-to-za-ma-o">Kiedy jeden agent to za mało</h2>
 <figure class="fig"><img src="../../diagrams/05-dynamic-workflow.svg" alt="Trzy przebiegi review rozchodzące się równolegle, każde znalezisko wysłane do obalenia, na końcu filtr większościowy" loading="lazy" width="1800" height="1000"></figure>
@@ -400,68 +396,47 @@ ze stroną w dist/. Jeśli się różnią, powiedz mi dokładnie czym.</code></p
 <p>Po kolei. Każdy stoi sam, więc jeśli któryś idzie źle, możesz powiedzieć <em>&bdquo;przestań, idziemy dalej&rdquo;</em> i wkleić następny.</p>
 <section class="step" id="p01">
   <p class="step__no">Prompt 01</p>
-  <h2 id="zacznij-od-pustego-folderu">Zacznij od pustego folderu</h2>
-  <p>Nie masz nic i tak ma być. Za chwilę agent zbuduje sobie projekt sam.</p>
-<p>Otwórz terminal, zrób folder i uruchom w nim swojego agenta:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4">Copy</button></div><pre id="p4"><code>mkdir turbine &amp;&amp; cd turbine
-claude</code></pre></div>
-<p>albo, jeśli masz ChatGPT Plus:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>mkdir turbine &amp;&amp; cd turbine
-codex</code></pre></div>
+  <h2 id="start">Start</h2>
+  <p>Na wejściu pusty folder, na wyjściu strona działająca na twoim komputerze. Nic jeszcze nie jest zaprojektowane; to tylko warsztat pracy.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Jestem projektantem, nie programistą. Tłumacz mi każdą komendę, którą uruchamiasz,
-jednym zdaniem, zanim ją uruchomisz.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4">Copy</button></div><pre id="p4"><code>Załóż w tym folderze nowy projekt strony internetowej.
 
-Ten folder jest pusty. Załóż w nim projekt statycznej strony: Astro z Tailwindem,
-TypeScript, bez frameworka do UI. Zainstaluj zależności i uruchom serwer deweloperski.
+Użyj Astro z Tailwind CSS. Statyczny output — bez Reacta, Vue ani Svelte, bez serwera, bez
+bazy danych. Node jest już zainstalowany.
 
-Kiedy skończysz, powiedz mi dokładnie dwie rzeczy:
-1. pod jakim adresem mam otworzyć stronę w przeglądarce
-2. które pliki mam otwierać, a których nie ruszać
+Potem uruchom serwer deweloperski i podaj mi adres, który mam otworzyć w przeglądarce.
 
-Nie buduj jeszcze żadnej strony. Chcę zobaczyć, że coś działa.</code></pre></div>
+Nie buduj jeszcze żadnych stron. Nie wymyślaj żadnej treści. Design przyjdzie w następnym
+kroku i chcę, żeby strona była wtedy nadal pusta.
+
+W trakcie pracy mów mi jedną linijką, co robi każda komenda. Nigdy wcześniej nie używałem
+terminala i chcę nadążać.</code></pre></div>
 <hr>
-<p><strong>Co powinieneś zobaczyć.</strong> Kilka minut instalowania, potem adres w rodzaju <code>http://localhost:4321</code>. Otwórz go. Zobaczysz pustą stronę startową Astro i to jest poprawny wynik.</p>
+<p><strong>Codex zapyta, czy ufa temu folderowi.</strong> Odpowiedz tak. Nie pracuje w katalogu, o którym mu nie powiedziano, więc w nowym, pustym folderze pierwsze, co zrobi, to zatrzyma się i zapyta. To narzędzie jest ostrożne, a nie coś się psuje.</p>
+<p><strong>Co powinieneś zobaczyć.</strong> Kilka minut instalowania, potem linijkę w rodzaju <code>Local http://localhost:4321/</code>. Otwórz ją. Dostaniesz stronę zastępczą Astro — prostą, brzydką, poprawną.</p>
+<p><strong>Terminal jest teraz zajęty.</strong> To okno uruchamia stronę i nie przyjmie kolejnej komendy. Zostaw je i otwórz drugie. W Claude Code i w Codeksie możesz po prostu pisać dalej; one to ogarniają.</p>
 <hr>
 <h3>Jeśli coś pójdzie nie tak</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td><code>Not inside a trusted directory</code></td><td>To Codex pyta o zgodę. Odpowiedz „tak&quot;, albo wcześniej uruchom w folderze <code>git init</code>.</td></tr><tr><td>Wisi kilka minut na „installing&quot;</td><td>Nie wisi. <code>npm install</code> ściąga kilkaset plików i przy słabym wifi potrafi to trwać. Prompt wróci.</td></tr><tr><td><code>command not found: claude</code></td><td>Agent nie jest zainstalowany. Wróć na zakładkę <strong>Przed</strong> i przejdź self-test.</td></tr><tr><td>Nie ma adresu</td><td><code>Nie widzę adresu. Uruchom serwer deweloperski i podaj mi URL.</code></td></tr><tr><td>Zbudował od razu całą stronę</td><td><code>Miałem tylko pusty projekt. Cofnij wszystko, co dodałeś poza szkieletem.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>I tak zaczyna budować landing page</td><td><code>Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.</code></td></tr><tr><td><code>Not inside a trusted directory</code></td><td>To Codex pyta o zgodę. Odpowiedz tak albo najpierw uruchom w folderze <code>git init</code>.</td></tr><tr><td><code>command not found: npm</code></td><td>Node nie jest zainstalowany. Wróć na zakładkę <strong>Przed</strong> albo przejdź tam na wersję w przeglądarce.</td></tr><tr><td>Prosi o wybór szablonu</td><td><code>Wybierz minimalny albo pusty szablon. Bez przykładowej treści.</code></td></tr><tr><td>„Katalog nie jest pusty&quot;</td><td>Włożyłeś folder z designem przed tym promptem. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02.</td></tr><tr><td>Przez dwie minuty nic się nie dzieje</td><td>Instaluje. Instalowanie wygląda dokładnie jak zawieszenie. Daj mu pięć.</td></tr></tbody></table></div>
 <hr>
-<h3>Dlaczego zaczynamy od pustego folderu</h3>
-<p>Bo tak wygląda poniedziałek. Nikt nie da ci przygotowanego repozytorium z działającymi bramkami — dostaniesz folder i problem.</p>
-<p>Wszystko, co powstanie w ciągu najbliższej godziny, zbuduje agent: projekt, stronę i program, który tę stronę ocenia. Nie ma tu niczego, co ktoś przygotował wcześniej, żeby demo wyszło ładnie.</p>
+<h3>Dlaczego to jest tak sformułowane</h3>
+<p><strong>„Nie buduj jeszcze żadnych stron.&quot;</strong> Zostawiony sam sobie agent zapełni ciszę — wymyśli hero, siatkę funkcji i trzy opinie klientów, zanim powiesz słowo o tym, czego chcesz. Mówienie, czego <em>nie</em> robić, to połowa promptowania, i to jest ta połowa, którą ludzie pomijają.</p>
+<p><strong>„Mów mi jedną linijką, co robi każda komenda.&quot;</strong> Możesz o to prosić. Agent to nie tylko maszyna produkująca pliki; to jedyny cierpliwy tłumacz, jakiego będziesz miał przez całe popołudnie.</p>
 </section>
 <section class="step" id="p02">
   <p class="step__no">Prompt 02</p>
   <h2 id="popatrz-na-design">Popatrz na design</h2>
   <p>Agent czyta design i mówi ci, co znalazł. Strony jeszcze nie pisze. To najtańsza poprawka, jaką dostaniesz tego dnia: błędne założenie kosztuje tu jedno zdanie, a dwadzieścia minut wygenerowanego kodu — później.</p>
-<p><strong>Najpierw połóż design obok projektu.</strong> Jeden plik: sam plik Figmy.</p>
 <hr>
-<h2 id="figma-fig-agent">Figma → .fig → agent</h2>
-<ol><li>Otwórz plik TURBINE i wybierz <strong>Duplicate to your drafts</strong>. Teraz jest twój, możesz w nim grzebać.</li><li>Menu główne (ikona Figmy w lewym górnym rogu) → <strong>File</strong> → <strong>Save local copy…</strong></li><li>Figma zapisze plik z końcówką <strong><code>.fig</code></strong>. Obok projektu załóż folder <code>design</code> i włóż go tam.</li></ol>
-<p>Nie masz konta w Figmie? Na stronie warsztatu jest ten sam plik do pobrania. Połóż go w tym samym miejscu.</p>
+<h2 id="najpierw-w-plik-do-projektu">Najpierw włóż plik do projektu</h2>
+<ol><li>Otwórz plik TURBINE i wybierz <strong>Duplicate to your drafts</strong>. Teraz jest twój, możesz w nim grzebać.</li><li>Menu główne (ikona Figmy w lewym górnym rogu) → <strong>File</strong> → <strong>Save local copy…</strong></li><li>Figma zapisze jeden plik z końcówką <strong><code>.fig</code></strong>. W folderze projektu załóż folder <code>design</code></li></ol>
+<p>   i włóż go tam.</p>
+<p>Nie masz konta w Figmie? Na stronie warsztatu jest ten sam plik do pobrania. Włóż go w to samo miejsce.</p>
+<p><strong>W projekcie, nie obok niego.</strong> Agent pracuje wewnątrz folderu projektu. Claude Code pyta, zanim przeczyta cokolwiek spoza tego folderu, a plik piętro wyżej zamienia się w pytanie o zgodę, na którym agent musi się zatrzymać.</p>
 <p><strong>Plik, a nie jego zdjęcie.</strong> PNG to zdjęcie designu: agent musi wyprowadzić każdy kolor i każdy wymiar z pikseli, i będzie <em>prawie</em> trafiał — a prawie to dokładnie to, co oblewa test kontrastu i wygląda subtelnie źle obok oryginału. Plik <code>.fig</code> to sam design: tekst jako tekst, kolory jako wartości, zmienne, komponenty i zdjęcia. Nie ma czego zgadywać.</p>
 <p>Twój agent nie ma programu, który otwiera <code>.fig</code>, więc rozkoduje plik sam. Zajmie mu to dziesięć do piętnastu minut i może przy tym zainstalować z internetu małą paczkę. <strong>Na sali jest sieć, więc mu na to pozwól</strong> — jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.</p>
 <hr>
-<h2 id="droga-a-masz-figm-podpi-t-do-agenta">Droga A — masz Figmę podpiętą do agenta</h2>
-<p>Użyj tej, jeśli <code>figma</code> pojawia się po wpisaniu <code>/mcp</code> w Claude Code albo <code>codex mcp list</code> w Codeksie. Agent czyta żywy plik i <code>.fig</code> możesz pominąć. Potrzebne jest płatne miejsce w Figmie z Dev Mode; na darmowym koncie idź drogą B.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7">Copy</button></div><pre id="p7"><code>Przeczytaj plik designu przez serwer MCP Figmy:
-&lt;wklej tutaj link do Figmy&gt;
-
-Nie pisz jeszcze żadnego kodu. Powiedz mi, co znalazłeś, jako listę:
-
-1. Każdą sekcję, w kolejności od góry strony, z nazwą.
-2. Każdy kolor, jako dokładną wartość, i do czego jest używany.
-3. Każdy rozmiar tekstu i gdzie który jest użyty.
-4. Każdą szerokość, którą design obejmuje.
-5. Odstępy, które widzisz — przerwy między elementami.
-6. Wszystko, czego design ci nie mówi, a co inaczej musiałbyś zgadnąć.
-
-Punkt 6 obchodzi mnie najbardziej. Bądź konkretny i bądź szczery: „nie wiem, co dzieje się
-z siatką lineupu poniżej 500 px&quot; jest dla mnie warte więcej niż pewne siebie zgadnięcie.</code></pre></div>
-<hr>
-<h2 id="droga-b-plik-fig">Droga B — plik .fig</h2>
-<p>Zwyczajna droga i ta, którą zakłada reszta tego zestawu.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8">Copy</button></div><pre id="p8"><code>Obok tego projektu jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
 przez „Save local copy&quot;. To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
@@ -475,16 +450,17 @@ Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
   skompresowany, surowym deflate albo zstd.
 - Folder images w zipie trzyma zdjęcia, nazwane hashem, którego używają wypełnienia.
 - Pomiń wszystko, co ma isSoftDeleted, i wszystko, co należy do czegoś, co to ma.
-  Zostało usunięte w Figmie, a wciąż siedzi w pliku.
+  Zostało usunięte w Figmie, a wciąż siedzi w pliku. Zmienna w usuniętej kolekcji sama nie
+  jest oznaczona — pomiń ją też.
 - Tekst w komponencie może pochodzić z właściwości komponentu i z nadpisań. Jeśli każda
   karta tego samego rodzaju pokazuje te same słowa, czytasz komponent zamiast instancji.
   Rozwiąż to, zanim zaufasz jakiemukolwiek tekstowi.
 
 Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. To, co rozkodujesz, trzymaj
-w folderze design-data w tym projekcie, żeby kolejne kroki czytały to zamiast rozkodowywać
-od nowa. Nie pisz jeszcze żadnego kodu strony.
+w folderze design-data w tym projekcie, żeby każdy kolejny krok czytał to zamiast
+rozkodowywać od nowa. Nie pisz jeszcze żadnego kodu strony.
 
-Potem powiedz mi, co znalazłeś, jako listę:
+Potem zapisz, co znalazłeś, do notes.md, jako listę, i pokaż mi ją:
 
 1. Każdą sekcję, w kolejności od góry strony.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością, i do czego jest używany.
@@ -495,16 +471,19 @@ Potem powiedz mi, co znalazłeś, jako listę:
    zgadnąć.
 
 Punkt 6 obchodzi mnie najbardziej. Bądź konkretny i bądź szczery: „w pliku jest stan hover,
-do którego nie mam żadnych wartości&quot; jest warte więcej niż pewne siebie zgadnięcie.</code></pre></div>
+do którego nie mam żadnych wartości&quot; jest warte więcej niż pewne siebie zgadnięcie.
+
+Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.</code></pre></div>
 <hr>
-<p><strong>Co powinieneś zobaczyć.</strong> Dziesięć do piętnastu minut, w których agent rozgryza plik, a potem długą listę. Przeczytaj ją. Dwie rzeczy są warte twojej uwagi:</p>
+<p><strong>Co powinieneś zobaczyć.</strong> Dziesięć do piętnastu minut, w których agent rozgryza plik, a potem długą listę — zapisaną też jako <code>notes.md</code>. Przeczytaj ją. Dwie rzeczy są warte twojej uwagi:</p>
 <ul><li><strong>Czy to opisuje twój design?</strong> Jeśli mówi „hero, trzy kafle i tabela cennika&quot;, a twój</li></ul>
 <p>  design ma lineup dwunastu artystów, to patrzy na coś innego albo na nic.</p>
 <ul><li><strong>Co jest w punkcie 6?</strong> Ta lista to brief, którego zapomniałeś napisać. Odpowiedz na nią</li></ul>
-<p>  teraz, własnymi słowami, zanim pójdziesz dalej. Jeśli punkt 6 jest pusty, agent zgaduje i   nie powiedział ci o tym — zapytaj: <code>co z tego przeczytałeś, a co wywnioskowałeś?</code></p>
+<p>  teraz, własnymi słowami. Jeśli punkt 6 jest pusty, agent zgaduje i nie powiedział ci o   tym — zapytaj: <code>co z tego przeczytałeś, a co wywnioskowałeś?</code></p>
+<p><code>notes.md</code> będzie ważny później. Każdy kolejny prompt go czyta, a jeśli kiedyś będziesz musiał zacząć nową sesję, to jest wszystko, co nowa sesja wie.</p>
 <hr>
 <h3>Jeśli coś pójdzie nie tak</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować</td><td><code>Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.</code></td></tr><tr><td>W menu nie ma „Save local copy&quot;</td><td>Jesteś w pliku, który możesz tylko oglądać. Najpierw zduplikuj go do swoich draftów i zapisz ze swojej kopii.</td></tr><tr><td>„Nie mogę otworzyć pliku binarnego&quot;</td><td><code>To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.</code></td></tr><tr><td>Opisuje małą, rozmytą stronę</td><td>Przeczytał <code>thumbnail.png</code>. <code>To jest podgląd. Pracuj na canvas.fig.</code></td></tr><tr><td><code>zstd</code> nieobsługiwany albo dekompresja się sypie</td><td>Twój Node jest starszy niż 22.15. <code>Zainstaluj paczkę, która czyta zstd, i działaj dalej.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczki go wymaga, a sieć na sali jest.</td></tr><tr><td>Claude Code pyta przed każdą komendą</td><td>Rozkodowanie to dziesiątki małych komend. Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend.</td></tr><tr><td>Każda karta artysty ma to samo imię</td><td><code>Czytasz komponent, a nie instancje. Rozwiąż właściwości komponentu i nadpisania.</code></td></tr><tr><td>Kolory wracają jako „ciemny szary&quot;</td><td><code>Podaj dokładne wartości. Jeśli nie potrafisz odczytać dokładnych, powiedz to — nie opisuj ich.</code></td></tr><tr><td>Figma zwraca błąd albo 401</td><td>Twoje konto nie obejmuje Dev Mode. Użyj pliku <code>.fig</code> — droga B, dalej nic się nie zmienia.</td></tr><tr><td>Po dziesięciu minutach dalej nie umie przeczytać pliku</td><td>Pobierz gotową paczkę ze strony warsztatu, włóż ją do <code>design</code> i powiedz <code>Użyj paczki z folderu design.</code></td></tr><tr><td>Opisuje stronę, której nie znasz</td><td>Nie czyta twojego pliku. Sprawdź link albo przejdź na drogę B.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować</td><td><code>Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.</code></td></tr><tr><td>W menu nie ma „Save local copy&quot;</td><td>Jesteś w pliku, który możesz tylko oglądać. Najpierw zduplikuj go do swoich draftów i zapisz ze swojej kopii.</td></tr><tr><td>Prosi o przeczytanie pliku spoza folderu</td><td>Plik <code>.fig</code> leży obok projektu, nie w nim. Przenieś go do <code>design</code> w projekcie i powiedz <code>Jest teraz w design.</code></td></tr><tr><td>„Nie mogę otworzyć pliku binarnego&quot;</td><td><code>To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.</code></td></tr><tr><td>Opisuje małą, rozmytą stronę</td><td>Przeczytał <code>thumbnail.png</code>. <code>To jest podgląd. Pracuj na canvas.fig.</code></td></tr><tr><td><code>zstd</code> nieobsługiwany albo dekompresja się sypie</td><td>Twój Node jest starszy niż 22.15. <code>Zainstaluj paczkę, która czyta zstd, i działaj dalej.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczki go wymaga, a sieć na sali jest.</td></tr><tr><td>Claude Code pyta przed każdą komendą</td><td>Rozkodowanie to dziesiątki małych komend. Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend.</td></tr><tr><td>Każda karta artysty ma to samo imię</td><td><code>Czytasz komponent, a nie instancje. Rozwiąż właściwości komponentu i nadpisania.</code></td></tr><tr><td>Kolory wracają jako „ciemny szary&quot;</td><td><code>Podaj dokładne wartości. Jeśli nie potrafisz odczytać dokładnych, powiedz to — nie opisuj ich.</code></td></tr><tr><td>Po dziesięciu minutach dalej nie umie przeczytać pliku</td><td>Pobierz gotową paczkę ze strony warsztatu, włóż ją do <code>design</code> i powiedz <code>Użyj paczki z folderu design.</code></td></tr></tbody></table></div>
 <hr>
 <h3>Po co ten prompt w ogóle istnieje</h3>
 <p>Nie produkuje strony. I o to chodzi.</p>
@@ -517,32 +496,35 @@ do którego nie mam żadnych wartości&quot; jest warte więcej niż pewne siebi
   <h2 id="zbuduj-to">Zbuduj to</h2>
   <p>Teraz pisze stronę. Sekcja po sekcji, z zatrzymaniem po każdej, żebyś oglądał przegląd designu, a nie ścianę outputu.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9">Copy</button></div><pre id="p9"><code>Zbuduj teraz stronę, na podstawie designu, który przed chwilą przeczytałeś.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Zbuduj teraz stronę, na podstawie designu. Czytaj design-data i notes.md; nie rozkodowuj
+pliku .fig jeszcze raz.
 
-Jedna sekcja naraz, w kolejności od góry strony. Po każdej sekcji: przeładuj stronę,
-powiedz mi jednym zdaniem, co zbudowałeś, a potem ZATRZYMAJ SIĘ i czekaj, aż powiem
-„dalej&quot;. Nie buduj dwóch sekcji za jednym razem, choćby wyglądały na drobne.
+Jedna sekcja naraz, w kolejności z notes.md. Po każdej sekcji powiedz mi jednym zdaniem,
+co zbudowałeś, a potem ZATRZYMAJ SIĘ i czekaj, aż powiem „dalej&quot;. Nie buduj dwóch sekcji
+za jednym razem, choćby wyglądały na drobne.
 
 Reguły, wszystkie nienegocjowalne:
 
 - Każdy kolor i każdy rozmiar pochodzi z designu. Jeśli łapiesz się na wybieraniu
   wartości, zatrzymaj się i zapytaj mnie.
-- Każde słowo pochodzi z treści, którą ci dałem. Nie pisz tekstów. Nie poprawiaj tekstów.
-  Jeśli jakiegoś fragmentu brakuje, zapytaj — nie zapychaj dziury.
-- Żadnych nowych paczek. Mamy to, co mamy.
+- Każde słowo pochodzi z designu. Nie pisz tekstów. Nie poprawiaj tekstów. Jeśli jakiegoś
+  fragmentu brakuje, zapytaj — nie zapychaj dziury.
+- Każde zdjęcie pochodzi z designu: użyj obrazów, które rozkodowałeś, nigdy zastępczych.
+- Do samej strony nie wchodzi nic nowego: żaden framework UI, żadna biblioteka
+  komponentów, żaden serwis z fontami ani ikonami. Strona jest z Astro i Tailwinda.
 - Strona musi działać z niezaładowanymi obrazkami i z wyłączonym JavaScriptem. Wszystko,
   co sprytne, jest dodatkiem na czymś, co już działa bez tego.
 
-Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie, wybierz odczyt, który uważasz za
-najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić jedno
-założenie niż odkryć sześć.</code></pre></div>
+Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie do notes.md, wybierz odczyt, który
+uważasz za najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić
+jedno założenie niż odkryć sześć.</code></pre></div>
 <hr>
-<p><strong>Co powinieneś zobaczyć.</strong> Jedną sekcję. Potem ciszę i pytanie. Popatrz na stronę w przeglądarce. Porównaj z designem na drugim ekranie. Potem powiedz <code>dalej</code> albo powiedz, co jest nie tak — po ludzku, tak jak powiedziałbyś juniorowi:</p>
+<p><strong>Co powinieneś zobaczyć.</strong> Jedną sekcję. Potem ciszę i pytanie. Przeładuj stronę w przeglądarce. Porównaj z designem w Figmie. Potem powiedz <code>dalej</code> albo powiedz, co jest nie tak — po ludzku, tak jak powiedziałbyś juniorowi:</p>
 <blockquote>Odstęp pod nagłówkiem jest za ciasny, a pomarańczowy to nie ten pomarańczowy.</blockquote>
 <p>To jest całkowicie dobre zgłoszenie błędu. Nie potrzebujesz słownictwa.</p>
 <hr>
 <h3>Jeśli coś pójdzie nie tak</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Buduje całą stronę jednym ciągiem</td><td><code>Stop. Zostaw to, co masz. Od teraz: jedna sekcja i czekasz na mnie.</code></td></tr><tr><td>Tekst, którego nigdy nie widziałeś</td><td><code>Skąd wzięło się to zdanie? Zastąp je tekstem z treści, którą ci dałem.</code></td></tr><tr><td>Kolor, który jest prawie dobry</td><td><code>To nie jest wartość z designu. Użyj dokładnej i powiedz mi, który to token.</code></td></tr><tr><td>Mówi, że skończył, a wyraźnie nie</td><td><code>Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.</code></td></tr><tr><td>Z każdą chwilą jest wolniejszy i mętniejszy</td><td>Kończy mu się kontekst. Powiedz <code>Streść w trzech linijkach, gdzie jesteśmy</code>, zacznij nową sesję, wklej streszczenie i jedź dalej.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Buduje całą stronę jednym ciągiem</td><td><code>Stop. Zostaw to, co masz. Od teraz: jedna sekcja i czekasz na mnie.</code></td></tr><tr><td>Tekst, którego nigdy nie widziałeś</td><td><code>Skąd wzięło się to zdanie? Zastąp je tekstem z designu.</code></td></tr><tr><td>Szare pudełko tam, gdzie powinno być zdjęcie</td><td><code>Użyj tu obrazu z designu. Jest w design-data.</code></td></tr><tr><td>Kolor, który jest prawie dobry</td><td><code>To nie jest wartość z designu. Użyj dokładnej i powiedz mi, która to zmienna.</code></td></tr><tr><td>Znowu zaczyna rozkodowywać .fig</td><td><code>Stop. Wszystko, czego potrzebujesz, jest już w design-data i notes.md.</code></td></tr><tr><td>Mówi, że skończył, a wyraźnie nie</td><td><code>Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.</code></td></tr><tr><td>Z każdą chwilą jest wolniejszy i mętniejszy</td><td>Kończy mu się kontekst. Powiedz <code>Zaktualizuj notes.md tym, gdzie jesteśmy</code>, zacznij nową sesję, powiedz <code>Przeczytaj notes.md i buduj dalej</code> i jedź dalej.</td></tr></tbody></table></div>
 <hr>
 <h3>Dwie rzeczy warte zauważenia, kiedy pracuje</h3>
 <p><strong>Jest szybszy od ciebie, a to nie to samo co lepszy.</strong> Sześć sekcji pojawi się w czasie, w którym porządnie obejrzysz jedną. Pauza po każdej sekcji istnieje po to, żeby przeglądanie nadążało za budowaniem. Korzystaj z niej.</p>
@@ -555,7 +537,7 @@ założenie niż odkryć sześć.</code></pre></div>
 <p>Za chwilę poprosisz agenta, żeby zbudował rzecz, która będzie oceniać jego własną pracę — a w następnym prompcie zabronisz mu jej kiedykolwiek dotykać.</p>
 <p>Zauważ, czego ten prompt <em>nie</em> mówi. Nie podaje koloru, szerokości, rozmiaru czcionki ani sekcji. To wszystko jest w designie, a design agent przeczytał w prompcie 02. Prompt, który powtarza design, ma dwie kopie prawdy — a dzień, w którym się rozjadą, jest dniem, w którym checker zaczyna kłamać.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10">Copy</button></div><pre id="p10"><code>Napisz teraz program, który sprawdza twoją własną pracę względem designu.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7">Copy</button></div><pre id="p7"><code>Napisz teraz program, który sprawdza twoją własną pracę względem designu.
 
 To musi być program, nie opinia. Uruchamia się, patrzy na prawdziwą stronę w prawdziwej
 przeglądarce i kończy kodem 0, jeśli wszystko jest w porządku, a kodem różnym od zera,
@@ -563,8 +545,12 @@ jeśli cokolwiek jest nie tak. Nigdy nie pyta modelu językowego, nigdy nie pyta
 dwa razy na tej samej stronie daje tę samą odpowiedź.
 
 Spraw, żeby uruchamiała go komenda „npm run check&quot;. Zainstaluj, co potrzebne, żeby
-sterować prawdziwą przeglądarką i testować dostępność — to jedyny wyjątek od zakazu
-nowych paczek.
+sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
+żadne z nich nie wchodzi do strony.
+
+Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
+npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
+później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z designu, nie ode mnie. Minimum, i to względem strony tak, jak
 renderuje ją przeglądarka, a nie względem kodu źródłowego:
@@ -589,7 +575,7 @@ plik z powrotem. Powiedz mi, jak go nazwałeś.
 Dwie reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
-  brakuje pliku designu — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  brakuje design-data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
 - Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
   przejdzie za pierwszym razem, uznam, że nic nie sprawdza.
@@ -604,7 +590,7 @@ Kiedy będzie gotowe, uruchom to i pokaż mi wynik.</code></pre></div>
 <p>Każdy punkt z tej listy jest <em>pytaniem</em>, a odpowiedź leży w pliku designu. Poproś o „zero naruszeń dostępności przy każdej szerokości, którą design określa&quot;, a agent musi pójść i sprawdzić, jakie to szerokości. Poproś o nie po numerach, a właśnie po cichu przeniosłeś design do promptu, gdzie nikt nie pamięta, żeby go aktualizować.</p>
 <p>Z tego samego powodu prompt nie nazywa biblioteki testowej ani pliku. To są decyzje agenta, a agent radzi sobie z nimi lepiej niż wiadomość napisana z wyprzedzeniem dla maszyny, która może być jednym z dwóch różnych narzędzi.</p>
 <p>To, co prompt <em>ustala</em>, to część, której żadne narzędzie nie wybierze za ciebie:</p>
-<ul><li>musi to być program, a jego odpowiedź nie może pochodzić od modelu</li><li>raport jest dla czytelnika, którego przy tym nie było — element, oczekiwane, faktyczne, próg</li><li>test, który nie może się wykonać, jest porażką</li><li>rozluźnione testy są gorsze niż żadne</li></ul>
+<ul><li>musi to być program, a jego odpowiedź nie może pochodzić od modelu</li><li>raport jest dla czytelnika, którego przy tym nie było — element, oczekiwane, faktyczne, próg</li><li>test, który nie może się wykonać, jest porażką</li><li>rozluźnione testy są gorsze niż żadne</li><li>przyjmuje adres, bo prompt 06 skieruje go na stronę na żywo</li></ul>
 <h3>Zdanie, które robi najwięcej roboty</h3>
 <blockquote>Test, który nie może się wykonać, jest PORAŻKĄ, nigdy zaliczeniem i nigdy cichym pominięciem.</blockquote>
 <p>W próbnym przebiegu tych promptów agent, który dostał tę jedną linijkę, sam postanowił traktować <em>niejednoznaczne</em> wyniki swojego narzędzia do dostępności jako błędy, a nie zaliczenia. Ta decyzja łapie całą klasę defektów, których bramka „zero naruszeń&quot; nie widzi, i nikt o nią nie prosił. Wypadła z jednego zdania o tym, co znaczy brak wyniku.</p>
@@ -615,7 +601,7 @@ Kiedy będzie gotowe, uruchom to i pokaż mi wynik.</code></pre></div>
   <p>Masz stronę i masz coś, co potrafi jej powiedzieć „nie&quot;. To jest zdanie, które ustawia je w kółko.</p>
 <p>Nie ma tu skryptu i nie ma czego instalować. Pętla to akapit.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11">Copy</button></div><pre id="p11"><code>Uruchom npm run check.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8">Copy</button></div><pre id="p8"><code>Uruchom npm run check.
 
 Jeśli kończy się kodem 0, zatrzymaj się i powiedz mi — skończyliśmy.
 
@@ -631,17 +617,18 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
    ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
    powiedz mi który i dlaczego, i nie zmieniaj niczego.
-2. Nie dodawaj paczek i nie wymyślaj tekstów.
+2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
 3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
    każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
    o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
    rozwiąże.
 
-Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.</code></pre></div>
+Zapisuj do notes.md na bieżąco, co próbowałeś i co się stało, żeby nowa sesja mogła to
+podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.</code></pre></div>
 <hr>
 <h2 id="claude-code-zr-b-z-tego-struktur">Claude Code: zrób z tego strukturę</h2>
 <p>Claude Code ma to wbudowane. Zamiast ufać, że agent nie przestanie, możesz sprawić, żeby strukturalnie nie mógł:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p12">Copy</button></div><pre id="p12"><code>/goal npm run check exits 0</code></pre></div>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9">Copy</button></div><pre id="p9"><code>/goal npm run check exits 0</code></pre></div>
 <p>Sesja się nie skończy, dopóki to nie będzie prawdą. Nie „dopóki agent nie uwierzy, że jest prawdą&quot; — komenda faktycznie się uruchamia, a decyduje jej kod wyjścia. Wklej najpierw prompt powyżej, potem linijkę z <code>/goal</code>.</p>
 <p><strong>Codex tego nie ma.</strong> Tam mechanizmem jest akapit: działa, tylko opiera się na tym, że agent robi, co mu powiedziano, a nie na tym, że wymusza to narzędzie. Patrz na output i powiedz <code>jedź dalej</code>, jeśli zatrzyma się za wcześnie.</p>
 <hr>
@@ -662,7 +649,7 @@ Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.</code></pre
   <h2 id="opublikuj">Opublikuj</h2>
   <p>Adres, który możesz komuś wysłać. To jest ten moment, w którym całe popołudnie robi się prawdziwe.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p13">Copy</button></div><pre id="p13"><code>Wystaw to do internetu.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10">Copy</button></div><pre id="p10"><code>Wystaw to do internetu.
 
 Zbuduj stronę, a potem opublikuj ją na Netlify. Użyj npx, żeby nie było czego instalować;
 jeśli nie jestem zalogowany, powiedz mi, w co kliknąć, zamiast robić to po cichu.
@@ -672,7 +659,7 @@ Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
 - pobierz publiczny adres i potwierdź, że zwraca 200
 - potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
   starszą — porównaj to, co wraca, z tym, co jest w folderze build
-- uruchom test dostępności jeszcze raz, przeciwko adresowi na żywo, nie lokalnemu
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
 
 Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.</code></pre></div>
 <hr>
@@ -681,7 +668,7 @@ Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.</code></pre
 <p>Otwórz ją na telefonie. To jest cały sens ćwiczenia: ta rzecz istnieje, w internecie, i możesz ją komuś podać.</p>
 <hr>
 <h3>Jeśli coś pójdzie nie tak</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Prosi o zalogowanie i nic się nie otwiera</td><td>Wypisał adres. Wklej go do przeglądarki ręcznie.</td></tr><tr><td>Pusta strona pod adresem na żywo</td><td><code>Strona na żywo jest pusta. Sprawdź, co opublikowałeś — który folder wysłałeś?</code></td></tr><tr><td>Brak CSS, tekst bez stylów</td><td>Zwykle poszedł nie ten folder. <code>Opublikuj folder build, nie katalog główny projektu.</code></td></tr><tr><td>„Deploy się udał&quot; i żadnego adresu</td><td><code>Podaj mi publiczny adres w osobnej linijce.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Prosi o zalogowanie i nic się nie otwiera</td><td>Wypisał adres. Wklej go do przeglądarki ręcznie.</td></tr><tr><td>Pusta strona pod adresem na żywo</td><td><code>Strona na żywo jest pusta. Sprawdź, co opublikowałeś — który folder wysłałeś?</code></td></tr><tr><td>Brak CSS, tekst bez stylów</td><td>Zwykle poszedł nie ten folder. <code>Opublikuj folder build, nie katalog główny projektu.</code></td></tr><tr><td>„Deploy się udał&quot; i żadnego adresu</td><td><code>Podaj mi publiczny adres w osobnej linijce.</code></td></tr><tr><td>Test na żywo się wywala, a lokalny przechodził</td><td><code>Pokaż mi dokładnie, które testy różnią się między lokalnym a na żywo, i dlaczego. Nie zmieniaj checkera.</code></td></tr><tr><td>Mówi, że checker nie przyjmuje adresu</td><td><code>Prompt 04 prosił o --url. Dodaj to, nie zmieniając tego, co rozstrzyga którykolwiek test, i uruchom na adresie na żywo.</code></td></tr></tbody></table></div>
 <hr>
 <h3>Ten jeden test i dlaczego to nie jest czepianie się</h3>
 <p>„Potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś.&quot;</p>
@@ -695,9 +682,9 @@ Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.</code></pre
   <p>Twój checker jest zielony. To znaczy <em>brak znanego defektu</em> — nigdy nie znaczyło skończone.</p>
 <p>Ten prompt idzie szukać tego, czego checker strukturalnie nie widzi. To model sprawdzający model, czyli najmniej niezawodna rzecz, jaką dziś zrobisz — i nadal warto ją zrobić, bo alternatywą jest nie patrzeć.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p14">Copy</button></div><pre id="p14"><code>Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11">Copy</button></div><pre id="p11"><code>Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
 
-Twoim zadaniem w tej wiadomości jest atakować, nie bronić i nie naprawiać. Znajdź pięć
+Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
 rzeczy, które są ze stroną nie tak, a których twój checker nie potrafi złapać, i dla
 każdej powiedz mi:
 
@@ -733,7 +720,7 @@ Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są pra
 <hr>
 <p><strong>Co powinieneś zobaczyć.</strong> Krótką listę, z której kilka pozycji naprawdę warto naprawić — i przynajmniej jedną, która jest błędna albo z którą się nie zgadzasz. Oba wyniki są lekcją.</p>
 <p>Wybierz dwa, w które wierzysz, i powiedz:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p15">Copy</button></div><pre id="p15"><code>Napraw znaleziska 2 i 4. Resztę zostaw. Potem uruchom npm run check jeszcze raz — chcę
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p12">Copy</button></div><pre id="p12"><code>Napraw znaleziska 2 i 4. Resztę zostaw. Potem uruchom npm run check jeszcze raz — chcę
 wiedzieć, czy naprawa zepsuła coś, co przechodziło.</code></pre></div>
 <hr>
 <h3>Dlaczego każesz mu kłócić się ze sobą</h3>
@@ -755,86 +742,279 @@ wiedzieć, czy naprawa zepsuła coś, co przechodziło.</code></pre></div>
   <p class="step__no">Prompt 08</p>
   <h2 id="ta-sama-robota-jako-workflow">Ta sama robota, jako workflow</h2>
   <p>Przeszedłeś właśnie siedem promptów ręcznie. To ty byłeś tym, co między nimi: czytałeś output, decydowałeś, że jest wystarczająco dobrze, wklejałeś następny.</p>
+<p><strong>Faza 01 to prompt 01, faza 07 to prompt 07, i słowa są te same.</strong> Wszystko, czego nauczyłeś się z promptu, jest prawdą o jego fazie. Dwie rzeczy się zmieniają, bo to jeden przebieg zamiast siedmiu wiadomości, i prompt mówi obie na głos.</p>
 <p>Tę rolę da się opisać. <strong>Fazy, co się dzieje w każdej i co musi być prawdą, zanim zacznie się następna</strong> — zapisz to, a agent przejdzie sekwencję sam.</p>
 <p>Żadnego skryptu. Żadnego narzędzia. To jest wiadomość.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p16">Copy</button></div><pre id="p16"><code>ultracode. Chcę, żebyś wykonał całą robotę, w fazach, które definiuję. Przejdź je po
-kolei, samodzielnie, i nie przeskakuj do przodu.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p13">Copy</button></div><pre id="p13"><code>ultracode. Chcę, żebyś wykonał całą robotę w siedmiu fazach. Każda faza to jeden z siedmiu
+promptów z warsztatu, w tej samej kolejności, tymi samymi słowami i z tymi samymi regułami.
+Przejdź je samodzielnie i nie przeskakuj do przodu.
 
 Użyj dynamicznego workflow: wewnątrz fazy powołuj tyle subagentów, ile wymaga robota, i
 uruchamiaj je równolegle, decydując o liczbie na podstawie tego, co zastaniesz, a nie
-liczby, którą ci podałem. Jeden na sekcję, jeden na soczewkę review, jeden na znalezisko —
+liczby, którą ci podałem — jeden na sekcję, jeden na soczewkę review, jeden na znalezisko,
 czego akurat wymaga faza. Scal ich wyniki, zanim z niej wyjdziesz.
 
-FAZA 1 — POPATRZ
-Przeczytaj design. Zapisz, co znalazłeś, do notes.md: każdą sekcję w kolejności, każdy
-kolor po nazwie, każdy rozmiar tekstu i listę wszystkiego, czego design nie mówi.
-Nie pisz w tej fazie żadnego kodu.
-Zanim pójdziesz dalej: pokaż mi notes.md i poczekaj, aż powiem „jedziemy&quot;.
+Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się dokładnie dwie rzeczy:
+- W fazie 03 nie czekasz na mnie po każdej sekcji. Budujesz sekcje równolegle, po jednym
+  subagencie na każdą.
+- Zatrzymujesz się i czekasz na mnie tylko tam, gdzie faza ci to każe: na końcu fazy 02 i
+  zawsze, gdy reguła mówi, żeby się zatrzymać i zapytać. Wszędzie indziej jedziesz dalej.
 
-FAZA 2 — BUDUJ
-Zbuduj stronę sekcja po sekcji, w kolejności z notes.md. Jeden subagent na sekcję,
-równolegle. Kolory, rozmiary i słowa wyłącznie z designu — nie wymyślaj niczego.
-Zanim pójdziesz dalej: projekt buduje się bez błędów.
+FAZA 01 — START
 
-FAZA 3 — UZBRÓJ
-Napisz program, który otwiera prawdziwą stronę w prawdziwej przeglądarce i kończy się
-kodem 0 albo różnym od zera, sprawdzając wszystko, co definiuje design: sekcje i ich
-kolejność, dostępność przy każdej szerokości, którą design określa, to, że każdy
-namalowany kolor jest kolorem z designu, że każdy fragment tekstu jest obecny i że nic nie
-wystaje w bok przy najwęższej szerokości. Podepnij to pod „npm run check&quot;. Zainstaluj, co
-potrzebne, żeby sterować przeglądarką.
-Test, który nie może się wykonać, jest porażką, nigdy pominięciem.
+Załóż w tym folderze nowy projekt strony internetowej.
+
+Użyj Astro z Tailwind CSS. Statyczny output — bez Reacta, Vue ani Svelte, bez serwera, bez
+bazy danych. Node jest już zainstalowany.
+
+Potem uruchom serwer deweloperski i podaj mi adres, który mam otworzyć w przeglądarce.
+
+Nie buduj jeszcze żadnych stron. Nie wymyślaj żadnej treści. Design przyjdzie w następnym
+kroku i chcę, żeby strona była wtedy nadal pusta.
+
+W trakcie pracy mów mi jedną linijką, co robi każda komenda. Nigdy wcześniej nie używałem
+terminala i chcę nadążać.
+
+Zanim pójdziesz dalej: serwer deweloperski działa i podałeś mi jego adres.
+
+FAZA 02 — POPATRZ
+
+W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
+przez „Save local copy&quot;. To nie jest obrazek: to cały design jako dane — każdy tekst,
+kolor, zmienna, komponent i zdjęcie.
+
+Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
+
+- Plik .fig to zip. Design jest w środku, w canvas.fig. thumbnail.png to tylko mały
+  podgląd: nie pracuj na nim.
+- canvas.fig zaczyna się od bajtów „fig-kiwi&quot; i numeru wersji, potem są kawałki, każdy
+  poprzedzony swoją długością. Pierwszy to schemat w binarnym formacie kiwi
+  (github.com/evanw/kiwi); drugi to dokument zakodowany tym schematem. Każdy kawałek jest
+  skompresowany, surowym deflate albo zstd.
+- Folder images w zipie trzyma zdjęcia, nazwane hashem, którego używają wypełnienia.
+- Pomiń wszystko, co ma isSoftDeleted, i wszystko, co należy do czegoś, co to ma.
+  Zostało usunięte w Figmie, a wciąż siedzi w pliku. Zmienna w usuniętej kolekcji sama nie
+  jest oznaczona — pomiń ją też.
+- Tekst w komponencie może pochodzić z właściwości komponentu i z nadpisań. Jeśli każda
+  karta tego samego rodzaju pokazuje te same słowa, czytasz komponent zamiast instancji.
+  Rozwiąż to, zanim zaufasz jakiemukolwiek tekstowi.
+
+Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. To, co rozkodujesz, trzymaj
+w folderze design-data w tym projekcie, żeby każdy kolejny krok czytał to zamiast
+rozkodowywać od nowa. Nie pisz jeszcze żadnego kodu strony.
+
+Potem zapisz, co znalazłeś, do notes.md, jako listę, i pokaż mi ją:
+
+1. Każdą sekcję, w kolejności od góry strony.
+2. Każdy kolor, po nazwie z designu, z dokładną wartością, i do czego jest używany.
+3. Każdy rozmiar tekstu i gdzie który jest użyty.
+4. Każdą szerokość, którą design obejmuje.
+5. Wszystkie teksty, sekcja po sekcji.
+6. Wszystko, co w pliku się nie zgadza albo czego w nim nie ma, a co inaczej musiałbyś
+   zgadnąć.
+
+Punkt 6 obchodzi mnie najbardziej. Bądź konkretny i bądź szczery: „w pliku jest stan hover,
+do którego nie mam żadnych wartości&quot; jest warte więcej niż pewne siebie zgadnięcie.
+
+Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.
+
+Zanim pójdziesz dalej: notes.md istnieje, a ja odpowiedziałem na punkt 6.
+
+FAZA 03 — BUDUJ
+
+Zbuduj teraz stronę, na podstawie designu. Czytaj design-data i notes.md; nie rozkodowuj
+pliku .fig jeszcze raz.
+
+Zbuduj każdą sekcję z notes.md, po jednym subagencie na sekcję, wszystkie równolegle, a
+potem złóż je w kolejności z notes.md. Nie czekaj na mnie między sekcjami.
+
+Reguły, wszystkie nienegocjowalne:
+
+- Każdy kolor i każdy rozmiar pochodzi z designu. Jeśli łapiesz się na wybieraniu
+  wartości, zatrzymaj się i zapytaj mnie.
+- Każde słowo pochodzi z designu. Nie pisz tekstów. Nie poprawiaj tekstów. Jeśli jakiegoś
+  fragmentu brakuje, zapytaj — nie zapychaj dziury.
+- Każde zdjęcie pochodzi z designu: użyj obrazów, które rozkodowałeś, nigdy zastępczych.
+- Do samej strony nie wchodzi nic nowego: żaden framework UI, żadna biblioteka
+  komponentów, żaden serwis z fontami ani ikonami. Strona jest z Astro i Tailwinda.
+- Strona musi działać z niezaładowanymi obrazkami i z wyłączonym JavaScriptem. Wszystko,
+  co sprytne, jest dodatkiem na czymś, co już działa bez tego.
+
+Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie do notes.md, wybierz odczyt, który
+uważasz za najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić
+jedno założenie niż odkryć sześć.
+
+Zanim pójdziesz dalej: każda sekcja z notes.md jest zbudowana, a projekt buduje się bez błędów.
+
+FAZA 04 — UZBRÓJ
+
+Napisz teraz program, który sprawdza twoją własną pracę względem designu.
+
+To musi być program, nie opinia. Uruchamia się, patrzy na prawdziwą stronę w prawdziwej
+przeglądarce i kończy kodem 0, jeśli wszystko jest w porządku, a kodem różnym od zera,
+jeśli cokolwiek jest nie tak. Nigdy nie pyta modelu językowego, nigdy nie pyta mnie i
+dwa razy na tej samej stronie daje tę samą odpowiedź.
+
+Spraw, żeby uruchamiała go komenda „npm run check&quot;. Zainstaluj, co potrzebne, żeby
+sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
+żadne z nich nie wchodzi do strony.
+
+Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
+npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
+później mógł ocenić też stronę na żywo.
+
+Co sprawdzać, wyprowadź z designu, nie ode mnie. Minimum, i to względem strony tak, jak
+renderuje ją przeglądarka, a nie względem kodu źródłowego:
+
+1. że projekt się buduje, bez błędów
+2. że wczytanie strony nie produkuje błędów w konsoli przeglądarki
+3. że każda sekcja, którą definiuje design, jest obecna i w kolejności z designu
+4. że jest dostępna, przy każdej szerokości, którą design określa
+5. że każdy kolor, który strona maluje, jest kolorem z designu — cokolwiek innego to błąd
+6. że każdy fragment tekstu z designu jest na stronie
+7. że nic nie wystaje w bok przy najwęższej szerokości, którą design określa
+8. że każdy obrazek ma tekst alternatywny i że nie jest nim nazwa pliku
+
+Kiedy coś nie przechodzi, raport musi powiedzieć cztery rzeczy: co nie przeszło, gdzie na
+stronie, co według designu powinno tam być i co faktycznie tam było. „Problem
+z kontrastem na stronie&quot; jest bezużyteczne. Nazwanie elementu, wartości oczekiwanej,
+wartości zmierzonej i progu — to jest cała robota.
+
+Zapisz raport do pliku, nie tylko wypisz go na ekran, bo w następnym kroku podam ci ten
+plik z powrotem. Powiedz mi, jak go nazwałeś.
+
+Dwie reguły dotyczące samego checkera:
+
+- Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
+  brakuje design-data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
+- Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
+  przejdzie za pierwszym razem, uznam, że nic nie sprawdza.
+
+Kiedy będzie gotowe, uruchom to i pokaż mi wynik.
+
 Zanim pójdziesz dalej: npm run check uruchamia się i coś raportuje. Będzie czerwono. Dobrze.
 
-FAZA 4 — NAPRAWIAJ
-Pętla: uruchom npm run check, przeczytaj raport, napraw to, co wymienia, uruchom jeszcze
-raz. Powtarzaj, aż skończy się kodem 0.
-NIGDY nie edytuj checkera, żeby test przeszedł. Jeśli uważasz, że jakiś test jest zły,
-zatrzymaj się i powiedz mi który i dlaczego.
+FAZA 05 — NAPRAWIAJ
+
+Uruchom npm run check.
+
+Jeśli kończy się kodem 0, zatrzymaj się i powiedz mi — skończyliśmy.
+
+Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
+npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
+
+Pracuj w kolejności, w jakiej raport wymienia rzeczy. Naprawiaj przyczynę, nie objaw:
+jeśli kolor jest zły, użyj tego z designu, nie przesuwaj go, aż liczba drgnie. Rób
+najmniejszą zmianę, która usuwa dany błąd, i nie ruszaj niczego, co już przechodziło.
+
+Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
+
+1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
+   ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
+   powiedz mi który i dlaczego, i nie zmieniaj niczego.
+2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
+3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
+   każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
+   o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
+   rozwiąże.
+
+Zapisuj do notes.md na bieżąco, co próbowałeś i co się stało, żeby nowa sesja mogła to
+podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
+
 Zanim pójdziesz dalej: npm run check kończy się kodem 0.
 
-FAZA 5 — WYSTAW
-Zbuduj i opublikuj. Potem pobierz adres na żywo i udowodnij, że strona, którą serwuje,
-jest tą, która przeszła fazę 4.
-Zanim pójdziesz dalej: adres na żywo zwraca 200 i serwuje to, co zbudowałeś.
+FAZA 06 — WYSTAW
 
-FAZA 6 — ATAKUJ
-Powołaj kilku subagentów z różnymi soczewkami — design, dostępność, teksty i cokolwiek
-jeszcze uznasz za warte przejścia — i każ każdemu szukać tego, czego checker strukturalnie
-nie widzi. Potem wyślij każde kandydujące znalezisko do osobnego subagenta, którego
-jedynym zadaniem jest argumentować, że jest błędne. Zgłoś tylko te, które przeżyją ten
-spór, i powiedz mi, ile odrzuciłeś.
-Nie naprawiaj niczego. Daj mi listę.
+Wystaw to do internetu.
+
+Zbuduj stronę, a potem opublikuj ją na Netlify. Użyj npx, żeby nie było czego instalować;
+jeśli nie jestem zalogowany, powiedz mi, w co kliknąć, zamiast robić to po cichu.
+
+Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
+
+- pobierz publiczny adres i potwierdź, że zwraca 200
+- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
+  starszą — porównaj to, co wraca, z tym, co jest w folderze build
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
+
+Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
+
+Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.
+
+FAZA 07 — ATAKUJ
+
+Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
+
+Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
+rzeczy, które są ze stroną nie tak, a których twój checker nie potrafi złapać, i dla
+każdej powiedz mi:
+
+- dokładnie który element, opisany tak, jak go widzę na ekranie
+- co jest z nim nie tak
+- dlaczego checker to przepuścił — jakie pytanie zadaje, że to się prześlizguje?
+
+Szukaj szczególnie tam, gdzie automat nie sięga:
+
+- tekst na zdjęciu albo gradiencie: automatyczny test kontrastu w ogóle nie policzy tej
+  pary i zgłosi ją jako niejednoznaczną, a nie jako błąd
+- kolejność czytania dla kogoś na klawiaturze albo czytniku ekranu: technicznie poprawna
+  i bez sensu to jest stan, który istnieje
+- tekst alternatywny, który jest, i jest bezużyteczny
+- struktura nagłówków, która wygląda na hierarchię i nią nie jest
+- teksty, które przechodzą każdą regułę i nadal nie brzmią jak ta marka
+- co się dzieje przy szerokości pomiędzy tymi, które określa design — takiej, której nikt
+  nie zrzucił
+- cokolwiek, co psuje się dopiero przy drugiej wizycie albo na wolnym łączu
+
+Zanim powiesz mi którąkolwiek z nich, sam argumentuj przeciwko każdej, z trzech stron:
+
+  czy to prawda        - idź i zobacz jeszcze raz, nie ufaj pierwszemu odczytowi
+  czy to ma znaczenie  - czy odwiedzający to zauważy, czy tylko checklista?
+  czy to obsłużone     - czy już gdzieś jest, tam gdzie nie patrzyłem?
+
+W tej fazie zrób to subagentami: po jednym na każde miejsce z listy powyżej, szukających
+równolegle, a potem, dla każdego kandydata, którego znajdą, osobny subagent, którego
+jedynym zadaniem jest argumentować przeciwko niemu z tych trzech stron.
+
+Zgłoś tylko te znaleziska, które przeżyją wszystkie trzy. W razie wątpliwości domyślnie
+wyrzucaj i powiedz mi, ile wyrzuciłeś. Cztery prawdziwe znaleziska są warte więcej niż
+pięć, w których jedno jest zgadywanką. Jeśli nie umiesz wskazać konkretnego elementu, to
+nie jest znalezisko.
+
+Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są prawdziwe.
+
+To jest koniec przebiegu.
 
 Reguły na cały przebieg:
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
 - Jeśli faza nie może się skończyć, zatrzymaj się na niej i powiedz dlaczego. Nie idź
   dalej z poprzednią zepsutą.
-- Utrzymuj notes.md na bieżąco. Jeśli skończy ci się miejsce i będziemy musieli zacząć od
-  nowa, notes.md jest wszystkim, co będzie miała następna sesja.</code></pre></div>
+- Utrzymuj notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, notes.md jest
+  wszystkim, co będzie miała.</code></pre></div>
 <hr>
-<p><strong>Co powinieneś zobaczyć.</strong> <code>FAZA 1 — POPATRZ</code>, a potem pracę, bez nadzoru, przez długi czas. Zatrzyma się w dwóch miejscach, w których mu kazałeś, i nigdzie indziej.</p>
+<p><strong>Co powinieneś zobaczyć.</strong> <code>FAZA 01 — START</code>, a potem pracę, bez nadzoru, przez długi czas. Zatrzyma się dla ciebie raz, po fazie 02, żeby usłyszeć odpowiedź na punkt 6 — a poza tym tylko wtedy, gdy reguła każe mu się zatrzymać i zapytać.</p>
 <hr>
 <h2 id="dwa-s-owa-z-g-ry">Dwa słowa z góry</h2>
 <p><strong><code>ultracode</code></strong> to słowo kluczowe, które rozpoznaje Claude Code: sygnalizuje, że zlecenie jest duże i strukturalne, i to ono odblokowuje orkiestrację wieloagentową na czas przebiegu. <strong>Codex nie ma odpowiednika</strong> — żadnego słowa, żadnej flagi. Zostaw je mimo to. W Codeksie jest to jeden nieszkodliwy token na początku długiej instrukcji, a prawdziwą robotę na obu narzędziach robi zdanie po nim:</p>
 <blockquote>powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle, decydując o liczbie na podstawie tego, co zastaniesz</blockquote>
 <p>To jest instrukcja. Słowo kluczowe to skrót w jednym narzędziu, nie mechanizm.</p>
 <p><strong>Po co w ogóle się rozgałęziać.</strong> Sześć sekcji budowanych jedna po drugiej to sześć razy tyle czasu, co sześć budowanych naraz — a sekcje nie zależą od siebie. To samo dotyczy soczewek review: przebieg szukający problemów z dostępnością i przebieg szukający dryfu w tekstach nie mają ze sobą nic wspólnego, a puszczenie ich w jednym kontekście sprawia, że każdy niesie szum drugiego.</p>
-<p><strong>Gdzie to naprawdę zarabia, to faza 6.</strong> Pojedynczy agent zapytany „czy ta strona jest dobra?&quot; powie, że tak. Kilku agentów z różnymi soczewkami produkuje kandydatów, a osobny agent, którego jedyną robotą jest <em>obalić</em> każdego kandydata, usuwa tych, którzy tego nie przeżyją. Znajdź, potem zaatakuj, potem zatrzymaj resztę. To inny kształt niż zapytanie raz i uwierzenie w odpowiedź, i jest to jedyne miejsce w tym zestawie, gdzie model sprawdza model.</p>
-<p><strong>Jest to też najmniej niezawodna część przebiegu.</strong> Więcej agentów to pewniejszy output, nie poprawniejszy. Decyduje deterministyczny checker z fazy 3; faza 6 otwiera pozycje do oceny przez człowieka.</p>
+<p><strong>Gdzie to naprawdę zarabia, to faza 07.</strong> Pojedynczy agent zapytany „czy ta strona jest dobra?&quot; powie, że tak. Kilku agentów z różnymi soczewkami produkuje kandydatów, a osobny agent, którego jedyną robotą jest <em>obalić</em> każdego kandydata, usuwa tych, którzy tego nie przeżyją. Znajdź, potem zaatakuj, potem zatrzymaj resztę. To inny kształt niż zapytanie raz i uwierzenie w odpowiedź, i jest to jedyne miejsce w tym zestawie, gdzie model sprawdza model.</p>
+<p><strong>Jest to też najmniej niezawodna część przebiegu.</strong> Więcej agentów to pewniejszy output, nie poprawniejszy. Decyduje deterministyczny checker z fazy 04; faza 07 otwiera pozycje do oceny przez człowieka.</p>
 <hr>
 <h2 id="p-tla-i-workflow-to-r-ne-rzeczy">Pętla i workflow to różne rzeczy</h2>
 <p>Ludzie używają tych słów zamiennie. To nie jest ten sam kształt, a wiedza, którego potrzebujesz, to większość umiejętności.</p>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>Aspekt</th><th><strong>Pętla</strong></th><th><strong>Workflow</strong></th></tr></thead><tbody><tr><td>Kształt</td><td>Rób to znowu, aż warunek będzie spełniony</td><td>Zrób te rzeczy, w tej kolejności, z poprzeczką między każdą</td></tr><tr><td>Ty definiujesz</td><td><strong>warunek wyjścia</strong></td><td><strong>fazy</strong></td></tr><tr><td>Kończy się, gdy</td><td>program mówi „tak&quot;</td><td>ostatnia faza się skończy</td></tr><tr><td>Dobre do</td><td>zbiegania do poprawności</td><td>pracy z etapami, które od siebie zależą</td></tr><tr><td>W tym zestawie</td><td>prompt 05</td><td>ten prompt</td></tr></tbody></table></div>
-<p>Faza 4 powyżej jest pętlą mieszkającą w workflow. To zwykły układ: workflow doprowadza cię od zera do prawie-dobrze, a pętla w jednej fazie domyka resztę.</p>
+<p>Faza 05 powyżej jest pętlą mieszkającą w workflow. To zwykły układ: workflow doprowadza cię od zera do prawie-dobrze, a pętla w jednej fazie domyka resztę.</p>
 <hr>
 <h2 id="sparametryzuj-to">Sparametryzuj to</h2>
 <p>Lista faz jest programem. Zmień ją i zmieniłeś robotę, nie pisząc ani linijki:</p>
-<blockquote>Faza 2 buduje tylko hero i lineup. Resztę zostaw.</blockquote>
-<blockquote>Między fazą 2 a 3 dodaj fazę: pokaż mi każdą sekcję jako zrzut ekranu przy najwęższej szerokości i poczekaj na moją zgodę.</blockquote>
-<blockquote>Pomiń fazę 5. Dziś nie publikuję.</blockquote>
-<blockquote>W fazie 6 użyj sześciu soczewek zamiast trzech i patrz tylko na szerokości, których design nie określa.</blockquote>
+<blockquote>Faza 03 buduje tylko hero i lineup. Resztę zostaw.</blockquote>
+<blockquote>Między fazą 03 a 04 dodaj fazę: pokaż mi każdą sekcję jako zrzut ekranu przy najwęższej szerokości i poczekaj na moją zgodę.</blockquote>
+<blockquote>Pomiń fazę 06. Dziś nie publikuję.</blockquote>
+<blockquote>W fazie 07 użyj sześciu soczewek zamiast trzech i patrz tylko na szerokości, których design nie określa.</blockquote>
 <p>To właśnie znaczy w praktyce „nie trzeba skryptu&quot;. Skrypt trzeba by zedytować, przetestować i puścić ponownie. To edytuje się w zdaniu, które i tak zamierzałeś powiedzieć.</p>
 <hr>
 <h2 id="kiedy-po-to-si-ga-a-kiedy-nie">Kiedy po to sięgać, a kiedy nie</h2>
@@ -843,7 +1023,7 @@ Reguły na cały przebieg:
 <p>Pierwszy raz rób robotę ręcznie. Za drugim razem już wiesz, jakie są fazy.</p>
 <hr>
 <h3>Jeśli coś pójdzie nie tak</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Ogłasza fazę 3 bez zrobienia fazy 2</td><td><code>Pominąłeś fazę 2. Wróć i skończ ją przed fazą 3.</code></td></tr><tr><td>Przelatuje przez „poczekaj na mnie&quot;</td><td><code>Faza 1 mówiła: czekaj. Zatrzymaj się i pokaż mi notes.md.</code></td></tr><tr><td>Robi się mętny koło fazy 4</td><td><code>Streść stan do notes.md.</code> Potem zacznij nową sesję, wklej notes.md i powiedz <code>Kontynuuj od fazy 4.</code></td></tr><tr><td>Ogłasza, że całość skończona</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Faza się wywala, a on idzie dalej</td><td><code>Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?</code></td></tr><tr><td>Robi wszystko po kolei, jedno po drugim</td><td><code>Faza 2 to sześć niezależnych sekcji. Puść je równolegle, po jednym subagencie na każdą.</code></td></tr><tr><td>Faza 6 zgłasza pięć znalezisk i wszystkie pięć jest prawdziwych</td><td>Dobrze, i podejrzanie. <code>Ilu kandydatów odrzuciłeś i dlaczego?</code> Runda obalania, która nie obaliła niczego, się nie odbyła.</td></tr><tr><td>Powołuje dwudziestu subagentów do małej strony</td><td><code>Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Ogłasza fazę 04, zanim faza 03 jest zbudowana</td><td><code>Pominąłeś część fazy 03. Wróć i skończ ją przed fazą 04.</code></td></tr><tr><td>Przelatuje przez „poczekaj na mnie&quot;</td><td><code>Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.</code></td></tr><tr><td>Robi się mętny koło fazy 05</td><td><code>Streść stan do notes.md.</code> Potem zacznij nową sesję, wklej ten prompt jeszcze raz i powiedz <code>notes.md ma stan. Kontynuuj od fazy 05.</code></td></tr><tr><td>Ogłasza, że całość skończona</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Faza się wywala, a on idzie dalej</td><td><code>Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?</code></td></tr><tr><td>Buduje sekcje jedną po drugiej</td><td><code>Faza 03 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.</code></td></tr><tr><td>Faza 07 zgłasza pięć znalezisk i wszystkie pięć jest prawdziwych</td><td>Dobrze, i podejrzanie. <code>Ilu kandydatów odrzuciłeś i dlaczego?</code> Runda obalania, która nie obaliła niczego, się nie odbyła.</td></tr><tr><td>Powołuje dwudziestu subagentów do małej strony</td><td><code>Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.</code></td></tr></tbody></table></div>
 </section>
 </div></main>
 <footer><div class="wrap">

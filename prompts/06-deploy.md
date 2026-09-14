@@ -15,7 +15,7 @@ When it is live, do not just tell me it worked. Check:
 - fetch the public URL and confirm it returns 200
 - confirm the page it serves is the page you just built, not an older one — compare what
   comes back against what is in the dist folder
-- run the accessibility check once more against the live URL, not the local one
+- run npm run check -- --url against the live URL, and show me the result
 
 Then give me the URL on its own line so I can copy it.
 ```
@@ -42,6 +42,8 @@ internet, and you can hand it to someone.
 | A blank page at the live URL | `The live page is blank. Check what you published — which folder did you deploy?` |
 | CSS missing, text unstyled | Usually the wrong folder was published. `Deploy the dist folder, not the project root.` |
 | "It deployed successfully" with no URL | `Give me the public URL on its own line.` |
+| The live check fails where the local one passed | `Show me exactly which checks differ between local and live, and why. Do not change the checker.` |
+| It says the checker cannot take an address | `Prompt 04 asked for --url. Add it without changing what any check decides, then run it against the live URL.` |
 
 ---
 

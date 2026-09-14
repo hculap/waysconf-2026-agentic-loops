@@ -22,7 +22,11 @@ is wrong. It never asks a language model anything, it never asks me anything, an
 gives the same answer twice on the same page.
 
 Make "npm run check" run it. Install whatever you need to drive a real browser and to
-test accessibility — that is the one exception to the no-new-packages rule.
+test accessibility. These are tools for checking; none of them goes into the page.
+
+By default it checks the site running on this machine. It must also take an address —
+npm run check -- --url https://… — and run the same checks against that page instead, so
+that later it can judge the live site too.
 
 Derive what to check from the design, not from me. At minimum it must decide, against the
 page as a browser actually renders it rather than against the source:
@@ -46,9 +50,9 @@ hand that file straight back to you. Tell me what you called it.
 
 Two rules about the checker itself:
 
-- If a check cannot run — the browser will not start, the page will not load, a design
-  file is missing — that is a FAILURE, never a pass and never a silent skip. A check that
-  did not happen must not look like a check that succeeded.
+- If a check cannot run — the browser will not start, the page will not load,
+  design-data is missing — that is a FAILURE, never a pass and never a silent skip. A
+  check that did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.
 
@@ -84,6 +88,7 @@ What the prompt *does* fix is the part no tool can decide for you:
 - the report is for a reader who was not there — element, expected, actual, threshold
 - a check that cannot run is a failure
 - lenient checks are worse than no checks
+- it takes an address, because prompt 06 is going to point it at the live site
 
 ### The sentence that does the most work
 

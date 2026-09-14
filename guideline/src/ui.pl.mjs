@@ -72,7 +72,7 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i dajesz go agentowi. Bezpośrednie połączenie Figmy z agentem wymaga płatnego miejsca, ale nic od niego nie zależy.',
+      body: 'Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i ten plik dajesz agentowi. Nic w warsztacie nie wymaga płatnego miejsca.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Załóż konto' }],
       meta: 'darmowy plan w zupełności wystarczy',
     },
@@ -154,12 +154,12 @@ export default {
     steps: [
       '<b>Zduplikuj.</b> Otwórz plik i wybierz <strong>Duplicate to your drafts</strong>. W pliku, który możesz tylko oglądać, zapisu lokalnej kopii może nie być.',
       '<b>Zapisz lokalną kopię.</b> Otwórz menu główne (ikona Figmy w lewym górnym rogu), potem <strong>File</strong> → <strong>Save local copy…</strong>',
-      '<b>Dostajesz jeden plik <code>.fig</code>.</b> Obok projektu załóż folder <code>design</code> i włóż do niego plik.',
+      '<b>Dostajesz jeden plik <code>.fig</code>.</b> W folderze projektu załóż folder <code>design</code> i włóż do niego plik — po tym, jak prompt 01 utworzy projekt.',
     ],
     rules: [
       '<b>Plik, a nie jego zdjęcie.</b> <code>.fig</code> to sam design — tekst jako tekst, kolory jako wartości, zmienne, komponenty i zdjęcia — więc agent czyta design, zamiast zgadywać ze zdjęcia.',
       '<b>Agent sam go rozkoduje i może do tego potrzebować internetu.</b> Poza Figmą nic nie otwiera plików <code>.fig</code>, więc agent rozgryza format sam, czasem z małą paczką, którą instaluje. Na sali jest sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.',
-      '<b>Folder ląduje obok projektu, nie w środku.</b> Gdzie ma szukać, agent dowie się w prompcie 02.',
+      '<b>W projekcie, nie obok niego.</b> Agent pracuje wewnątrz folderu projektu, a Claude Code pyta, zanim przeczyta cokolwiek spoza niego — plik piętro wyżej zamienia się w pytanie, na którym agent musi się zatrzymać.',
     ],
   },
 
@@ -185,7 +185,7 @@ export default {
     ],
     [
       'Mam darmową Figmę.',
-      'To bezpośrednie połączenie Figma–agent odmówi i nic poza tym się nie zmienia. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi.',
+      'To wszystko, czego potrzebujesz. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi. Nic w warsztacie nie wymaga płatnego miejsca.',
     ],
     [
       'Czy na warsztacie będę potrzebować internetu?',
@@ -227,8 +227,6 @@ export default {
     exportHeading: 'Jak wyciągnąć design z Figmy',
     exportIntro:
       'Twój agent nie widzi twojego ekranu. Potrzebuje designu jako pliku, a Figma zapisze cały design w jednym.',
-    mcpNote:
-      'Jeśli twój agent jest podłączony do Figmy bezpośrednio — <code>figma</code> pojawia się w <code>/mcp</code> — możesz to pominąć. To połączenie wymaga płatnego miejsca w Figmie; prompt 02 ma tę drogę.',
   },
   pages: {
     beforeH1: 'Zanim przyjdziesz',

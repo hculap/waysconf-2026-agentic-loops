@@ -25,12 +25,13 @@ Three rules, and the first one matters more than the other two:
 1. NEVER change the checker to make a check pass. Not a threshold, not a skipped assertion,
    not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
    one and why, and change nothing.
-2. Do not add packages, and do not invent text.
+2. Do not add anything new to the page, and do not invent text.
 3. If the same failure survives three attempts, stop and tell me what you tried each time
    and what happened. Three failed repairs usually means the design is asking for two
    things that cannot both be true, and no fourth attempt will resolve that.
 
-Keep going on your own. Do not ask me to confirm each round.
+Write what you tried and what happened into notes.md as you go, so that a fresh session
+could pick this up. Keep going on your own. Do not ask me to confirm each round.
 ```
 
 ---

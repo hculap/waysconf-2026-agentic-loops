@@ -12,7 +12,7 @@ alternatywą jest nie patrzeć.
 ```text
 Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
 
-Twoim zadaniem w tej wiadomości jest atakować, nie bronić i nie naprawiać. Znajdź pięć
+Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
 rzeczy, które są ze stroną nie tak, a których twój checker nie potrafi złapać, i dla
 każdej powiedz mi:
 

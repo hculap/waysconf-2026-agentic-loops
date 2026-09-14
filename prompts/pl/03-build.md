@@ -6,32 +6,35 @@ designu, a nie ścianę outputu.
 ---
 
 ```text
-Zbuduj teraz stronę, na podstawie designu, który przed chwilą przeczytałeś.
+Zbuduj teraz stronę, na podstawie designu. Czytaj design-data i notes.md; nie rozkodowuj
+pliku .fig jeszcze raz.
 
-Jedna sekcja naraz, w kolejności od góry strony. Po każdej sekcji: przeładuj stronę,
-powiedz mi jednym zdaniem, co zbudowałeś, a potem ZATRZYMAJ SIĘ i czekaj, aż powiem
-„dalej". Nie buduj dwóch sekcji za jednym razem, choćby wyglądały na drobne.
+Jedna sekcja naraz, w kolejności z notes.md. Po każdej sekcji powiedz mi jednym zdaniem,
+co zbudowałeś, a potem ZATRZYMAJ SIĘ i czekaj, aż powiem „dalej". Nie buduj dwóch sekcji
+za jednym razem, choćby wyglądały na drobne.
 
 Reguły, wszystkie nienegocjowalne:
 
 - Każdy kolor i każdy rozmiar pochodzi z designu. Jeśli łapiesz się na wybieraniu
   wartości, zatrzymaj się i zapytaj mnie.
-- Każde słowo pochodzi z treści, którą ci dałem. Nie pisz tekstów. Nie poprawiaj tekstów.
-  Jeśli jakiegoś fragmentu brakuje, zapytaj — nie zapychaj dziury.
-- Żadnych nowych paczek. Mamy to, co mamy.
+- Każde słowo pochodzi z designu. Nie pisz tekstów. Nie poprawiaj tekstów. Jeśli jakiegoś
+  fragmentu brakuje, zapytaj — nie zapychaj dziury.
+- Każde zdjęcie pochodzi z designu: użyj obrazów, które rozkodowałeś, nigdy zastępczych.
+- Do samej strony nie wchodzi nic nowego: żaden framework UI, żadna biblioteka
+  komponentów, żaden serwis z fontami ani ikonami. Strona jest z Astro i Tailwinda.
 - Strona musi działać z niezaładowanymi obrazkami i z wyłączonym JavaScriptem. Wszystko,
   co sprytne, jest dodatkiem na czymś, co już działa bez tego.
 
-Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie, wybierz odczyt, który uważasz za
-najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić jedno
-założenie niż odkryć sześć.
+Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie do notes.md, wybierz odczyt, który
+uważasz za najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić
+jedno założenie niż odkryć sześć.
 ```
 
 ---
 
-**Co powinieneś zobaczyć.** Jedną sekcję. Potem ciszę i pytanie. Popatrz na stronę
-w przeglądarce. Porównaj z designem na drugim ekranie. Potem powiedz `dalej` albo powiedz,
-co jest nie tak — po ludzku, tak jak powiedziałbyś juniorowi:
+**Co powinieneś zobaczyć.** Jedną sekcję. Potem ciszę i pytanie. Przeładuj stronę
+w przeglądarce. Porównaj z designem w Figmie. Potem powiedz `dalej` albo powiedz, co jest
+nie tak — po ludzku, tak jak powiedziałbyś juniorowi:
 
 > Odstęp pod nagłówkiem jest za ciasny, a pomarańczowy to nie ten pomarańczowy.
 
@@ -44,10 +47,12 @@ To jest całkowicie dobre zgłoszenie błędu. Nie potrzebujesz słownictwa.
 | Co widzisz | Powiedz to |
 |---|---|
 | Buduje całą stronę jednym ciągiem | `Stop. Zostaw to, co masz. Od teraz: jedna sekcja i czekasz na mnie.` |
-| Tekst, którego nigdy nie widziałeś | `Skąd wzięło się to zdanie? Zastąp je tekstem z treści, którą ci dałem.` |
-| Kolor, który jest prawie dobry | `To nie jest wartość z designu. Użyj dokładnej i powiedz mi, który to token.` |
+| Tekst, którego nigdy nie widziałeś | `Skąd wzięło się to zdanie? Zastąp je tekstem z designu.` |
+| Szare pudełko tam, gdzie powinno być zdjęcie | `Użyj tu obrazu z designu. Jest w design-data.` |
+| Kolor, który jest prawie dobry | `To nie jest wartość z designu. Użyj dokładnej i powiedz mi, która to zmienna.` |
+| Znowu zaczyna rozkodowywać .fig | `Stop. Wszystko, czego potrzebujesz, jest już w design-data i notes.md.` |
 | Mówi, że skończył, a wyraźnie nie | `Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.` |
-| Z każdą chwilą jest wolniejszy i mętniejszy | Kończy mu się kontekst. Powiedz `Streść w trzech linijkach, gdzie jesteśmy`, zacznij nową sesję, wklej streszczenie i jedź dalej. |
+| Z każdą chwilą jest wolniejszy i mętniejszy | Kończy mu się kontekst. Powiedz `Zaktualizuj notes.md tym, gdzie jesteśmy`, zacznij nową sesję, powiedz `Przeczytaj notes.md i buduj dalej` i jedź dalej. |
 
 ---
 

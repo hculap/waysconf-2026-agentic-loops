@@ -13,8 +13,8 @@ database. Node is already installed.
 
 Then start the development server and tell me the address to open in my browser.
 
-Do not build any pages yet. Do not invent any content. I will give you the design in the
-next message, and I want the page to still be empty when I do.
+Do not build any pages yet. Do not invent any content. The design comes next, and I want
+the page to still be empty when it does.
 
 While you work, tell me in one line what each command is doing. I have not used a terminal
 before and I would like to follow along.
@@ -42,6 +42,7 @@ keep talking; they handle it.
 | `Not inside a trusted directory` | This is Codex asking permission. Answer yes, or run `git init` in the folder first. |
 | `command not found: npm` | Node is not installed. Follow the setup page, or switch to the browser option on it. |
 | It asks you to choose a template | `Pick the minimal or empty template. No example content.` |
+| "The directory is not empty" | You put the design folder in before this prompt. Move it out, run this prompt, then put it back for prompt 02. |
 | Nothing happens for two minutes | It is installing. Installing looks exactly like being stuck. Give it five. |
 
 ---

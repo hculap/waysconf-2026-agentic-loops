@@ -184,11 +184,13 @@ An agent given a screenshot infers every colour and every measurement from pixel
 be *nearly* right — an orange, some spacing — and nearly right is what fails a contrast
 check and looks subtly wrong beside the real design.
 
-Given the token file, it infers nothing. `#FF6A1A` is in the file.
+Given the `.fig`, it infers nothing. `#FF6A1A` is in the file.
 
-That is the entire argument for connecting an agent to Figma, or for handing it the
-`.fig` file itself. **MCP** is just the standard way to make that connection: a coding agent
-calling tools that are not inside it — a design file, a browser, a deploy target.
+That is the whole argument for handing the agent the file itself. You may have heard of
+**MCP**, the standard way for a coding agent to call tools outside itself — a live Figma
+connection among them. Today we do not use it for the design: it needs a paid seat, and on a
+free account its budget is twenty calls a month, gone before one page is read. The file needs
+neither.
 
 ---
 

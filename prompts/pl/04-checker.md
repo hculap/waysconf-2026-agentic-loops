@@ -22,8 +22,12 @@ jeśli cokolwiek jest nie tak. Nigdy nie pyta modelu językowego, nigdy nie pyta
 dwa razy na tej samej stronie daje tę samą odpowiedź.
 
 Spraw, żeby uruchamiała go komenda „npm run check". Zainstaluj, co potrzebne, żeby
-sterować prawdziwą przeglądarką i testować dostępność — to jedyny wyjątek od zakazu
-nowych paczek.
+sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
+żadne z nich nie wchodzi do strony.
+
+Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
+npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
+później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z designu, nie ode mnie. Minimum, i to względem strony tak, jak
 renderuje ją przeglądarka, a nie względem kodu źródłowego:
@@ -48,7 +52,7 @@ plik z powrotem. Powiedz mi, jak go nazwałeś.
 Dwie reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
-  brakuje pliku designu — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  brakuje design-data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
 - Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
   przejdzie za pierwszym razem, uznam, że nic nie sprawdza.
@@ -85,6 +89,7 @@ To, co prompt *ustala*, to część, której żadne narzędzie nie wybierze za c
 - raport jest dla czytelnika, którego przy tym nie było — element, oczekiwane, faktyczne, próg
 - test, który nie może się wykonać, jest porażką
 - rozluźnione testy są gorsze niż żadne
+- przyjmuje adres, bo prompt 06 skieruje go na stronę na żywo
 
 ### Zdanie, które robi najwięcej roboty
 

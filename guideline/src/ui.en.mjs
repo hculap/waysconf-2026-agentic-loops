@@ -71,7 +71,7 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Free is enough. You save the design out of Figma as one file and hand that to your agent. The direct Figma-to-agent connection needs a paid seat, and nothing depends on it.',
+      body: 'Free is enough. You save the design out of Figma as one file and hand that file to your agent. Nothing in the workshop needs a paid seat.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Create an account' }],
       meta: 'free tier is fine',
     },
@@ -152,12 +152,12 @@ export default {
     steps: [
       '<b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. In a file you can only view, saving a local copy may not be offered.',
       '<b>Save a local copy.</b> Open the main menu (the Figma icon, top left), then <strong>File</strong> → <strong>Save local copy…</strong>',
-      '<b>You get one <code>.fig</code> file.</b> Beside your project, make a folder called <code>design</code> and put the file in it.',
+      '<b>You get one <code>.fig</code> file.</b> Inside your project folder, make a folder called <code>design</code> and put the file in it — after prompt 01 has created the project.',
     ],
     rules: [
       '<b>The file, not a picture of it.</b> A <code>.fig</code> is the design itself — the text as text, the colours as values, the variables, the components and the photos — so the agent reads the design instead of guessing at a photograph of it.',
       '<b>Your agent decodes it, and may need the internet to do so.</b> Nothing outside Figma opens a <code>.fig</code>, so the agent works the format out itself, sometimes with a small package it installs. The room has network. If Codex asks to go online, say yes.',
-      '<b>The folder goes beside your project, not inside it.</b> Your agent will be told where to look in prompt 02.',
+      '<b>Inside the project, not beside it.</b> Your agent works inside the project folder, and Claude Code asks before it reads anything outside it — a file one level up turns into a question the agent has to stop for.',
     ],
   },
 
@@ -183,7 +183,7 @@ export default {
     ],
     [
       'My Figma is free.',
-      'Then the direct Figma-to-agent connection will refuse, and nothing else changes. You save the file out of Figma — two clicks — and hand it to your agent.',
+      'That is all you need. You save the file out of Figma — two clicks — and hand it to your agent. Nothing in the workshop needs a paid seat.',
     ],
     [
       'Will I need the internet during the workshop?',
@@ -225,8 +225,6 @@ export default {
     exportHeading: 'Getting the design out of Figma',
     exportIntro:
       'Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.',
-    mcpNote:
-      'If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip this. That connection needs a paid Figma seat; prompt 02 has the route.',
   },
   pages: {
     beforeH1: 'Before you come',

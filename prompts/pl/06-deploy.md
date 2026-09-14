@@ -16,7 +16,7 @@ Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
 - pobierz publiczny adres i potwierdź, że zwraca 200
 - potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
   starszą — porównaj to, co wraca, z tym, co jest w folderze build
-- uruchom test dostępności jeszcze raz, przeciwko adresowi na żywo, nie lokalnemu
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
 
 Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
 ```
@@ -43,6 +43,8 @@ możesz ją komuś podać.
 | Pusta strona pod adresem na żywo | `Strona na żywo jest pusta. Sprawdź, co opublikowałeś — który folder wysłałeś?` |
 | Brak CSS, tekst bez stylów | Zwykle poszedł nie ten folder. `Opublikuj folder build, nie katalog główny projektu.` |
 | „Deploy się udał" i żadnego adresu | `Podaj mi publiczny adres w osobnej linijce.` |
+| Test na żywo się wywala, a lokalny przechodził | `Pokaż mi dokładnie, które testy różnią się między lokalnym a na żywo, i dlaczego. Nie zmieniaj checkera.` |
+| Mówi, że checker nie przyjmuje adresu | `Prompt 04 prosił o --url. Dodaj to, nie zmieniając tego, co rozstrzyga którykolwiek test, i uruchom na adresie na żywo.` |
 
 ---
 

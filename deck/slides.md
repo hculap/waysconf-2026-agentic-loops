@@ -284,7 +284,7 @@ class: section
 
 <div class="mt-6 text-xl">
 
-Put the `.fig` in a folder called `design`, next to your project, and paste **prompt 02**.
+Put the `.fig` in a folder called `design` inside your project, and paste **prompt 02**.
 
 </div>
 
@@ -326,17 +326,24 @@ that stops asking for that kind of command, or they will spend the time clicking
 
 # MCP, in one sentence
 
-<p class="text-2xl mt-10" style="color: var(--sp-fg)">
+<p class="text-2xl mt-6" style="color: var(--sp-fg)">
 A standard way for a coding agent to call tools that are not inside it.
 </p>
 
-<div class="mt-10">
-  <img src="/diagrams/04-mcp-topology.svg" alt="agent connected to Figma, a browser and a deploy target, over a shared repository" class="w-full">
+<p class="mt-2" style="color: var(--sp-accent-2)">
+Worth knowing. Not how the design reaches your agent today — that is the file.
+</p>
+
+<div class="mt-3">
+  <img src="/diagrams/04-mcp-topology.svg" alt="agent connected to Figma, a browser and a deploy target, over a shared repository" class="w-full" style="max-height: 340px !important">
 </div>
 
 <!--
-Resist explaining the protocol. Nobody in this room needs the protocol. They need
-to know that the agent can now read the actual design instead of a picture of it.
+Resist explaining the protocol. Nobody in this room needs the protocol.
+
+Be explicit that nobody connects Figma over MCP today. It needs a paid seat and runs on a
+tiny budget; the honest-Figma slide gives the numbers. Every participant takes the .fig route
+— there is one route in prompt 02, not two.
 -->
 
 ---
@@ -1037,18 +1044,18 @@ The instruction is **"refute this, and default to refuted if you are unsure"**.
 
 ```text
 ultracode. … inside a phase, spawn as many subagents as the work
-needs and run them in parallel, deciding how many from what you find.
+needs and run them in parallel, deciding how many from what you find
 
-PHASE 6 — ATTACK
-Send every candidate finding to a separate subagent whose only job
-is to argue that it is wrong. Report only what survives.
+PHASE 07 — ATTACK
+… for every candidate they find, a separate subagent whose only
+job is to argue against it from those three angles.
 ```
 
 </div>
 
 <div class="mt-6 text-lg">
-That is <b>prompt 08</b> — the whole run as one message. Take it home.
-Today, if there is time, <b>prompt 07</b> is the one-agent version.
+That is <b>prompt 08</b>: prompts 01–07 as one message, phase for phase, word for word.
+Take it home. Today, if there is time, <b>prompt 07</b> is the one-agent version.
 </div>
 
 <!--
@@ -1059,6 +1066,11 @@ That last one is real. It is in evidence/INCIDENTS.md and it is worth telling.
 
 `ultracode` is a Claude Code keyword that unlocks multi-agent orchestration. Codex has no
 equivalent; the word is harmless there, and the sentence after it does the work on both.
+
+Say the 1:1 out loud: phase 03 of prompt 08 is prompt 03. Everything they did by hand today
+is in it, in the same words. Two differences, and 08 names both: phase 03 builds sections in
+parallel, and the run waits only after phase 02. A script writes 08 from 01–07, so the two
+cannot drift apart.
 -->
 
 ---

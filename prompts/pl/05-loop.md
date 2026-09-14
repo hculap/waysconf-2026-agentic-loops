@@ -24,13 +24,14 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
    ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
    powiedz mi który i dlaczego, i nie zmieniaj niczego.
-2. Nie dodawaj paczek i nie wymyślaj tekstów.
+2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
 3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
    każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
    o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
    rozwiąże.
 
-Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
+Zapisuj do notes.md na bieżąco, co próbowałeś i co się stało, żeby nowa sesja mogła to
+podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
 ```
 
 ---

@@ -26,6 +26,7 @@
     "check:guideline": "node checks/guideline.mjs",
     "check:guideline:behaviour": "node checks/guideline-behaviour.mjs",
     "check:guideline:i18n": "node checks/guideline-i18n.mjs",
+    "check:workflow-prompt": "node scripts/build-workflow-prompt.mjs --check",
     "check:guideline:live": "node checks/guideline-behaviour.mjs --url https://waysconf.szymonpaluch.com",
     "check:handoff": "node checks/handoff.mjs",
     "check:deck": "node checks/deck.mjs",

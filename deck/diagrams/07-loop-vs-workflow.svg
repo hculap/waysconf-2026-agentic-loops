@@ -62,16 +62,16 @@
 
   <!-- phase 1 -->
   <rect x="872" y="256" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="288" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 1</text>
+  <text x="896" y="288" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 02</text>
   <text x="1000" y="290" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">LOOK</text>
-  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">read the design, write notes, no code</text>
+  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">read the .fig, write notes.md</text>
   <path d="M1082 322 L1082 348" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
   <line x1="940" y1="352" x2="1224" y2="352" stroke="#34D399" stroke-width="2"/>
   <text x="1240" y="358" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">notes written</text>
 
   <!-- phase 2 -->
   <rect x="872" y="366" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="398" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 2</text>
+  <text x="896" y="398" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 03</text>
   <text x="1000" y="400" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">BUILD</text>
   <text x="1000" y="422" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">section by section, from the design</text>
   <path d="M1082 432 L1082 458" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
@@ -80,7 +80,7 @@
 
   <!-- phase 3 -->
   <rect x="872" y="476" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="508" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 3</text>
+  <text x="896" y="508" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 04</text>
   <text x="1000" y="510" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">ARM</text>
   <text x="1000" y="532" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">write the checker that will judge it</text>
   <path d="M1082 542 L1082 568" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
@@ -89,14 +89,14 @@
 
   <!-- phase 4, containing a loop -->
   <rect x="872" y="586" width="420" height="86" rx="8" fill="#1F1F1F" stroke="#10B981" stroke-width="2"/>
-  <text x="896" y="618" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 4</text>
+  <text x="896" y="618" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 05</text>
   <text x="1000" y="620" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">REPAIR</text>
-  <text x="1000" y="642" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">check, fix, check again &#8212; until green</text>
+  <text x="1000" y="642" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">check, fix, repeat until green</text>
   <path d="M1348 622 a 24 24 0 1 1 -12 -20" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#a7o)"/>
   <text x="1324" y="672" font-family="ui-monospace,monospace" font-size="15" fill="#10B981">a loop lives here</text>
 
   <rect x="872" y="696" width="656" height="54" rx="10" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
-  <text x="898" y="720" font-family="system-ui,sans-serif" font-size="19" fill="#FFFFFF">You define the <tspan font-weight="700" fill="#FBBF24">phases</tspan>, and what must be true before each one ends.</text>
+  <text x="898" y="720" font-family="system-ui,sans-serif" font-size="19" fill="#FFFFFF">You define the <tspan font-weight="700" fill="#FBBF24">phases</tspan>, and the bar between them.</text>
   <text x="898" y="742" font-family="ui-monospace,monospace" font-size="16" fill="#F59E0B">prompt 08</text>
 
   <!-- ─────────────── FOOTER ─────────────── -->
