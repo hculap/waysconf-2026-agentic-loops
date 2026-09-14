@@ -320,7 +320,10 @@
     } else if (message.type === 'done') {
       buildEl.disabled = false
       fillEl.style.width = '100%'
-      if (payload.ok) {
+      if (payload.ok && payload.partial) {
+        status('Built with missing parts', 'error')
+        line(payload.message, 'error')
+      } else if (payload.ok) {
         status('Done in ' + payload.seconds + 's', 'ok')
         line(payload.message, 'done')
         line('Next: publish the file, then open Dev Mode and check section-tickets returns variable names, not hex.')

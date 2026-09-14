@@ -478,19 +478,19 @@ const TURBINE_DATA = {
           "name": "responsive/gutter",
           "values": [
             24,
-            32,
+            48,
             48
           ],
-          "note": "CANON §6 fixes 24 and 48; 32 is the tablet step"
+          "note": "CANON §6 fixes 24 and 48; the reference site uses 48 from 768 up"
         },
         {
           "name": "responsive/container-max",
           "values": [
             342,
-            704,
-            1200
+            672,
+            1104
           ],
-          "note": "Viewport minus two gutters, capped at size/content-max"
+          "note": "size/content-max (1200) includes the gutters, as on the reference site: 1200 − 2 × 48"
         },
         {
           "name": "responsive/section-pad-y",
@@ -1078,13 +1078,15 @@ const TURBINE_DATA = {
       "page": "Desktop 1440",
       "gutter": 48,
       "sectionPadY": 128,
-      "container": 1200,
+      "container": 1104,
       "gridColumns": 12,
       "gridGutter": 24,
       "type": {
         "wordmarkHero": 96,
         "sectionH2": 56,
+        "sectionH2Leading": 100,
         "subsectionH3": 32,
+        "subsectionH3Leading": 120,
         "lead": 20
       },
       "nav": {
@@ -1097,7 +1099,7 @@ const TURBINE_DATA = {
       },
       "hero": {
         "height": 780,
-        "padX": 120,
+        "padX": 168,
         "padTop": 160,
         "padBottom": 96,
         "gap": 32,
@@ -1111,27 +1113,26 @@ const TURBINE_DATA = {
       },
       "lineup": {
         "columns": 4,
-        "cardWidth": 282,
+        "cardWidth": 258,
         "cardSizing": "FIXED",
         "metaDirection": "HORIZONTAL",
         "headlinerNameSize": 24
       },
       "programme": {
         "layout": "table-row",
-        "timeWidth": 96,
         "showHead": true
       },
       "venue": {
         "direction": "HORIZONTAL",
-        "columnWidth": 576,
+        "columnWidth": 528,
         "imageAspect": 1.3333333333333333,
-        "mapWidth": 576,
+        "mapWidth": 528,
         "mapHeight": 320,
-        "travelColumns": 2
+        "travelColumns": 1
       },
       "tickets": {
         "direction": "HORIZONTAL",
-        "cardWidth": 384,
+        "cardWidth": 352,
         "cardSizing": "FIXED",
         "cardPad": 24,
         "highlightPad": 32,
@@ -1146,12 +1147,13 @@ const TURBINE_DATA = {
         "answerPadRight": 48
       },
       "newsletter": {
-        "width": 560,
+        "width": 655,
+        "formWidth": 560,
         "sizing": "FIXED"
       },
       "footer": {
         "layout": "wide",
-        "columnWidth": 180,
+        "columnWidth": 156,
         "columnGap": 24,
         "brandWidth": 384
       }
@@ -1162,28 +1164,30 @@ const TURBINE_DATA = {
       "mode": "Tablet 768",
       "frame": "TURBINE / Tablet 768",
       "page": "Tablet 768",
-      "gutter": 32,
+      "gutter": 48,
       "sectionPadY": 96,
-      "container": 704,
+      "container": 672,
       "gridColumns": 8,
       "gridGutter": 24,
       "type": {
         "wordmarkHero": 72,
         "sectionH2": 40,
+        "sectionH2Leading": 111.11,
         "subsectionH3": 24,
+        "subsectionH3Leading": 133.33,
         "lead": 18
       },
       "nav": {
         "layout": "full",
         "height": 64,
-        "padX": 32,
+        "padX": 48,
         "padY": 12,
         "linkGap": 24,
         "linkStyle": "Body/Small-Medium"
       },
       "hero": {
         "height": 700,
-        "padX": 32,
+        "padX": 48,
         "padTop": 120,
         "padBottom": 64,
         "gap": 32,
@@ -1197,21 +1201,20 @@ const TURBINE_DATA = {
       },
       "lineup": {
         "columns": 3,
-        "cardWidth": 218.67,
-        "cardSizing": "FILL",
+        "cardWidth": 208,
+        "cardSizing": "FIXED",
         "metaDirection": "HORIZONTAL",
         "headlinerNameSize": 24
       },
       "programme": {
         "layout": "table-row",
-        "timeWidth": 72,
         "showHead": true
       },
       "venue": {
         "direction": "VERTICAL",
-        "columnWidth": 704,
+        "columnWidth": 672,
         "imageAspect": 1.7777777777777777,
-        "mapWidth": 704,
+        "mapWidth": 672,
         "mapHeight": 280,
         "travelColumns": 2
       },
@@ -1225,21 +1228,22 @@ const TURBINE_DATA = {
         "comparison": "table"
       },
       "faq": {
-        "listWidth": 704,
+        "listWidth": 672,
         "listSizing": "FILL",
         "triggerPadY": 24,
         "minHeight": 64,
         "answerPadRight": 48
       },
       "newsletter": {
-        "width": 480,
+        "width": 590,
+        "formWidth": 480,
         "sizing": "FIXED"
       },
       "footer": {
         "layout": "stacked",
-        "columnWidth": 340,
+        "columnWidth": 324,
         "columnGap": 24,
-        "brandWidth": 704
+        "brandWidth": 672
       }
     },
     {
@@ -1256,7 +1260,9 @@ const TURBINE_DATA = {
       "type": {
         "wordmarkHero": 40,
         "sectionH2": 32,
+        "sectionH2Leading": 120,
         "subsectionH3": 24,
+        "subsectionH3Leading": 133.33,
         "lead": 18
       },
       "nav": {
@@ -1290,7 +1296,6 @@ const TURBINE_DATA = {
       },
       "programme": {
         "layout": "stacked",
-        "timeWidth": 0,
         "showHead": false
       },
       "venue": {
@@ -1319,10 +1324,11 @@ const TURBINE_DATA = {
       },
       "newsletter": {
         "width": 342,
+        "formWidth": 342,
         "sizing": "FILL"
       },
       "footer": {
-        "layout": "stacked",
+        "layout": "compact",
         "columnWidth": 163,
         "columnGap": 16,
         "brandWidth": 342

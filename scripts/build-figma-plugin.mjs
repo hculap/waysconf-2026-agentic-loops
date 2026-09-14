@@ -50,6 +50,14 @@
  * the sandbox, so the data has to travel inside the file Figma loads. Only the
  * region between the markers is rewritten; the plugin logic below them is never
  * touched. If the markers are missing or duplicated the script refuses to write.
+ *
+ * Images
+ * ------
+ * The same constraint applies to the photographs. Every file brief/CONTENT.md §13
+ * lists is read from design/assets/ and injected into code.js, base64-encoded, as
+ * TURBINE_IMAGES, so the built Figma file carries real image fills and a participant
+ * can export the assets from it. They go into code.js only: data.generated.js stays
+ * a text file a person can review.
  */
 
 import { readFile, writeFile, access } from 'node:fs/promises'
@@ -59,6 +67,7 @@ import { fileURLToPath } from 'node:url'
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const TOKENS_IN = join(ROOT, 'design/tokens/tokens.json')
 const CONTENT_IN = join(ROOT, 'brief/CONTENT.md')
+const ASSETS_IN = join(ROOT, 'design/assets')
 const DATA_OUT = join(ROOT, 'figma-plugin/data.generated.js')
 const CODE_OUT = join(ROOT, 'figma-plugin/code.js')
 
@@ -271,8 +280,8 @@ const FIGMA_SPEC = {
   /* §2.5 — the only collection with more than one mode. */
   responsiveModes: ['Mobile 390', 'Tablet 768', 'Desktop 1440'],
   responsive: [
-    { name: 'responsive/gutter', values: [24, 32, 48], note: 'CANON §6 fixes 24 and 48; 32 is the tablet step' },
-    { name: 'responsive/container-max', values: [342, 704, 1200], note: 'Viewport minus two gutters, capped at size/content-max' },
+    { name: 'responsive/gutter', values: [24, 48, 48], note: 'CANON §6 fixes 24 and 48; the reference site uses 48 from 768 up' },
+    { name: 'responsive/container-max', values: [342, 672, 1104], note: 'size/content-max (1200) includes the gutters, as on the reference site: 1200 − 2 × 48' },
     { name: 'responsive/section-pad-y', values: [64, 96, 128], note: 'space/16, space/24, space/32' },
     { name: 'responsive/grid-columns', values: [4, 8, 12], note: '' },
     { name: 'responsive/grid-gutter', values: [16, 24, 24], note: '' },
@@ -329,20 +338,22 @@ const FIGMA_SPEC = {
       page: 'Desktop 1440',
       gutter: 48,
       sectionPadY: 128,
-      container: 1200,
+      /* The reference site reads CANON §6 "content max width 1200px" as 1200 including the
+         gutters, so content is 1104 at 1440. Every width below is measured from that site. */
+      container: 1104,
       gridColumns: 12,
       gridGutter: 24,
-      type: { wordmarkHero: 96, sectionH2: 56, subsectionH3: 32, lead: 20 },
+      type: { wordmarkHero: 96, sectionH2: 56, sectionH2Leading: 100, subsectionH3: 32, subsectionH3Leading: 120, lead: 20 },
       nav: { layout: 'full', height: 72, padX: 48, padY: 12, linkGap: 32, linkStyle: 'Body/Base-Medium' },
-      hero: { height: 780, padX: 120, padTop: 160, padBottom: 96, gap: 32, ctaDirection: 'HORIZONTAL', ctaGap: 16, ctaFill: false },
+      hero: { height: 780, padX: 168, padTop: 160, padBottom: 96, gap: 32, ctaDirection: 'HORIZONTAL', ctaGap: 16, ctaFill: false },
       ticker: { height: 56, gap: 24 },
-      lineup: { columns: 4, cardWidth: 282, cardSizing: 'FIXED', metaDirection: 'HORIZONTAL', headlinerNameSize: 24 },
-      programme: { layout: 'table-row', timeWidth: 96, showHead: true },
-      venue: { direction: 'HORIZONTAL', columnWidth: 576, imageAspect: 4 / 3, mapWidth: 576, mapHeight: 320, travelColumns: 2 },
-      tickets: { direction: 'HORIZONTAL', cardWidth: 384, cardSizing: 'FIXED', cardPad: 24, highlightPad: 32, comparisonCell: 120, comparison: 'table' },
+      lineup: { columns: 4, cardWidth: 258, cardSizing: 'FIXED', metaDirection: 'HORIZONTAL', headlinerNameSize: 24 },
+      programme: { layout: 'table-row', showHead: true },
+      venue: { direction: 'HORIZONTAL', columnWidth: 528, imageAspect: 4 / 3, mapWidth: 528, mapHeight: 320, travelColumns: 1 },
+      tickets: { direction: 'HORIZONTAL', cardWidth: 352, cardSizing: 'FIXED', cardPad: 24, highlightPad: 32, comparisonCell: 120, comparison: 'table' },
       faq: { listWidth: 800, listSizing: 'FIXED', triggerPadY: 24, minHeight: 64, answerPadRight: 48 },
-      newsletter: { width: 560, sizing: 'FIXED' },
-      footer: { layout: 'wide', columnWidth: 180, columnGap: 24, brandWidth: 384 },
+      newsletter: { width: 655, formWidth: 560, sizing: 'FIXED' },
+      footer: { layout: 'wide', columnWidth: 156, columnGap: 24, brandWidth: 384 },
     },
     {
       key: 'tablet',
@@ -350,22 +361,22 @@ const FIGMA_SPEC = {
       mode: 'Tablet 768',
       frame: 'TURBINE / Tablet 768',
       page: 'Tablet 768',
-      gutter: 32,
+      gutter: 48,
       sectionPadY: 96,
-      container: 704,
+      container: 672,
       gridColumns: 8,
       gridGutter: 24,
-      type: { wordmarkHero: 72, sectionH2: 40, subsectionH3: 24, lead: 18 },
-      nav: { layout: 'full', height: 64, padX: 32, padY: 12, linkGap: 24, linkStyle: 'Body/Small-Medium' },
-      hero: { height: 700, padX: 32, padTop: 120, padBottom: 64, gap: 32, ctaDirection: 'HORIZONTAL', ctaGap: 16, ctaFill: false },
+      type: { wordmarkHero: 72, sectionH2: 40, sectionH2Leading: 111.11, subsectionH3: 24, subsectionH3Leading: 133.33, lead: 18 },
+      nav: { layout: 'full', height: 64, padX: 48, padY: 12, linkGap: 24, linkStyle: 'Body/Small-Medium' },
+      hero: { height: 700, padX: 48, padTop: 120, padBottom: 64, gap: 32, ctaDirection: 'HORIZONTAL', ctaGap: 16, ctaFill: false },
       ticker: { height: 48, gap: 24 },
-      lineup: { columns: 3, cardWidth: 218.67, cardSizing: 'FILL', metaDirection: 'HORIZONTAL', headlinerNameSize: 24 },
-      programme: { layout: 'table-row', timeWidth: 72, showHead: true },
-      venue: { direction: 'VERTICAL', columnWidth: 704, imageAspect: 16 / 9, mapWidth: 704, mapHeight: 280, travelColumns: 2 },
+      lineup: { columns: 3, cardWidth: 208, cardSizing: 'FIXED', metaDirection: 'HORIZONTAL', headlinerNameSize: 24 },
+      programme: { layout: 'table-row', showHead: true },
+      venue: { direction: 'VERTICAL', columnWidth: 672, imageAspect: 16 / 9, mapWidth: 672, mapHeight: 280, travelColumns: 2 },
       tickets: { direction: 'VERTICAL', cardWidth: 480, cardSizing: 'FILL', cardPad: 24, highlightPad: 24, comparisonCell: 96, comparison: 'table' },
-      faq: { listWidth: 704, listSizing: 'FILL', triggerPadY: 24, minHeight: 64, answerPadRight: 48 },
-      newsletter: { width: 480, sizing: 'FIXED' },
-      footer: { layout: 'stacked', columnWidth: 340, columnGap: 24, brandWidth: 704 },
+      faq: { listWidth: 672, listSizing: 'FILL', triggerPadY: 24, minHeight: 64, answerPadRight: 48 },
+      newsletter: { width: 590, formWidth: 480, sizing: 'FIXED' },
+      footer: { layout: 'stacked', columnWidth: 324, columnGap: 24, brandWidth: 672 },
     },
     {
       key: 'mobile',
@@ -378,17 +389,17 @@ const FIGMA_SPEC = {
       container: 342,
       gridColumns: 4,
       gridGutter: 16,
-      type: { wordmarkHero: 40, sectionH2: 32, subsectionH3: 24, lead: 18 },
+      type: { wordmarkHero: 40, sectionH2: 32, sectionH2Leading: 120, subsectionH3: 24, subsectionH3Leading: 133.33, lead: 18 },
       nav: { layout: 'compact', height: 64, padX: 24, padY: 8, linkGap: 24, linkStyle: 'Body/Small-Medium' },
       hero: { height: 600, padX: 24, padTop: 96, padBottom: 64, gap: 16, ctaDirection: 'VERTICAL', ctaGap: 12, ctaFill: true },
       ticker: { height: 44, gap: 16 },
       lineup: { columns: 2, cardWidth: 163, cardSizing: 'FIXED', metaDirection: 'VERTICAL', headlinerNameSize: 16 },
-      programme: { layout: 'stacked', timeWidth: 0, showHead: false },
+      programme: { layout: 'stacked', showHead: false },
       venue: { direction: 'VERTICAL', columnWidth: 342, imageAspect: 4 / 3, mapWidth: 342, mapHeight: 200, travelColumns: 1 },
       tickets: { direction: 'VERTICAL', cardWidth: 342, cardSizing: 'FILL', cardPad: 16, highlightPad: 16, comparisonCell: 0, comparison: 'lists' },
       faq: { listWidth: 342, listSizing: 'FILL', triggerPadY: 16, minHeight: 56, answerPadRight: 0 },
-      newsletter: { width: 342, sizing: 'FILL' },
-      footer: { layout: 'stacked', columnWidth: 163, columnGap: 16, brandWidth: 342 },
+      newsletter: { width: 342, formWidth: 342, sizing: 'FILL' },
+      footer: { layout: 'compact', columnWidth: 163, columnGap: 16, brandWidth: 342 },
     },
   ],
 
@@ -932,6 +943,19 @@ const bundle = banner.join('\n') + body
 
 await writeFile(DATA_OUT, bundle)
 
+/* The §13 files, as bytes the sandbox can hand to figma.createImage. */
+const images = {}
+for (const file of Object.keys(content.images.all)) {
+  let bytes
+  try {
+    bytes = await readFile(join(ASSETS_IN, file))
+  } catch (error) {
+    throw new Error(`brief/CONTENT.md §13 lists ${file}, but design/assets/${file} could not be read: ${error.message}`)
+  }
+  images[file] = bytes.toString('base64')
+}
+const imagesBody = `const TURBINE_IMAGES = ${JSON.stringify(images, null, 2)};\n`
+
 /* Inject the same bundle into code.js, which is the file Figma actually loads. */
 let injected = false
 try {
@@ -946,7 +970,7 @@ try {
   }
   const head = code.slice(0, code.indexOf(BEGIN) + BEGIN.length)
   const tail = code.slice(code.indexOf(END))
-  await writeFile(CODE_OUT, `${head}\n${body}${tail}`)
+  await writeFile(CODE_OUT, `${head}\n${body}${imagesBody}${tail}`)
   injected = true
 } catch (error) {
   if (error.code !== 'ENOENT') throw error
@@ -962,6 +986,8 @@ const counts = {
   faq: content.faq.items.length,
   exports: data.exports.rows.length,
   bytes: bundle.length,
+  images: Object.keys(images).length,
+  imageBytes: imagesBody.length,
 }
 
 console.log(`wrote ${rel(DATA_OUT)}`)
@@ -973,4 +999,5 @@ console.log(
   `  ${counts.textStyles} text styles, ${counts.artists} artists, ${counts.faq} questions, ` +
     `${counts.exports} export targets, ${counts.bytes} bytes`
 )
+console.log(`  ${counts.images} images from design/assets, ${counts.imageBytes} bytes of base64 (code.js only)`)
 console.log(injected ? `  injected into ${rel(CODE_OUT)}` : `  ${rel(CODE_OUT)} not present yet — nothing injected`)

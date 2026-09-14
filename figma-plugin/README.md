@@ -88,7 +88,7 @@ About three thousand layers across six pages, in the order `design/FIGMA-SPEC.md
 | `Desktop 1440` | `TURBINE / Desktop 1440` — the ten exported section frames, composed |
 | `Tablet 768` | The same sections at 768, with the §6 deltas applied |
 | `Mobile 390` | The same sections at 390, with the §7 deltas applied |
-| `Exports` | The thirty-three-file export manifest and the image-asset sheet with its alt text |
+| `Exports` | The thirty-three-file export manifest; the sixteen images with their alt text, each set to export at its original width under its own file name; and `exports/content`, every string the frames do not show |
 
 Underneath that:
 
@@ -96,11 +96,35 @@ Underneath that:
   `TURBINE / Type`, `TURBINE / Scale`, and `TURBINE / Responsive` — the only collection with more
   than one mode. Setting the mode on a viewport frame is what resizes the type and the gutters; no
   text layer is duplicated per breakpoint.
-- **Seventeen text styles**, each binding family, weight, size, line height and letter spacing to a
-  variable rather than carrying a loose number.
-- **Ten component sets and 74 components**: Button (24 variants), Input (15), Nav (10), TabBar (4)
+  On a plan that allows one mode per collection (Figma's free plan does, and says
+  `Limited to 1 modes only`), the build does not stop: `TURBINE / Responsive` keeps the single
+  `Desktop 1440` mode, the Tablet and Mobile frames get their gutters, section padding and lead
+  sizes written as plain values instead, and the panel logs one warning saying so. The frames should
+  look the same; the difference is that those values in the tablet and mobile frames are not variables,
+  and the lead text there loses its `Body/Lead` style link.
+- **Seventeen text styles**, each binding family, weight and size to a variable. Line height and
+  letter spacing are percentages written on the style: Figma reads a number variable bound to either
+  as pixels, so binding `leading/tight` (108) gives 108px leading instead of 108%.
+- **Ten component sets and 75 components**: Button (24 variants), Input (15), Nav (10), TabBar (4)
   with its nested Tab (4), ArtistCard (3), TicketCard (3), TimetableRow (4), FaqRow (2), Ticker (2),
-  Footer (2), and the `a11y/skip-link` component.
+  Footer (3: `wide`, `stacked`, `compact`), and the `a11y/skip-link` component.
+- **Measured from the reference site, not only from the spec.** Content is 1104 wide at 1440 and
+  672 at 768 (CANON §6's 1200 read as including the 48px gutters, and 48 at tablet rather than
+  FIGMA-SPEC's 32); artist cards 258 / 208 / 163; ticket cards 352; h2 leading 100% / 111% / 120%
+  and h3 120% / 133%; four even programme columns; a one-line programme row at 390; a footer whose
+  link columns sit two across at 768 and 390. `design/FIGMA-SPEC.md` §4, §6 and §12 still describe
+  the earlier numbers.
+- **`exports/content`**: the document head, the seventeen accessible names and hidden labels, the
+  lineup tab status lines, the newsletter messages, the programme as it reads at 390, and all eight
+  FAQ answers. None of them is visible in a composed frame, so an SVG export of the sections alone
+  would lose them — export this frame too.
+- **The real images.** The sixteen files `brief/CONTENT.md` §13 lists are read from
+  `design/assets/` by `node scripts/build-figma-plugin.mjs` and injected into `code.js` as base64,
+  which is why that file is about 1.7 MB. The hero, the venue and all twelve artist portraits are
+  image fills, so the file — and anything exported from it — carries the photographs, not grey
+  boxes. On the `Exports` page, select the sixteen images and press Export to get the files back
+  by name. Figma re-encodes them on export: the dimensions match `design/assets/`, the file bytes
+  and JPEG compression will not.
 - **Export settings already applied** to all thirty-three source layers: PNG, 1×, sRGB, contents-only
   off. You do not pick layers by hand.
 - **Dev Mode annotations** on the five interactive areas CANON §9 makes non-negotiable demands about
