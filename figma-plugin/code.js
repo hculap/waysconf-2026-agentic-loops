@@ -2724,20 +2724,13 @@ function clone(value) {
 }
 
 /** A solid paint bound to a colour variable, with the literal as a visible fallback. */
-function solid(varName, opacity) {
+function solid(varName) {
   var rgb = RGB[varName] || { r: 1, g: 0, b: 1 };
-  var paint = {
-    type: 'SOLID',
-    color: { r: rgb.r, g: rgb.g, b: rgb.b },
-    opacity: opacity === undefined ? 1 : opacity
-  };
+  var paint = { type: 'SOLID', color: { r: rgb.r, g: rgb.g, b: rgb.b }, opacity: 1 };
   var variable = V[varName];
   if (variable) {
     try {
-      var bound = figma.variables.setBoundVariableForPaint(paint, 'color', variable);
-      /* Binding hands the paint back at full opacity. The first real builds drew the 10%
-         hover wash as a solid text/primary slab over every button label. */
-      return paint.opacity === 1 ? bound : Object.assign({}, bound, { opacity: paint.opacity });
+      return figma.variables.setBoundVariableForPaint(paint, 'color', variable);
     } catch (error) {
       warn('Could not bind a fill to ' + varName + ': ' + error.message);
     }
@@ -2745,8 +2738,15 @@ function solid(varName, opacity) {
   return paint;
 }
 
+/**
+ * A see-through fill goes on the layer, not the paint. A saved .fig keeps a paint bound to a
+ * colour variable at 100% whatever opacity the plugin gave it, which drew the 10% hover wash
+ * as a solid slab over every label and the 50% hero scrim as a black box. Layer opacity is
+ * kept, so the colour stays bound. Only used on layers that hold nothing but this fill.
+ */
 function setFill(node, varName, opacity) {
-  node.fills = [solid(varName, opacity)];
+  node.fills = [solid(varName)];
+  if (opacity !== undefined && opacity < 1) node.opacity = opacity;
 }
 
 function setStroke(node, varName, weight, align) {
