@@ -16,9 +16,13 @@
 --fg:#FFFFFF;--fg-2:#D1D5DB;--fg-3:#9CA3AF;--accent:#10B981;--accent-2:#34D399;
 --amber:#F59E0B;--danger:#F87171;--on-accent:#0A0A0A}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* No smooth scrolling. The During tab is thirty thousand pixels long, and a smooth jump from
+   prompt 08 back to the top was still travelling a second later — motion nobody asked for,
+   and a rail click that did not arrive when checked. Anchors jump. */
+/* Every anchor target lands below the sticky header instead of underneath it. */
+[id]{scroll-margin-top:88px}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.62 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .skip{position:absolute;left:16px;top:16px;z-index:99;transform:translateY(-250%);background:var(--accent);color:var(--on-accent);padding:12px 16px;border-radius:999px;font-weight:600;text-decoration:none;transition:transform .15s}
 .skip:focus{transform:none}
@@ -224,9 +228,9 @@ footer p{font-size:14px;color:var(--fg-3)}
     <li><a href="#the-eight-prompts">The eight prompts</a></li>
     <li><a href="#start">Start</a></li>
     <li><a href="#look-at-the-design">Look at the design</a></li>
-    <li><a href="#figma-zip-agent">Figma → zip → agent</a></li>
+    <li><a href="#figma-fig-agent">Figma → .fig → agent</a></li>
     <li><a href="#route-a-you-connected-figma-to-the-agent">Route A — you connected Figma to the agent</a></li>
-    <li><a href="#route-b-you-exported-it-yourself">Route B — you exported it yourself</a></li>
+    <li><a href="#route-b-the-fig-file">Route B — the .fig file</a></li>
     <li><a href="#build-it">Build it</a></li>
     <li><a href="#write-the-checker">Write the checker</a></li>
     <li><a href="#the-loop-2">The loop</a></li>
@@ -244,31 +248,30 @@ footer p{font-size:14px;color:var(--fg-3)}
 <h1>During the workshop</h1>
 <p class="lede">You need the design and this page. There is nothing to clone and no code to read — everything else, your agent makes for itself.</p>
 <div class="need">
-  <a href="https://github.com/hculap/waysconf-2026-agentic-loops"><b>The design, in Figma</b><span>The link goes here on the day. You will duplicate it to your own drafts and export from there.</span><em>Link on the day</em></a>
-  <a href="#getting-the-design-out-of-figma"><b>Then export it</b><span>Select the frames, Export as SVG, and Figma hands you a zip. That zip is what your agent reads.</span><em>Three clicks · below</em></a>
+  <a href="https://github.com/hculap/waysconf-2026-agentic-loops"><b>The design, in Figma</b><span>The link goes here on the day. You will duplicate it to your own drafts and save a local copy from there.</span><em>Link on the day</em></a>
+  <a href="#getting-the-design-out-of-figma"><b>Then save a copy</b><span>File → Save local copy, and Figma gives you one <code>.fig</code> file. That file is what your agent reads.</span><em>Two clicks · below</em></a>
 </div>
 
-<p class="need__alt">No Figma account, or it is being difficult? The <a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design already exported — <em>optional</em>, and enough to do the whole workshop.</p>
+<p class="need__alt">No Figma account, or it is being difficult? <a href="../turbine.fig" download>Download turbine.fig</a> (5&nbsp;MB), the same file already saved. The <a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design as pictures, tokens and copy — <em>optional</em>, for an agent that cannot read the file.</p>
 
 <h2 id="getting-the-design-out-of-figma">Getting the design out of Figma</h2>
 
-<p>Your agent cannot see your screen. It needs the design as files, and the three clicks that produce them are ones you already know.</p>
+<p>Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.</p>
 
 
 <ol class="steps">
-  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. You cannot export from a file you only have read access to.</li>
-  <li><b>Select the frames.</b> Click the first frame on the canvas, then shift-click the rest. Select the frames themselves, not the page — selecting the page gives you one enormous file.</li>
-  <li><b>Export as SVG.</b> Right-hand panel, bottom, <strong>Export</strong> → the format dropdown → <strong>SVG</strong> → <strong>Export</strong>.</li>
-  <li><b>Figma gives you a zip.</b> More than one layer at a time always comes down zipped. Unzip it next to your project, in a folder called <code>design</code>.</li>
+  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. In a file you can only view, saving a local copy may not be offered.</li>
+  <li><b>Save a local copy.</b> Open the main menu (the Figma icon, top left), then <strong>File</strong> → <strong>Save local copy…</strong></li>
+  <li><b>You get one <code>.fig</code> file.</b> Beside your project, make a folder called <code>design</code> and put the file in it.</li>
 </ol>
 
 <div class="rules">
-  <div><b>SVG, not PNG.</b> An SVG keeps every string as text and every fill as a value, so the agent reads the design instead of guessing at a photograph of it. Take the PNGs as well if you want something to look at — they cost nothing.</div>
-  <div><b>Do not tick "outline text".</b> It turns every word into shapes, and the copy stops being readable to anything but an eye.</div>
+  <div><b>The file, not a picture of it.</b> A <code>.fig</code> is the design itself — the text as text, the colours as values, the variables, the components and the photos — so the agent reads the design instead of guessing at a photograph of it.</div>
+  <div><b>Your agent decodes it, and may need the internet to do so.</b> Nothing outside Figma opens a <code>.fig</code>, so the agent works the format out itself, sometimes with a small package it installs. The room has network. If Codex asks to go online, say yes.</div>
   <div><b>The folder goes beside your project, not inside it.</b> Your agent will be told where to look in prompt 02.</div>
 </div>
 
-<p class="need__alt">If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip all of this. Prompt 02 has that route too.</p>
+<p class="need__alt">If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip this. That connection needs a paid Figma seat; prompt 02 has the route.</p>
 <p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
 <hr>
 <p>Everything on the slides, on one page, so you can read it back afterwards instead of photographing a screen. The pictures are the same ones on the wall, and they are yours to reuse.</p>
@@ -342,7 +345,7 @@ what did not, and why.</code></pre></div>
 <figure class="fig"><img src="../diagrams/04-mcp-topology.svg" alt="An agent connected to a design file, a browser and a deploy target" loading="lazy" width="1600" height="980"></figure>
 <p>An agent given a screenshot infers every colour and every measurement from pixels. It will be <em>nearly</em> right — an orange, some spacing — and nearly right is what fails a contrast check and looks subtly wrong beside the real design.</p>
 <p>Given the token file, it infers nothing. <code>#FF6A1A</code> is in the file.</p>
-<p>That is the entire argument for connecting an agent to Figma, or for handing it <code>tokens.json</code>. <strong>MCP</strong> is just the standard way to make that connection: a coding agent calling tools that are not inside it — a design file, a browser, a deploy target.</p>
+<p>That is the entire argument for connecting an agent to Figma, or for handing it the <code>.fig</code> file itself. <strong>MCP</strong> is just the standard way to make that connection: a coding agent calling tools that are not inside it — a design file, a browser, a deploy target.</p>
 <hr>
 <h2 id="when-one-agent-is-not-enough">When one agent is not enough</h2>
 <figure class="fig"><img src="../diagrams/05-dynamic-workflow.svg" alt="Three review passes fanning out, every finding sent to be refuted, and a majority filter" loading="lazy" width="1800" height="1000"></figure>
@@ -427,16 +430,18 @@ before and I would like to follow along.</code></pre></div>
 <section class="step" id="p02">
   <p class="step__no">Prompt 02</p>
   <h2 id="look-at-the-design">Look at the design</h2>
-  <p>The agent reads the design and tells you what it found. It writes nothing. This is the cheapest correction you will get all day: a wrong assumption costs one sentence to fix here, and twenty minutes of generated code to fix later.</p>
-<p><strong>First get the design out of Figma and next to your project.</strong> Three clicks, and Figma does the zipping for you.</p>
+  <p>The agent reads the design and tells you what it found. It writes no page yet. This is the cheapest correction you will get all day: a wrong assumption costs one sentence to fix here, and twenty minutes of generated code to fix later.</p>
+<p><strong>First put the design next to your project.</strong> One file: the Figma file itself.</p>
 <hr>
-<h2 id="figma-zip-agent">Figma → zip → agent</h2>
-<ol><li>Open the TURBINE file and <strong>Duplicate to your drafts</strong>. It is yours now; poke at it.</li><li>Select the frames on the canvas.</li><li>Right-hand panel → <strong>Export</strong> → choose <strong>SVG</strong> → <strong>Export</strong>.</li><li>Figma hands you a <strong>zip</strong>. Unzip it beside your project, into a folder called <code>design</code>.</li></ol>
-<p><strong>Export SVG, not PNG.</strong> A PNG is a picture of the design: the agent has to infer every colour and every measurement from pixels, and it will be <em>nearly</em> right — which is exactly what fails a contrast check and looks subtly wrong next to the real thing. An SVG carries the text as text and the fills as values, so there is nothing left to infer.</p>
-<p>Take the PNGs too if you like. They cost nothing and they are useful to look at.</p>
+<h2 id="figma-fig-agent">Figma → .fig → agent</h2>
+<ol><li>Open the TURBINE file and <strong>Duplicate to your drafts</strong>. It is yours now; poke at it.</li><li>Main menu (the Figma icon, top left) → <strong>File</strong> → <strong>Save local copy…</strong></li><li>Figma saves a file ending in <strong><code>.fig</code></strong>. Beside your project, make a folder called</li></ol>
+<p>   <code>design</code> and put the file in it.</p>
+<p>No Figma account? The workshop page has the same file ready to download. Put it in the same place.</p>
+<p><strong>The file, not a picture of it.</strong> A PNG is a picture of the design: the agent has to infer every colour and every measurement from pixels, and it will be <em>nearly</em> right — which is exactly what fails a contrast check and looks subtly wrong next to the real thing. The <code>.fig</code> is the design itself: the text as text, the colours as values, the variables, the components and the photos. There is nothing left to infer.</p>
+<p>Your agent has no program that opens a <code>.fig</code>, so it decodes the file itself. That takes it ten to fifteen minutes, and it may install a small package from the internet to do it. <strong>The room has network, so let it</strong> — if Codex asks before going online, say yes.</p>
 <hr>
 <h2 id="route-a-you-connected-figma-to-the-agent">Route A — you connected Figma to the agent</h2>
-<p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex. The agent reads the live file and you can skip the export.</p>
+<p>Use this if <code>figma</code> appears when you run <code>/mcp</code> in Claude Code, or <code>codex mcp list</code> in Codex. The agent reads the live file and you can skip the <code>.fig</code>. It needs a paid Figma seat with Dev Mode; on a free account use Route B.</p>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5">Copy</button></div><pre id="p5"><code>Read the design file through the Figma MCP server:
 &lt;paste the Figma link here&gt;
 
@@ -452,38 +457,58 @@ Do not write any code yet. Tell me what you found, as a list:
 Point 6 is the one I care about most. Be specific and be honest: &quot;I cannot tell what
 happens to the lineup grid below 500px&quot; is more useful to me than a confident guess.</code></pre></div>
 <hr>
-<h2 id="route-b-you-exported-it-yourself">Route B — you exported it yourself</h2>
+<h2 id="route-b-the-fig-file">Route B — the .fig file</h2>
 <p>The ordinary route, and what the rest of this pack assumes.</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>There is a folder called design next to this project. It is what I exported out of Figma.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Beside this project there is a folder called design with a .fig file in it. That is the
+Figma file itself, saved with &quot;Save local copy&quot;. It is not a picture: it is the whole
+design as data — every text, colour, variable, component and photo.
 
-Read all of it. The SVG files carry the real text and the real fill values — read those
-rather than guessing from any images. Do not write any code yet. Tell me what you found,
-as a list:
+There is no tool that opens it, so decode it. What is known about the format:
+
+- A .fig is a zip. The design is in canvas.fig inside it. thumbnail.png is only a small
+  preview picture: do not work from it.
+- canvas.fig starts with the bytes &quot;fig-kiwi&quot; and a version number, then chunks, each
+  prefixed with its length. The first chunk is a schema in the kiwi binary format
+  (github.com/evanw/kiwi); the second is the document, encoded with that schema. Each
+  chunk is compressed, with raw deflate or with zstd.
+- The images folder inside the zip holds the photos, named by the hash the fills use.
+- Skip anything marked isSoftDeleted, and anything that belongs to something marked so.
+  It was deleted in Figma and is still in the file.
+- Text inside a component can come from component properties and overrides. If every
+  card of the same kind shows the same words, you are reading the component rather than
+  the instances. Resolve that before you trust any copy.
+
+You may install a package to do this; the network is available. Keep what you decode in a
+folder called design-data inside this project, so the next steps read it instead of
+decoding again. Do not write any page code yet.
+
+Then tell me what you found, as a list:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from the design, and what it is used for.
+2. Every colour, by its name from the design, with its exact value, and what it is used for.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
 5. Every piece of copy, section by section.
-6. Anything the files disagree about, or do not tell you, and that you would otherwise
-   have to guess.
+6. Anything the file disagrees with itself about, or does not tell you, and that you would
+   otherwise have to guess.
 
-Point 6 is the one I care about most. Be specific and be honest: &quot;the export shows a hover
+Point 6 is the one I care about most. Be specific and be honest: &quot;the file shows a hover
 state I have no values for&quot; is more useful to me than a confident guess.</code></pre></div>
 <hr>
-<p><strong>What you should see.</strong> A list. Read it. Two things are worth your attention:</p>
+<p><strong>What you should see.</strong> Ten to fifteen minutes of the agent working the file out, then a long list. Read it. Two things are worth your attention:</p>
 <ul><li><strong>Does it describe your design?</strong> If it says &quot;a hero, three feature cards and a pricing</li></ul>
 <p>  table&quot; and your design has a lineup of twelve artists, it is looking at something else,   or at nothing.</p>
 <ul><li><strong>What is in point 6?</strong> That list is the brief you forgot to write. Answer it now, in</li></ul>
 <p>  your own words, before moving on. If point 6 is empty, the agent is guessing and has not   said so — ask it <code>which of those did you read, and which did you infer?</code></p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>Figma returns an error or 401</td><td>Your account does not include Dev Mode. Export it yourself instead — Route B, nothing downstream changes.</td></tr><tr><td>It read only the pictures</td><td><code>Where did you get those colour values? If you sampled them from an image, say so.</code> Sampled values fail a token check: &quot;close to the brand orange&quot; is not the brand orange. Export SVG as well.</td></tr><tr><td>The export is one enormous file</td><td>You selected the page rather than the frames. Select the frames themselves and export again.</td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>It describes a page you do not recognise</td><td>It is not reading your file. Check the link, or switch to Route B.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Figma returns an error or 401</td><td>Your account does not include Dev Mode. Use the <code>.fig</code> instead — Route B, nothing downstream changes.</td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr><tr><td>It describes a page you do not recognise</td><td>It is not reading your file. Check the link, or switch to Route B.</td></tr></tbody></table></div>
 <hr>
 <h3>Why this prompt exists at all</h3>
-<p>It produces nothing. That is the point.</p>
+<p>It produces no page. That is the point.</p>
 <p>Everything that goes wrong later in a design-to-code loop went wrong here, invisibly: the agent guessed a colour, assumed a breakpoint, invented a word. Forcing it to say what it saw — <em>before</em> it can hide the guess inside four hundred lines of markup — is the highest return per second of anything in this session.</p>
-<p>In Claude Code this is what <strong>plan mode</strong> does for you automatically (<code>Shift+Tab</code> until the footer says <em>plan mode on</em>). This prompt is plan mode written out by hand, so that it works in any agent.</p>
+<p>It is also the first loop of the day, and you did not have to set it up. The agent has never opened a <code>.fig</code>. You gave it five facts about the format; it wrote a decoder, looked at what came out, and tried again until the names on the cards were real names. That is the shape of everything after prompt 04.</p>
+<p>In Claude Code, <strong>plan mode</strong> is the same idea built in (<code>Shift+Tab</code> until the footer says <em>plan mode on</em>): look first, say what you found, change nothing. This prompt is that idea written out by hand, so that it works in any agent.</p>
 </section>
 <section class="step" id="p03">
   <p class="step__no">Prompt 03</p>

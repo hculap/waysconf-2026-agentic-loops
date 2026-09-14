@@ -16,9 +16,13 @@
 --fg:#FFFFFF;--fg-2:#D1D5DB;--fg-3:#9CA3AF;--accent:#10B981;--accent-2:#34D399;
 --amber:#F59E0B;--danger:#F87171;--on-accent:#0A0A0A}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* No smooth scrolling. The During tab is thirty thousand pixels long, and a smooth jump from
+   prompt 08 back to the top was still travelling a second later — motion nobody asked for,
+   and a rail click that did not arrive when checked. Anchors jump. */
+/* Every anchor target lands below the sticky header instead of underneath it. */
+[id]{scroll-margin-top:88px}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.62 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .skip{position:absolute;left:16px;top:16px;z-index:99;transform:translateY(-250%);background:var(--accent);color:var(--on-accent);padding:12px 16px;border-radius:999px;font-weight:600;text-decoration:none;transition:transform .15s}
 .skip:focus{transform:none}
@@ -250,7 +254,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Darmowa wystarczy. Połączenie Figmy z agentem wymaga płatnego miejsca, więc design można też po prostu wyeksportować — żadna droga nie jest zamknięta.</p>
+    <p>Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i dajesz go agentowi. Bezpośrednie połączenie Figmy z agentem wymaga płatnego miejsca, ale nic od niego nie zależy.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Załóż konto</a></p>
     <p class="card__t">darmowy plan w zupełności wystarczy</p>
   </div>
@@ -380,7 +384,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>Darmowy plan GitHuba obejmuje 120 rdzeniogodzin miesięcznie. Ta sesja zużywa jakieś dwie.</p>
 <hr>
 <h2 id="pytania-kt-re-ludzie-zadaj">Pytania, które ludzie zadają</h2>
-<div class="faq"><details><summary>Nigdy nie używałem terminala.</summary><p>Dobrze — jedna trzecia sali też nie. Jest o tym osobna sekcja wyżej, a pierwsze, o co poprosisz agenta, to żeby tłumaczył każdą komendę na bieżąco.</p></details><details><summary>Czy muszę umieć programować?</summary><p>Nie. Będziesz czytać kod i mówić po ludzku, co jest nie tak z wynikiem. Dokładnie o tej robocie jest ta sesja.</p></details><details><summary>Nie chcę płacić za subskrypcję AI.</summary><p>Darmowe plany obu produktów nie obejmują narzędzia w terminalu, więc na darmowym koncie pętla nie ruszy. Najtańszy plan któregokolwiek wystarczy, a potem można zrezygnować.</p></details><details><summary>Mam darmową Figmę.</summary><p>To połączenie Figma–agent odmówi i nic poza tym się nie zmienia. Design eksportujesz sam — trzy kliknięcia — i dajesz agentowi zipa.</p></details><details><summary>Służbowy laptop nie pozwala mi nic instalować.</summary><p>Skorzystaj z wersji w przeglądarce. Dostajesz gotową maszynę ze wszystkim i nie instalujesz niczego.</p></details><details><summary>Czy to zadziała na Windows?</summary><p>Tak. Używaj PowerShella, nie starego Wiersza polecenia. Reszta sesji jest identyczna.</p></details><details><summary>A jeśli zostanę w tyle?</summary><p>Nie da się — nie w sposób, który ma znaczenie. Każdy prompt stoi sam: jeśli któryś idzie źle, powiedz agentowi, żeby przestał, i wklej następny. Wpół zbudowana strona z działającym checkerem uczy więcej niż skończona bez niego.</p></details><details><summary>Co zabieram do domu?</summary><p>Działający adres URL, stronę z promptami i design. Wszystko zostaje online po konferencji.</p></details></div>
+<div class="faq"><details><summary>Nigdy nie używałem terminala.</summary><p>Dobrze — jedna trzecia sali też nie. Jest o tym osobna sekcja wyżej, a pierwsze, o co poprosisz agenta, to żeby tłumaczył każdą komendę na bieżąco.</p></details><details><summary>Czy muszę umieć programować?</summary><p>Nie. Będziesz czytać kod i mówić po ludzku, co jest nie tak z wynikiem. Dokładnie o tej robocie jest ta sesja.</p></details><details><summary>Nie chcę płacić za subskrypcję AI.</summary><p>Darmowe plany obu produktów nie obejmują narzędzia w terminalu, więc na darmowym koncie pętla nie ruszy. Najtańszy plan któregokolwiek wystarczy, a potem można zrezygnować.</p></details><details><summary>Mam darmową Figmę.</summary><p>To bezpośrednie połączenie Figma–agent odmówi i nic poza tym się nie zmienia. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi.</p></details><details><summary>Czy na warsztacie będę potrzebować internetu?</summary><p>Tak, i na sali on jest. Agent instaluje paczki, rozkodowuje plik Figmy i publikuje twoją stronę — wszystko to idzie przez sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.</p></details><details><summary>Służbowy laptop nie pozwala mi nic instalować.</summary><p>Skorzystaj z wersji w przeglądarce. Dostajesz gotową maszynę ze wszystkim i nie instalujesz niczego.</p></details><details><summary>Czy to zadziała na Windows?</summary><p>Tak. Używaj PowerShella, nie starego Wiersza polecenia. Reszta sesji jest identyczna.</p></details><details><summary>A jeśli zostanę w tyle?</summary><p>Nie da się — nie w sposób, który ma znaczenie. Każdy prompt stoi sam: jeśli któryś idzie źle, powiedz agentowi, żeby przestał, i wklej następny. Wpół zbudowana strona z działającym checkerem uczy więcej niż skończona bez niego.</p></details><details><summary>Co zabieram do domu?</summary><p>Działający adres URL, stronę z promptami i design. Wszystko zostaje online po konferencji.</p></details></div>
 <hr>
 <h2 id="w-dniu-warsztatu">W dniu warsztatu</h2>
 <p><strong>Weź ze sobą:</strong> laptopa, ładowarkę i słuchawki, jeśli lubisz przy nich pracować.</p>

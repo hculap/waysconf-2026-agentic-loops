@@ -72,7 +72,7 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Darmowa wystarczy. Połączenie Figmy z agentem wymaga płatnego miejsca, więc design można też po prostu wyeksportować — żadna droga nie jest zamknięta.',
+      body: 'Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i dajesz go agentowi. Bezpośrednie połączenie Figmy z agentem wymaga płatnego miejsca, ale nic od niego nie zależy.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Załóż konto' }],
       meta: 'darmowy plan w zupełności wystarczy',
     },
@@ -152,14 +152,13 @@ export default {
 
   exportSteps: {
     steps: [
-      '<b>Zduplikuj.</b> Otwórz plik i wybierz <strong>Duplicate to your drafts</strong>. Z pliku, do którego masz tylko podgląd, nic nie wyeksportujesz.',
-      '<b>Zaznacz ramki.</b> Kliknij pierwszą ramkę na kanwie, resztę z shiftem. Zaznacz same ramki, nie stronę — zaznaczenie strony da ci jeden ogromny plik.',
-      '<b>Eksportuj jako SVG.</b> Prawy panel, na dole, <strong>Export</strong> → lista formatów → <strong>SVG</strong> → <strong>Export</strong>.',
-      '<b>Figma daje ci zipa.</b> Więcej niż jedna warstwa naraz zawsze schodzi spakowana. Rozpakuj obok projektu, do folderu <code>design</code>.',
+      '<b>Zduplikuj.</b> Otwórz plik i wybierz <strong>Duplicate to your drafts</strong>. W pliku, który możesz tylko oglądać, zapisu lokalnej kopii może nie być.',
+      '<b>Zapisz lokalną kopię.</b> Otwórz menu główne (ikona Figmy w lewym górnym rogu), potem <strong>File</strong> → <strong>Save local copy…</strong>',
+      '<b>Dostajesz jeden plik <code>.fig</code>.</b> Obok projektu załóż folder <code>design</code> i włóż do niego plik.',
     ],
     rules: [
-      '<b>SVG, nie PNG.</b> SVG trzyma każdy napis jako tekst, a każdy kolor jako wartość — agent czyta design, zamiast zgadywać ze zdjęcia. PNG-i weź też, jeśli chcesz mieć na co patrzeć; nic nie kosztują.',
-      '<b>Nie zaznaczaj „outline text".</b> Zamienia każde słowo w kształty i tekst przestaje być czytelny dla czegokolwiek poza okiem.',
+      '<b>Plik, a nie jego zdjęcie.</b> <code>.fig</code> to sam design — tekst jako tekst, kolory jako wartości, zmienne, komponenty i zdjęcia — więc agent czyta design, zamiast zgadywać ze zdjęcia.',
+      '<b>Agent sam go rozkoduje i może do tego potrzebować internetu.</b> Poza Figmą nic nie otwiera plików <code>.fig</code>, więc agent rozgryza format sam, czasem z małą paczką, którą instaluje. Na sali jest sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.',
       '<b>Folder ląduje obok projektu, nie w środku.</b> Gdzie ma szukać, agent dowie się w prompcie 02.',
     ],
   },
@@ -186,7 +185,11 @@ export default {
     ],
     [
       'Mam darmową Figmę.',
-      'To połączenie Figma–agent odmówi i nic poza tym się nie zmienia. Design eksportujesz sam — trzy kliknięcia — i dajesz agentowi zipa.',
+      'To bezpośrednie połączenie Figma–agent odmówi i nic poza tym się nie zmienia. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi.',
+    ],
+    [
+      'Czy na warsztacie będę potrzebować internetu?',
+      'Tak, i na sali on jest. Agent instaluje paczki, rozkodowuje plik Figmy i publikuje twoją stronę — wszystko to idzie przez sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.',
     ],
     [
       'Służbowy laptop nie pozwala mi nic instalować.',
@@ -213,19 +216,19 @@ export default {
       'Otwórz i wybierz <strong>Duplicate to your drafts</strong>. Jest twój — grzeb w nim, psuj, nic się nie stanie.',
     figmaReadyCta: 'Otwórz w Figmie',
     figmaPending:
-      'Link pojawi się tutaj w dniu warsztatu. Zduplikujesz plik do siebie i wyeksportujesz ze swojej kopii.',
+      'Link pojawi się tutaj w dniu warsztatu. Zduplikujesz plik do siebie i zapiszesz lokalną kopię ze swojej wersji.',
     figmaPendingCta: 'Link w dniu warsztatu',
-    exportTitle: 'Potem go wyeksportuj',
+    exportTitle: 'Potem zapisz kopię',
     exportBody:
-      'Zaznacz ramki, Export jako SVG — Figma daje ci zipa. Ten zip czyta twój agent.',
-    exportCta: 'Trzy kliknięcia · niżej',
-    packAlt: (href) =>
-      `Nie masz konta w Figmie albo coś nie idzie? <a href="${href}" download>Gotowa paczka</a> (7&nbsp;MB) to ten sam design, już wyeksportowany — <em>opcjonalna</em>, i w zupełności wystarczy na cały warsztat.`,
+      'File → Save local copy — Figma daje ci jeden plik <code>.fig</code>. Ten plik czyta twój agent.',
+    exportCta: 'Dwa kliknięcia · niżej',
+    packAlt: (href, figHref) =>
+      `Nie masz konta w Figmie albo coś nie idzie? <a href="${figHref}" download>Pobierz turbine.fig</a> (5&nbsp;MB) — ten sam plik, już zapisany. <a href="${href}" download>Gotowa paczka</a> (7&nbsp;MB) to ten sam design jako obrazy, tokeny i teksty — <em>opcjonalna</em>, na wypadek gdyby agent nie dał rady z plikiem.`,
     exportHeading: 'Jak wyciągnąć design z Figmy',
     exportIntro:
-      'Twój agent nie widzi twojego ekranu. Potrzebuje designu jako plików, a trzy kliknięcia, które je robią, już znasz.',
+      'Twój agent nie widzi twojego ekranu. Potrzebuje designu jako pliku, a Figma zapisze cały design w jednym.',
     mcpNote:
-      'Jeśli twój agent jest podłączony do Figmy bezpośrednio — <code>figma</code> pojawia się w <code>/mcp</code> — możesz to wszystko pominąć. Prompt 02 ma też tę drogę.',
+      'Jeśli twój agent jest podłączony do Figmy bezpośrednio — <code>figma</code> pojawia się w <code>/mcp</code> — możesz to pominąć. To połączenie wymaga płatnego miejsca w Figmie; prompt 02 ma tę drogę.',
   },
   pages: {
     beforeH1: 'Zanim przyjdziesz',

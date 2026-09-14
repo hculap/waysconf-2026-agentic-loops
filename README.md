@@ -16,7 +16,7 @@ You need **two things**. Neither of them is code.
 
 | | |
 |---|---|
-| **The design** | The TURBINE file in Figma, plus a [design pack](design-pack/) — the same design as three PNGs, every colour and size, and every word |
+| **The design** | The TURBINE file in Figma, saved as one `.fig` that the agent reads by itself — plus a [design pack](design-pack/), the same design as three PNGs, every colour and size, and every word |
 | **[The prompts](https://waysconf.szymonpaluch.com/workshop/)** | Eight things to say to your agent, with a copy button on each |
 
 There is **nothing to clone**, no script to run and no code to read. You start in an empty

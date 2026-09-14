@@ -186,8 +186,8 @@ test kontrastu i wygląda subtelnie źle obok prawdziwego designu.
 
 Kiedy dostaje plik z wartościami, nie wyprowadza niczego. `#FF6A1A` jest w pliku.
 
-To jest cały argument za podłączeniem agenta do Figmy albo za wyeksportowaniem designu jako
-SVG. **MCP** to po prostu standardowy sposób robienia takiego połączenia: agent wołający
+To jest cały argument za podłączeniem agenta do Figmy albo za daniem mu samego pliku
+`.fig`. **MCP** to po prostu standardowy sposób robienia takiego połączenia: agent wołający
 narzędzia, których nie ma w sobie — plik designu, przeglądarkę, miejsce publikacji.
 
 ---

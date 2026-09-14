@@ -16,9 +16,13 @@
 --fg:#FFFFFF;--fg-2:#D1D5DB;--fg-3:#9CA3AF;--accent:#10B981;--accent-2:#34D399;
 --amber:#F59E0B;--danger:#F87171;--on-accent:#0A0A0A}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* No smooth scrolling. The During tab is thirty thousand pixels long, and a smooth jump from
+   prompt 08 back to the top was still travelling a second later — motion nobody asked for,
+   and a rail click that did not arrive when checked. Anchors jump. */
+/* Every anchor target lands below the sticky header instead of underneath it. */
+[id]{scroll-margin-top:88px}
 body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.62 Inter,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .skip{position:absolute;left:16px;top:16px;z-index:99;transform:translateY(-250%);background:var(--accent);color:var(--on-accent);padding:12px 16px;border-radius:999px;font-weight:600;text-decoration:none;transition:transform .15s}
 .skip:focus{transform:none}
@@ -250,7 +254,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Free is enough. The connection between Figma and an agent needs a paid seat, so the design also ships as files — nothing is blocked either way.</p>
+    <p>Free is enough. You save the design out of Figma as one file and hand that to your agent. The direct Figma-to-agent connection needs a paid seat, and nothing depends on it.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Create an account</a></p>
     <p class="card__t">free tier is fine</p>
   </div>
@@ -380,7 +384,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>GitHub's free tier includes 120 core-hours a month. This session uses about two.</p>
 <hr>
 <h2 id="questions-people-ask">Questions people ask</h2>
-<div class="faq"><details><summary>I have never used a terminal.</summary><p>Good — a third of the room has not either. There is a section on it above, and the first thing your agent is asked to do is explain each command as it goes.</p></details><details><summary>Do I need to know how to code?</summary><p>No. You will read code and say what is wrong with the result in plain English. That is the job the session is about.</p></details><details><summary>I do not want to pay for an AI subscription.</summary><p>The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.</p></details><details><summary>My Figma is free.</summary><p>Then the Figma-to-agent connection will refuse, and nothing else changes. You export the design yourself — three clicks — and hand your agent the zip.</p></details><details><summary>My work laptop will not let me install things.</summary><p>Use the browser option. You get a full machine with everything on it and you install nothing.</p></details><details><summary>Will this work on Windows?</summary><p>Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.</p></details><details><summary>What if I fall behind?</summary><p>You cannot, in a way that matters. Every prompt stands alone — if one is going badly, tell your agent to stop and paste the next. A half-built page with a working checker teaches more than a finished page with none.</p></details><details><summary>What do I take home?</summary><p>A live URL, the page of prompts, and the design. All of it stays online after the conference.</p></details></div>
+<div class="faq"><details><summary>I have never used a terminal.</summary><p>Good — a third of the room has not either. There is a section on it above, and the first thing your agent is asked to do is explain each command as it goes.</p></details><details><summary>Do I need to know how to code?</summary><p>No. You will read code and say what is wrong with the result in plain English. That is the job the session is about.</p></details><details><summary>I do not want to pay for an AI subscription.</summary><p>The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.</p></details><details><summary>My Figma is free.</summary><p>Then the direct Figma-to-agent connection will refuse, and nothing else changes. You save the file out of Figma — two clicks — and hand it to your agent.</p></details><details><summary>Will I need the internet during the workshop?</summary><p>Yes, and the room has it. Your agent installs packages, decodes the Figma file and publishes your site, and all three go over the network. If Codex asks before going online, say yes.</p></details><details><summary>My work laptop will not let me install things.</summary><p>Use the browser option. You get a full machine with everything on it and you install nothing.</p></details><details><summary>Will this work on Windows?</summary><p>Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.</p></details><details><summary>What if I fall behind?</summary><p>You cannot, in a way that matters. Every prompt stands alone — if one is going badly, tell your agent to stop and paste the next. A half-built page with a working checker teaches more than a finished page with none.</p></details><details><summary>What do I take home?</summary><p>A live URL, the page of prompts, and the design. All of it stays online after the conference.</p></details></div>
 <hr>
 <h2 id="on-the-day">On the day</h2>
 <p><strong>Bring:</strong> your laptop, your charger, and headphones if you like working with them.</p>

@@ -123,11 +123,19 @@ whether to stop.
 
 ## F
 
+**.fig** — see **Figma file**.
+
 **Figma Dev Mode** — The Figma view that exposes measurements, variables and generated code for a
-selection instead of editing tools. In this workshop: the handover point for spacing and token values.
-Without a paid seat you lose nothing here: `design/FIGMA-SPEC.md` carries the measurements frame by
-frame, `design/tokens/` carries the values and `design/export/` carries the reference screenshots.
-`docs/CONNECTING-FIGMA.md` has a route to the live file that works on a free account.
+selection instead of editing tools. It needs a paid seat, and so does the official Figma MCP server.
+Without one you lose nothing here: the `.fig` file carries the whole design, and `design/FIGMA-SPEC.md`,
+`design/tokens/` and `design/export/` carry it again as plain files. `docs/CONNECTING-FIGMA.md` has
+the limits for each route.
+
+**Figma file (.fig)** — What Figma writes when you choose File → Save local copy: one file holding the
+entire design — every page, text layer, colour, variable, component and photo. It is a zip around
+Figma's own binary format, which no other program opens, so an agent reads it by writing a decoder.
+In this workshop: the design handoff in prompt 02, and the thing `checks/handoff.mjs` inspects before
+it goes to thirty people.
 
 ## G
 

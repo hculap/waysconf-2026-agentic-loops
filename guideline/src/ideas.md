@@ -186,8 +186,8 @@ check and looks subtly wrong beside the real design.
 
 Given the token file, it infers nothing. `#FF6A1A` is in the file.
 
-That is the entire argument for connecting an agent to Figma, or for handing it
-`tokens.json`. **MCP** is just the standard way to make that connection: a coding agent
+That is the entire argument for connecting an agent to Figma, or for handing it the
+`.fig` file itself. **MCP** is just the standard way to make that connection: a coding agent
 calling tools that are not inside it — a design file, a browser, a deploy target.
 
 ---

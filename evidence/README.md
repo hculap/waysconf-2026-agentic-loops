@@ -9,6 +9,7 @@ does is a promise, not a demonstration. This directory is the difference.
 |---|---|
 | `INCIDENTS.md` | Every real failure hit while building this repository, written down at the time. Most of them are failures of the **verifier**, not of the page. |
 | `prompt-trial.md` / `prompt-trial-codex.json` | **The one that matters now.** The eight prompts run against Codex in an empty folder outside every repository — which is what a participant actually does. Per-prompt timings, what the agent wrote, and the checker it built for itself. |
+| `fig-trial-claude-2026-09-14.md` | Prompt 02 given a saved Figma file and nothing else, in an empty folder: 16 minutes, 61 turns, twelve of twelve artist names, and the trap it fell into and climbed out of. Run with permissions bypassed, so the prompts a participant would see are not measured. |
 | `guideline-gate.md` | The gate on the participant site, broken on purpose five ways to prove it notices. Includes the 38 axe *incomplete* nodes measured from pixels rather than trusted. |
 | `dry-run-codex.md` / `.json` | A clean-room trial: the repository exactly as a participant receives it, in a fresh worktree, with Codex CLI pointed at it. Per-iteration timings, gate counts, which criteria each pass cleared, and whether the agent touched the verifier. |
 | `dry-run-claude.md` / `.json` | The same trial with Claude Code, so the two are comparable. |

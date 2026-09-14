@@ -26,6 +26,8 @@ The published address used in `README.md` is `https://waysconf.szymonpaluch.com`
 | `fonts/*.woff2` | The same three faces the TURBINE site self-hosts, copied from `public/fonts/`. |
 | `fonts/fonts.css` | `@font-face` for those three, with relative paths so the folder works from `file://`, from a Netlify drop and from a subdirectory. |
 | `fonts/OFL-*.txt` | The SIL Open Font License for each family. Required to ship alongside the woff2 files; do not remove them. |
+| `turbine.fig` | The TURBINE Figma file, saved with File → Save local copy, for anyone without a Figma account. Replace it whenever the file in Figma changes, and run `node checks/handoff.mjs guideline/turbine.fig` on the new one. |
+| `design-pack.zip` | The same design as PNGs, tokens and copy — the fallback for an agent that cannot read the `.fig`. |
 
 ## Constraints this page holds itself to
 

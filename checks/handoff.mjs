@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 /**
- * What can an agent actually read out of a Figma export?
+ * What can an agent actually read out of a Figma file or a Figma export?
  *
+ *   node checks/handoff.mjs path/to/turbine.fig
  *   node checks/handoff.mjs path/to/export.zip
  *   node checks/handoff.mjs path/to/design-folder
  *
- * The workshop hands a designer three clicks — select the frames, Export as SVG, unzip —
- * and then asks an agent to build from the result. Whether that result is usable is not
+ * The workshop hands a designer a couple of clicks — Save local copy, or select the frames
+ * and Export as SVG — and then asks an agent to build from the result. Whether that result
+ * is usable is not
  * obvious by looking at it: a folder of exports looks equally fine whether the text inside
  * is real text or was flattened into outlines on the way out, and the failure only shows up
  * twenty minutes later as invented copy and colours that are *nearly* right.
@@ -18,18 +20,125 @@
  */
 
 import { execFileSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import { join, extname, resolve, basename } from 'node:path'
+import { listFig, readFig } from './lib/fig.mjs'
 
 const target = process.argv[2]
 if (!target) {
-  console.error('usage: node checks/handoff.mjs <export.zip | design-folder>')
+  console.error('usage: node checks/handoff.mjs <file.fig | export.zip | design-folder>')
   process.exit(2)
 }
 const path = resolve(target)
 
 const MIN_COLOURS = 4
 const MIN_WORDS = 40
+
+const addWords = (words, text) => {
+  for (const w of String(text).split(/\s+/)) {
+    const clean = w.replace(/[^\p{L}\p{N}'’-]/gu, '')
+    if (clean.length > 1) words.add(clean.toLowerCase())
+  }
+}
+
+// ── a .fig ───────────────────────────────────────────────────────────────────
+
+const hex = ({ r, g, b }) =>
+  '#' + [r, g, b].map((v) => Math.round(v * 255).toString(16).padStart(2, '0')).join('').toUpperCase()
+
+/**
+ * The saved Figma file itself. Nothing was exported, so nothing can have been flattened on
+ * the way out: the question is only whether the document decodes and has the design in it.
+ * @returns {number} the exit code
+ */
+function reportFig() {
+  let fig
+  try {
+    if (!existsSync(path)) throw new Error(`${target} does not exist`)
+    fig = readFig(path)
+  } catch (error) {
+    console.log(`Reading ${basename(path)}\n`)
+    console.log(`FAIL — the file does not decode\n\n  - ${error.message}`)
+    return 1
+  }
+  const live = fig.nodes.filter((node) => !node.isSoftDeleted)
+  const of = (type) => live.filter((node) => node.type === type)
+  const words = new Set()
+  const colours = new Set()
+
+  for (const node of live) {
+    if (node.textData) addWords(words, node.textData.characters)
+    for (const a of node.componentPropAssignments ?? []) {
+      if (a.varValue?.value?.textDataValue) addWords(words, a.varValue.value.textDataValue.characters)
+    }
+    for (const o of node.symbolData?.symbolOverrides ?? []) {
+      if (o.textData) addWords(words, o.textData.characters)
+    }
+    for (const paint of [...(node.fillPaints ?? []), ...(node.strokePaints ?? [])]) {
+      if (paint.type === 'SOLID' && paint.visible !== false && paint.color) colours.add(hex(paint.color))
+    }
+    for (const entry of node.variableDataValues?.entries ?? []) {
+      if (entry.variableData?.value?.colorValue) colours.add(hex(entry.variableData.value.colorValue))
+    }
+  }
+
+  const pages = of('CANVAS').filter((page) => !page.internalOnly)
+  // Deleting a collection soft-deletes the collection but not its variables, so a variable
+  // counts only if the collection it belongs to is still there.
+  const guid = (g) => `${g.sessionID}:${g.localID}`
+  const liveSets = new Set(of('VARIABLE_SET').map((set) => guid(set.guid)))
+  const variables = of('VARIABLE').filter((v) => v.variableSetID?.guid && liveSets.has(guid(v.variableSetID.guid)))
+  const images = fig.entries.filter((name) => name.startsWith('images/'))
+  // Text wired to a component property. A reader that ignores the wiring sees every
+  // instance of a card with the component's sample text — twelve cards, one artist.
+  const propText = of('TEXT').filter((node) =>
+    (node.parameterConsumptionMap?.entries ?? []).some((e) => e.variableField === 'TEXT_DATA' && e.variableData?.value?.propRefValue))
+  const fileName = fig.meta?.file_name ?? '(no meta.json)'
+
+  console.log(`Reading ${basename(path)}  —  a Figma file, format version ${fig.version}\n`)
+  console.log(`  file name        ${fileName}`)
+  console.log(`  pages            ${pages.length}  (${pages.map((page) => page.name).join(', ')})`)
+  console.log(`  text layers      ${of('TEXT').length}`)
+  console.log(`  distinct words   ${words.size}`)
+  console.log(`  distinct colours ${colours.size}${colours.size ? `  (${[...colours].slice(0, 6).join(' ')}${colours.size > 6 ? ' …' : ''})` : ''}`)
+  console.log(`  variables        ${variables.length} in ${liveSets.size} collection(s)`)
+  console.log(`  components       ${of('SYMBOL').length}, placed ${of('INSTANCE').length} times`)
+  console.log(`  images           ${images.length}`)
+  console.log(`  deleted, still in the file ${fig.nodes.length - live.length} node(s) — an agent must skip anything marked isSoftDeleted`)
+  if (propText.length) {
+    console.log(`  property text    ${propText.length} text layer(s) take their words from a component property — read the instances, not the component`)
+  }
+
+  const failures = []
+  if (of('TEXT').length === 0) failures.push('the document has no text layers at all.')
+  if (words.size < MIN_WORDS) failures.push(`only ${words.size} distinct words in the whole file — the copy is not in here.`)
+  if (colours.size < MIN_COLOURS) failures.push(`only ${colours.size} distinct colours — the design values are not in here.`)
+  if (fileName === 'Untitled') {
+    console.log('\n  note: the file is still called "Untitled". Rename it in Figma before handing it out.')
+  }
+
+  if (failures.length) {
+    console.log(`\nFAIL — an agent would have to guess\n`)
+    for (const f of failures) console.log(`  - ${f}`)
+    return 1
+  }
+  console.log('\nPASS — the file decodes, the copy is text, the colours are values')
+  return 0
+}
+
+const looksLikeFig = async () => {
+  if (extname(path).toLowerCase() === '.fig') return true
+  const info = await stat(path).catch(() => null)
+  if (!info || info.isDirectory()) return false
+  try {
+    return listFig(path).includes('canvas.fig')
+  } catch {
+    return false
+  }
+}
+
+if (await looksLikeFig()) process.exit(reportFig())
 
 // ── read either shape ────────────────────────────────────────────────────────
 
@@ -94,18 +203,12 @@ const harvest = (text) => {
   for (const m of text.matchAll(/rgb\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)/g)) colours.add(m[0].replace(/\s+/g, ''))
 }
 
-const addWords = (text) => {
-  for (const w of text.split(/\s+/)) {
-    const clean = w.replace(/[^\p{L}\p{N}'’-]/gu, '')
-    if (clean.length > 1) words.add(clean.toLowerCase())
-  }
-}
 
 for (const svg of svgs) {
   harvest(svg.text)
   const texts = [...svg.text.matchAll(/<text[\s>][\s\S]*?<\/text>/g)]
   textNodes += texts.length
-  for (const t of texts) addWords(t[0].replace(/<[^>]+>/g, ' '))
+  for (const t of texts) addWords(words, t[0].replace(/<[^>]+>/g, ' '))
   // A file full of paths and no text is the signature of "outline text" being ticked.
   if (texts.length === 0 && (svg.text.match(/<path/g) ?? []).length > 20) outlinedHint++
 }
@@ -117,7 +220,7 @@ const dataFiles = others.filter((f) =>
   ['.json', '.md', '.txt', '.csv'].includes(extname(f.name).toLowerCase()) && f.text.length > 0)
 for (const f of dataFiles) {
   harvest(f.text)
-  addWords(f.text.replace(/<[^>]+>/g, ' '))
+  addWords(words, f.text.replace(/<[^>]+>/g, ' '))
 }
 
 console.log(`Reading ${basename(path)}\n`)

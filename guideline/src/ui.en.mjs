@@ -71,7 +71,7 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Free is enough. The connection between Figma and an agent needs a paid seat, so the design also ships as files — nothing is blocked either way.',
+      body: 'Free is enough. You save the design out of Figma as one file and hand that to your agent. The direct Figma-to-agent connection needs a paid seat, and nothing depends on it.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Create an account' }],
       meta: 'free tier is fine',
     },
@@ -150,14 +150,13 @@ export default {
 
   exportSteps: {
     steps: [
-      '<b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. You cannot export from a file you only have read access to.',
-      '<b>Select the frames.</b> Click the first frame on the canvas, then shift-click the rest. Select the frames themselves, not the page — selecting the page gives you one enormous file.',
-      '<b>Export as SVG.</b> Right-hand panel, bottom, <strong>Export</strong> → the format dropdown → <strong>SVG</strong> → <strong>Export</strong>.',
-      '<b>Figma gives you a zip.</b> More than one layer at a time always comes down zipped. Unzip it next to your project, in a folder called <code>design</code>.',
+      '<b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. In a file you can only view, saving a local copy may not be offered.',
+      '<b>Save a local copy.</b> Open the main menu (the Figma icon, top left), then <strong>File</strong> → <strong>Save local copy…</strong>',
+      '<b>You get one <code>.fig</code> file.</b> Beside your project, make a folder called <code>design</code> and put the file in it.',
     ],
     rules: [
-      '<b>SVG, not PNG.</b> An SVG keeps every string as text and every fill as a value, so the agent reads the design instead of guessing at a photograph of it. Take the PNGs as well if you want something to look at — they cost nothing.',
-      '<b>Do not tick "outline text".</b> It turns every word into shapes, and the copy stops being readable to anything but an eye.',
+      '<b>The file, not a picture of it.</b> A <code>.fig</code> is the design itself — the text as text, the colours as values, the variables, the components and the photos — so the agent reads the design instead of guessing at a photograph of it.',
+      '<b>Your agent decodes it, and may need the internet to do so.</b> Nothing outside Figma opens a <code>.fig</code>, so the agent works the format out itself, sometimes with a small package it installs. The room has network. If Codex asks to go online, say yes.',
       '<b>The folder goes beside your project, not inside it.</b> Your agent will be told where to look in prompt 02.',
     ],
   },
@@ -184,7 +183,11 @@ export default {
     ],
     [
       'My Figma is free.',
-      'Then the Figma-to-agent connection will refuse, and nothing else changes. You export the design yourself — three clicks — and hand your agent the zip.',
+      'Then the direct Figma-to-agent connection will refuse, and nothing else changes. You save the file out of Figma — two clicks — and hand it to your agent.',
+    ],
+    [
+      'Will I need the internet during the workshop?',
+      'Yes, and the room has it. Your agent installs packages, decodes the Figma file and publishes your site, and all three go over the network. If Codex asks before going online, say yes.',
     ],
     [
       'My work laptop will not let me install things.',
@@ -211,19 +214,19 @@ export default {
       'Open it, then <strong>Duplicate to your drafts</strong>. It is yours — poke at it, break it, it does not matter.',
     figmaReadyCta: 'Open in Figma',
     figmaPending:
-      'The link goes here on the day. You will duplicate it to your own drafts and export from there.',
+      'The link goes here on the day. You will duplicate it to your own drafts and save a local copy from there.',
     figmaPendingCta: 'Link on the day',
-    exportTitle: 'Then export it',
+    exportTitle: 'Then save a copy',
     exportBody:
-      'Select the frames, Export as SVG, and Figma hands you a zip. That zip is what your agent reads.',
-    exportCta: 'Three clicks · below',
-    packAlt: (href) =>
-      `No Figma account, or it is being difficult? The <a href="${href}" download>ready-made pack</a> (7&nbsp;MB) is the same design already exported — <em>optional</em>, and enough to do the whole workshop.`,
+      'File → Save local copy, and Figma gives you one <code>.fig</code> file. That file is what your agent reads.',
+    exportCta: 'Two clicks · below',
+    packAlt: (href, figHref) =>
+      `No Figma account, or it is being difficult? <a href="${figHref}" download>Download turbine.fig</a> (5&nbsp;MB), the same file already saved. The <a href="${href}" download>ready-made pack</a> (7&nbsp;MB) is the same design as pictures, tokens and copy — <em>optional</em>, for an agent that cannot read the file.`,
     exportHeading: 'Getting the design out of Figma',
     exportIntro:
-      'Your agent cannot see your screen. It needs the design as files, and the three clicks that produce them are ones you already know.',
+      'Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.',
     mcpNote:
-      'If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip all of this. Prompt 02 has that route too.',
+      'If your agent is connected to Figma directly — <code>figma</code> shows up in <code>/mcp</code> — you can skip this. That connection needs a paid Figma seat; prompt 02 has the route.',
   },
   pages: {
     beforeH1: 'Before you come',

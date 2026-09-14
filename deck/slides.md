@@ -195,8 +195,8 @@ browser path immediately rather than one at a time.
 
 ### The design
 
-The TURBINE file in Figma, and a **design pack** — the same design as three PNGs, every
-colour and size, and every word.
+The TURBINE file in Figma, saved as one **`.fig`** that your agent reads by itself. No
+Figma account? The same file is on the page.
 
 ### The prompts
 
@@ -374,20 +374,20 @@ find out anyway, and finding out from you costs nothing.
 
 <div class="mt-8 text-xl">
 
-The official Figma MCP server needs a paid seat. On a free account it connects and then
-declines to hand anything over.
+The official Figma MCP server needs a paid seat, and even then it runs on a budget. On a
+free account that budget is 20 calls a month — gone before the design is read.
 
 </div>
 
 <div class="cols mt-8">
 <div>
 
-### So the repository ships the design as data
+### So you hand over the file
 
 ```txt
-design/export/    PNGs at 390, 768, 1440
-design/tokens/    every colour, size, space
-design/FIGMA-SPEC.md   the layout, in numbers
+File → Save local copy → turbine.fig
+  canvas.fig   the whole document
+  images/      every photo
 ```
 
 Nothing in this workshop is blocked by a free Figma account.
@@ -395,21 +395,22 @@ Nothing in this workshop is blocked by a free Figma account.
 </div>
 <div>
 
-### And as a plugin that rebuilds the file
+### And the agent decodes it
 
-```txt
-figma-plugin/
-```
-
-Run it inside Figma and it constructs the whole TURBINE file — variables, text styles,
-components, every frame — from the same tokens the code uses.
+It has never seen a `.fig`. It writes a decoder, reads what comes out, and tries again
+until twelve cards carry twelve names — the first loop of the day. It may install a
+package to do it, so let it use the network.
 
 </div>
 </div>
 
 <!--
-The plugin is a genuinely nice thing to show for ten seconds. It also makes the
-point that "the design file" and "the code" can have one source rather than two.
+This is the moment to say the file is enough. Figma's own limits: Starter 20 MCP calls
+a month; View or Collab seats 6 a month on paid plans; Dev or Full 200 a day on
+Professional, 600 on Organization. A page read takes dozens.
+
+The plugin in figma-plugin/ built this file from the same tokens the code uses. Worth
+ten seconds if someone asks where the file came from, not a slide.
 -->
 
 ---

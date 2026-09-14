@@ -34,7 +34,7 @@ They lose nothing; they can copy their work across later.
 
 ---
 
-## The ten things that actually happen
+## The things that actually happen
 
 | What they say | What it is | What you say |
 |---|---|---|
@@ -47,7 +47,12 @@ They lose nothing; they can copy their work across later.
 | "Everything is red" | `npm run check` is doing its job | Correct and expected. That is the task list, not an error. |
 | "The agent says it's done but the check still fails" | The exact thing the talk is about | Say so — this is a good moment, not a problem. Have them paste `checks/report.md` back to the agent. |
 | "It changed the tests" | The agent edited `checks/` | `git checkout checks/` to restore, and tell them: this is the failure mode on the slide. |
-| "My Figma is free and the MCP thing won't connect" | Expected | Route A: the design is in `design/export/` and `design/tokens/`. Nothing is blocked. |
+| "My Figma is free and the MCP thing won't connect" | Expected | They do not need it. File → Save local copy, or download `turbine.fig` from the workshop page, and use Route B in prompt 02. Nothing is blocked. |
+| "There's no Save local copy" | They are in a file they can only view | Duplicate to your drafts first, then save from the copy. |
+| "The agent is installing things" or "Codex wants the network" | It is decoding the `.fig` | Normal. Say yes — the room has network. |
+| "Claude keeps asking me to approve commands" | Decoding the `.fig` is dozens of small commands | Say yes, and choose the option that stops it asking again for that kind of command. |
+| "Every artist card has the same name" | The agent read the component, not the instances | Have them tell it: resolve the component properties and overrides. The row is in prompt 02. |
+| "It's describing a tiny blurry page" | It read `thumbnail.png` inside the `.fig` | Have them tell it: work from `canvas.fig`, not the preview. |
 
 ---
 
