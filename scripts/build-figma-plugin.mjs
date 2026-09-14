@@ -263,25 +263,25 @@ const FIGMA_SPEC = {
 
   /* §2.3 — letter spacing. Figma stores em as a percentage of font size. */
   tracking: [
-    { name: 'tracking/tight', em: -0.02, percent: -2, source: 'CANON §5, all display type' },
+    { name: 'tracking/tight', em: -0.02, percent: -2, source: 'all display type' },
     { name: 'tracking/normal', em: 0, percent: 0, source: '—' },
-    { name: 'tracking/wide', em: 0.06, percent: 6, source: 'FIGMA-SPEC §12, eyebrows and mono tags' },
-    { name: 'tracking/wordmark', em: 0.18, percent: 18, source: 'CANON §5, wordmark lockup only' },
+    { name: 'tracking/wide', em: 0.06, percent: 6, source: 'eyebrows and mono tags' },
+    { name: 'tracking/wordmark', em: 0.18, percent: 18, source: 'wordmark lockup only' },
   ],
 
   /* §2.4 — fixed sizes with no counterpart in tokens.json. */
   scaleExtras: [
-    { name: 'border/hairline', value: 1, description: 'Hairline stroke. FIGMA-SPEC §2.4.' },
-    { name: 'border/focus', value: 2, description: 'Focus ring stroke. CANON §9 via FIGMA-SPEC §2.4.' },
-    { name: 'size/touch-min', value: 24, description: 'CANON §9 minimum touch target.' },
-    { name: 'size/tap-comfortable', value: 48, description: 'Used for every real control. FIGMA-SPEC §2.4.' },
+    { name: 'border/hairline', value: 1, description: 'Hairline stroke.' },
+    { name: 'border/focus', value: 2, description: 'Focus ring stroke.' },
+    { name: 'size/touch-min', value: 24, description: 'Minimum touch target.' },
+    { name: 'size/tap-comfortable', value: 48, description: 'Used for every real control.' },
   ],
 
   /* §2.5 — the only collection with more than one mode. */
   responsiveModes: ['Mobile 390', 'Tablet 768', 'Desktop 1440'],
   responsive: [
-    { name: 'responsive/gutter', values: [24, 48, 48], note: 'CANON §6 fixes 24 and 48; the reference site uses 48 from 768 up' },
-    { name: 'responsive/container-max', values: [342, 672, 1104], note: 'size/content-max (1200) includes the gutters, as on the reference site: 1200 − 2 × 48' },
+    { name: 'responsive/gutter', values: [24, 48, 48], note: '24 at 390, 48 from 768 up' },
+    { name: 'responsive/container-max', values: [342, 672, 1104], note: 'size/content-max (1200) includes the gutters: 1200 − 2 × 48' },
     { name: 'responsive/section-pad-y', values: [64, 96, 128], note: 'space/16, space/24, space/32' },
     { name: 'responsive/grid-columns', values: [4, 8, 12], note: '' },
     { name: 'responsive/grid-gutter', values: [16, 24, 24], note: '' },
@@ -429,8 +429,7 @@ const FIGMA_SPEC = {
     gap: 32,
     subtitle: 'Landing page — design file',
     meta: '12–14 June 2027 · The Powerhouse, Hall E · Kraków',
-    provenance:
-      'Fictional festival. Teaching material for WaysConf 2026. Source of truth: docs/CANON.md',
+    provenance: 'Fictional festival. Teaching material for WaysConf 2026.',
   },
 
   /* §5.12 — the skip link lives as a component and is instanced, hidden, into each nav. */
@@ -444,6 +443,56 @@ const FIGMA_SPEC = {
     { target: 'faq/trigger', text: 'button, aria-expanded, aria-controls -> faq/answer id. Native details/summary satisfies this without script.' },
     { target: 'newsletter/form', text: 'Visible label above the input, never a placeholder standing in for it. Consent unchecked on load. Messages announced politely, never as an alert dialog.' },
   ],
+}
+
+/* ==========================================================================
+   3b. The file stands on its own
+   ==========================================================================
+
+   The .fig is handed to people who have none of this repository. A description that says
+   "CANON §6" or "See CONTRAST.md" points at a document they do not have, and an agent
+   reading the file lists it as something the design does not tell it. So every string that
+   reaches Figma says what it means instead of where it came from, and emitting the bundle
+   fails if one still points outside the file. */
+
+/** Token descriptions in tokens.json cite the canon; the file carries the rule, not the cite. */
+const TOKEN_DESCRIPTION_FIXES = [
+  [/\s*See CONTRAST\.md\.?/g, ' The contrast matrix is on the Design system page.'],
+  [/CANON section 4 fixes dark ink, not white,/g, 'Dark ink, not white, is'],
+  [/Trap\. CANON section 8\. /g, 'Trap. '],
+]
+
+function selfContained(text) {
+  if (!text) return text
+  return TOKEN_DESCRIPTION_FIXES.reduce((out, [pattern, replacement]) => out.replace(pattern, replacement), text)
+}
+
+/** Microcopy rows in CONTENT.md point at its own sections; in the file they point at frames. */
+const SECTION_POINTERS = {
+  'see §7': 'see the Programme section',
+  'questions in §10': 'the questions in the FAQ section',
+  'see §11': 'see Newsletter messages, below',
+  'the visually hidden sentence in §5 is the accessible version':
+    'the visually hidden sentence under Ticker, below, is the accessible version',
+}
+
+function inFile(text) {
+  return text && SECTION_POINTERS[text] !== undefined ? SECTION_POINTERS[text] : text
+}
+
+const OUTSIDE_REFERENCE =
+  /§|\b[\w-]+\.md\b|\bCANON\b|FIGMA-SPEC|\bCONTRAST\b|\b(brief|docs|design|checks|src|prompts|scripts|guideline|figma-plugin)\/|reference site/
+
+/** Every string in the bundle that can end up in the file, with where it sits. */
+function outsideReferences(value, path = '', out = []) {
+  if (typeof value === 'string') {
+    if (OUTSIDE_REFERENCE.test(value)) out.push(`${path}: ${JSON.stringify(value.slice(0, 120))}`)
+  } else if (Array.isArray(value)) {
+    value.forEach((item, i) => outsideReferences(item, `${path}[${i}]`, out))
+  } else if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) outsideReferences(item, path ? `${path}.${key}` : key, out)
+  }
+  return out
 }
 
 /* ==========================================================================
@@ -473,16 +522,16 @@ function buildTokens(raw) {
         hex,
         rgb: hexToRgb(hex),
         aliasOf: alias,
-        description: FIGMA_SPEC.variableDescriptions[name] || token.$description || '',
+        description: FIGMA_SPEC.variableDescriptions[name] || selfContained(token.$description) || '',
       })
     } else if (group === 'spacing') {
-      scale.push({ name: `space/${path[1]}`, value: px(token.$value), description: 'CANON §6 spacing scale.' })
+      scale.push({ name: `space/${path[1]}`, value: px(token.$value), description: 'Spacing scale.' })
     } else if (group === 'radius') {
-      scale.push({ name: `radius/${path[1]}`, value: px(token.$value), description: token.$description || 'CANON §6 radius.' })
+      scale.push({ name: `radius/${path[1]}`, value: px(token.$value), description: selfContained(token.$description) || 'Radius.' })
     } else if (group === 'breakpoint') {
-      scale.push({ name: `breakpoint/${path[1]}`, value: px(token.$value), description: token.$description || 'CANON §6 breakpoint.' })
+      scale.push({ name: `breakpoint/${path[1]}`, value: px(token.$value), description: selfContained(token.$description) || 'Breakpoint.' })
     } else if (dotted === 'layout.maxWidth') {
-      scale.push({ name: 'size/content-max', value: px(token.$value), description: token.$description || 'CANON §6 content max width.' })
+      scale.push({ name: 'size/content-max', value: px(token.$value), description: selfContained(token.$description) || 'Content max width.' })
     } else if (group === 'typography' && path[1] === 'fontSize') {
       const r = rem(token.$value)
       size.push({ name: `text/${path[2]}`, value: r * 16, rem: r })
@@ -831,7 +880,7 @@ function buildContent(md) {
        the design does not place; they are listed, not positioned. */
     other: altKeys.filter((k) => !claimed.has(k)).map((k) => ({ file: k, alt: alt[k] })),
     all: alt,
-    manifest: tableWithHeader(imageBody, 'Path').rows.map((r) => ({ path: r[0], where: r[1], size: r[2] })),
+    manifest: tableWithHeader(imageBody, 'Path').rows.map((r) => ({ path: r[0].replace(/design\/assets\//g, ''), where: r[1], size: r[2] })),
     /* §13 is explicit that the venue map is a bordered placeholder box and not a
        file. Kept as a field so the plugin does not have to infer its absence. */
     map: altKeys.some((k) => /map/i.test(k)) ? roleOf(/map/i, 'map') : null,
@@ -840,7 +889,7 @@ function buildContent(md) {
 
   /* §14 Microcopy */
   const microTable = tableWithHeader(section('Interface microcopy and accessible names'), 'Where')
-  const microcopy = microTable.rows.map((r) => ({ where: r[0], string: r[1], note: r[2] }))
+  const microcopy = microTable.rows.map((r) => ({ where: r[0], string: inFile(r[1]), note: inFile(r[2]) }))
 
   return {
     meta,
@@ -885,7 +934,7 @@ function buildExports() {
     rows.push({ layer: bp.frame, suffix: `-${bp.width}`, file: `full-page-${bp.width}.png` })
   }
   expect(rows.length === 33, `FIGMA-SPEC §8.2 expects 33 export files, built ${rows.length}`)
-  return { directory: 'design/export/', sections: FIGMA_SPEC.exportSections, widths, rows }
+  return { sections: FIGMA_SPEC.exportSections, widths, rows }
 }
 
 /* ==========================================================================
@@ -922,6 +971,14 @@ const data = {
   exports: buildExports(),
   content,
 }
+
+/* meta names this generator's inputs for whoever reads data.generated.js; nothing in it is
+   written into Figma. Everything else can be. */
+const leaks = outsideReferences({ ...data, meta: undefined })
+expect(
+  leaks.length === 0,
+  `${leaks.length} string(s) would point outside the Figma file:\n  ${leaks.join('\n  ')}`,
+)
 
 const banner = [
   '/* ==========================================================================',

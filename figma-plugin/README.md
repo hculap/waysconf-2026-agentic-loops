@@ -118,6 +118,11 @@ Underneath that:
   lineup tab status lines, the newsletter messages, the programme as it reads at 390, and all eight
   FAQ answers. None of them is visible in a composed frame, so an SVG export of the sections alone
   would lose them — export this frame too.
+- **Nothing in the file points outside it.** The file goes to people who have none of this
+  repository, so no description, annotation or note says "CANON §6", "See CONTRAST.md" or
+  `design/assets/…` — each says the rule itself. `node scripts/build-figma-plugin.mjs` fails if
+  a string in the bundle still points outside the file, and `node checks/handoff.mjs` fails on a
+  saved `.fig` that does.
 - **The real images.** The sixteen files `brief/CONTENT.md` §13 lists are read from
   `design/assets/` by `node scripts/build-figma-plugin.mjs` and injected into `code.js` as base64,
   which is why that file is about 1.7 MB. The hero, the venue and all twelve artist portraits are
@@ -138,6 +143,14 @@ if you dislike the result, press Cmd/Ctrl+Z once.
 Run it in an **empty file**. If it finds a `Design system` page it stops and asks you to tick
 **Replace existing**, which clears the previous build — pages, collections and styles — before
 rebuilding.
+
+**The file you hand out must come from a single build in a new, empty file.** Figma never
+really deletes: every collection, style and page that Replace removes stays inside the saved
+`.fig` as deleted history, and a deleted collection's variables are not even marked. After a
+few Replace runs the TURBINE file carried 154 deleted nodes and 242 orphaned variables, some
+still describing the old build. Use Replace to iterate; for the file that goes to people,
+create a new design file, run the plugin once, and Save local copy. `node checks/handoff.mjs`
+fails on a `.fig` that carries any deleted history.
 
 ---
 

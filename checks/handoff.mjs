@@ -44,6 +44,36 @@ const addWords = (words, text) => {
 
 // ── a .fig ───────────────────────────────────────────────────────────────────
 
+/**
+ * A file handed to someone must stand on its own. "CANON §6", "See CONTRAST.md" or
+ * "img src=design/assets/…" in a description or an annotation points at a document the
+ * reader does not have, and an agent dutifully lists every one as something the design does
+ * not tell it. Site paths ("/images/og.jpg") and URLs are the page's own and do not count.
+ */
+const OUTSIDE = [
+  /§\s?\d/,
+  /\b[A-Z][A-Z-]{2,}\s+section\s+\d/,
+  /(?<![\w/:.@-])[\w-]+\.mdx?\b/,
+  /(?<![\w/:.@-])(?:[\w-]+\/)+[\w.-]+\.(?:md|json|css|js|mjs|ts|tsx|astro|html|jpe?g|png|svg|webp|txt|csv|ya?ml)\b/,
+]
+
+/** Every string a reader of the file can see: layer text, descriptions, annotations, plugin notes. */
+function readableStrings(node) {
+  const out = []
+  const add = (value) => typeof value === 'string' && value && out.push(value)
+  add(node.textData?.characters)
+  add(node.description)
+  for (const a of node.annotations ?? []) add(a.label)
+  for (const d of node.pluginData ?? []) add(d.value)
+  for (const a of node.componentPropAssignments ?? []) add(a.varValue?.value?.textDataValue?.characters)
+  for (const o of node.symbolData?.symbolOverrides ?? []) {
+    add(o.textData?.characters)
+    for (const a of o.annotations ?? []) add(a.label)
+    for (const d of o.pluginData ?? []) add(d.value)
+  }
+  return out
+}
+
 const hex = ({ r, g, b }) =>
   '#' + [r, g, b].map((v) => Math.round(v * 255).toString(16).padStart(2, '0')).join('').toUpperCase()
 
@@ -62,7 +92,17 @@ function reportFig() {
     console.log(`FAIL — the file does not decode\n\n  - ${error.message}`)
     return 1
   }
-  const live = fig.nodes.filter((node) => !node.isSoftDeleted)
+  const guid = (g) => `${g.sessionID}:${g.localID}`
+  // Deleting a collection soft-deletes the collection but not its variables, so a variable
+  // is live only if the collection it belongs to is. Everything else follows its own flag.
+  const liveSets = new Set(
+    fig.nodes.filter((node) => node.type === 'VARIABLE_SET' && !node.isSoftDeleted).map((set) => guid(set.guid)),
+  )
+  const isLive = (node) =>
+    !node.isSoftDeleted &&
+    (node.type !== 'VARIABLE' || Boolean(node.variableSetID?.guid && liveSets.has(guid(node.variableSetID.guid))))
+  const live = fig.nodes.filter(isLive)
+  const deleted = fig.nodes.filter((node) => !isLive(node))
   const of = (type) => live.filter((node) => node.type === type)
   const words = new Set()
   const colours = new Set()
@@ -84,17 +124,25 @@ function reportFig() {
   }
 
   const pages = of('CANVAS').filter((page) => !page.internalOnly)
-  // Deleting a collection soft-deletes the collection but not its variables, so a variable
-  // counts only if the collection it belongs to is still there.
-  const guid = (g) => `${g.sessionID}:${g.localID}`
-  const liveSets = new Set(of('VARIABLE_SET').map((set) => guid(set.guid)))
-  const variables = of('VARIABLE').filter((v) => v.variableSetID?.guid && liveSets.has(guid(v.variableSetID.guid)))
+  const variables = of('VARIABLE')
   const images = fig.entries.filter((name) => name.startsWith('images/'))
   // Text wired to a component property. A reader that ignores the wiring sees every
   // instance of a card with the component's sample text — twelve cards, one artist.
   const propText = of('TEXT').filter((node) =>
     (node.parameterConsumptionMap?.entries ?? []).some((e) => e.variableField === 'TEXT_DATA' && e.variableData?.value?.propRefValue))
   const fileName = fig.meta?.file_name ?? '(no meta.json)'
+  const pointsOutside = (nodes) => {
+    const found = new Map()
+    for (const node of nodes) {
+      for (const text of readableStrings(node)) {
+        if (OUTSIDE.some((pattern) => pattern.test(text))) found.set(text, (found.get(text) ?? 0) + 1)
+      }
+    }
+    return found
+  }
+  const outside = pointsOutside(live)
+  // Deleted history is not the design, but it is still in the file, and still readable.
+  const staleOutside = pointsOutside(deleted)
 
   console.log(`Reading ${basename(path)}  —  a Figma file, format version ${fig.version}\n`)
   console.log(`  file name        ${fileName}`)
@@ -105,7 +153,8 @@ function reportFig() {
   console.log(`  variables        ${variables.length} in ${liveSets.size} collection(s)`)
   console.log(`  components       ${of('SYMBOL').length}, placed ${of('INSTANCE').length} times`)
   console.log(`  images           ${images.length}`)
-  console.log(`  deleted, still in the file ${fig.nodes.length - live.length} node(s) — an agent must skip anything marked isSoftDeleted`)
+  console.log(`  deleted history  ${deleted.length} node(s)${staleOutside.size ? `, ${staleOutside.size} distinct text(s) in it pointing outside the file` : ''}`)
+  console.log(`  outside refs     ${outside.size} distinct text(s) point at documents that are not in the file`)
   if (propText.length) {
     console.log(`  property text    ${propText.length} text layer(s) take their words from a component property — read the instances, not the component`)
   }
@@ -114,6 +163,21 @@ function reportFig() {
   if (of('TEXT').length === 0) failures.push('the document has no text layers at all.')
   if (words.size < MIN_WORDS) failures.push(`only ${words.size} distinct words in the whole file — the copy is not in here.`)
   if (colours.size < MIN_COLOURS) failures.push(`only ${colours.size} distinct colours — the design values are not in here.`)
+  if (deleted.length) {
+    failures.push(
+      `the file carries ${deleted.length} deleted node(s) of history — ${fig.nodes.filter((node) => node.isSoftDeleted).length} marked ` +
+        `isSoftDeleted, the rest variables of deleted collections${staleOutside.size ? `, ${staleOutside.size} of their texts still pointing outside the file` : ''}. ` +
+        'A file you hand out must be the design and nothing else. Build it once into a new, empty Figma file and Save local copy from there.',
+    )
+  }
+  if (outside.size) {
+    const examples = [...outside.keys()].slice(0, 8).map((text) => `      ${JSON.stringify(text.length > 110 ? text.slice(0, 110) + '…' : text)}`)
+    failures.push(
+      `${outside.size} distinct text(s) in the file point at documents that are not in it. An agent lists each one ` +
+        `as something the design does not tell it. Write the rule itself into the file instead:\n${examples.join('\n')}` +
+        (outside.size > 8 ? `\n      … and ${outside.size - 8} more` : ''),
+    )
+  }
   if (fileName === 'Untitled') {
     console.log('\n  note: the file is still called "Untitled". Rename it in Figma before handing it out.')
   }

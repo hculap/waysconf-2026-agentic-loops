@@ -316,7 +316,8 @@
     } else if (message.type === 'needs-replace') {
       buildEl.disabled = false
       status('This file already has a TURBINE build', 'error')
-      line('Tick "Replace existing" to clear it and build again.', 'warn')
+      line('For a file you hand to anyone, build into a new, empty file instead. Replace works, but everything it removes stays in the file as deleted history.', 'warn')
+      line('To iterate here anyway, tick "Replace existing" and build again.', 'warn')
     } else if (message.type === 'done') {
       buildEl.disabled = false
       fillEl.style.width = '100%'

@@ -105,10 +105,13 @@ mentions them:
 
 - **`thumbnail.png`** is a picture. An agent that gives up on `canvas.fig` and describes the
   thumbnail is back to guessing from pixels.
-- **Deleted things are still in the file.** Every node Figma deleted stays in the document
-  marked `isSoftDeleted`. The TURBINE file carries 133 of them, including 14 whole variable
-  collections from earlier builds — and the 169 variables inside those collections are not
-  marked at all. Only the collection they belong to says they are gone.
+- **Deleted things are still in the file.** Figma never really deletes: a removed page, style
+  or collection stays in the saved document marked `isSoftDeleted`, and the variables of a
+  deleted collection are not marked at all. After a few rebuilds the TURBINE file carried 396
+  nodes of that history, some of it still describing the old build. The file handed out is
+  therefore one build into a new, empty Figma file with no history at all, and
+  `checks/handoff.mjs` fails on any. A participant's own file will have history; the prompt
+  tells the agent to skip it.
 - **Text in components comes from properties.** A card's name is a component property: the
   instance holds the value (`componentPropAssignments`), and the layer inside the component
   points at it (`parameterConsumptionMap`, a `PROP_REF` entry). A reader that follows only
@@ -127,7 +130,10 @@ node checks/handoff.mjs guideline/turbine.fig
 
 It decodes the file with no dependency, prints the pages, text layers, words, colours,
 variables, components and images it found, and exits non-zero if an agent would have to
-guess. It also says when the file is still called *Untitled*.
+guess — including when a description, annotation or note points at a document that is not in
+the file ("CANON §6", "See CONTRAST.md", a repository path). The file has to stand on its own:
+an agent lists every such pointer as something the design does not tell it. It also says when
+the file is still called *Untitled*.
 
 ### Route B — the export pack (no Figma account at all)
 

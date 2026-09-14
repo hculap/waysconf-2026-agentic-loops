@@ -99,7 +99,7 @@ const TURBINE_DATA = {
           "b": 0.305882
         },
         "aliasOf": null,
-        "description": "Focus ring base, dividers. 1.98:1 on bg.base: usable as an offset or underlay, never as the visible focus indicator on its own. See CONTRAST.md."
+        "description": "Focus ring base, dividers. 1.98:1 on bg.base: usable as an offset or underlay, never as the visible focus indicator on its own. The contrast matrix is on the Design system page."
       },
       {
         "name": "color/border/subtle",
@@ -154,7 +154,7 @@ const TURBINE_DATA = {
           "b": 0.05098
         },
         "aliasOf": "color/bg/base",
-        "description": "Alias of bg.base. CANON section 4 fixes dark ink, not white, as the text colour on accent.sodium and on every other accent or state fill."
+        "description": "Alias of bg.base. Dark ink, not white, is as the text colour on accent.sodium and on every other accent or state fill."
       },
       {
         "name": "color/text/primary",
@@ -183,72 +183,72 @@ const TURBINE_DATA = {
       {
         "name": "space/1",
         "value": 4,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/2",
         "value": 8,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/3",
         "value": 12,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/4",
         "value": 16,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/6",
         "value": 24,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/8",
         "value": 32,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/12",
         "value": 48,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/16",
         "value": 64,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/24",
         "value": 96,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "space/32",
         "value": 128,
-        "description": "CANON §6 spacing scale."
+        "description": "Spacing scale."
       },
       {
         "name": "radius/none",
         "value": 0,
-        "description": "CANON §6 radius."
+        "description": "Radius."
       },
       {
         "name": "radius/sm",
         "value": 4,
-        "description": "CANON §6 radius."
+        "description": "Radius."
       },
       {
         "name": "radius/md",
         "value": 8,
-        "description": "CANON §6 radius."
+        "description": "Radius."
       },
       {
         "name": "radius/lg",
         "value": 16,
-        "description": "CANON §6 radius."
+        "description": "Radius."
       },
       {
         "name": "radius/pill",
@@ -258,7 +258,7 @@ const TURBINE_DATA = {
       {
         "name": "breakpoint/mobile",
         "value": 390,
-        "description": "CANON §6 breakpoint."
+        "description": "Breakpoint."
       },
       {
         "name": "breakpoint/tablet",
@@ -268,7 +268,7 @@ const TURBINE_DATA = {
       {
         "name": "breakpoint/desktop",
         "value": 1440,
-        "description": "CANON §6 breakpoint."
+        "description": "Breakpoint."
       },
       {
         "name": "size/content-max",
@@ -278,22 +278,22 @@ const TURBINE_DATA = {
       {
         "name": "border/hairline",
         "value": 1,
-        "description": "Hairline stroke. FIGMA-SPEC §2.4."
+        "description": "Hairline stroke."
       },
       {
         "name": "border/focus",
         "value": 2,
-        "description": "Focus ring stroke. CANON §9 via FIGMA-SPEC §2.4."
+        "description": "Focus ring stroke."
       },
       {
         "name": "size/touch-min",
         "value": 24,
-        "description": "CANON §9 minimum touch target."
+        "description": "Minimum touch target."
       },
       {
         "name": "size/tap-comfortable",
         "value": 48,
-        "description": "Used for every real control. FIGMA-SPEC §2.4."
+        "description": "Used for every real control."
       }
     ],
     "type": {
@@ -445,7 +445,7 @@ const TURBINE_DATA = {
           "name": "tracking/tight",
           "em": -0.02,
           "percent": -2,
-          "source": "CANON §5, all display type"
+          "source": "all display type"
         },
         {
           "name": "tracking/normal",
@@ -457,13 +457,13 @@ const TURBINE_DATA = {
           "name": "tracking/wide",
           "em": 0.06,
           "percent": 6,
-          "source": "FIGMA-SPEC §12, eyebrows and mono tags"
+          "source": "eyebrows and mono tags"
         },
         {
           "name": "tracking/wordmark",
           "em": 0.18,
           "percent": 18,
-          "source": "CANON §5, wordmark lockup only"
+          "source": "wordmark lockup only"
         }
       ]
     },
@@ -481,7 +481,7 @@ const TURBINE_DATA = {
             48,
             48
           ],
-          "note": "CANON §6 fixes 24 and 48; the reference site uses 48 from 768 up"
+          "note": "24 at 390, 48 from 768 up"
         },
         {
           "name": "responsive/container-max",
@@ -490,7 +490,7 @@ const TURBINE_DATA = {
             672,
             1104
           ],
-          "note": "size/content-max (1200) includes the gutters, as on the reference site: 1200 − 2 × 48"
+          "note": "size/content-max (1200) includes the gutters: 1200 − 2 × 48"
         },
         {
           "name": "responsive/section-pad-y",
@@ -1061,7 +1061,7 @@ const TURBINE_DATA = {
     "gap": 32,
     "subtitle": "Landing page — design file",
     "meta": "12–14 June 2027 · The Powerhouse, Hall E · Kraków",
-    "provenance": "Fictional festival. Teaching material for WaysConf 2026. Source of truth: docs/CANON.md"
+    "provenance": "Fictional festival. Teaching material for WaysConf 2026."
   },
   "skipLink": {
     "height": 40,
@@ -1358,7 +1358,6 @@ const TURBINE_DATA = {
     }
   ],
   "exports": {
-    "directory": "design/export/",
     "sections": [
       "nav",
       "hero",
@@ -2375,27 +2374,27 @@ const TURBINE_DATA = {
       },
       "manifest": [
         {
-          "path": "design/assets/hero-hall.jpg",
+          "path": "hero-hall.jpg",
           "where": "Hero, full-bleed",
           "size": "2400 × 1350"
         },
         {
-          "path": "design/assets/artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg",
+          "path": "artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg",
           "where": "Lineup cards, twelve files",
           "size": "800 × 800"
         },
         {
-          "path": "design/assets/venue-exterior.jpg",
+          "path": "venue-exterior.jpg",
           "where": "Venue, left column",
           "size": "1600 × 1200"
         },
         {
-          "path": "design/assets/og-card.jpg",
+          "path": "og-card.jpg",
           "where": "Social card, published at `/images/og-card.jpg`",
           "size": "1200 × 630"
         },
         {
-          "path": "design/assets/texture-grain.png",
+          "path": "texture-grain.png",
           "where": "Decorative overlay",
           "size": "256 × 256, tiles"
         }
@@ -2436,7 +2435,7 @@ const TURBINE_DATA = {
       {
         "where": "Ticker strip",
         "string": "aria-hidden=\"true\"",
-        "note": "the visually hidden sentence in §5 is the accessible version"
+        "note": "the visually hidden sentence under Ticker, below, is the accessible version"
       },
       {
         "where": "Lineup tab list",
@@ -2445,7 +2444,7 @@ const TURBINE_DATA = {
       },
       {
         "where": "Programme captions",
-        "string": "see §7",
+        "string": "see the Programme section",
         "note": "one per day table"
       },
       {
@@ -2465,12 +2464,12 @@ const TURBINE_DATA = {
       },
       {
         "where": "FAQ items",
-        "string": "questions in §10",
+        "string": "the questions in the FAQ section",
         "note": "the question sits in an `h3` inside the control, unchanged"
       },
       {
         "where": "Newsletter messages",
-        "string": "see §11",
+        "string": "see Newsletter messages, below",
         "note": "announced politely, never as an alert dialog"
       },
       {
