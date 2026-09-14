@@ -84,11 +84,11 @@ About three thousand layers across six pages, in the order `design/FIGMA-SPEC.md
 | Page | What lands there |
 |---|---|
 | `Cover` | The 1600×960 cover frame, set as the file thumbnail |
-| `Design system` | The token proof sheet, the measured contrast matrix, seventeen type specimens, and all ten component sets plus the skip link |
+| `Design system` | The token proof sheet, the measured contrast matrix, twenty-seven type specimens, and all ten component sets plus the skip link |
 | `Desktop 1440` | `TURBINE / Desktop 1440` — the ten exported section frames, composed |
 | `Tablet 768` | The same sections at 768, with the §6 deltas applied |
 | `Mobile 390` | The same sections at 390, with the §7 deltas applied |
-| `Exports` | The sixteen images with their alt text, and `exports/content`, every string the frames do not show |
+| `Exports` | The fifteen images the page uses, with their alt text, and the favicon as a vector; `exports/content`, every string the frames do not show; and `exports/behaviour`, everything the page does that a still frame cannot show |
 
 Underneath that:
 
@@ -100,21 +100,35 @@ Underneath that:
   `Limited to 1 modes only`), the build does not stop: `TURBINE / Responsive` keeps the single
   `Desktop 1440` mode, the Tablet and Mobile frames get their gutters, section padding and lead
   sizes written as plain values instead, and the panel logs one warning saying so. The frames should
-  look the same; the difference is that those values in the tablet and mobile frames are not variables,
-  and the lead text there loses its `Body/Lead` style link.
-- **Seventeen text styles**, each binding family, weight and size to a variable. Line height and
-  letter spacing are percentages written on the style: Figma reads a number variable bound to either
-  as pixels, so binding `leading/tight` (108) gives 108px leading instead of 108%.
-- **Ten component sets and 75 components**: Button (24 variants), Input (15), Nav (10), TabBar (4)
-  with its nested Tab (4), ArtistCard (3), TicketCard (3), TimetableRow (4), FaqRow (2), Ticker (2),
-  Footer (3: `wide`, `stacked`, `compact`), and the `a11y/skip-link` component.
+  look the same; the difference is that those values in the tablet and mobile frames are not variables.
+- **Twenty-seven text styles**, each binding family, weight and size to a variable. The four sizes
+  that change with the width — hero TURBINE, section h2, h3 and lead — are three styles each
+  (`Display/Section/390`, `/768`, `/1440`), because one mode cannot hold three sizes and a heading
+  with its size typed over the style is a detached heading. Every text layer in every frame is on a
+  style. Line height and letter spacing are percentages written on the style: Figma reads a number
+  variable bound to either as pixels, so binding `leading/tight` (108) gives 108px leading.
+- **Ten component sets and 66 components**: Button (24 variants), Input (15), Nav (3: `full`,
+  `compact`, `compact-open`), TabBar (4) with its nested Tab (4), ArtistCard (3, each with its
+  billing badge), TicketCard (3), TimetableRow (2), FaqRow (2), Ticker (2), Footer (3: `wide`,
+  `stacked`, `compact`), and the `a11y/skip-link` component. No Nav variant marks a link active and
+  no timetable row is striped, because the page does neither.
 - **Measured from the reference site, not only from the spec.** Content is 1104 wide at 1440 and
   672 at 768 (CANON §6's 1200 read as including the 48px gutters, and 48 at tablet rather than
   FIGMA-SPEC's 32); artist cards 258 / 208 / 163; ticket cards 352; h2 leading 100% / 111% / 120%
   and h3 120% / 133%; four even programme columns; a one-line programme row at 390; a footer whose
   link columns sit two across at 768 and 390. `design/FIGMA-SPEC.md` §4, §6 and §12 still describe
   the earlier numbers.
-- **`exports/content`**: the document head, the seventeen accessible names and hidden labels, the
+- **Matched to the page where the page and the spec disagreed**: the hover wash is 10% under the
+  label, the focus ring 2px at 2px outside, buttons pad 32 / 24, the email field is bg/base with a
+  border/strong edge, legal text is text/secondary, the ticker sits on bg/base, the hero content
+  sits in the same 1104 column as every section, programme colour follows the content (artists
+  text/primary, empty stages text/secondary), every FAQ row loads closed, and only the FAQ heading
+  has a kicker.
+- **`exports/behaviour`**: widths and breakpoints, the layout of each section between them, hover
+  and focus, the mobile menu (also drawn open beside the Mobile 390 frame), the lineup filter, the
+  questions, form validation, motion, the hero crop and scrims, fonts, icons and the photo copies.
+- **`exports/content`**: the document head (lang, canonical, locale, icon), the hidden table captions,
+  the seventeen accessible names and hidden labels, the
   lineup tab status lines, the newsletter messages, the programme as it reads at 390, and all eight
   FAQ answers. None of them is visible in a composed frame, so without this sheet the file would not
   hold the whole page.
@@ -123,7 +137,7 @@ Underneath that:
   `design/assets/…` — each says the rule itself. `node scripts/build-figma-plugin.mjs` fails if
   a string in the bundle still points outside the file, and `node checks/handoff.mjs` fails on a
   saved `.fig` that does.
-- **The real images.** The sixteen files `brief/CONTENT.md` §13 lists are read from
+- **The real images.** The fifteen files from `brief/CONTENT.md` §13 that the page shows are read from
   `design/assets/` by `node scripts/build-figma-plugin.mjs` and injected into `code.js` as base64,
   which is why that file is about 1.7 MB. The hero, the venue and all twelve artist portraits are
   image fills, so the file — and anything exported from it — carries the photographs, not grey
@@ -136,7 +150,9 @@ Underneath that:
   `npm run baseline`, not from Figma.
 - **Dev Mode annotations** on the five interactive areas CANON §9 makes non-negotiable demands about
   — nav, lineup tabs, programme tables, FAQ trigger, newsletter form — plus alt text on every image
-  frame, because a picture of an accordion does not say `aria-expanded`.
+  frame and an href on every link, because a picture of an accordion does not say `aria-expanded`.
+- **Icons as vectors** drawn from the page's own SVG paths — menu, info, Instagram, Bandcamp,
+  Mastodon — so each one is a real vector, not a picture of one.
 
 **Time:** a minute or two on a recent laptop. The fifteen hundred text nodes are the slow part; the
 progress line in the panel names the step it is on. Everything the plugin makes is one undo step, so

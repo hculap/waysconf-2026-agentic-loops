@@ -247,6 +247,38 @@ const round2 = (n) => Math.round(n * 100) / 100
    Values the token file deliberately does not carry. Each one names its section.
    ========================================================================== */
 
+/**
+ * One text style per breakpoint for the four sizes that change with the width. A
+ * collection on a Starter plan has one mode, so a single style bound to a responsive
+ * variable could only ever be the 1440 size, and every heading at 768 and 390 had its
+ * size and line height typed over the style — detached. Three styles keep every layer
+ * on a style. Arrays run 390, 768, 1440, like the responsive values.
+ */
+function responsiveStyles(bases) {
+  const widths = [390, 768, 1440]
+  return bases.flatMap((b) => {
+    const record = RESPONSIVE_TYPE.find((r) => r.name === b.responsive)
+    return widths.map((width, i) => ({
+      name: `${b.base}/${width}`,
+      family: b.family,
+      weight: b.weight,
+      size: record.alias[i],
+      px: record.values[i],
+      leadingPercent: b.leadingPercent[i],
+      tracking: b.tracking,
+      textCase: b.textCase,
+      usedBy: `${b.usedBy}, at ${width === 1440 ? '1440 and up' : width === 768 ? '768 to 1439' : 'below 768'}`,
+    }))
+  })
+}
+
+const RESPONSIVE_TYPE = [
+  { name: 'responsive/type/wordmark-hero', values: [40, 72, 96], alias: ['text/4xl', 'text/6xl', 'text/7xl'] },
+  { name: 'responsive/type/section-h2', values: [32, 40, 56], alias: ['text/3xl', 'text/4xl', 'text/5xl'] },
+  { name: 'responsive/type/subsection-h3', values: [24, 24, 32], alias: ['text/2xl', 'text/2xl', 'text/3xl'] },
+  { name: 'responsive/type/lead', values: [18, 18, 20], alias: ['text/lg', 'text/lg', 'text/xl'] },
+]
+
 const FIGMA_SPEC = {
   file: 'TURBINE — Landing page', // §0
   pages: ['Cover', 'Design system', 'Desktop 1440', 'Tablet 768', 'Exports'], // §1, mobile spliced in below
@@ -258,7 +290,7 @@ const FIGMA_SPEC = {
     { name: 'leading/tight', percent: 108, css: '1.08' },
     { name: 'leading/snug', percent: 125, css: '1.25' },
     { name: 'leading/normal', percent: 150, css: '1.5' },
-    { name: 'leading/relaxed', percent: 162, css: '1.625' },
+    { name: 'leading/relaxed', percent: 162.5, css: '1.625' },
   ],
 
   /* §2.3 — letter spacing. Figma stores em as a percentage of font size. */
@@ -274,7 +306,7 @@ const FIGMA_SPEC = {
     { name: 'border/hairline', value: 1, description: 'Hairline stroke.' },
     { name: 'border/focus', value: 2, description: 'Focus ring stroke.' },
     { name: 'size/touch-min', value: 24, description: 'Minimum touch target.' },
-    { name: 'size/tap-comfortable', value: 48, description: 'Used for every real control.' },
+    { name: 'size/tap-comfortable', value: 48, description: 'Medium buttons, the email field, nav links, the menu button, social links and FAQ questions (56 below 768, 64 from 768). Small buttons and tabs are 40, footer links 37, the checkbox 24 inside a taller label row. Every control clears size/touch-min.' },
   ],
 
   /* §2.5 — the only collection with more than one mode. */
@@ -285,27 +317,37 @@ const FIGMA_SPEC = {
     { name: 'responsive/section-pad-y', values: [64, 96, 128], note: 'space/16, space/24, space/32' },
     { name: 'responsive/grid-columns', values: [4, 8, 12], note: '' },
     { name: 'responsive/grid-gutter', values: [16, 24, 24], note: '' },
-    { name: 'responsive/type/wordmark-hero', values: [40, 72, 96], alias: ['text/4xl', 'text/6xl', 'text/7xl'] },
-    { name: 'responsive/type/section-h2', values: [32, 40, 56], alias: ['text/3xl', 'text/4xl', 'text/5xl'] },
-    { name: 'responsive/type/subsection-h3', values: [24, 24, 32], alias: ['text/2xl', 'text/2xl', 'text/3xl'] },
-    { name: 'responsive/type/lead', values: [18, 18, 20], alias: ['text/lg', 'text/lg', 'text/xl'] },
+    ...RESPONSIVE_TYPE,
   ],
 
   /* §2.2 — the description Dev Mode hands to the model that writes the CSS. */
   variableDescriptions: {
     'color/text/muted':
-      'Legal and footer only. 4.1:1 on bg/base — fails AA for body copy. Use text/secondary instead.',
+      '4.07:1 on bg/base and 3.78:1 on bg/surface — under 4.5:1 for normal text on both, so the page does not use it. Legal lines and notes are text/secondary.',
+    'color/border/strong':
+      'Dividers, the secondary button outline, and the boundary of the email field and the checkbox. 1.98:1 on bg/base: never the focus indicator. The contrast matrix is on the Design system page.',
+  },
+  /* Scale descriptions that say what the page does with them. */
+  scaleDescriptions: {
+    'radius/pill': 'Fully rounded ends: buttons, tabs and the tab track, the menu button and the social links.',
+    'radius/sm': 'Badges, the checkbox, the email field and the table header corners.',
+    'radius/md': 'Artist cards, the venue image, the comparison table, the access box and the map box.',
+    'radius/lg': 'Ticket cards.',
   },
 
   /* §3 — seventeen text styles. `size` is either a fixed text/* variable or a responsive alias. */
   textStyles: [
-    { name: 'Display/Wordmark-Hero', family: 'display', weight: 700, size: 'responsive/type/wordmark-hero', px: 96, leading: 'leading/none', tracking: 'tracking/wordmark', textCase: 'UPPER', usedBy: 'Hero h1' },
     { name: 'Display/Wordmark-Nav', family: 'display', weight: 700, size: 'text/xl', px: 20, leading: 'leading/snug', tracking: 'tracking/wordmark', textCase: 'UPPER', usedBy: 'Nav and footer lockup' },
-    { name: 'Display/Section', family: 'display', weight: 700, size: 'responsive/type/section-h2', px: 56, leading: 'leading/tight', tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Every section h2' },
-    { name: 'Display/Subsection', family: 'display', weight: 500, size: 'responsive/type/subsection-h3', px: 32, leading: 'leading/snug', tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'h3, ticket tier, day heading' },
+    ...responsiveStyles([
+      { base: 'Display/Wordmark-Hero', family: 'display', weight: 700, responsive: 'responsive/type/wordmark-hero', leadingPercent: [100, 100, 100], tracking: 'tracking/wordmark', textCase: 'UPPER', usedBy: 'Hero h1' },
+      { base: 'Display/Section', family: 'display', weight: 700, responsive: 'responsive/type/section-h2', leadingPercent: [120, 111.11, 100], tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Every section h2' },
+      { base: 'Display/Subsection', family: 'display', weight: 500, responsive: 'responsive/type/subsection-h3', leadingPercent: [133.33, 133.33, 120], tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Day heading, Getting here, ticket tier' },
+      { base: 'Body/Lead', family: 'body', weight: 400, responsive: 'responsive/type/lead', leadingPercent: [162.5, 162.5, 162.5], tracking: 'tracking/normal', textCase: 'ORIGINAL', usedBy: 'Hero second line, section intro, newsletter pitch' },
+    ]),
+    { name: 'Display/Card-Title-Large', family: 'display', weight: 500, size: 'text/2xl', px: 24, leadingPercent: 130, tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Headliner name from 768' },
+    { name: 'Display/Card-Title-Small', family: 'display', weight: 500, size: 'text/base', px: 16, leadingPercent: 130, tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Every artist name below 768' },
     { name: 'Display/Card-Title', family: 'display', weight: 500, size: 'text/xl', px: 20, leadingPercent: 130, tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Artist name, FAQ question' },
     { name: 'Display/Price', family: 'display', weight: 700, size: 'text/4xl', px: 40, leading: 'leading/tight', tracking: 'tracking/tight', textCase: 'ORIGINAL', usedBy: 'Ticket price' },
-    { name: 'Body/Lead', family: 'body', weight: 400, size: 'responsive/type/lead', px: 20, leading: 'leading/relaxed', tracking: 'tracking/normal', textCase: 'ORIGINAL', usedBy: 'Hero secondary line, section intro' },
     { name: 'Body/Base', family: 'body', weight: 400, size: 'text/base', px: 16, leading: 'leading/relaxed', tracking: 'tracking/normal', textCase: 'ORIGINAL', usedBy: 'Default paragraph' },
     { name: 'Body/Base-Medium', family: 'body', weight: 500, size: 'text/base', px: 16, leading: 'leading/relaxed', tracking: 'tracking/normal', textCase: 'ORIGINAL', usedBy: 'Nav link, emphasis' },
     { name: 'Body/Small', family: 'body', weight: 400, size: 'text/sm', px: 14, leading: 'leading/normal', tracking: 'tracking/normal', textCase: 'ORIGINAL', usedBy: 'Card meta, captions, helper text' },
@@ -412,11 +454,8 @@ const FIGMA_SPEC = {
      on the page can be traced to a document rather than to someone's judgement. If the
      copy deck ever grows an eyebrow of its own, delete the line here and read it from
      CONTENT.md instead. */
+  /* The page puts a kicker above one heading only, the FAQ's. */
   eyebrows: {
-    lineup: 'Twelve artists',
-    programme: 'Three nights',
-    venue: 'The building',
-    tickets: 'Three ways in',
     faq: 'Before you come',
   },
 
@@ -434,12 +473,79 @@ const FIGMA_SPEC = {
   /* §5.12 — the skip link lives as a component and is instanced, hidden, into each nav. */
   skipLink: { height: 40, padX: 16, padY: 12, top: 8 },
 
+
+  /* Everything the page does that a still frame cannot show, written as the page does it.
+     Rendered on the Exports page as exports/behaviour. Rows say the rule, never where it
+     came from: the file is read by people who have nothing else. */
+  behaviour: [
+    {
+      title: 'Widths',
+      rows: [
+        ['Breakpoints', 'Three layouts: below 768 (drawn at 390), 768 to 1439 (drawn at 768), 1440 and up (drawn at 1440). Everything changes at exactly 768 and 1440; between those widths the layout stretches.'],
+        ['Content column', 'Side gutters are 24 below 768 and 48 from 768. The column is at most 1104 wide and centred, so above 1440 the extra width goes to the margins. The hero photo, the ticker and every section background run edge to edge.'],
+        ['Below 390', 'Nothing is fixed wider than the screen. The 390 layout narrows.'],
+        ['Type', 'Section h2 32 / 40 / 56 with line height 1.2 / 1.11 / 1.0; h3 24 / 24 / 32; lead 18 / 18 / 20; hero TURBINE 40 / 72 / 96 (below 768 / 768 to 1439 / 1440 and up). Each size is its own text style, for example Display/Section/390, /768 and /1440.'],
+        ['Section spacing', 'Padding above and below each section is 64 / 96 / 128. Inside a section the heading block and the content are 48 apart.'],
+      ],
+    },
+    {
+      title: 'Layout per section',
+      rows: [
+        ['Nav', 'Height 64 below 1440 and 72 at 1440. Below 768 the four links and the Tickets button collapse behind the menu button; from 768 they sit in one row. The bar is sticky: it stays at the top of the window while the page scrolls.'],
+        ['Hero', 'Minimum height 600 / 700 / 780, content at the bottom, aligned to the same content column as every other section. The two buttons stack at full width below 768 and sit side by side from 768.'],
+        ['Lineup', 'Two columns below 768 (gap 16), three from 768 (gap 24), four at 1440. Every card in a row stretches to the tallest card in that row; the content stays at the top.'],
+        ['Programme', 'From 768: one table per day, four even columns, no zebra striping. Below 768: one line per set, time · stage · artist, and stages with no set are left out.'],
+        ['Venue', 'The image and the text stack below 1440 and sit in two columns at 1440. The image is 4:3 below 768, 16:9 from 768 to 1439 and 4:3 at 1440, cropped from the centre.'],
+        ['Tickets', 'One column, at most 480 wide and centred, below 1440; three across at 1440, all the same height. The comparison is a table from 768 and one list per tier below 768.'],
+        ['FAQ', 'The list is 800 wide and centred at 1440 and full width below.'],
+        ['Newsletter', 'Heading and pitch are centred. The form is 480 wide from 768, 560 at 1440, and full width below 768.'],
+        ['Footer', 'Below 1440 the brand takes the first row and the four link columns sit two across; at 1440 the brand (384) and the four columns share one row. Below 1440 the social links sit above the legal lines; at 1440 the legal lines are on the left and the social links on the right.'],
+      ],
+    },
+    {
+      title: 'Hover and focus',
+      rows: [
+        ['Buttons', 'A text/primary wash at 10% over the whole button, under the label (drawn in the State=hover variants). The ghost button underlines its label instead.'],
+        ['Links', 'Nav links and social links go from text/secondary to text/primary. Footer links and FAQ questions go from text/primary to accent/coolant. The scroll cue goes from text/secondary to text/primary.'],
+        ['Cards and tabs', 'Artist cards: the border goes from border/subtle to border/strong and a 10% text/primary wash covers the portrait. Unselected tabs get a bg/raised fill and a text/primary label. The menu button gets a bg/raised fill. Ticket cards, the email field and the checkbox do not change on hover.'],
+        ['Timing', 'Every colour change takes 150ms. Nothing on the page runs longer.'],
+        ['Focus', 'Every focusable element shows the same ring: a 2px accent/coolant outline, 2px outside the element, following its corner radius. That covers links, buttons, tabs, the email field, the checkbox, the wordmark, social links, the scroll cue and FAQ questions. Nothing else changes on focus.'],
+        ['Skip link', 'The first focusable element. Hidden above the window until it is focused, then shown 16 from the top and left of the page: accent/sodium fill, bg/base text, radius/md, padding 12 × 16.'],
+        ['Active nav link', 'There is none. No link is highlighted, and nothing changes as the page scrolls.'],
+      ],
+    },
+    {
+      title: 'Behaviour',
+      rows: [
+        ['Mobile menu', 'Closed: the wordmark and a 48 × 48 menu button with a three-line icon in accent/coolant. Open: the bar grows downwards inside the page, pushing the content down rather than covering it — the four links stacked, 48 tall each, then the Tickets button. It opens and closes instantly. Escape closes it and returns focus to the button, following a link closes it, and focus is not trapped. Drawn open next to the Mobile 390 frame.'],
+        ['Lineup filter', 'All is selected on load. Choosing a day shows only that day\'s four cards, in the same order, and rewrites the status line under the tabs. The arrow keys move between tabs and select as they go; Home and End jump to the first and last. Only the selected tab is in the Tab order. Without JavaScript the tabs are not shown and all twelve cards are.'],
+        ['FAQ', 'Every question is closed on load. Each one opens and closes on its own, and several can be open at once. The chevron turns 180° in 150ms; the answer appears without animation. Without JavaScript every answer is open.'],
+        ['Newsletter', 'Nothing is checked while typing. On submit, an empty or malformed address and an unticked box each show their message directly under the control, in state/danger at 14px, and the control\'s border turns state/danger. Focus moves to the first control with a problem, and a message clears as soon as its control changes. When both are valid the success line appears under the button in state/success, and the form stays as it is. Nothing is sent.'],
+        ['Ticker', 'Moves right to left without stopping: one full set of tags every 60 seconds, looping without a jump. It does not pause on hover. Under reduced motion it stands still and the strip can be scrolled sideways; the Motion=static variant is that still strip, which is why it looks the same.'],
+        ['Scroll cue', 'The chevron bounces: once a second it rises by a quarter of its height and comes back. It does not move under reduced motion.'],
+        ['Reduced motion', 'With prefers-reduced-motion set, nothing animates or transitions, and in-page links jump instead of scrolling smoothly.'],
+        ['Sold out', 'The Full Pass + Workshop card switches to TicketCard Variant=sold-out when no workshop places are left. Its button then reads Workshop sold out and stays focusable. Today places are left, so the page shows the available card.'],
+      ],
+    },
+    {
+      title: 'Images, fonts and icons',
+      rows: [
+        ['Hero photo', 'Covers the section at every width, centred. No focal point is set, so each width keeps the middle of the photo. Over it, a bottom-to-top gradient of bg/base at 95%, 70% and 30%; below 768 an extra flat bg/base at 50%; from 768 a left-to-right gradient of bg/base at 90%, 55% and 0%. Contrast of the text over the photo is measured on the rendered page, not in this file.'],
+        ['Artist portraits', '4:5, cropped from the centre. A badge sits 12 from the top left: Headliner on accent/arc, Main and Support on bg/raised.'],
+        ['Fonts', 'Space Grotesk 500 and 700, Inter 400, 500 and 600, and JetBrains Mono 400 and 700, all free under the SIL Open Font License from Google Fonts. A Figma file cannot carry font files; the page serves its own copies.'],
+        ['Icons', 'Every icon is a vector in this file: chevron, tick, menu, info, Instagram, Bandcamp and Mastodon. Select one and export it as SVG. Icons are aria-hidden on the page.'],
+        ['Photo copies', 'A saved .fig also holds Figma\'s own reduced copies of the photos, which nothing in the design uses.'],
+        ['Addresses', 'turbine.fm, tickets.turbine.fm and the social accounts are fictional. The page links to them exactly as written.'],
+      ],
+    },
+  ],
+
   /* §9 — the five interactive areas CANON §9 makes non-negotiable demands about. */
   annotations: [
     { target: 'section-nav', text: 'nav landmark, aria-label="Primary". Wordmark links to #top. Below 768 the links collapse behind a button whose accessible name toggles Open menu / Close menu.' },
     { target: 'lineup/tabs', text: 'role=tablist with aria-label="Filter the lineup by day". Each tab role=tab with aria-selected. The panel is lineup/grid. With JavaScript off the tabs are hidden and all twelve cards show.' },
     { target: 'programme/days', text: 'One table per day with a caption. th scope=col for the stage columns, th scope=row for the time. An empty cell carries a visually hidden "No set"; the visible em dash is aria-hidden.' },
-    { target: 'faq/trigger', text: 'button, aria-expanded, aria-controls -> faq/answer id. Native details/summary satisfies this without script.' },
+    { target: 'faq/trigger', text: 'h3 > button, aria-expanded, aria-controls -> faq/answer id. Without JavaScript every answer is open.' },
     { target: 'newsletter/form', text: 'Visible label above the input, never a placeholder standing in for it. Consent unchecked on load. Messages announced politely, never as an alert dialog.' },
   ],
 }
@@ -526,7 +632,7 @@ function buildTokens(raw) {
     } else if (group === 'spacing') {
       scale.push({ name: `space/${path[1]}`, value: px(token.$value), description: 'Spacing scale.' })
     } else if (group === 'radius') {
-      scale.push({ name: `radius/${path[1]}`, value: px(token.$value), description: selfContained(token.$description) || 'Radius.' })
+      scale.push({ name: `radius/${path[1]}`, value: px(token.$value), description: FIGMA_SPEC.scaleDescriptions[`radius/${path[1]}`] || selfContained(token.$description) || 'Radius.' })
     } else if (group === 'breakpoint') {
       scale.push({ name: `breakpoint/${path[1]}`, value: px(token.$value), description: selfContained(token.$description) || 'Breakpoint.' })
     } else if (dotted === 'layout.maxWidth') {
@@ -875,10 +981,9 @@ function buildContent(md) {
     venue: roleOf(/venue/i, 'venue image'),
     og: roleOf(/(^|[^a-z])og[-_.]/i, 'social card'),
     artists: artistImages,
-    /* Anything left over is decorative or unplaced. §13 names two supplied files
-       the design does not place; they are listed, not positioned. */
-    other: altKeys.filter((k) => !claimed.has(k)).map((k) => ({ file: k, alt: alt[k] })),
-    all: alt,
+    /* Only the files the page shows. A supplied file the design places nowhere is left out:
+       naming it would promise a file the .fig does not carry. */
+    all: Object.fromEntries(altKeys.filter((k) => claimed.has(k)).map((k) => [k, alt[k]])),
     /* §13 is explicit that the venue map is a bordered placeholder box and not a
        file. Kept as a field so the plugin does not have to infer its absence. */
     map: altKeys.some((k) => /map/i.test(k)) ? roleOf(/map/i, 'map') : null,
@@ -947,6 +1052,8 @@ const data = {
   skipLink: FIGMA_SPEC.skipLink,
   breakpoints: FIGMA_SPEC.breakpoints,
   annotations: FIGMA_SPEC.annotations,
+  behaviour: FIGMA_SPEC.behaviour,
+  favicon: await readFile(join(ROOT, 'public/favicon.svg'), 'utf8'),
   content,
 }
 

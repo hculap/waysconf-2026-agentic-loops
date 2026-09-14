@@ -99,7 +99,7 @@ const TURBINE_DATA = {
           "b": 0.305882
         },
         "aliasOf": null,
-        "description": "Focus ring base, dividers. 1.98:1 on bg.base: usable as an offset or underlay, never as the visible focus indicator on its own. The contrast matrix is on the Design system page."
+        "description": "Dividers, the secondary button outline, and the boundary of the email field and the checkbox. 1.98:1 on bg/base: never the focus indicator. The contrast matrix is on the Design system page."
       },
       {
         "name": "color/border/subtle",
@@ -143,7 +143,7 @@ const TURBINE_DATA = {
           "b": 0.501961
         },
         "aliasOf": null,
-        "description": "Legal and footer only. 4.1:1 on bg/base — fails AA for body copy. Use text/secondary instead."
+        "description": "4.07:1 on bg/base and 3.78:1 on bg/surface — under 4.5:1 for normal text on both, so the page does not use it. Legal lines and notes are text/secondary."
       },
       {
         "name": "color/text/on-accent",
@@ -238,22 +238,22 @@ const TURBINE_DATA = {
       {
         "name": "radius/sm",
         "value": 4,
-        "description": "Radius."
+        "description": "Badges, the checkbox, the email field and the table header corners."
       },
       {
         "name": "radius/md",
         "value": 8,
-        "description": "Radius."
+        "description": "Artist cards, the venue image, the comparison table, the access box and the map box."
       },
       {
         "name": "radius/lg",
         "value": 16,
-        "description": "Radius."
+        "description": "Ticket cards."
       },
       {
         "name": "radius/pill",
         "value": 999,
-        "description": "Fully rounded ends. Used for genre tags and the ticket badges."
+        "description": "Fully rounded ends: buttons, tabs and the tab track, the menu button and the social links."
       },
       {
         "name": "breakpoint/mobile",
@@ -293,7 +293,7 @@ const TURBINE_DATA = {
       {
         "name": "size/tap-comfortable",
         "value": 48,
-        "description": "Used for every real control."
+        "description": "Medium buttons, the email field, nav links, the menu button, social links and FAQ questions (56 below 768, 64 from 768). Small buttons and tabs are 40, footer links 37, the checkbox 24 inside a taller label row. Every control clears size/touch-min."
       }
     ],
     "type": {
@@ -436,7 +436,7 @@ const TURBINE_DATA = {
         },
         {
           "name": "leading/relaxed",
-          "percent": 162,
+          "percent": 162.5,
           "css": "1.625"
         }
       ],
@@ -778,21 +778,6 @@ const TURBINE_DATA = {
   },
   "textStyles": [
     {
-      "name": "Display/Wordmark-Hero",
-      "family": "display",
-      "weight": 700,
-      "size": "responsive/type/wordmark-hero",
-      "px": 96,
-      "leading": "leading/none",
-      "tracking": "tracking/wordmark",
-      "textCase": "UPPER",
-      "usedBy": "Hero h1",
-      "figmaFamily": "Space Grotesk",
-      "styleCandidates": [
-        "Bold"
-      ]
-    },
-    {
       "name": "Display/Wordmark-Nav",
       "family": "display",
       "weight": 700,
@@ -808,30 +793,210 @@ const TURBINE_DATA = {
       ]
     },
     {
-      "name": "Display/Section",
+      "name": "Display/Wordmark-Hero/390",
       "family": "display",
       "weight": 700,
-      "size": "responsive/type/section-h2",
-      "px": 56,
-      "leading": "leading/tight",
-      "tracking": "tracking/tight",
-      "textCase": "ORIGINAL",
-      "usedBy": "Every section h2",
+      "size": "text/4xl",
+      "px": 40,
+      "leadingPercent": 100,
+      "tracking": "tracking/wordmark",
+      "textCase": "UPPER",
+      "usedBy": "Hero h1, at below 768",
       "figmaFamily": "Space Grotesk",
       "styleCandidates": [
         "Bold"
       ]
     },
     {
-      "name": "Display/Subsection",
+      "name": "Display/Wordmark-Hero/768",
       "family": "display",
-      "weight": 500,
-      "size": "responsive/type/subsection-h3",
+      "weight": 700,
+      "size": "text/6xl",
+      "px": 72,
+      "leadingPercent": 100,
+      "tracking": "tracking/wordmark",
+      "textCase": "UPPER",
+      "usedBy": "Hero h1, at 768 to 1439",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Bold"
+      ]
+    },
+    {
+      "name": "Display/Wordmark-Hero/1440",
+      "family": "display",
+      "weight": 700,
+      "size": "text/7xl",
+      "px": 96,
+      "leadingPercent": 100,
+      "tracking": "tracking/wordmark",
+      "textCase": "UPPER",
+      "usedBy": "Hero h1, at 1440 and up",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Bold"
+      ]
+    },
+    {
+      "name": "Display/Section/390",
+      "family": "display",
+      "weight": 700,
+      "size": "text/3xl",
       "px": 32,
-      "leading": "leading/snug",
+      "leadingPercent": 120,
       "tracking": "tracking/tight",
       "textCase": "ORIGINAL",
-      "usedBy": "h3, ticket tier, day heading",
+      "usedBy": "Every section h2, at below 768",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Bold"
+      ]
+    },
+    {
+      "name": "Display/Section/768",
+      "family": "display",
+      "weight": 700,
+      "size": "text/4xl",
+      "px": 40,
+      "leadingPercent": 111.11,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Every section h2, at 768 to 1439",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Bold"
+      ]
+    },
+    {
+      "name": "Display/Section/1440",
+      "family": "display",
+      "weight": 700,
+      "size": "text/5xl",
+      "px": 56,
+      "leadingPercent": 100,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Every section h2, at 1440 and up",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Bold"
+      ]
+    },
+    {
+      "name": "Display/Subsection/390",
+      "family": "display",
+      "weight": 500,
+      "size": "text/2xl",
+      "px": 24,
+      "leadingPercent": 133.33,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Day heading, Getting here, ticket tier, at below 768",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Medium"
+      ]
+    },
+    {
+      "name": "Display/Subsection/768",
+      "family": "display",
+      "weight": 500,
+      "size": "text/2xl",
+      "px": 24,
+      "leadingPercent": 133.33,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Day heading, Getting here, ticket tier, at 768 to 1439",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Medium"
+      ]
+    },
+    {
+      "name": "Display/Subsection/1440",
+      "family": "display",
+      "weight": 500,
+      "size": "text/3xl",
+      "px": 32,
+      "leadingPercent": 120,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Day heading, Getting here, ticket tier, at 1440 and up",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Medium"
+      ]
+    },
+    {
+      "name": "Body/Lead/390",
+      "family": "body",
+      "weight": 400,
+      "size": "text/lg",
+      "px": 18,
+      "leadingPercent": 162.5,
+      "tracking": "tracking/normal",
+      "textCase": "ORIGINAL",
+      "usedBy": "Hero second line, section intro, newsletter pitch, at below 768",
+      "figmaFamily": "Inter",
+      "styleCandidates": [
+        "Regular"
+      ]
+    },
+    {
+      "name": "Body/Lead/768",
+      "family": "body",
+      "weight": 400,
+      "size": "text/lg",
+      "px": 18,
+      "leadingPercent": 162.5,
+      "tracking": "tracking/normal",
+      "textCase": "ORIGINAL",
+      "usedBy": "Hero second line, section intro, newsletter pitch, at 768 to 1439",
+      "figmaFamily": "Inter",
+      "styleCandidates": [
+        "Regular"
+      ]
+    },
+    {
+      "name": "Body/Lead/1440",
+      "family": "body",
+      "weight": 400,
+      "size": "text/xl",
+      "px": 20,
+      "leadingPercent": 162.5,
+      "tracking": "tracking/normal",
+      "textCase": "ORIGINAL",
+      "usedBy": "Hero second line, section intro, newsletter pitch, at 1440 and up",
+      "figmaFamily": "Inter",
+      "styleCandidates": [
+        "Regular"
+      ]
+    },
+    {
+      "name": "Display/Card-Title-Large",
+      "family": "display",
+      "weight": 500,
+      "size": "text/2xl",
+      "px": 24,
+      "leadingPercent": 130,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Headliner name from 768",
+      "figmaFamily": "Space Grotesk",
+      "styleCandidates": [
+        "Medium"
+      ]
+    },
+    {
+      "name": "Display/Card-Title-Small",
+      "family": "display",
+      "weight": 500,
+      "size": "text/base",
+      "px": 16,
+      "leadingPercent": 130,
+      "tracking": "tracking/tight",
+      "textCase": "ORIGINAL",
+      "usedBy": "Every artist name below 768",
       "figmaFamily": "Space Grotesk",
       "styleCandidates": [
         "Medium"
@@ -865,21 +1030,6 @@ const TURBINE_DATA = {
       "figmaFamily": "Space Grotesk",
       "styleCandidates": [
         "Bold"
-      ]
-    },
-    {
-      "name": "Body/Lead",
-      "family": "body",
-      "weight": 400,
-      "size": "responsive/type/lead",
-      "px": 20,
-      "leading": "leading/relaxed",
-      "tracking": "tracking/normal",
-      "textCase": "ORIGINAL",
-      "usedBy": "Hero secondary line, section intro",
-      "figmaFamily": "Inter",
-      "styleCandidates": [
-        "Regular"
       ]
     },
     {
@@ -1048,10 +1198,6 @@ const TURBINE_DATA = {
     "Exports"
   ],
   "eyebrows": {
-    "lineup": "Twelve artists",
-    "programme": "Three nights",
-    "venue": "The building",
-    "tickets": "Three ways in",
     "faq": "Before you come"
   },
   "cover": {
@@ -1350,13 +1496,181 @@ const TURBINE_DATA = {
     },
     {
       "target": "faq/trigger",
-      "text": "button, aria-expanded, aria-controls -> faq/answer id. Native details/summary satisfies this without script."
+      "text": "h3 > button, aria-expanded, aria-controls -> faq/answer id. Without JavaScript every answer is open."
     },
     {
       "target": "newsletter/form",
       "text": "Visible label above the input, never a placeholder standing in for it. Consent unchecked on load. Messages announced politely, never as an alert dialog."
     }
   ],
+  "behaviour": [
+    {
+      "title": "Widths",
+      "rows": [
+        [
+          "Breakpoints",
+          "Three layouts: below 768 (drawn at 390), 768 to 1439 (drawn at 768), 1440 and up (drawn at 1440). Everything changes at exactly 768 and 1440; between those widths the layout stretches."
+        ],
+        [
+          "Content column",
+          "Side gutters are 24 below 768 and 48 from 768. The column is at most 1104 wide and centred, so above 1440 the extra width goes to the margins. The hero photo, the ticker and every section background run edge to edge."
+        ],
+        [
+          "Below 390",
+          "Nothing is fixed wider than the screen. The 390 layout narrows."
+        ],
+        [
+          "Type",
+          "Section h2 32 / 40 / 56 with line height 1.2 / 1.11 / 1.0; h3 24 / 24 / 32; lead 18 / 18 / 20; hero TURBINE 40 / 72 / 96 (below 768 / 768 to 1439 / 1440 and up). Each size is its own text style, for example Display/Section/390, /768 and /1440."
+        ],
+        [
+          "Section spacing",
+          "Padding above and below each section is 64 / 96 / 128. Inside a section the heading block and the content are 48 apart."
+        ]
+      ]
+    },
+    {
+      "title": "Layout per section",
+      "rows": [
+        [
+          "Nav",
+          "Height 64 below 1440 and 72 at 1440. Below 768 the four links and the Tickets button collapse behind the menu button; from 768 they sit in one row. The bar is sticky: it stays at the top of the window while the page scrolls."
+        ],
+        [
+          "Hero",
+          "Minimum height 600 / 700 / 780, content at the bottom, aligned to the same content column as every other section. The two buttons stack at full width below 768 and sit side by side from 768."
+        ],
+        [
+          "Lineup",
+          "Two columns below 768 (gap 16), three from 768 (gap 24), four at 1440. Every card in a row stretches to the tallest card in that row; the content stays at the top."
+        ],
+        [
+          "Programme",
+          "From 768: one table per day, four even columns, no zebra striping. Below 768: one line per set, time · stage · artist, and stages with no set are left out."
+        ],
+        [
+          "Venue",
+          "The image and the text stack below 1440 and sit in two columns at 1440. The image is 4:3 below 768, 16:9 from 768 to 1439 and 4:3 at 1440, cropped from the centre."
+        ],
+        [
+          "Tickets",
+          "One column, at most 480 wide and centred, below 1440; three across at 1440, all the same height. The comparison is a table from 768 and one list per tier below 768."
+        ],
+        [
+          "FAQ",
+          "The list is 800 wide and centred at 1440 and full width below."
+        ],
+        [
+          "Newsletter",
+          "Heading and pitch are centred. The form is 480 wide from 768, 560 at 1440, and full width below 768."
+        ],
+        [
+          "Footer",
+          "Below 1440 the brand takes the first row and the four link columns sit two across; at 1440 the brand (384) and the four columns share one row. Below 1440 the social links sit above the legal lines; at 1440 the legal lines are on the left and the social links on the right."
+        ]
+      ]
+    },
+    {
+      "title": "Hover and focus",
+      "rows": [
+        [
+          "Buttons",
+          "A text/primary wash at 10% over the whole button, under the label (drawn in the State=hover variants). The ghost button underlines its label instead."
+        ],
+        [
+          "Links",
+          "Nav links and social links go from text/secondary to text/primary. Footer links and FAQ questions go from text/primary to accent/coolant. The scroll cue goes from text/secondary to text/primary."
+        ],
+        [
+          "Cards and tabs",
+          "Artist cards: the border goes from border/subtle to border/strong and a 10% text/primary wash covers the portrait. Unselected tabs get a bg/raised fill and a text/primary label. The menu button gets a bg/raised fill. Ticket cards, the email field and the checkbox do not change on hover."
+        ],
+        [
+          "Timing",
+          "Every colour change takes 150ms. Nothing on the page runs longer."
+        ],
+        [
+          "Focus",
+          "Every focusable element shows the same ring: a 2px accent/coolant outline, 2px outside the element, following its corner radius. That covers links, buttons, tabs, the email field, the checkbox, the wordmark, social links, the scroll cue and FAQ questions. Nothing else changes on focus."
+        ],
+        [
+          "Skip link",
+          "The first focusable element. Hidden above the window until it is focused, then shown 16 from the top and left of the page: accent/sodium fill, bg/base text, radius/md, padding 12 × 16."
+        ],
+        [
+          "Active nav link",
+          "There is none. No link is highlighted, and nothing changes as the page scrolls."
+        ]
+      ]
+    },
+    {
+      "title": "Behaviour",
+      "rows": [
+        [
+          "Mobile menu",
+          "Closed: the wordmark and a 48 × 48 menu button with a three-line icon in accent/coolant. Open: the bar grows downwards inside the page, pushing the content down rather than covering it — the four links stacked, 48 tall each, then the Tickets button. It opens and closes instantly. Escape closes it and returns focus to the button, following a link closes it, and focus is not trapped. Drawn open next to the Mobile 390 frame."
+        ],
+        [
+          "Lineup filter",
+          "All is selected on load. Choosing a day shows only that day's four cards, in the same order, and rewrites the status line under the tabs. The arrow keys move between tabs and select as they go; Home and End jump to the first and last. Only the selected tab is in the Tab order. Without JavaScript the tabs are not shown and all twelve cards are."
+        ],
+        [
+          "FAQ",
+          "Every question is closed on load. Each one opens and closes on its own, and several can be open at once. The chevron turns 180° in 150ms; the answer appears without animation. Without JavaScript every answer is open."
+        ],
+        [
+          "Newsletter",
+          "Nothing is checked while typing. On submit, an empty or malformed address and an unticked box each show their message directly under the control, in state/danger at 14px, and the control's border turns state/danger. Focus moves to the first control with a problem, and a message clears as soon as its control changes. When both are valid the success line appears under the button in state/success, and the form stays as it is. Nothing is sent."
+        ],
+        [
+          "Ticker",
+          "Moves right to left without stopping: one full set of tags every 60 seconds, looping without a jump. It does not pause on hover. Under reduced motion it stands still and the strip can be scrolled sideways; the Motion=static variant is that still strip, which is why it looks the same."
+        ],
+        [
+          "Scroll cue",
+          "The chevron bounces: once a second it rises by a quarter of its height and comes back. It does not move under reduced motion."
+        ],
+        [
+          "Reduced motion",
+          "With prefers-reduced-motion set, nothing animates or transitions, and in-page links jump instead of scrolling smoothly."
+        ],
+        [
+          "Sold out",
+          "The Full Pass + Workshop card switches to TicketCard Variant=sold-out when no workshop places are left. Its button then reads Workshop sold out and stays focusable. Today places are left, so the page shows the available card."
+        ]
+      ]
+    },
+    {
+      "title": "Images, fonts and icons",
+      "rows": [
+        [
+          "Hero photo",
+          "Covers the section at every width, centred. No focal point is set, so each width keeps the middle of the photo. Over it, a bottom-to-top gradient of bg/base at 95%, 70% and 30%; below 768 an extra flat bg/base at 50%; from 768 a left-to-right gradient of bg/base at 90%, 55% and 0%. Contrast of the text over the photo is measured on the rendered page, not in this file."
+        ],
+        [
+          "Artist portraits",
+          "4:5, cropped from the centre. A badge sits 12 from the top left: Headliner on accent/arc, Main and Support on bg/raised."
+        ],
+        [
+          "Fonts",
+          "Space Grotesk 500 and 700, Inter 400, 500 and 600, and JetBrains Mono 400 and 700, all free under the SIL Open Font License from Google Fonts. A Figma file cannot carry font files; the page serves its own copies."
+        ],
+        [
+          "Icons",
+          "Every icon is a vector in this file: chevron, tick, menu, info, Instagram, Bandcamp and Mastodon. Select one and export it as SVG. Icons are aria-hidden on the page."
+        ],
+        [
+          "Photo copies",
+          "A saved .fig also holds Figma's own reduced copies of the photos, which nothing in the design uses."
+        ],
+        [
+          "Addresses",
+          "turbine.fm, tickets.turbine.fm and the social accounts are fictional. The page links to them exactly as written."
+        ]
+      ]
+    }
+  ],
+  "favicon": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 32 32\" role=\"img\" aria-label=\"TURBINE\">\n  <title>TURBINE</title>\n  <rect width=\"32\" height=\"32\" rx=\"6\" fill=\"#0A0B0D\"/>\n  <!-- Four blades around a hub: a turbine, reduced until it still reads at 16px. -->\n  <g fill=\"none\" stroke=\"#FF6A1A\" stroke-width=\"2.6\" stroke-linecap=\"round\">\n    <path d=\"M16 5.5v6\"/>\n    <path d=\"M16 20.5v6\"/>\n    <path d=\"M5.5 16h6\"/>\n    <path d=\"M20.5 16h6\"/>\n  </g>\n  <g fill=\"none\" stroke=\"#2FE6D6\" stroke-width=\"1.8\" stroke-linecap=\"round\" opacity=\"0.85\">\n    <path d=\"M9.2 9.2l3.4 3.4\"/>\n    <path d=\"M19.4 19.4l3.4 3.4\"/>\n    <path d=\"M22.8 9.2l-3.4 3.4\"/>\n    <path d=\"M12.6 19.4l-3.4 3.4\"/>\n  </g>\n  <circle cx=\"16\" cy=\"16\" r=\"2.6\" fill=\"#FF6A1A\"/>\n</svg>\n",
   "content": {
     "meta": {
       "title": "TURBINE — 11–13 June 2027 — Hall E, Kraków",
@@ -2162,12 +2476,6 @@ const TURBINE_DATA = {
           "alt": "The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction."
         }
       ],
-      "other": [
-        {
-          "file": "texture-grain.png",
-          "alt": ""
-        }
-      ],
       "all": {
         "hero-hall.jpg": "The interior of a vast disused turbine hall at night, steel roof trusses overhead, a crowd standing in silhouette under orange work lamps and cyan haze.",
         "artist-01-kasimir-volt.jpg": "A figure in hard silhouette against dense smoke, rimmed by a single orange lamp directly behind the head.",
@@ -2183,8 +2491,7 @@ const TURBINE_DATA = {
         "artist-11-odalys-ferrer.jpg": "A long-exposure frame of a figure mid-strike, one arm smeared into an orange trail above the lit rims of metal percussion.",
         "artist-12-vitrine.jpg": "The exposed edges of stacked plate glass sheets glowing cyan under a single side light, with faint violet refraction.",
         "venue-exterior.jpg": "A long brick power station with tall arched windows at blue hour, orange light leaking from inside, a chimney and cooling tower behind it.",
-        "og-card.jpg": "The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness.",
-        "texture-grain.png": ""
+        "og-card.jpg": "The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness."
       },
       "map": null
     },
