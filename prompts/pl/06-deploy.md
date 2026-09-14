@@ -8,8 +8,8 @@ prawdziwe.
 ```text
 Wystaw to do internetu.
 
-Zbuduj stronę, a potem opublikuj ją na Netlify. Użyj npx, żeby nie było czego instalować;
-jeśli nie jestem zalogowany, powiedz mi, w co kliknąć, zamiast robić to po cichu.
+Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify w terminalu. Jest zainstalowane
+i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast robić to po cichu.
 
 Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
 

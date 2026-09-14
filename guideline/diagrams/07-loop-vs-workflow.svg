@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t07 d07">
   <title id="t07">The two shapes: a loop and a workflow</title>
-  <desc id="d07">Two diagrams side by side on a near-black ground. On the left, THE LOOP: a box marked DO THE WORK feeds into a diamond marked CHECK, which is labelled "a program, not an opinion". From the diamond an arrow marked "not yet" curves back up into DO THE WORK, and an arrow marked "exit 0" leaves to the right into DONE. A caption underneath reads "You define the exit condition". On the right, THE WORKFLOW: four stacked boxes marked PHASE 1 LOOK, PHASE 2 BUILD, PHASE 3 ARM, PHASE 4 REPAIR, each joined to the next by a short arrow passing through a horizontal bar labelled with what must be true before the next phase starts: "notes written", "it builds", "the checker runs", "checks pass". The fourth phase, REPAIR, contains a small circular arrow showing that a loop lives inside it. A caption underneath reads "You define the phases". Across the bottom, a single line: neither of these is a script. Both are things you say.</desc>
+  <desc id="d07">Two diagrams side by side on a near-black ground. On the left, THE LOOP: a box marked DO THE WORK feeds into a diamond marked CHECK, which is labelled "a program, not an opinion". From the diamond an arrow marked "not yet" curves back up into DO THE WORK, and an arrow marked "exit 0" leaves to the right into DONE. A caption underneath reads "You define the exit condition". On the right, THE WORKFLOW: four stacked boxes marked PHASE 1 LOOK, PHASE 2 BUILD, PHASE 3 ARM, PHASE 4 REPAIR, each joined to the next by a short arrow passing through a horizontal bar labelled with what must be true before the next phase starts: "docs written", "it builds", "the checker runs", "checks pass". The fourth phase, REPAIR, contains a small circular arrow showing that a loop lives inside it. A caption underneath reads "You define the phases". Across the bottom, a single line: neither of these is a script. Both are things you say.</desc>
 
   <defs>
     <marker id="a7" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
@@ -64,16 +64,16 @@
   <rect x="872" y="256" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
   <text x="896" y="288" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 02</text>
   <text x="1000" y="290" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">LOOK</text>
-  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">read the .fig, write notes.md</text>
+  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">read the .fig, write docs</text>
   <path d="M1082 322 L1082 348" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
   <line x1="940" y1="352" x2="1224" y2="352" stroke="#34D399" stroke-width="2"/>
-  <text x="1240" y="358" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">notes written</text>
+  <text x="1240" y="358" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">docs written</text>
 
   <!-- phase 2 -->
   <rect x="872" y="366" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
   <text x="896" y="398" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 03</text>
   <text x="1000" y="400" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">BUILD</text>
-  <text x="1000" y="422" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">section by section, from the design</text>
+  <text x="1000" y="422" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">the whole page, from docs</text>
   <path d="M1082 432 L1082 458" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
   <line x1="940" y1="462" x2="1224" y2="462" stroke="#34D399" stroke-width="2"/>
   <text x="1240" y="468" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">it builds</text>

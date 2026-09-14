@@ -25,8 +25,8 @@ liczby, którą ci podałem — jeden na sekcję, jeden na soczewkę review, jed
 czego akurat wymaga faza. Scal ich wyniki, zanim z niej wyjdziesz.
 
 Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się dokładnie dwie rzeczy:
-- W fazie 03 nie czekasz na mnie po każdej sekcji. Budujesz sekcje równolegle, po jednym
-  subagencie na każdą.
+- W fazie 03 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
+  drugiej.
 - Zatrzymujesz się i czekasz na mnie tylko tam, gdzie faza ci to każe: na końcu fazy 02 i
   zawsze, gdy reguła mówi, żeby się zatrzymać i zapytać. Wszędzie indziej jedziesz dalej.
 
@@ -74,17 +74,38 @@ Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
   karta tego samego rodzaju pokazuje te same słowa, czytasz komponent zamiast instancji.
   Rozwiąż to, zanim zaufasz jakiemukolwiek tekstowi.
 
-Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. To, co rozkodujesz, trzymaj
-w folderze design-data w tym projekcie, żeby każdy kolejny krok czytał to zamiast
-rozkodowywać od nowa. Nie pisz jeszcze żadnego kodu strony.
+Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. Rozkodowane dane i zdjęcia
+trzymaj w folderze design-data w tym projekcie. Nie pisz jeszcze żadnego kodu strony.
 
-Potem zapisz, co znalazłeś, do notes.md, jako listę, i pokaż mi ją:
+Potem spisz design jako dokumentację, w folderze docs, żeby nikt — ani ja, ani ty, ani nowa
+sesja — nie musiał już otwierać pliku .fig. Każdy dokument zapisuj od razu, gdy przeczytasz
+tę część pliku, a nie wszystkie na końcu:
+
+- docs/sections.md: każda sekcja, w kolejności od góry strony, i co jest w każdej z nich
+- docs/colours.md: każdy kolor, po nazwie z designu, z dokładną wartością i do czego jest
+  używany
+- docs/typography.md: każdy font i styl tekstu, z rozmiarem, grubością, interlinią
+  i odstępem między literami, i gdzie który jest użyty
+- docs/layout.md: każda szerokość, którą design obejmuje, a przy każdej odstępy, rozmiary,
+  zaokrojenia rogów i kolumny
+- docs/components.md: każdy komponent, z jego wariantami i stanami
+- docs/copy.md: każdy tekst, sekcja po sekcji, słowo w słowo, razem z tekstami
+  alternatywnymi i etykietami, których nie pokazuje żadna ramka
+- docs/images.md: każdy obraz, z jego plikiem w design-data, miejscem użycia, rozmiarem
+  i tekstem alternatywnym
+
+Przepisuj każdą wartość dokładnie tak, jak jest w pliku: bez zaokrąglania, bez zmiany nazw.
+Od teraz te dokumenty są designem i każdy kolejny krok czyta je zamiast pliku .fig. Kiedy
+okaże się, że jakiejś wartości brakuje, poprawka polega na tym, żeby najpierw dopisać ją do
+właściwego dokumentu.
+
+Potem pokaż mi listę, a jej punkt 6 zapisz do notes.md:
 
 1. Każdą sekcję, w kolejności od góry strony.
-2. Każdy kolor, po nazwie z designu, z dokładną wartością, i do czego jest używany.
+2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
-5. Wszystkie teksty, sekcja po sekcji.
+5. Każdy dokument, który zapisałeś w docs, i co w nim jest, po jednej linijce.
 6. Wszystko, co w pliku się nie zgadza albo czego w nim nie ma, a co inaczej musiałbyś
    zgadnąć.
 
@@ -93,23 +114,27 @@ do którego nie mam żadnych wartości" jest warte więcej niż pewne siebie zga
 
 Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.
 
-Zanim pójdziesz dalej: notes.md istnieje, a ja odpowiedziałem na punkt 6.
+Zanim pójdziesz dalej: każdy dokument w docs jest zapisany, notes.md istnieje, a ja odpowiedziałem na punkt 6.
 
 FAZA 03 — BUDUJ
 
-Zbuduj teraz stronę, na podstawie designu. Czytaj design-data i notes.md; nie rozkodowuj
-pliku .fig jeszcze raz.
+Zbuduj teraz stronę, na podstawie designu. Czytaj docs i notes.md; nie rozkodowuj pliku .fig
+jeszcze raz.
 
-Zbuduj każdą sekcję z notes.md, po jednym subagencie na sekcję, wszystkie równolegle, a
-potem złóż je w kolejności z notes.md. Nie czekaj na mnie między sekcjami.
+Zbuduj wszystkie sekcje z docs/sections.md naraz, po jednym subagencie na sekcję, a potem
+złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
+skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.
 
 Reguły, wszystkie nienegocjowalne:
 
-- Każdy kolor i każdy rozmiar pochodzi z designu. Jeśli łapiesz się na wybieraniu
-  wartości, zatrzymaj się i zapytaj mnie.
-- Każde słowo pochodzi z designu. Nie pisz tekstów. Nie poprawiaj tekstów. Jeśli jakiegoś
-  fragmentu brakuje, zapytaj — nie zapychaj dziury.
-- Każde zdjęcie pochodzi z designu: użyj obrazów, które rozkodowałeś, nigdy zastępczych.
+- Każdy kolor i każdy rozmiar pochodzi z docs. Jeśli wartości, której potrzebujesz, tam nie
+  ma, poszukaj jej w design-data; jeśli tam jest, najpierw dopisz ją do właściwego
+  dokumentu, a potem użyj. Jeśli nie ma jej nigdzie, nie wybieraj sam: to pytanie do
+  notes.md, niżej.
+- Każde słowo pochodzi z docs/copy.md. Nie pisz tekstów. Nie poprawiaj tekstów. Jeśli
+  jakiegoś fragmentu brakuje, zapisz to do notes.md — nie zapychaj dziury.
+- Każde zdjęcie pochodzi z designu: użyj obrazów wymienionych w docs/images.md, nigdy
+  zastępczych.
 - Do samej strony nie wchodzi nic nowego: żaden framework UI, żadna biblioteka
   komponentów, żaden serwis z fontami ani ikonami. Strona jest z Astro i Tailwinda.
 - Strona musi działać z niezaładowanymi obrazkami i z wyłączonym JavaScriptem. Wszystko,
@@ -119,7 +144,7 @@ Jeśli design czegoś nie mówi, nie zgaduj. Zapisz pytanie do notes.md, wybierz
 uważasz za najbardziej prawdopodobny, powiedz mi jedno i drugie, i jedź dalej. Wolę poprawić
 jedno założenie niż odkryć sześć.
 
-Zanim pójdziesz dalej: każda sekcja z notes.md jest zbudowana, a projekt buduje się bez błędów.
+Zanim pójdziesz dalej: każda sekcja z docs/sections.md jest zbudowana, a projekt buduje się bez błędów.
 
 FAZA 04 — UZBRÓJ
 
@@ -138,7 +163,7 @@ Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmowa�
 npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
 później mógł ocenić też stronę na żywo.
 
-Co sprawdzać, wyprowadź z designu, nie ode mnie. Minimum, i to względem strony tak, jak
+Co sprawdzać, wyprowadź z dokumentów w docs, nie ode mnie. Minimum, i to względem strony tak, jak
 renderuje ją przeglądarka, a nie względem kodu źródłowego:
 
 1. że projekt się buduje, bez błędów
@@ -161,7 +186,7 @@ plik z powrotem. Powiedz mi, jak go nazwałeś.
 Dwie reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
-  brakuje design-data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  brakuje dokumentu w docs — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
 - Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
   przejdzie za pierwszym razem, uznam, że nic nie sprawdza.
@@ -203,8 +228,8 @@ FAZA 06 — WYSTAW
 
 Wystaw to do internetu.
 
-Zbuduj stronę, a potem opublikuj ją na Netlify. Użyj npx, żeby nie było czego instalować;
-jeśli nie jestem zalogowany, powiedz mi, w co kliknąć, zamiast robić to po cichu.
+Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify w terminalu. Jest zainstalowane
+i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast robić to po cichu.
 
 Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
 
@@ -265,8 +290,8 @@ Reguły na cały przebieg:
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
 - Jeśli faza nie może się skończyć, zatrzymaj się na niej i powiedz dlaczego. Nie idź
   dalej z poprzednią zepsutą.
-- Utrzymuj notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, notes.md jest
-  wszystkim, co będzie miała.
+- Utrzymuj docs i notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, to będzie
+  wszystko, co będzie miała.
 ```
 
 ---
@@ -365,7 +390,7 @@ Pierwszy raz rób robotę ręcznie. Za drugim razem już wiesz, jakie są fazy.
 |---|---|
 | Ogłasza fazę 04, zanim faza 03 jest zbudowana | `Pominąłeś część fazy 03. Wróć i skończ ją przed fazą 04.` |
 | Przelatuje przez „poczekaj na mnie" | `Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.` |
-| Robi się mętny koło fazy 05 | `Streść stan do notes.md.` Potem zacznij nową sesję, wklej ten prompt jeszcze raz i powiedz `notes.md ma stan. Kontynuuj od fazy 05.` |
+| Robi się mętny koło fazy 05 | `Streść stan do notes.md.` Potem zacznij nową sesję, wklej ten prompt jeszcze raz i powiedz `docs i notes.md mają stan. Kontynuuj od fazy 05.` |
 | Ogłasza, że całość skończona | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
 | Faza się wywala, a on idzie dalej | `Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?` |
 | Buduje sekcje jedną po drugiej | `Faza 03 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.` |

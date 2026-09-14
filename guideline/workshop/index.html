@@ -475,17 +475,39 @@ There is no tool that opens it, so decode it. What is known about the format:
   card of the same kind shows the same words, you are reading the component rather than
   the instances. Resolve that before you trust any copy.
 
-You may install a package to do this; the network is available. Keep what you decode in a
-folder called design-data inside this project, so that every later step reads that instead
-of decoding again. Do not write any page code yet.
+You may install a package to do this; the network is available. Keep the decoded data and
+the photos in a folder called design-data inside this project. Do not write any page code
+yet.
 
-Then write what you found into notes.md, as a list, and show it to me:
+Then write the design down as documentation, in a folder called docs, so that nobody — not
+me, not you, not a fresh session — has to open the .fig again. Write each document as soon
+as you have read that part of the file, not all of them at the end:
+
+- docs/sections.md: every section, in the order they appear down the page, and what is in
+  each one
+- docs/colours.md: every colour, by its name in the design, with its exact value and what
+  it is used for
+- docs/typography.md: every font and text style, with size, weight, line height and letter
+  spacing, and where each one is used
+- docs/layout.md: every width the design covers, and the spacing, sizes, corner radii and
+  columns at each width
+- docs/components.md: every component, with its variants and states
+- docs/copy.md: every piece of text, section by section, word for word, including alt text
+  and labels that no frame shows
+- docs/images.md: every image, with its file in design-data, where it is used, its size and
+  its alt text
+
+Copy every value exactly as the file has it: no rounding, no renaming. From now on these
+documents are the design, and every later step reads them instead of the .fig. When a value
+turns out to be missing, the fix is to add it to the right document first.
+
+Then show me a list, and write point 6 of it into notes.md:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from the design, with its exact value, and what it is used for.
+2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Every piece of copy, section by section.
+5. Each document you wrote in docs, and what is in it, one line each.
 6. Anything the file disagrees with itself about, or does not tell you, and that you would
    otherwise have to guess.
 
@@ -494,15 +516,15 @@ state I have no values for&quot; is more useful to me than a confident guess.
 
 Then stop and wait for me to answer point 6.</code></pre></div>
 <hr>
-<p><strong>What you should see.</strong> Ten to fifteen minutes of the agent working the file out, then a long list — also saved as <code>notes.md</code>. Read it. Two things are worth your attention:</p>
+<p><strong>What you should see.</strong> Ten to fifteen minutes of the agent working the file out. A <code>docs</code> folder fills up as it goes — colours, type, layout, components, copy, images — and at the end there is a list in the chat. Read the list. Two things are worth your attention:</p>
 <ul><li><strong>Does it describe your design?</strong> If it says &quot;a hero, three feature cards and a pricing</li></ul>
 <p>  table&quot; and your design has a lineup of twelve artists, it is looking at something else,   or at nothing.</p>
 <ul><li><strong>What is in point 6?</strong> That list is the brief you forgot to write. Answer it now, in</li></ul>
 <p>  your own words. If point 6 is empty, the agent is guessing and has not said so — ask it   <code>which of those did you read, and which did you infer?</code></p>
-<p><code>notes.md</code> matters later. Every prompt after this one reads it, and if you ever have to start a fresh session, it is what the new one knows.</p>
+<p><code>docs</code> matters later. It is the design written down: every prompt after this one builds and checks against those documents, not against the <code>.fig</code>, and you can open them yourself — they are plain text. <code>notes.md</code> holds the open questions, and if you ever have to start a fresh session, the two together are what the new one knows.</p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>It keeps everything for one big write-up at the end</td><td><code>Write docs/colours.md now, from what you have read so far, then carry on.</code></td></tr><tr><td>A document is thin, or a value is missing from it</td><td><code>docs/typography.md has no line heights. Read them from the file and add them.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
 <hr>
 <h3>Why this prompt exists at all</h3>
 <p>It produces no page. That is the point.</p>
@@ -513,22 +535,23 @@ Then stop and wait for me to answer point 6.</code></pre></div>
 <section class="step" id="p03">
   <p class="step__no">Prompt 03</p>
   <h2 id="build-it">Build it</h2>
-  <p>Now it writes the page. Section by section, stopping after each one, so that you are looking at a design review rather than a wall of output.</p>
+  <p>Now it writes the page: all of it, in one go. Then you review it, section by section, at your own pace. The building does not need you; the reviewing does.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Build the page now, from the design. Read design-data and notes.md; do not decode the .fig
-again.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6">Copy</button></div><pre id="p6"><code>Build the page now, from the design. Read docs and notes.md; do not decode the .fig again.
 
-One section at a time, in the order in notes.md. After each section, tell me in one
-sentence what you built, and then STOP and wait for me to say &quot;next&quot;. Do not build two
-sections in one go, however small they look.
+Build the whole page in one go: every section in docs/sections.md, in that order. Do not
+stop between sections to ask me. When it is done, tell me which sections you built, one line
+each, and the address to open.
 
 Rules, all of them non-negotiable:
 
-- Every colour and every size comes from the design. If you find yourself choosing a
-  value, stop and ask me instead.
-- Every word comes from the design. Do not write copy. Do not improve copy. If a piece of
-  text seems to be missing, ask — do not fill the gap.
-- Every photo comes from the design: use the images you decoded, never a placeholder.
+- Every colour and every size comes from docs. If a value you need is not there, look for it
+  in design-data; if it is there, add it to the right document first, then use it. If it is
+  nowhere, do not choose one: it is a question for notes.md, below.
+- Every word comes from docs/copy.md. Do not write copy. Do not improve copy. If a piece of
+  text seems to be missing, write that into notes.md — do not fill the gap.
+- Every photo comes from the design: use the images docs/images.md lists, never a
+  placeholder.
 - Nothing new goes into the page itself: no UI framework, no component library, no font or
   icon service. The page is made of Astro and Tailwind.
 - The page must work with images that have not loaded and with JavaScript switched off.
@@ -538,15 +561,15 @@ If the design does not tell you something, do not guess. Write the question into
 pick the reading you think is likeliest, tell me both, and carry on. I would rather correct
 one assumption than discover six.</code></pre></div>
 <hr>
-<p><strong>What you should see.</strong> One section. Then silence, and a question. Reload the page in your browser. Compare it to the design in Figma. Then say <code>next</code>, or say what is wrong — in plain words, the way you would to a junior designer:</p>
+<p><strong>What you should see.</strong> A few minutes of work, then a list of sections and an address. Open it. Put it beside the design in Figma and go down the page one section at a time. For each thing that is wrong, say so — in plain words, the way you would to a junior designer:</p>
 <blockquote>The gap under the heading is too tight, and the orange is the wrong orange.</blockquote>
-<p>That is a perfectly good bug report. You do not need the vocabulary.</p>
+<p>That is a perfectly good bug report. You do not need the vocabulary. Send them one at a time or several in one message; either works.</p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It builds the whole page in one burst</td><td><code>Stop. Keep what you have. From now on, one section then wait for me.</code></td></tr><tr><td>Text you have never seen before</td><td><code>Where did that sentence come from? Replace it with the text from the design.</code></td></tr><tr><td>A grey box where a photo should be</td><td><code>Use the image from the design for that. It is in design-data.</code></td></tr><tr><td>A colour that is nearly right</td><td><code>That is not the value in the design. Use the exact one and tell me which variable it is.</code></td></tr><tr><td>It starts decoding the .fig again</td><td><code>Stop. Everything you need is in design-data and notes.md already.</code></td></tr><tr><td>It says it is done and it clearly is not</td><td><code>Which sections have you built, and which are still missing? List both.</code></td></tr><tr><td>It gets slower and vaguer as it goes</td><td>It is running low on context. Say <code>Update notes.md with where we are</code>, start a fresh session, say <code>Read notes.md and continue building</code>, and carry on.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It stops after one section and asks</td><td><code>Do not wait for me. Build the whole page, then show me.</code></td></tr><tr><td>Text you have never seen before</td><td><code>Where did that sentence come from? Replace it with the text in docs/copy.md.</code></td></tr><tr><td>A grey box where a photo should be</td><td><code>Use the image docs/images.md lists for that.</code></td></tr><tr><td>A colour that is nearly right</td><td><code>That is not the value in docs/colours.md. Use the exact one and tell me its name.</code></td></tr><tr><td>It starts decoding the .fig again</td><td><code>Stop. Everything you need is in docs and notes.md.</code></td></tr><tr><td>It needs a value the documents do not have</td><td><code>Find it in design-data, add it to the right document in docs, then use it.</code></td></tr><tr><td>It says it is done and it clearly is not</td><td><code>Which sections have you built, and which are still missing? List both.</code></td></tr><tr><td>It gets slower and vaguer as it goes</td><td>It is running low on context. Say <code>Update notes.md with where we are</code>, start a fresh session, say <code>Read docs and notes.md and continue building</code>, and carry on.</td></tr></tbody></table></div>
 <hr>
 <h3>Two things worth noticing while it works</h3>
-<p><strong>It is faster than you, and that is not the same as better.</strong> Six sections will appear in the time it takes you to properly look at one. The pause after each section exists so that the reviewing keeps pace with the building. Use it.</p>
+<p><strong>It is faster than you, and that is not the same as better.</strong> The whole page appears in the time it takes you to properly look at one section. Do not let the speed of the building set the pace of the looking: take the sections one at a time, and say what is wrong before you move to the next.</p>
 <p><strong>Nothing here has checked anything yet.</strong> The page may look finished at the end of this prompt. It has been judged by exactly one thing so far: your eyes, on your screen, at your window size. Prompt 04 is where that changes.</p>
 </section>
 <section class="step" id="p04">
@@ -570,7 +593,7 @@ By default it checks the site running on this machine. It must also take an addr
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
-Derive what to check from the design, not from me. At minimum it must decide, against the
+Derive what to check from the documents in docs, not from me. At minimum it must decide, against the
 page as a browser actually renders it rather than against the source:
 
 1. that the project builds, with no errors
@@ -593,7 +616,7 @@ hand that file straight back to you. Tell me what you called it.
 Two rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
-  design-data is missing — that is a FAILURE, never a pass and never a silent skip. A
+  a document in docs is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.
@@ -669,8 +692,8 @@ could pick this up. Keep going on your own. Do not ask me to confirm each round.
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10">Copy</button></div><pre id="p10"><code>Put this on the internet.
 
-Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
-am not logged in, tell me what to click rather than doing it silently.
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
 
 When it is live, do not just tell me it worked. Check:
 
@@ -771,8 +794,8 @@ you — one per section, one per review lens, one per finding, whatever the phas
 Merge their results before you leave the phase.
 
 Because this is one run rather than seven messages, exactly two things change:
-- In phase 03 you do not wait for me after each section. You build the sections in
-  parallel, one subagent each.
+- In phase 03 you build the sections in parallel, one subagent each, instead of one
+  after another.
 - You stop and wait for me only where a phase tells you to: at the end of phase 02, and
   whenever a rule says to stop and ask. Everywhere else, keep going.
 
@@ -820,17 +843,39 @@ There is no tool that opens it, so decode it. What is known about the format:
   card of the same kind shows the same words, you are reading the component rather than
   the instances. Resolve that before you trust any copy.
 
-You may install a package to do this; the network is available. Keep what you decode in a
-folder called design-data inside this project, so that every later step reads that instead
-of decoding again. Do not write any page code yet.
+You may install a package to do this; the network is available. Keep the decoded data and
+the photos in a folder called design-data inside this project. Do not write any page code
+yet.
 
-Then write what you found into notes.md, as a list, and show it to me:
+Then write the design down as documentation, in a folder called docs, so that nobody — not
+me, not you, not a fresh session — has to open the .fig again. Write each document as soon
+as you have read that part of the file, not all of them at the end:
+
+- docs/sections.md: every section, in the order they appear down the page, and what is in
+  each one
+- docs/colours.md: every colour, by its name in the design, with its exact value and what
+  it is used for
+- docs/typography.md: every font and text style, with size, weight, line height and letter
+  spacing, and where each one is used
+- docs/layout.md: every width the design covers, and the spacing, sizes, corner radii and
+  columns at each width
+- docs/components.md: every component, with its variants and states
+- docs/copy.md: every piece of text, section by section, word for word, including alt text
+  and labels that no frame shows
+- docs/images.md: every image, with its file in design-data, where it is used, its size and
+  its alt text
+
+Copy every value exactly as the file has it: no rounding, no renaming. From now on these
+documents are the design, and every later step reads them instead of the .fig. When a value
+turns out to be missing, the fix is to add it to the right document first.
+
+Then show me a list, and write point 6 of it into notes.md:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from the design, with its exact value, and what it is used for.
+2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Every piece of copy, section by section.
+5. Each document you wrote in docs, and what is in it, one line each.
 6. Anything the file disagrees with itself about, or does not tell you, and that you would
    otherwise have to guess.
 
@@ -839,23 +884,25 @@ state I have no values for&quot; is more useful to me than a confident guess.
 
 Then stop and wait for me to answer point 6.
 
-Before moving on: notes.md exists, and I have answered point 6.
+Before moving on: every document in docs is written, notes.md exists, and I have answered point 6.
 
 PHASE 03 — BUILD
 
-Build the page now, from the design. Read design-data and notes.md; do not decode the .fig
-again.
+Build the page now, from the design. Read docs and notes.md; do not decode the .fig again.
 
-Build every section in notes.md, one subagent per section, all in parallel, then put
-them together in the order in notes.md. Do not wait for me between sections.
+Build every section in docs/sections.md at the same time, one subagent per section, then
+put them together in that order. Do not stop between sections to ask me. When it is done,
+tell me which sections you built, one line each, and the address to open.
 
 Rules, all of them non-negotiable:
 
-- Every colour and every size comes from the design. If you find yourself choosing a
-  value, stop and ask me instead.
-- Every word comes from the design. Do not write copy. Do not improve copy. If a piece of
-  text seems to be missing, ask — do not fill the gap.
-- Every photo comes from the design: use the images you decoded, never a placeholder.
+- Every colour and every size comes from docs. If a value you need is not there, look for it
+  in design-data; if it is there, add it to the right document first, then use it. If it is
+  nowhere, do not choose one: it is a question for notes.md, below.
+- Every word comes from docs/copy.md. Do not write copy. Do not improve copy. If a piece of
+  text seems to be missing, write that into notes.md — do not fill the gap.
+- Every photo comes from the design: use the images docs/images.md lists, never a
+  placeholder.
 - Nothing new goes into the page itself: no UI framework, no component library, no font or
   icon service. The page is made of Astro and Tailwind.
 - The page must work with images that have not loaded and with JavaScript switched off.
@@ -865,7 +912,7 @@ If the design does not tell you something, do not guess. Write the question into
 pick the reading you think is likeliest, tell me both, and carry on. I would rather correct
 one assumption than discover six.
 
-Before moving on: every section in notes.md is built, and the project builds with no errors.
+Before moving on: every section in docs/sections.md is built, and the project builds with no errors.
 
 PHASE 04 — ARM
 
@@ -883,7 +930,7 @@ By default it checks the site running on this machine. It must also take an addr
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
-Derive what to check from the design, not from me. At minimum it must decide, against the
+Derive what to check from the documents in docs, not from me. At minimum it must decide, against the
 page as a browser actually renders it rather than against the source:
 
 1. that the project builds, with no errors
@@ -906,7 +953,7 @@ hand that file straight back to you. Tell me what you called it.
 Two rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
-  design-data is missing — that is a FAILURE, never a pass and never a silent skip. A
+  a document in docs is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.
@@ -948,8 +995,8 @@ PHASE 06 — SHIP
 
 Put this on the internet.
 
-Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
-am not logged in, tell me what to click rather than doing it silently.
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
 
 When it is live, do not just tell me it worked. Check:
 
@@ -1007,8 +1054,8 @@ Rules for the whole run:
 - Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
-- Keep notes.md current as you go. If we have to start a fresh session, notes.md is all it
-  will have.</code></pre></div>
+- Keep docs and notes.md current as you go. If we have to start a fresh session, they are
+  all it will have.</code></pre></div>
 <hr>
 <p><strong>What you should see.</strong> <code>PHASE 01 — START</code>, and then work, unattended, for a long time. It stops for you once, after phase 02, to hear your answer to point 6 — and otherwise only if a rule tells it to stop and ask.</p>
 <hr>
@@ -1039,7 +1086,7 @@ Rules for the whole run:
 <p>The first time you do a piece of work, do it by hand. The second time, you know what the phases are.</p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It announces phase 04 before phase 03 is built</td><td><code>You skipped part of phase 03. Go back and finish it before phase 04.</code></td></tr><tr><td>It blows through the &quot;wait for me&quot; bar</td><td><code>Phase 02 said wait for my answer to point 6. Stop and show me notes.md.</code></td></tr><tr><td>It gets vaguer around phase 05</td><td><code>Summarise the state into notes.md.</code> Then start a fresh session, paste this prompt again, and say <code>notes.md has the state. Continue from phase 05.</code></td></tr><tr><td>It declares the whole thing done</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>A phase fails and it continues anyway</td><td><code>You were told to stop on a failed phase. What failed, and why did you continue?</code></td></tr><tr><td>It builds the sections one at a time</td><td><code>Phase 03 is independent sections. Build them in parallel, one subagent each.</code></td></tr><tr><td>Phase 07 reports five findings and all five are real</td><td>Good, and suspicious. <code>How many candidates did you discard, and why?</code> A refutation round that refutes nothing did not happen.</td></tr><tr><td>It spawns twenty subagents for a small page</td><td><code>Use as many as the work needs. Tell me the number and your reason before you start.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It announces phase 04 before phase 03 is built</td><td><code>You skipped part of phase 03. Go back and finish it before phase 04.</code></td></tr><tr><td>It blows through the &quot;wait for me&quot; bar</td><td><code>Phase 02 said wait for my answer to point 6. Stop and show me notes.md.</code></td></tr><tr><td>It gets vaguer around phase 05</td><td><code>Summarise the state into notes.md.</code> Then start a fresh session, paste this prompt again, and say <code>docs and notes.md have the state. Continue from phase 05.</code></td></tr><tr><td>It declares the whole thing done</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>A phase fails and it continues anyway</td><td><code>You were told to stop on a failed phase. What failed, and why did you continue?</code></td></tr><tr><td>It builds the sections one at a time</td><td><code>Phase 03 is independent sections. Build them in parallel, one subagent each.</code></td></tr><tr><td>Phase 07 reports five findings and all five are real</td><td>Good, and suspicious. <code>How many candidates did you discard, and why?</code> A refutation round that refutes nothing did not happen.</td></tr><tr><td>It spawns twenty subagents for a small page</td><td><code>Use as many as the work needs. Tell me the number and your reason before you start.</code></td></tr></tbody></table></div>
 </section>
 </div></main>
 <footer><div class="wrap">

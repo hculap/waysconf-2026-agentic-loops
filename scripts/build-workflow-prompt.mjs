@@ -42,16 +42,16 @@ you — one per section, one per review lens, one per finding, whatever the phas
 Merge their results before you leave the phase.
 
 Because this is one run rather than seven messages, exactly two things change:
-- In phase 03 you do not wait for me after each section. You build the sections in
-  parallel, one subagent each.
+- In phase 03 you build the sections in parallel, one subagent each, instead of one
+  after another.
 - You stop and wait for me only where a phase tells you to: at the end of phase 02, and
   whenever a rule says to stop and ask. Everywhere else, keep going.`,
     names: ['START', 'LOOK', 'BUILD', 'ARM', 'REPAIR', 'SHIP', 'ATTACK'],
     phase: (n, name) => `PHASE ${n} — ${name}`,
     bars: [
       'Before moving on: the development server is running and you have told me its address.',
-      'Before moving on: notes.md exists, and I have answered point 6.',
-      'Before moving on: every section in notes.md is built, and the project builds with no errors.',
+      'Before moving on: every document in docs is written, notes.md exists, and I have answered point 6.',
+      'Before moving on: every section in docs/sections.md is built, and the project builds with no errors.',
       'Before moving on: npm run check runs and reports something. It will be red. Good.',
       'Before moving on: npm run check exits 0.',
       'Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.',
@@ -60,11 +60,12 @@ Because this is one run rather than seven messages, exactly two things change:
     replace: {
       3: [
         {
-          from: `One section at a time, in the order in notes.md. After each section, tell me in one
-sentence what you built, and then STOP and wait for me to say "next". Do not build two
-sections in one go, however small they look.`,
-          to: `Build every section in notes.md, one subagent per section, all in parallel, then put
-them together in the order in notes.md. Do not wait for me between sections.`,
+          from: `Build the whole page in one go: every section in docs/sections.md, in that order. Do not
+stop between sections to ask me. When it is done, tell me which sections you built, one line
+each, and the address to open.`,
+          to: `Build every section in docs/sections.md at the same time, one subagent per section, then
+put them together in that order. Do not stop between sections to ask me. When it is done,
+tell me which sections you built, one line each, and the address to open.`,
         },
       ],
     },
@@ -82,8 +83,8 @@ to argue against it from those three angles.`,
 - Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
-- Keep notes.md current as you go. If we have to start a fresh session, notes.md is all it
-  will have.`,
+- Keep docs and notes.md current as you go. If we have to start a fresh session, they are
+  all it will have.`,
   },
 
   pl: {
@@ -98,16 +99,16 @@ liczby, którą ci podałem — jeden na sekcję, jeden na soczewkę review, jed
 czego akurat wymaga faza. Scal ich wyniki, zanim z niej wyjdziesz.
 
 Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się dokładnie dwie rzeczy:
-- W fazie 03 nie czekasz na mnie po każdej sekcji. Budujesz sekcje równolegle, po jednym
-  subagencie na każdą.
+- W fazie 03 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
+  drugiej.
 - Zatrzymujesz się i czekasz na mnie tylko tam, gdzie faza ci to każe: na końcu fazy 02 i
   zawsze, gdy reguła mówi, żeby się zatrzymać i zapytać. Wszędzie indziej jedziesz dalej.`,
     names: ['START', 'POPATRZ', 'BUDUJ', 'UZBRÓJ', 'NAPRAWIAJ', 'WYSTAW', 'ATAKUJ'],
     phase: (n, name) => `FAZA ${n} — ${name}`,
     bars: [
       'Zanim pójdziesz dalej: serwer deweloperski działa i podałeś mi jego adres.',
-      'Zanim pójdziesz dalej: notes.md istnieje, a ja odpowiedziałem na punkt 6.',
-      'Zanim pójdziesz dalej: każda sekcja z notes.md jest zbudowana, a projekt buduje się bez błędów.',
+      'Zanim pójdziesz dalej: każdy dokument w docs jest zapisany, notes.md istnieje, a ja odpowiedziałem na punkt 6.',
+      'Zanim pójdziesz dalej: każda sekcja z docs/sections.md jest zbudowana, a projekt buduje się bez błędów.',
       'Zanim pójdziesz dalej: npm run check uruchamia się i coś raportuje. Będzie czerwono. Dobrze.',
       'Zanim pójdziesz dalej: npm run check kończy się kodem 0.',
       'Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.',
@@ -116,11 +117,12 @@ Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się dokład
     replace: {
       3: [
         {
-          from: `Jedna sekcja naraz, w kolejności z notes.md. Po każdej sekcji powiedz mi jednym zdaniem,
-co zbudowałeś, a potem ZATRZYMAJ SIĘ i czekaj, aż powiem „dalej". Nie buduj dwóch sekcji
-za jednym razem, choćby wyglądały na drobne.`,
-          to: `Zbuduj każdą sekcję z notes.md, po jednym subagencie na sekcję, wszystkie równolegle, a
-potem złóż je w kolejności z notes.md. Nie czekaj na mnie między sekcjami.`,
+          from: `Zbuduj całą stronę za jednym razem: każdą sekcję z docs/sections.md, w tej kolejności. Nie
+zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy skończysz, powiedz mi, które sekcje
+zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
+          to: `Zbuduj wszystkie sekcje z docs/sections.md naraz, po jednym subagencie na sekcję, a potem
+złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
+skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
         },
       ],
     },
@@ -138,8 +140,8 @@ jedynym zadaniem jest argumentować przeciwko niemu z tych trzech stron.`,
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
 - Jeśli faza nie może się skończyć, zatrzymaj się na niej i powiedz dlaczego. Nie idź
   dalej z poprzednią zepsutą.
-- Utrzymuj notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, notes.md jest
-  wszystkim, co będzie miała.`,
+- Utrzymuj docs i notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, to będzie
+  wszystko, co będzie miała.`,
   },
 }
 

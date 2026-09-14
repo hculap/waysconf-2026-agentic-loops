@@ -496,7 +496,7 @@ file does not say — in your own words.
 ### 2. Paste prompt 03
 
 <p class="mt-2">
-It builds one section, stops, and waits for you to say <b>next</b>.
+It builds the whole page. Then you review it, one section at a time.
 </p>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">

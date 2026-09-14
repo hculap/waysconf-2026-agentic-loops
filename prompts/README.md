@@ -37,8 +37,8 @@ point of this session is that you are allowed to.
 | | Prompt | What it does | Roughly |
 |---|---|---|---|
 | 01 | [Start](01-start.md) | Empty folder → a site running on your machine | 3 min |
-| 02 | [Look at the design](02-design.md) | The agent decodes the Figma file and tells you what it found, before writing any page | 15 min |
-| 03 | [Build it](03-build.md) | Section by section, pausing after each | 15 min |
+| 02 | [Look at the design](02-design.md) | The agent decodes the Figma file, writes it down as documents in `docs`, and tells you what it found, before writing any page | 15 min |
+| 03 | [Build it](03-build.md) | The whole page in one go, from the documents 02 wrote; you review it section by section | 15 min |
 | 04 | **[Write the checker](04-checker.md)** | The agent writes the program that will judge its own work | 6 min |
 | 05 | **[The loop](05-loop.md)** | Check, fix, check again, until the program says yes | 10 min |
 | 06 | [Ship it](06-deploy.md) | A public URL you can send to someone | 4 min |

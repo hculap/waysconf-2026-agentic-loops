@@ -57,17 +57,38 @@ Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
   karta tego samego rodzaju pokazuje te same słowa, czytasz komponent zamiast instancji.
   Rozwiąż to, zanim zaufasz jakiemukolwiek tekstowi.
 
-Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. To, co rozkodujesz, trzymaj
-w folderze design-data w tym projekcie, żeby każdy kolejny krok czytał to zamiast
-rozkodowywać od nowa. Nie pisz jeszcze żadnego kodu strony.
+Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. Rozkodowane dane i zdjęcia
+trzymaj w folderze design-data w tym projekcie. Nie pisz jeszcze żadnego kodu strony.
 
-Potem zapisz, co znalazłeś, do notes.md, jako listę, i pokaż mi ją:
+Potem spisz design jako dokumentację, w folderze docs, żeby nikt — ani ja, ani ty, ani nowa
+sesja — nie musiał już otwierać pliku .fig. Każdy dokument zapisuj od razu, gdy przeczytasz
+tę część pliku, a nie wszystkie na końcu:
+
+- docs/sections.md: każda sekcja, w kolejności od góry strony, i co jest w każdej z nich
+- docs/colours.md: każdy kolor, po nazwie z designu, z dokładną wartością i do czego jest
+  używany
+- docs/typography.md: każdy font i styl tekstu, z rozmiarem, grubością, interlinią
+  i odstępem między literami, i gdzie który jest użyty
+- docs/layout.md: każda szerokość, którą design obejmuje, a przy każdej odstępy, rozmiary,
+  zaokrojenia rogów i kolumny
+- docs/components.md: każdy komponent, z jego wariantami i stanami
+- docs/copy.md: każdy tekst, sekcja po sekcji, słowo w słowo, razem z tekstami
+  alternatywnymi i etykietami, których nie pokazuje żadna ramka
+- docs/images.md: każdy obraz, z jego plikiem w design-data, miejscem użycia, rozmiarem
+  i tekstem alternatywnym
+
+Przepisuj każdą wartość dokładnie tak, jak jest w pliku: bez zaokrąglania, bez zmiany nazw.
+Od teraz te dokumenty są designem i każdy kolejny krok czyta je zamiast pliku .fig. Kiedy
+okaże się, że jakiejś wartości brakuje, poprawka polega na tym, żeby najpierw dopisać ją do
+właściwego dokumentu.
+
+Potem pokaż mi listę, a jej punkt 6 zapisz do notes.md:
 
 1. Każdą sekcję, w kolejności od góry strony.
-2. Każdy kolor, po nazwie z designu, z dokładną wartością, i do czego jest używany.
+2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
-5. Wszystkie teksty, sekcja po sekcji.
+5. Każdy dokument, który zapisałeś w docs, i co w nim jest, po jednej linijce.
 6. Wszystko, co w pliku się nie zgadza albo czego w nim nie ma, a co inaczej musiałbyś
    zgadnąć.
 
@@ -79,9 +100,9 @@ Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.
 
 ---
 
-**Co powinieneś zobaczyć.** Dziesięć do piętnastu minut, w których agent rozgryza plik, a
-potem długą listę — zapisaną też jako `notes.md`. Przeczytaj ją. Dwie rzeczy są warte
-twojej uwagi:
+**Co powinieneś zobaczyć.** Dziesięć do piętnastu minut, w których agent rozgryza plik.
+W trakcie zapełnia się folder `docs` — kolory, typografia, layout, komponenty, teksty,
+obrazy — a na końcu w czacie jest lista. Przeczytaj ją. Dwie rzeczy są warte twojej uwagi:
 
 - **Czy to opisuje twój design?** Jeśli mówi „hero, trzy kafle i tabela cennika", a twój
   design ma lineup dwunastu artystów, to patrzy na coś innego albo na nic.
@@ -89,8 +110,10 @@ twojej uwagi:
   teraz, własnymi słowami. Jeśli punkt 6 jest pusty, agent zgaduje i nie powiedział ci o
   tym — zapytaj: `co z tego przeczytałeś, a co wywnioskowałeś?`
 
-`notes.md` będzie ważny później. Każdy kolejny prompt go czyta, a jeśli kiedyś będziesz
-musiał zacząć nową sesję, to jest wszystko, co nowa sesja wie.
+`docs` będzie ważny później. To design spisany na piśmie: każdy kolejny prompt buduje
+i sprawdza według tych dokumentów, a nie według pliku `.fig`, i możesz je otworzyć sam —
+to zwykły tekst. W `notes.md` są otwarte pytania, a jeśli kiedyś będziesz musiał zacząć
+nową sesję, te dwa miejsca razem to wszystko, co nowa sesja wie.
 
 ---
 
@@ -99,6 +122,8 @@ musiał zacząć nową sesję, to jest wszystko, co nowa sesja wie.
 | Co widzisz | Powiedz to |
 |---|---|
 | Zaczyna budować | `Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.` |
+| Zostawia wszystko na jeden wielki opis na końcu | `Zapisz teraz docs/colours.md z tego, co już przeczytałeś, i jedź dalej.` |
+| Dokument jest ubogi albo brakuje w nim wartości | `W docs/typography.md nie ma interlinii. Odczytaj je z pliku i dopisz.` |
 | W menu nie ma „Save local copy" | Jesteś w pliku, który możesz tylko oglądać. Najpierw zduplikuj go do swoich draftów i zapisz ze swojej kopii. |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
 | Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |

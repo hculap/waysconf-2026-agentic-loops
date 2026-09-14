@@ -29,7 +29,7 @@ Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmowa�
 npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
 później mógł ocenić też stronę na żywo.
 
-Co sprawdzać, wyprowadź z designu, nie ode mnie. Minimum, i to względem strony tak, jak
+Co sprawdzać, wyprowadź z dokumentów w docs, nie ode mnie. Minimum, i to względem strony tak, jak
 renderuje ją przeglądarka, a nie względem kodu źródłowego:
 
 1. że projekt się buduje, bez błędów
@@ -52,7 +52,7 @@ plik z powrotem. Powiedz mi, jak go nazwałeś.
 Dwie reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
-  brakuje design-data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  brakuje dokumentu w docs — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
 - Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
   przejdzie za pierwszym razem, uznam, że nic nie sprawdza.

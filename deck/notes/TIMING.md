@@ -37,7 +37,7 @@ subagents. Show it on the adversarial-review slide and tell them to take it home
 
 **Sprint 1 — 15 min.** 02 has been reading the `.fig` since 0:15, so its findings arrive at
 the start of the sprint — or a few minutes in; the Claude Code trial took sixteen. They read
-the list, answer point 6, then run 03, which builds one section and waits.
+the list, answer point 6, then run 03, which builds the whole page from docs/.
 Success: something of theirs renders. Not: it passes anything.
 
 **Sprint 2 — runs in the background.** Needs 04 to have finished: `npm run check` is created

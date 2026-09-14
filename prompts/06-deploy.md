@@ -7,8 +7,8 @@ A URL you can send to someone. This is the bit that makes the afternoon real.
 ```text
 Put this on the internet.
 
-Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
-am not logged in, tell me what to click rather than doing it silently.
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
 
 When it is live, do not just tell me it worked. Check:
 

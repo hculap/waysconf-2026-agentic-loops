@@ -28,7 +28,7 @@ By default it checks the site running on this machine. It must also take an addr
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
-Derive what to check from the design, not from me. At minimum it must decide, against the
+Derive what to check from the documents in docs, not from me. At minimum it must decide, against the
 page as a browser actually renders it rather than against the source:
 
 1. that the project builds, with no errors
@@ -51,7 +51,7 @@ hand that file straight back to you. Tell me what you called it.
 Two rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
-  design-data is missing — that is a FAILURE, never a pass and never a silent skip. A
+  a document in docs is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.

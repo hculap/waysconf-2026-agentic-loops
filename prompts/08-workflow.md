@@ -25,8 +25,8 @@ you — one per section, one per review lens, one per finding, whatever the phas
 Merge their results before you leave the phase.
 
 Because this is one run rather than seven messages, exactly two things change:
-- In phase 03 you do not wait for me after each section. You build the sections in
-  parallel, one subagent each.
+- In phase 03 you build the sections in parallel, one subagent each, instead of one
+  after another.
 - You stop and wait for me only where a phase tells you to: at the end of phase 02, and
   whenever a rule says to stop and ask. Everywhere else, keep going.
 
@@ -74,17 +74,39 @@ There is no tool that opens it, so decode it. What is known about the format:
   card of the same kind shows the same words, you are reading the component rather than
   the instances. Resolve that before you trust any copy.
 
-You may install a package to do this; the network is available. Keep what you decode in a
-folder called design-data inside this project, so that every later step reads that instead
-of decoding again. Do not write any page code yet.
+You may install a package to do this; the network is available. Keep the decoded data and
+the photos in a folder called design-data inside this project. Do not write any page code
+yet.
 
-Then write what you found into notes.md, as a list, and show it to me:
+Then write the design down as documentation, in a folder called docs, so that nobody — not
+me, not you, not a fresh session — has to open the .fig again. Write each document as soon
+as you have read that part of the file, not all of them at the end:
+
+- docs/sections.md: every section, in the order they appear down the page, and what is in
+  each one
+- docs/colours.md: every colour, by its name in the design, with its exact value and what
+  it is used for
+- docs/typography.md: every font and text style, with size, weight, line height and letter
+  spacing, and where each one is used
+- docs/layout.md: every width the design covers, and the spacing, sizes, corner radii and
+  columns at each width
+- docs/components.md: every component, with its variants and states
+- docs/copy.md: every piece of text, section by section, word for word, including alt text
+  and labels that no frame shows
+- docs/images.md: every image, with its file in design-data, where it is used, its size and
+  its alt text
+
+Copy every value exactly as the file has it: no rounding, no renaming. From now on these
+documents are the design, and every later step reads them instead of the .fig. When a value
+turns out to be missing, the fix is to add it to the right document first.
+
+Then show me a list, and write point 6 of it into notes.md:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from the design, with its exact value, and what it is used for.
+2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Every piece of copy, section by section.
+5. Each document you wrote in docs, and what is in it, one line each.
 6. Anything the file disagrees with itself about, or does not tell you, and that you would
    otherwise have to guess.
 
@@ -93,23 +115,25 @@ state I have no values for" is more useful to me than a confident guess.
 
 Then stop and wait for me to answer point 6.
 
-Before moving on: notes.md exists, and I have answered point 6.
+Before moving on: every document in docs is written, notes.md exists, and I have answered point 6.
 
 PHASE 03 — BUILD
 
-Build the page now, from the design. Read design-data and notes.md; do not decode the .fig
-again.
+Build the page now, from the design. Read docs and notes.md; do not decode the .fig again.
 
-Build every section in notes.md, one subagent per section, all in parallel, then put
-them together in the order in notes.md. Do not wait for me between sections.
+Build every section in docs/sections.md at the same time, one subagent per section, then
+put them together in that order. Do not stop between sections to ask me. When it is done,
+tell me which sections you built, one line each, and the address to open.
 
 Rules, all of them non-negotiable:
 
-- Every colour and every size comes from the design. If you find yourself choosing a
-  value, stop and ask me instead.
-- Every word comes from the design. Do not write copy. Do not improve copy. If a piece of
-  text seems to be missing, ask — do not fill the gap.
-- Every photo comes from the design: use the images you decoded, never a placeholder.
+- Every colour and every size comes from docs. If a value you need is not there, look for it
+  in design-data; if it is there, add it to the right document first, then use it. If it is
+  nowhere, do not choose one: it is a question for notes.md, below.
+- Every word comes from docs/copy.md. Do not write copy. Do not improve copy. If a piece of
+  text seems to be missing, write that into notes.md — do not fill the gap.
+- Every photo comes from the design: use the images docs/images.md lists, never a
+  placeholder.
 - Nothing new goes into the page itself: no UI framework, no component library, no font or
   icon service. The page is made of Astro and Tailwind.
 - The page must work with images that have not loaded and with JavaScript switched off.
@@ -119,7 +143,7 @@ If the design does not tell you something, do not guess. Write the question into
 pick the reading you think is likeliest, tell me both, and carry on. I would rather correct
 one assumption than discover six.
 
-Before moving on: every section in notes.md is built, and the project builds with no errors.
+Before moving on: every section in docs/sections.md is built, and the project builds with no errors.
 
 PHASE 04 — ARM
 
@@ -137,7 +161,7 @@ By default it checks the site running on this machine. It must also take an addr
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
-Derive what to check from the design, not from me. At minimum it must decide, against the
+Derive what to check from the documents in docs, not from me. At minimum it must decide, against the
 page as a browser actually renders it rather than against the source:
 
 1. that the project builds, with no errors
@@ -160,7 +184,7 @@ hand that file straight back to you. Tell me what you called it.
 Two rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
-  design-data is missing — that is a FAILURE, never a pass and never a silent skip. A
+  a document in docs is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
 - Do not make the checks lenient so that they pass. I am expecting this to fail. If it
   passes first time I will assume it is not checking anything.
@@ -202,8 +226,8 @@ PHASE 06 — SHIP
 
 Put this on the internet.
 
-Build the site, then deploy it to Netlify. Use npx so there is nothing to install; if I
-am not logged in, tell me what to click rather than doing it silently.
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
 
 When it is live, do not just tell me it worked. Check:
 
@@ -261,8 +285,8 @@ Rules for the whole run:
 - Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
-- Keep notes.md current as you go. If we have to start a fresh session, notes.md is all it
-  will have.
+- Keep docs and notes.md current as you go. If we have to start a fresh session, they are
+  all it will have.
 ```
 
 ---
@@ -362,7 +386,7 @@ phases are.
 |---|---|
 | It announces phase 04 before phase 03 is built | `You skipped part of phase 03. Go back and finish it before phase 04.` |
 | It blows through the "wait for me" bar | `Phase 02 said wait for my answer to point 6. Stop and show me notes.md.` |
-| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then start a fresh session, paste this prompt again, and say `notes.md has the state. Continue from phase 05.` |
+| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then start a fresh session, paste this prompt again, and say `docs and notes.md have the state. Continue from phase 05.` |
 | It declares the whole thing done | `Run npm run check and paste the last five lines, unedited.` |
 | A phase fails and it continues anyway | `You were told to stop on a failed phase. What failed, and why did you continue?` |
 | It builds the sections one at a time | `Phase 03 is independent sections. Build them in parallel, one subagent each.` |

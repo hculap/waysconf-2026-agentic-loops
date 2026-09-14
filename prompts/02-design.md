@@ -58,17 +58,39 @@ There is no tool that opens it, so decode it. What is known about the format:
   card of the same kind shows the same words, you are reading the component rather than
   the instances. Resolve that before you trust any copy.
 
-You may install a package to do this; the network is available. Keep what you decode in a
-folder called design-data inside this project, so that every later step reads that instead
-of decoding again. Do not write any page code yet.
+You may install a package to do this; the network is available. Keep the decoded data and
+the photos in a folder called design-data inside this project. Do not write any page code
+yet.
 
-Then write what you found into notes.md, as a list, and show it to me:
+Then write the design down as documentation, in a folder called docs, so that nobody — not
+me, not you, not a fresh session — has to open the .fig again. Write each document as soon
+as you have read that part of the file, not all of them at the end:
+
+- docs/sections.md: every section, in the order they appear down the page, and what is in
+  each one
+- docs/colours.md: every colour, by its name in the design, with its exact value and what
+  it is used for
+- docs/typography.md: every font and text style, with size, weight, line height and letter
+  spacing, and where each one is used
+- docs/layout.md: every width the design covers, and the spacing, sizes, corner radii and
+  columns at each width
+- docs/components.md: every component, with its variants and states
+- docs/copy.md: every piece of text, section by section, word for word, including alt text
+  and labels that no frame shows
+- docs/images.md: every image, with its file in design-data, where it is used, its size and
+  its alt text
+
+Copy every value exactly as the file has it: no rounding, no renaming. From now on these
+documents are the design, and every later step reads them instead of the .fig. When a value
+turns out to be missing, the fix is to add it to the right document first.
+
+Then show me a list, and write point 6 of it into notes.md:
 
 1. Every section, in the order they appear down the page.
-2. Every colour, by its name from the design, with its exact value, and what it is used for.
+2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Every piece of copy, section by section.
+5. Each document you wrote in docs, and what is in it, one line each.
 6. Anything the file disagrees with itself about, or does not tell you, and that you would
    otherwise have to guess.
 
@@ -80,8 +102,9 @@ Then stop and wait for me to answer point 6.
 
 ---
 
-**What you should see.** Ten to fifteen minutes of the agent working the file out, then a
-long list — also saved as `notes.md`. Read it. Two things are worth your attention:
+**What you should see.** Ten to fifteen minutes of the agent working the file out. A
+`docs` folder fills up as it goes — colours, type, layout, components, copy, images — and
+at the end there is a list in the chat. Read the list. Two things are worth your attention:
 
 - **Does it describe your design?** If it says "a hero, three feature cards and a pricing
   table" and your design has a lineup of twelve artists, it is looking at something else,
@@ -90,8 +113,10 @@ long list — also saved as `notes.md`. Read it. Two things are worth your atten
   your own words. If point 6 is empty, the agent is guessing and has not said so — ask it
   `which of those did you read, and which did you infer?`
 
-`notes.md` matters later. Every prompt after this one reads it, and if you ever have to
-start a fresh session, it is what the new one knows.
+`docs` matters later. It is the design written down: every prompt after this one builds and
+checks against those documents, not against the `.fig`, and you can open them yourself —
+they are plain text. `notes.md` holds the open questions, and if you ever have to start a
+fresh session, the two together are what the new one knows.
 
 ---
 
@@ -100,6 +125,8 @@ start a fresh session, it is what the new one knows.
 | What you see | Say this |
 |---|---|
 | It starts building | `Stop. I asked what you found, not for code. Undo anything you wrote.` |
+| It keeps everything for one big write-up at the end | `Write docs/colours.md now, from what you have read so far, then carry on.` |
+| A document is thin, or a value is missing from it | `docs/typography.md has no line heights. Read them from the file and add them.` |
 | There is no "Save local copy" in the menu | You are in a file you can only view. Duplicate it to your drafts first and save from your copy. |
 | It asks to read a file outside the folder | The `.fig` is beside the project, not in it. Move it into `design` inside the project and say `It is in design now.` |
 | It searches your disk, or reads another project | `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
