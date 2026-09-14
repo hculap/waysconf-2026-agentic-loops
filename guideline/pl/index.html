@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Zanim przyjdziesz · masterclass WaysConf 2026</title>
-<meta name="description" content="Piętnaście minut przygotowań do masterclassu na WaysConf 2026: cztery darmowe konta, jedna instalacja i jak otworzyć terminal.">
+<title>Build an AI that checks and fixes its own work · WaysConf 2026</title>
+<meta name="description" content="Masterclass na WaysConf 2026: agent buduje stronę z pliku Figmy, pisze program, który ją sprawdza, i poprawia to, co ten program znajdzie.">
 <meta name="theme-color" content="#0A0A0A">
 <link rel="alternate" hreflang="pl" href="../pl/">
 <link rel="alternate" hreflang="en" href="../">
@@ -36,10 +36,27 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .wordmark{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:15px;text-decoration:none;color:var(--accent);display:inline-flex;gap:9px;align-items:baseline}
 .wordmark b{color:var(--fg);letter-spacing:-.02em;font-size:17px}
 .wordmark span{letter-spacing:.14em;text-transform:uppercase;font-size:12px}
-.tabs{display:flex;gap:6px;margin-left:auto}
-.tabs a{font-size:14px;font-weight:600;color:var(--fg-3);text-decoration:none;padding:8px 14px;border-radius:999px;border:1px solid transparent;min-height:34px;display:inline-flex;align-items:center}
-.tabs a:hover{color:var(--fg)}
-.tabs a[aria-current="page"]{background:var(--raised);border-color:var(--line-2);color:var(--fg)}
+.top .lang{margin-left:auto}
+
+/* The hub: four doors, one open. A locked door is not a link and not a button — there is
+   nothing to press — so it is a plain list item with the date it opens on, and a screen
+   reader hears exactly that. */
+.hub__kicker{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:52px 0 0}
+.hub__kicker::before{content:'// ';opacity:.75}
+.hub__kicker + h1{margin-top:12px}
+.hub__when{font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.doors{list-style:none;margin:24px 0;padding:0;display:grid;gap:14px}
+@media(min-width:700px){.doors{grid-template-columns:1fr 1fr}}
+.door{display:flex;flex-direction:column;gap:6px;height:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;text-decoration:none;color:inherit}
+a.door{border-color:rgb(16 185 129 / .45);background:linear-gradient(rgb(16 185 129 / .08),transparent)}
+a.door:hover{border-color:var(--accent);color:inherit}
+.door__n{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;color:var(--accent)}
+.door__n::before{content:'// ';opacity:.75}
+.door b{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:24px;line-height:1.2;color:var(--fg)}
+.door span{color:var(--fg-2);font-size:15px}
+.door em{margin-top:auto;padding-top:10px;font-style:normal;font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.door--locked b{color:var(--fg-2)}
+.door--locked em{color:var(--fg-3)}
 
 /* EN / PL, the same lockup the main site uses. The current language is a span rather than
    a link: a link to the page you are already on is a promise the browser does not keep. */
@@ -191,205 +208,46 @@ footer p{font-size:14px;color:var(--fg-3)}
 <a class="skip" href="#main">Przejdź do treści</a>
 <header class="top">
   <div class="wrap">
-    <a class="wordmark" href="../pl/"><b>SP.</b> <span>WaysConf 2026</span></a>
-    <nav class="tabs" aria-label="Warsztat">
-      <a href="../pl/" aria-current="page">Przed</a>
-      <a href="../pl/workshop/">W trakcie</a>
-    </nav>
+    <a class="wordmark" href="../pl/" title="WaysConf 2026 — wszystkie części warsztatu"><b>SP.</b> <span>WaysConf 2026</span></a>
     <nav class="lang" aria-label="Język">
       <span aria-current="true">PL</span>
       <a href="../" lang="en" hreflang="en">EN</a>
     </nav>
   </div>
 </header>
-<nav class="toc" aria-label="On this page">
-  <p class="toc__t">Na tej stronie</p>
-  <ol>
-    <li><a href="#co-b-dziemy-budowa">Co będziemy budować</a></li>
-    <li><a href="#czego-potrzebujesz">Czego potrzebujesz</a></li>
-    <li><a href="#najpierw-wybierz-sw-j-komputer">Najpierw wybierz swój komputer</a></li>
-    <li><a href="#jak-otworzy-terminal">Jak otworzyć terminal</a></li>
-    <li><a href="#zainstaluj-jedn-rzecz">Zainstaluj jedną rzecz</a></li>
-    <li><a href="#je-li-instalacja-nie-wchodzi-w-gr">Jeśli instalacja nie wchodzi w grę</a></li>
-    <li><a href="#pytania-kt-re-ludzie-zadaj">Pytania, które ludzie zadają</a></li>
-    <li><a href="#w-dniu-warsztatu">W dniu warsztatu</a></li>
-  </ol>
-</nav>
+
 <main id="main" tabindex="-1"><div class="wrap">
-<h1>Zanim przyjdziesz</h1>
-<p class="lede">Dziewięćdziesiąt minut, trzydzieści osób, jedna pętla. Agent dostaje design, pisze stronę, a potem program — nie on sam — mówi mu wszystko, co jest z nią nie tak. Agent to poprawia i słyszy to jeszcze raz.</p>
-<p class="lede">Ta strona to przygotowanie. Zajmuje jakieś piętnaście minut i idzie dużo lepiej w domu niż na konferencyjnym wifi.</p>
-<p>Piętnaście minut, cztery darmowe konta, jedna instalacja. Zrób to w domu — na sali będzie trzydzieści osób i jedno wifi, a formularze rejestracji to marny sposób na spędzenie pierwszych dwudziestu minut warsztatu.</p>
-<p><strong>Nie musisz umieć programować.</strong> Ta sesja jest zrobiona dla projektantów i ludzi od produktu. Wpiszesz kilka komend i powiesz dużo rzeczy po ludzku.</p>
-<hr>
-<h2 id="co-b-dziemy-budowa">Co będziemy budować</h2>
-<figure class="fig"><img src="../diagrams/01-the-loop.svg" alt="Pętla: generuj, sprawdź, napraw, z wyjściem przez publikację" loading="lazy" width="1600" height="900"></figure>
-<p>Agent pisze stronę. <strong>Program</strong> — nie agent — sprawdza ją względem designu, reguł kontrastu i tekstów, po czym spisuje, co jest nie tak. Agent to czyta i poprawia. I w kółko, aż program nie ma już nic do powiedzenia, a wtedy strona idzie na serwer.</p>
-<p>Ciekawe jest to pudełko, które odmawia. Wszystko poniżej to rzeczy, które trzeba mieć zainstalowane, żeby w środę zbudować taką pętlę samodzielnie.</p>
-<hr>
-<h2 id="czego-potrzebujesz">Czego potrzebujesz</h2>
 
-<div class="cards">
-  <div class="card">
-    <p class="card__n">01</p>
-    <h3>GitHub</h3>
-    <p>Za darmo. Potrzebny, żeby zalogować się do Netlify jednym kliknięciem — i do wersji w przeglądarce, jeśli nic nie możesz zainstalować.</p>
-    <p><a class="btn" href="https://github.com/signup">Załóż konto</a></p>
-    <p class="card__t">2 min · potwierdź maila</p>
-  </div>
-  <div class="card card--pay">
-    <p class="card__n">02</p>
-    <h3>Jeden agent do kodu</h3>
-    <p><strong>Claude Pro</strong> albo <strong>ChatGPT Plus</strong> — jeden, nie oba. Są tu równorzędne: każdy prompt z tego warsztatu był pisany i uruchamiany na obu.</p>
-    <p><a class="btn" href="https://claude.ai/">Claude</a> <a class="btn btn--ghost" href="https://chatgpt.com/">ChatGPT</a></p>
-    <p class="card__t">jedyna rzecz na tej stronie, która kosztuje · około 20 €</p>
-  </div>
-  <div class="card">
-    <p class="card__n">03</p>
-    <h3>Netlify</h3>
-    <p>Za darmo, i to tutaj wyląduje twoja strona. Wybierz <strong>Sign up with GitHub</strong> i nie ma nic więcej do wypełnienia.</p>
-    <p><a class="btn" href="https://app.netlify.com/signup">Załóż konto</a></p>
-    <p class="card__t">2 min · bez karty</p>
-  </div>
-  <div class="card">
-    <p class="card__n">04</p>
-    <h3>Figma</h3>
-    <p>Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i ten plik dajesz agentowi. Nic w warsztacie nie wymaga płatnego miejsca.</p>
-    <p><a class="btn" href="https://www.figma.com/signup">Załóż konto</a></p>
-    <p class="card__t">darmowy plan w zupełności wystarczy</p>
-  </div>
-</div>
-<hr>
-<h2 id="najpierw-wybierz-sw-j-komputer">Najpierw wybierz swój komputer</h2>
+<p class="hub__kicker">WaysConf 2026 · masterclass</p>
+<h1>Build an AI that checks and fixes its own work</h1>
+<p class="lede">Dziewięćdziesiąt minut. Agent buduje stronę z pliku Figmy, pisze program, który ją sprawdza, i poprawia to, co ten program znajdzie — aż program powie „tak&quot;.</p>
+<p class="hub__when">16 września 2026 · 14:55 · ROOM-PM · Kraków</p>
 
-<fieldset class="ospick" data-os-labels="{&quot;mac&quot;:&quot;macOS&quot;,&quot;windows&quot;:&quot;Windows&quot;,&quot;linux&quot;:&quot;Linux&quot;}"
-  data-os-guessed="Zgadliśmy %s na podstawie przeglądarki. Nie ten? Wybierz inny — wszystko poniżej się dopasuje." data-os-set="Wszystko poniżej jest dla systemu %s.">
-  <legend>Na jakim komputerze pracujesz?</legend>
-  <div class="ospick__row">
-    <input type="radio" name="os" id="os-mac" value="mac" checked>
-    <label for="os-mac">macOS</label>
-    <input type="radio" name="os" id="os-windows" value="windows">
-    <label for="os-windows">Windows</label>
-    <input type="radio" name="os" id="os-linux" value="linux">
-    <label for="os-linux">Linux</label>
-  </div>
-  <p class="ospick__hint" data-os-hint>Wszystko poniżej dopasuje się do wyboru.</p>
-</fieldset>
-<hr>
-<h2 id="jak-otworzy-terminal">Jak otworzyć terminal</h2>
-<p>Jeśli nigdy go nie otwierałeś, to jest ten moment, w którym ludzie odpadają — i odpadają, zanim w ogóle zaczną. To dwa kroki i nie jest niebezpieczne.</p>
-<p>Terminal to okno, w którym wpisujesz nazwę programu, naciskasz Enter, a on wypisuje odpowiedź jako tekst. <code>npm install</code> i przycisk z napisem <strong>Instaluj</strong> robią dokładnie to samo — jedno wywołujesz nazwą, drugie kliknięciem.</p>
-<div data-os="mac">
-  <h3>Jak otworzyć terminal na macOS</h3>
-  <ol>
-    <li>Naciśnij <kbd>Cmd</kbd> + <kbd>Spacja</kbd>.</li>
-    <li>Wpisz <code>Terminal</code>.</li>
-    <li>Naciśnij <kbd>Enter</kbd>.</li>
-  </ol>
-  <p>Otworzy się okno z linijką tekstu i migającym kursorem. To wszystko. Wklejasz do niego przez <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
-</div>
+<h2 id="warsztat-w-czterech-czesciach">Warsztat w czterech częściach</h2>
+<p>Pierwsza część jest na teraz, do zrobienia w domu. Pozostałe trzy otworzą się w dniu warsztatu.</p>
 
-<div data-os="windows">
-  <h3>Jak otworzyć terminal na Windows</h3>
-  <ol>
-    <li>Naciśnij klawisz <kbd>Windows</kbd>.</li>
-    <li>Wpisz <code>PowerShell</code>.</li>
-    <li>Kliknij <strong>Windows PowerShell</strong> — <em>nie</em> „Wiersz polecenia", który wygląda podobnie i zachowuje się inaczej.</li>
-  </ol>
-  <p>Otworzy się niebieskie okno z linijką tekstu i migającym kursorem. To wszystko. Wklejasz przez <kbd>Ctrl</kbd> + <kbd>V</kbd> albo prawym przyciskiem myszy.</p>
-</div>
-
-<div data-os="linux">
-  <h3>Jak otworzyć terminal na Linuksie</h3>
-  <ol>
-    <li>Naciśnij <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>.</li>
-    <li>Jeśli nic się nie stanie, otwórz menu aplikacji i poszukaj <code>Terminal</code>.</li>
-  </ol>
-  <p>Wklejasz przez <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> — samo <kbd>Ctrl</kbd> + <kbd>V</kbd> znaczy w terminalu coś innego.</p>
-</div>
-<h3>Sześć rzeczy, których nikt nie mówi</h3>
-
-<div class="rules">
-  <div><b>Linijka z kursorem to prompt.</b> Kończy się na <code>$</code>, <code>%</code> albo <code>&gt;</code> i oznacza, że terminal czeka na ciebie.</div>
-  <div><b>Wklej, potem naciśnij <kbd>Enter</kbd>.</b> Nic się nie uruchomi, dopóki tego nie zrobisz.</div>
-  <div><b>Cisza jest normalna.</b> Komenda potrafi stać przez minutę i nic nie wypisywać. Nie zawiesiła się — pracuje. Nauczysz się czekać.</div>
-  <div><b>Skończyła się, kiedy wraca prompt.</b> To jedyny sygnał, jaki dostajesz.</div>
-  <div><b>To, co przewinęło się do góry, jest zapisem.</b> Nie da się kliknąć w starą linijkę i jej poprawić. Żyje tylko ta, którą właśnie piszesz.</div>
-  <div><b>Niczym z tej strony nie zepsujesz komputera.</b> Każda komenda tutaj albo coś instaluje, albo wypisuje numer wersji.</div>
-</div>
-<hr>
-<h2 id="zainstaluj-jedn-rzecz">Zainstaluj jedną rzecz</h2>
-<p>Potrzebujesz <strong>Node</strong> na swoim komputerze, a potem <strong>jednego</strong> z dwóch agentów terminalowych — tego, który pasuje do subskrypcji, którą już masz. Skopiuj każdą komendę, wklej do terminala, który przed chwilą otworzyłeś, naciśnij Enter i poczekaj, aż wróci prompt, zanim przejdziesz do następnej.</p>
-
-<div data-os="mac">
-  <h3>Node, na macOS</h3>
-  <div class="cmd">
-  <pre id="cmd-10"><code>brew install node</code></pre>
-  <button class="copy copy--sm" data-for="cmd-10" aria-label="Skopiuj komendę: brew install node">Kopiuj</button>
-</div>
-  <p>Nie masz Homebrew? Pobierz instalator LTS z <a href="https://nodejs.org">nodejs.org</a>, otwórz i przeklikaj. Potem zamknij terminal i otwórz nowy.</p>
-</div>
-
-<div data-os="windows">
-  <h3>Node, na Windows</h3>
-  <div class="cmd">
-  <pre id="cmd-11"><code>winget install OpenJS.NodeJS.LTS</code></pre>
-  <button class="copy copy--sm" data-for="cmd-11" aria-label="Skopiuj komendę: winget install OpenJS.NodeJS.LTS">Kopiuj</button>
-</div>
-  <p>Albo instalator z <a href="https://nodejs.org">nodejs.org</a>. Tak czy inaczej zamknij potem PowerShell i otwórz nowy — nowe programy zauważa tylko przy starcie.</p>
-</div>
-
-<div data-os="linux">
-  <h3>Node, na Linuksie</h3>
-  <div class="cmd">
-  <pre id="cmd-12"><code>sudo apt install -y nodejs npm</code></pre>
-  <button class="copy copy--sm" data-for="cmd-12" aria-label="Skopiuj komendę: sudo apt install -y nodejs npm">Kopiuj</button>
-</div>
-  <p>Zapyta o hasło; przy wpisywaniu nic się nie pokazuje i tak ma być. Potrzebny jest Node 20.11 albo nowszy — jeśli twoja dystrybucja ma starszy, użyj <a href="https://github.com/nvm-sh/nvm">nvm</a>.</p>
-</div>
-
-<h3>Potem jeden agent — ten, za którego już płacisz</h3>
-<p>Potrzebujesz <strong>jednego</strong> z tych dwóch, nie obu. Masz subskrypcję Claude — bierz pierwszy. Masz ChatGPT Plus — drugi.</p>
-
-<div class="picktwo">
-  <div class="picktwo__col">
-    <p class="picktwo__t">Claude Pro albo Max</p>
-    <div class="cmd">
-  <pre id="cmd-13"><code>npm install -g @anthropic-ai/claude-code</code></pre>
-  <button class="copy copy--sm" data-for="cmd-13" aria-label="Skopiuj komendę: npm install -g @anthropic-ai/claude-code">Kopiuj</button>
-</div>
-  </div>
-  <div class="picktwo__col">
-    <p class="picktwo__t">ChatGPT Plus</p>
-    <div class="cmd">
-  <pre id="cmd-14"><code>npm install -g @openai/codex</code></pre>
-  <button class="copy copy--sm" data-for="cmd-14" aria-label="Skopiuj komendę: npm install -g @openai/codex">Kopiuj</button>
-</div>
-  </div>
-</div>
-<h3>Czy jestem gotowy?</h3>
-<p>Uruchom te cztery w terminalu. Pierwsze dwie muszą wypisać numer wersji; z dwóch ostatnich tylko ta, którą zainstalowałeś.</p>
-
-<div class="check">
-  <div class="check__row"><pre id="cmd-15"><code>node -v</code></pre><span>wypisze v20.11.0 albo wyżej</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Skopiuj komendę: node -v">Kopiuj</button></div>
-  <div class="check__row"><pre id="cmd-16"><code>npm -v</code></pre><span>wypisze dowolną wersję</span><button class="copy copy--sm" data-for="cmd-16" aria-label="Skopiuj komendę: npm -v">Kopiuj</button></div>
-  <div class="check__row"><pre id="cmd-17"><code>claude --version</code></pre><span>tylko jeśli wybrałeś Claude</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Skopiuj komendę: claude --version">Kopiuj</button></div>
-  <div class="check__row"><pre id="cmd-18"><code>codex --version</code></pre><span>tylko jeśli wybrałeś ChatGPT</span><button class="copy copy--sm" data-for="cmd-18" aria-label="Skopiuj komendę: codex --version">Kopiuj</button></div>
-</div>
-<p>Jeśli któraś mówi <code>command not found</code>, to znaczy, że tej rzeczy nie ma. Wróć krok wstecz — albo przyjdź piętnaście minut wcześniej na salę, ktoś to z tobą ogarnie.</p>
-<hr>
-<h2 id="je-li-instalacja-nie-wchodzi-w-gr">Jeśli instalacja nie wchodzi w grę</h2>
-<p>Część służbowych laptopów nie pozwoli zainstalować niczego i to jest w porządku.</p>
-<p>Otwórz repozytorium warsztatu na GitHubie, kliknij zielony przycisk <strong>Code</strong>, wybierz <strong>Codespaces</strong> i utwórz jeden. Dostajesz pełną maszynę w przeglądarce, z Node i oboma agentami już na pokładzie. Zrób w niej pusty folder i zacznij tam — sam warsztat nigdy nie dotyka zawartości repozytorium.</p>
-<p>Darmowy plan GitHuba obejmuje 120 rdzeniogodzin miesięcznie. Ta sesja zużywa jakieś dwie.</p>
-<hr>
-<h2 id="pytania-kt-re-ludzie-zadaj">Pytania, które ludzie zadają</h2>
-<div class="faq"><details><summary>Nigdy nie używałem terminala.</summary><p>Dobrze — jedna trzecia sali też nie. Jest o tym osobna sekcja wyżej, a pierwsze, o co poprosisz agenta, to żeby tłumaczył każdą komendę na bieżąco.</p></details><details><summary>Czy muszę umieć programować?</summary><p>Nie. Będziesz czytać kod i mówić po ludzku, co jest nie tak z wynikiem. Dokładnie o tej robocie jest ta sesja.</p></details><details><summary>Nie chcę płacić za subskrypcję AI.</summary><p>Darmowe plany obu produktów nie obejmują narzędzia w terminalu, więc na darmowym koncie pętla nie ruszy. Najtańszy plan któregokolwiek wystarczy, a potem można zrezygnować.</p></details><details><summary>Mam darmową Figmę.</summary><p>To wszystko, czego potrzebujesz. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi. Nic w warsztacie nie wymaga płatnego miejsca.</p></details><details><summary>Czy na warsztacie będę potrzebować internetu?</summary><p>Tak, i na sali on jest. Agent instaluje paczki, rozkodowuje plik Figmy i publikuje twoją stronę — wszystko to idzie przez sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.</p></details><details><summary>Służbowy laptop nie pozwala mi nic instalować.</summary><p>Skorzystaj z wersji w przeglądarce. Dostajesz gotową maszynę ze wszystkim i nie instalujesz niczego.</p></details><details><summary>Czy to zadziała na Windows?</summary><p>Tak. Używaj PowerShella, nie starego Wiersza polecenia. Reszta sesji jest identyczna.</p></details><details><summary>A jeśli zostanę w tyle?</summary><p>Nie da się — nie w sposób, który ma znaczenie. Każdy prompt stoi sam: jeśli któryś idzie źle, powiedz agentowi, żeby przestał, i wklej następny. Wpół zbudowana strona z działającym checkerem uczy więcej niż skończona bez niego.</p></details><details><summary>Co zabieram do domu?</summary><p>Działający adres URL, stronę z promptami i design. Wszystko zostaje online po konferencji.</p></details></div>
-<hr>
-<h2 id="w-dniu-warsztatu">W dniu warsztatu</h2>
-<p><strong>Weź ze sobą:</strong> laptopa, ładowarkę i słuchawki, jeśli lubisz przy nich pracować.</p>
-<p><strong>Przyjdź:</strong> kilka minut wcześniej, jeśli cokolwiek z powyższych nie zadziałało.</p>
-<p><strong>Wyjdziesz z:</strong> działającym adresem w internecie, stroną promptów, których użyjesz w poniedziałek, i dość konkretnym zdaniem na temat tego, kiedy ufać modelowi językowemu.</p>
+<ol class="doors">
+  <li><a class="door" href="before/">
+      <span class="door__n">01</span>
+      <b>Przed warsztatem</b>
+      <span>Konta, narzędzia, logowanie i własne repozytorium — około trzydziestu minut. Na końcu agent sprawdza całość i mówi, czego jeszcze brakuje.</span>
+      <em>Otwórz →</em></a></li>
+  <li><div class="door door--locked" data-locked="workshop">
+      <span class="door__n">02</span>
+      <b>Warsztat</b>
+      <span>Plik Figmy, idee, diagramy i osiem promptów, które wklejasz w trakcie sesji.</span>
+      <em>Otwiera się 16 września</em></div></li>
+  <li><div class="door door--locked" data-locked="deck">
+      <span class="door__n">03</span>
+      <b>Prezentacja</b>
+      <span>Slajdy z sesji, żeby można było do nich wrócić.</span>
+      <em>Otwiera się 16 września</em></div></li>
+  <li><div class="door door--locked" data-locked="site">
+      <span class="door__n">04</span>
+      <b>Co zbudujesz</b>
+      <span>Gotowa strona festiwalu — to, do czego zmierza twój agent.</span>
+      <em>Otwiera się 16 września</em></div></li>
+</ol>
 </div></main>
 <footer><div class="wrap">
   <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 września, 14:55, ROOM-PM · Szymon Paluch</p>

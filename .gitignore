@@ -31,3 +31,8 @@ evidence/**/node_modules/
 
 # Prompt-pack trial workdir
 .prompt-test/
+
+# Built by scripts/build-subpaths.mjs from deck/ and the festival source; never edited by hand.
+guideline/deck/
+guideline/site/
+.astro-subpath/

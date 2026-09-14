@@ -19,9 +19,12 @@ export default {
   switcherLabel: 'Language',
 
   meta: {
+    hubTitle: 'Build an AI that checks and fixes its own work · WaysConf 2026',
+    hubDesc:
+      'A WaysConf 2026 masterclass: an agent builds a website from a Figma file, writes the program that checks it, and fixes what that program finds.',
     beforeTitle: 'Before you come · WaysConf 2026 masterclass',
     beforeDesc:
-      'Fifteen minutes of setup for the WaysConf 2026 masterclass: four free accounts, one install, and how to open a terminal.',
+      'About thirty minutes at home: four accounts, the tools, signing in, your own repository, and an agent that checks it all for you.',
     duringTitle: 'The workshop · WaysConf 2026 masterclass',
     duringDesc:
       'The ideas, the diagrams and the eight prompts that take an empty folder to a deployed, verified website.',
@@ -29,9 +32,7 @@ export default {
 
   chrome: {
     skip: 'Skip to main content',
-    tabsLabel: 'Workshop',
-    before: 'Before',
-    during: 'During',
+    home: 'WaysConf 2026 — all parts of the workshop',
     tocTitle: 'On this page',
     footerSession:
       '<strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 September, 14:55, ROOM-PM · Szymon Paluch',
@@ -42,11 +43,48 @@ export default {
 
   copy: { button: 'Copy', aria: 'Copy the command: ', done: 'Copied' },
 
+  hub: {
+    kicker: 'WaysConf 2026 · masterclass',
+    h1: 'Build an AI that checks and fixes its own work',
+    lede: 'Ninety minutes. An agent builds a website from a Figma file, writes the program that checks it, and fixes what that program finds — until the program says yes.',
+    when: '16 September 2026 · 14:55 · ROOM-PM · Kraków',
+    partsHeading: 'The workshop, in four parts',
+    partsIntro: 'The first part is for now, at home. The other three open on the day.',
+    open: 'Open',
+    locked: 'Opens on 16 September',
+    parts: [
+      {
+        key: 'before',
+        n: '01',
+        title: 'Before the workshop',
+        body: 'Accounts, the tools, signing in and your own repository — about thirty minutes. At the end, your agent checks the lot and tells you what is missing.',
+      },
+      {
+        key: 'workshop',
+        n: '02',
+        title: 'The workshop',
+        body: 'The Figma file, the ideas, the diagrams and the eight prompts you paste during the session.',
+      },
+      {
+        key: 'deck',
+        n: '03',
+        title: 'The presentation',
+        body: 'The slides from the session, to go back to afterwards.',
+      },
+      {
+        key: 'site',
+        n: '04',
+        title: 'What you will build',
+        body: 'The finished festival website — what your agent is aiming for.',
+      },
+    ],
+  },
+
   accounts: [
     {
       n: '01',
       title: 'GitHub',
-      body: 'Free. You need it to sign in to Netlify in one click, and for the browser option if you cannot install anything.',
+      body: 'Free. Your project lives in a repository there, you sign in to Netlify with it in one click, and it is the browser option if you cannot install anything.',
       buttons: [{ href: 'https://github.com/signup', label: 'Create an account' }],
       meta: '2 min · confirm the email',
     },
@@ -122,31 +160,196 @@ export default {
     '<b>Silence is normal.</b> A command can sit there for a minute printing nothing. It has not frozen — it is working. You will learn to wait.',
     '<b>It is finished when the prompt comes back.</b> That is the only signal there is.',
     '<b>What has scrolled past is a transcript.</b> You cannot click into an old line and fix it. Only the line you are typing now is live.',
-    '<b>You cannot break your computer with anything on this page.</b> Every command here either installs something or prints a version number.',
+    '<b>You cannot break your computer with anything on this page.</b> Every command here installs something, signs you in, or prints what it finds.',
   ],
 
   install: {
     mac: {
-      heading: 'Node, on macOS',
-      cmd: 'brew install node',
-      note: 'No Homebrew? Download the LTS installer from <a href="https://nodejs.org">nodejs.org</a>, open it, and click through. Then close the terminal and open a new one.',
+      heading: 'Node, Git and the GitHub command line, on macOS',
+      cmds: ['brew install node gh'],
+      note: 'This needs Homebrew. No Homebrew? Paste the one command from <a href="https://brew.sh">brew.sh</a> first — it asks for your Mac password, and nothing appears as you type it, which is normal. Git comes with it. When everything has finished, close the terminal and open a new one.',
     },
     windows: {
-      heading: 'Node, on Windows',
-      cmd: 'winget install OpenJS.NodeJS.LTS',
-      note: 'Or the installer from <a href="https://nodejs.org">nodejs.org</a>. Either way, close PowerShell and open a new one afterwards — it only notices new programs when it starts.',
+      heading: 'Node, Git and the GitHub command line, on Windows',
+      cmds: [
+        'winget install --id OpenJS.NodeJS.LTS',
+        'winget install --id Git.Git',
+        'winget install --id GitHub.cli',
+        'Set-ExecutionPolicy -Scope CurrentUser RemoteSigned',
+      ],
+      note: 'One at a time. The last one lets PowerShell start the tools you install next — without it, <code>npm</code> and your agent stop with <em>running scripts is disabled on this system</em>. If it asks, type <code>Y</code> and press Enter. Then close PowerShell and open a new one: it only notices new programs when it starts.',
     },
     linux: {
-      heading: 'Node, on Linux',
-      cmd: 'sudo apt install -y nodejs npm',
-      note: 'It will ask for your password; nothing appears as you type it, which is normal. Node 20.11 or newer is required — if your distribution ships something older, use <a href="https://github.com/nvm-sh/nvm">nvm</a>.',
+      heading: 'Node, Git and the GitHub command line, on Linux',
+      cmds: [
+        'sudo apt install -y curl git gh',
+        'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash',
+        'nvm install --lts',
+      ],
+      note: 'Close the terminal and open a new one before the third command. The first asks for your password; nothing appears as you type it, which is normal. Node comes through nvm because most distributions ship one older than the workshop needs, and because the installs below then need no <code>sudo</code>. Not on Ubuntu or Debian? Install <code>curl</code>, <code>git</code> and <code>gh</code> with your own package manager — <a href="https://github.com/cli/cli#installation">instructions for gh</a>.',
     },
-    agentHeading: 'Then one agent — whichever you already pay for',
+    agentHeading: 'One coding agent — whichever you already pay for',
     agentBody:
       'You need <strong>one</strong> of these two, not both. If you have a Claude subscription take the first; if you have ChatGPT Plus take the second.',
     claude: 'Claude Pro or Max',
     chatgpt: 'ChatGPT Plus',
+    netlifyHeading: 'The Netlify command line',
+    netlifyBody: 'This is what puts your site on the internet at the end of the workshop.',
+    after:
+      'If a command says <code>command not found</code> straight after you installed it, close the terminal and open a new one. That fixes it nearly every time.',
   },
+
+  signin: {
+    intro:
+      'Each tool needs to know who you are, and they all do it the same way: the command opens your browser, you click to allow it, and you come back to the terminal. Then one more command shows it worked.',
+    check: 'Check:',
+    github: {
+      heading: 'GitHub',
+      cmd: 'gh auth login',
+      body: 'It asks a few questions; move with the arrow keys and press Enter. Choose <strong>GitHub.com</strong>, then <strong>HTTPS</strong>, then <strong>Yes</strong> to authenticating Git, then <strong>Login with a web browser</strong>. It shows a one-time code: press Enter, paste the code in the browser, and click <strong>Authorize</strong>.',
+      checkCmd: 'gh auth status',
+      expect: 'says Logged in to github.com',
+    },
+    agent: {
+      heading: 'Your agent',
+      claude: {
+        cmd: 'claude auth login',
+        body: 'Your browser opens on claude.ai. Sign in and click <strong>Authorize</strong>. If the terminal asks for a code instead, copy it from the browser and paste it back.',
+        checkCmd: 'claude auth status',
+        expect: 'shows "loggedIn": true',
+      },
+      codex: {
+        cmd: 'codex login',
+        body: 'Your browser opens on ChatGPT. Sign in and allow it. The terminal says when it is done.',
+        checkCmd: 'codex login status',
+        expect: 'says Logged in using ChatGPT',
+      },
+    },
+    netlify: {
+      heading: 'Netlify',
+      cmd: 'netlify login',
+      body: 'Your browser opens a Netlify page. Click <strong>Authorize</strong>, then come back to the terminal.',
+      checkCmd: 'netlify status',
+      expect: 'shows your email address',
+    },
+  },
+
+  repo: {
+    intro:
+      'Your project needs a home on GitHub. One command creates the repository — private, so only you can see it — and puts an empty copy on your computer, in a folder called <code>turbine</code>.',
+    cmds: ['gh repo create turbine --private --clone', 'cd turbine'],
+    after:
+      'That folder is where the workshop starts. On the day you open a terminal, go into it with <code>cd turbine</code>, and start your agent there. Leave it empty until then.',
+    checkCmd: 'git remote -v',
+    expect: 'shows github.com/your-name/turbine',
+    taken:
+      'Already have a repository called turbine? Pick another name, and use it wherever this page says turbine.',
+  },
+
+  ready: {
+    intro:
+      'Last step, and you do not have to check anything yourself. Your agent looks at everything above and tells you, in plain words, what is still missing.',
+    steps: [
+      'In a terminal, go into your project folder:',
+      'Start your agent — <code>claude</code> or <code>codex</code>. If it asks whether you trust this folder, say yes.',
+      'Copy the prompt below, paste it, and press Enter.',
+    ],
+    promptLabel: 'Paste this to your agent',
+    prompt: `I am getting ready for a workshop and I have not used a terminal much. Check that this
+computer is set up for it. Do not install, sign in to or change anything yourself: only
+look, and run whatever commands you need in order to look.
+
+Check each of these, and show me the result as a table — what you checked, what you found,
+and OK or NOT OK:
+
+1. Node is installed, version 20.11 or newer, and npm works.
+2. Git is installed, and knows a name and an email address to put on commits.
+3. The GitHub command line is installed and signed in.
+4. The Netlify command line is installed and signed in.
+5. You, the agent I am talking to, are installed and signed in. Say which agent you are.
+6. This folder is a git repository connected to a repository on GitHub, that repository
+   exists, and it belongs to the account the GitHub command line is signed in as.
+7. This folder is empty apart from git's own files. The workshop starts from nothing.
+
+For every NOT OK, tell me in one or two sentences what to do, in plain words, with the exact
+command to type if there is one. Finish with one line on its own: READY, or NOT READY and
+how many things are left.`,
+    after:
+      'It asks before running each command. Say yes — it only looks. Fix whatever it marks NOT OK, then paste the same prompt again until it says <strong>READY</strong>. If your agent will not start at all, go back to <a href="#sign-in">Sign in</a>.',
+  },
+
+  codespaces: {
+    intro:
+      'Some work laptops will not let you install anything. You can do the whole workshop in the browser instead, in a <strong>GitHub Codespace</strong>: a computer in the cloud that already has Node, Git and the GitHub command line, and is already signed in to GitHub.',
+    steps: [
+      {
+        text: 'On github.com, click <strong>+</strong> → <strong>New repository</strong>. Name it <code>turbine</code>, choose <strong>Private</strong>, tick <strong>Add a README file</strong> — a codespace cannot open on an empty repository — and click <strong>Create repository</strong>.',
+      },
+      {
+        text: 'On the repository page: <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. It takes a minute or two. The panel along the bottom is a terminal, already in your repository folder.',
+      },
+      {
+        text: 'Remove the README, so the folder starts empty:',
+        cmds: ['rm README.md'],
+      },
+      {
+        text: 'Install your agent and the Netlify command line — the commands from <a href="#install-the-tools">Install the tools</a>, from the agent onwards. Node, Git and GitHub are already there.',
+      },
+      {
+        text: 'Sign in to your agent and to Netlify as in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening your browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. Codex needs the version of its login that works from another device:',
+        cmds: ['codex login --device-auth'],
+        note: 'If Codex says device code login is not enabled, turn it on in ChatGPT → Settings → Security, then run it again.',
+      },
+      {
+        text: 'Run <a href="#let-your-agent-check-everything">Let your agent check everything</a>, in the codespace terminal. You are already in the project folder, so skip <code>cd turbine</code>.',
+      },
+    ],
+    after:
+      'GitHub’s free plan includes 120 core-hours of Codespaces a month. The workshop uses about three. On the day, open the same codespace from <a href="https://github.com/codespaces">github.com/codespaces</a>.',
+  },
+
+  faq: [
+    [
+      'I have never used a terminal.',
+      'Good — a third of the room has not either. There is a section on it above, every command has a copy button, and the first thing your agent is asked to do in the workshop is explain each command as it goes.',
+    ],
+    [
+      'Do I need to know how to code?',
+      'No. You will read what the agent made and say what is wrong with it in plain English. That is the job the session is about.',
+    ],
+    [
+      'I do not want to pay for an AI subscription.',
+      'The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.',
+    ],
+    [
+      'Why do I need a GitHub repository?',
+      'It is where your project lives. Your agent can save its work there as it goes, so nothing is lost if a laptop gives up, and you leave with the code as well as the address.',
+    ],
+    [
+      'My Figma is free.',
+      'That is all you need. You save the file out of Figma — two clicks — and hand it to your agent. Nothing in the workshop needs a paid seat.',
+    ],
+    [
+      'The check says NOT OK and I do not understand why.',
+      'Ask it. Type "explain point 3 like I have never done this" — it knows what it found. If it is still stuck, bring it to the room fifteen minutes early.',
+    ],
+    [
+      'Will I need the internet during the workshop?',
+      'Yes, and the room has it. Your agent installs packages, decodes the Figma file and publishes your site, and all three go over the network. If Codex asks before going online, say yes.',
+    ],
+    [
+      'My work laptop will not let me install things.',
+      'Use a Codespace, as described above. You install nothing on the laptop itself.',
+    ],
+    [
+      'Will this work on Windows?',
+      'Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.',
+    ],
+    [
+      'What do I take home?',
+      'A live address, your repository with the code in it, and eight prompts that work on Monday.',
+    ],
+  ],
 
   exportSteps: {
     steps: [
@@ -160,52 +363,6 @@ export default {
       '<b>Inside the project, not beside it.</b> Your agent works inside the project folder, and Claude Code asks before it reads anything outside it — a file one level up turns into a question the agent has to stop for.',
     ],
   },
-
-  selftest: [
-    ['node -v', 'prints v20.11.0 or higher'],
-    ['npm -v', 'prints any version'],
-    ['claude --version', 'only if you chose Claude'],
-    ['codex --version', 'only if you chose ChatGPT'],
-  ],
-
-  faq: [
-    [
-      'I have never used a terminal.',
-      'Good — a third of the room has not either. There is a section on it above, and the first thing your agent is asked to do is explain each command as it goes.',
-    ],
-    [
-      'Do I need to know how to code?',
-      'No. You will read code and say what is wrong with the result in plain English. That is the job the session is about.',
-    ],
-    [
-      'I do not want to pay for an AI subscription.',
-      'The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.',
-    ],
-    [
-      'My Figma is free.',
-      'That is all you need. You save the file out of Figma — two clicks — and hand it to your agent. Nothing in the workshop needs a paid seat.',
-    ],
-    [
-      'Will I need the internet during the workshop?',
-      'Yes, and the room has it. Your agent installs packages, decodes the Figma file and publishes your site, and all three go over the network. If Codex asks before going online, say yes.',
-    ],
-    [
-      'My work laptop will not let me install things.',
-      'Use the browser option. You get a full machine with everything on it and you install nothing.',
-    ],
-    [
-      'Will this work on Windows?',
-      'Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.',
-    ],
-    [
-      'What if I fall behind?',
-      'You cannot, in a way that matters. Every prompt stands alone — if one is going badly, tell your agent to stop and paste the next. A half-built page with a working checker teaches more than a finished page with none.',
-    ],
-    [
-      'What do I take home?',
-      'A live URL, the page of prompts, and the design. All of it stays online after the conference.',
-    ],
-  ],
 
   during: {
     promptsHeading: 'The eight prompts',
@@ -226,11 +383,12 @@ export default {
     exportIntro:
       'Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.',
   },
+
   pages: {
     beforeH1: 'Before you come',
     beforeLede: [
       'Ninety minutes, thirty people, one loop. A coding agent is handed a design, writes a website, and is then told by a program — not by itself — everything that is wrong with it. Then it fixes those things and is told again.',
-      'This page is the preparation. It takes about fifteen minutes and goes much better at home than on conference wifi.',
+      'This page is the preparation. It takes about thirty minutes, goes much better at home than on conference wifi, and ends with your agent telling you whether you are ready.',
     ],
     duringH1: 'During the workshop',
     duringLede:

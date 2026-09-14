@@ -23,7 +23,8 @@ tooling people write for this becomes unnecessary.
 
 ## How to use them
 
-Open your agent — `claude` or `codex` — in an empty folder, and paste them in order. Each
+Open your agent — `claude` or `codex` — in your project folder, the empty repository you
+created before the workshop (`cd turbine`), and paste them in order. Each
 one is written to be pasted whole: the agent needs the rules as much as the request, and
 trimming a prompt to its first sentence is the commonest way to get a disappointing answer.
 

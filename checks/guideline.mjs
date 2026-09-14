@@ -36,7 +36,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = (process.argv.includes('--site') && resolve(process.argv[process.argv.indexOf('--site') + 1])) || join(ROOT, 'guideline')
 
 // Both languages. A locale that is never opened is a locale nobody checked.
-const PAGES = ['/', '/workshop/', '/pl/', '/pl/workshop/']
+const PAGES = ['/', '/before/', '/workshop/', '/pl/', '/pl/before/', '/pl/workshop/']
 const WIDTHS = [390, 1440]
 const IMAGE_DEADLINE_MS = 15_000
 const NAV_DEADLINE_MS = 30_000

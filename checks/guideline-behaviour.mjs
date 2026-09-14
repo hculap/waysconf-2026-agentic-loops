@@ -6,8 +6,10 @@
  *   node checks/guideline-behaviour.mjs --url https://waysconf.szymonpaluch.com
  *
  * `checks/guideline.mjs` measures what the page looks like. This measures what it does,
- * because the two things that would silently rot are both interactive: the operating-system
- * picker that every instruction below it depends on, and the copy button on every command.
+ * because the things that would silently rot are all interactive: the operating-system
+ * picker that every instruction below it depends on, the copy button on every command, and
+ * the hub — which must link the parts that are open and must not, anywhere, link the parts
+ * that are not open yet.
  *
  * A designer who clicks "Windows" and gets macOS instructions has been actively misled —
  * worse than no picker. A copy button that silently does nothing is worse than no button,
@@ -109,7 +111,7 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
   page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()) })
   page.on('pageerror', (e) => consoleErrors.push(`uncaught: ${e.message}`))
 
-  await page.goto(base + '/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/before/', { waitUntil: 'networkidle', timeout: 30_000 })
   await page.waitForTimeout(500)
 
   // Did OUR script run? An absence of errors is an inference; this is a measurement.
@@ -202,8 +204,8 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
   await context.close()
 }
 
-// ── the section rail, on both tabs ───────────────────────────────────────────
-for (const path of ['/', '/workshop/', '/pl/', '/pl/workshop/']) {
+// ── the section rail, on both long pages ─────────────────────────────────────
+for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
   await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
@@ -284,8 +286,10 @@ for (const path of ['/', '/workshop/', '/pl/', '/pl/workshop/']) {
 
   for (const [from, expectLang, expectHref] of [
     ['/', 'pl', '/pl/'],
+    ['/before/', 'pl', '/pl/before/'],
     ['/workshop/', 'pl', '/pl/workshop/'],
     ['/pl/', 'en', '/'],
+    ['/pl/before/', 'en', '/before/'],
     ['/pl/workshop/', 'en', '/workshop/'],
   ]) {
     await page.goto(base + from, { waitUntil: 'networkidle', timeout: 30_000 })
@@ -311,21 +315,95 @@ for (const path of ['/', '/workshop/', '/pl/', '/pl/workshop/']) {
   }
 
   // the Polish picker must speak Polish, including the hint the script writes
-  await page.goto(base + '/pl/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/pl/before/', { waitUntil: 'networkidle', timeout: 30_000 })
   await page.locator('.ospick label[for="os-windows"]').click()
   await page.waitForTimeout(300)
   const shown = await visibleOses(page)
-  if (shown.length === 1 && shown[0] === 'windows') ok('/pl/: the picker switches')
-  else fail(`/pl/: clicking Windows showed ${shown.join(', ') || 'nothing'}`)
+  if (shown.length === 1 && shown[0] === 'windows') ok('/pl/before/: the picker switches')
+  else fail(`/pl/before/: clicking Windows showed ${shown.join(', ') || 'nothing'}`)
 
   const hint = (await page.locator('[data-os-hint]').innerText()).trim()
-  if (/[ąćęłńóśźż]/i.test(hint)) ok(`/pl/: the hint is Polish — "${hint.slice(0, 52)}…"`)
-  else fail(`/pl/: the operating-system hint is not Polish: "${hint.slice(0, 70)}"`)
+  if (/[ąćęłńóśźż]/i.test(hint)) ok(`/pl/before/: the hint is Polish — "${hint.slice(0, 52)}…"`)
+  else fail(`/pl/before/: the operating-system hint is not Polish: "${hint.slice(0, 70)}"`)
 
   const button = (await page.locator('.copy').first().innerText()).trim()
-  if (button !== 'Copy') ok(`/pl/: the copy button says "${button}"`)
-  else fail('/pl/: the copy button still says "Copy"')
+  if (button !== 'Copy') ok(`/pl/before/: the copy button says "${button}"`)
+  else fail('/pl/before/: the copy button still says "Copy"')
 
+  await context.close()
+}
+
+// ── the hub: open parts are links, locked parts are not, and nothing open leads to them ──
+//
+// "Locked" is a promise with two halves, and both are measured. The locked parts ARE
+// deployed — the speaker opens them by typing the address — and NO open page links to them,
+// so a participant cannot click their way in early. A link that slips into an FAQ answer or
+// a footer breaks the second half without anything looking wrong, which is why this crawls
+// every link on every open page rather than checking the hub alone.
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await context.newPage()
+  const PREFIXES = { workshop: ['/workshop/', '/pl/workshop/'], deck: ['/deck/'], site: ['/site/'] }
+  const lockedBy = {}
+
+  for (const hub of ['/', '/pl/']) {
+    await page.goto(base + hub, { waitUntil: 'networkidle', timeout: 30_000 })
+    const doors = await page.evaluate(() =>
+      [...document.querySelectorAll('.doors > li')].map((li) => ({
+        href: li.querySelector('a')?.getAttribute('href') ?? null,
+        locked: li.querySelector('[data-locked]')?.getAttribute('data-locked') ?? null,
+      })),
+    )
+    if (doors.length !== 4) fail(`${hub}: the hub has ${doors.length} parts, expected 4`)
+    const ready = await page.evaluate(() => document.documentElement.getAttribute('data-sp-ready'))
+    if (ready !== '1') fail(`${hub}: the page script did not run`)
+
+    for (const d of doors) if (d.href && d.locked) fail(`${hub}: part "${d.locked}" is marked locked and is also a link`)
+    lockedBy[hub] = doors.filter((d) => d.locked).map((d) => d.locked).sort()
+
+    if (!doors[0]?.href) {
+      fail(`${hub}: "before the workshop" is not a link — the one part that is always open`)
+    } else {
+      await page.locator('.doors > li').first().locator('a').click()
+      await page.waitForLoadState('networkidle')
+      const landed = new URL(page.url()).pathname
+      if (landed === `${hub}before/`) ok(`${hub}: the first part opens ${landed}`)
+      else fail(`${hub}: the first part led to ${landed}, expected ${hub}before/`)
+    }
+    ok(`${hub}: ${doors.length - lockedBy[hub].length} open, locked: ${lockedBy[hub].join(', ') || 'none'}`)
+  }
+  if (lockedBy['/'].join() !== lockedBy['/pl/'].join()) {
+    fail(`the two hubs disagree about what is locked: EN ${lockedBy['/'].join(', ')}, PL ${lockedBy['/pl/'].join(', ')}`)
+  }
+
+  const locked = lockedBy['/']
+  const forbidden = locked.flatMap((key) => PREFIXES[key].map((prefix) => [key, prefix]))
+  const open = ['/', '/pl/', '/before/', '/pl/before/', ...(locked.includes('workshop') ? [] : ['/workshop/', '/pl/workshop/'])]
+  let crawled = 0
+  let leaks = 0
+  for (const path of open) {
+    await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
+    const hrefs = await page.evaluate(() => [...document.querySelectorAll('a[href]')].map((a) => a.href))
+    for (const href of hrefs) {
+      const url = new URL(href)
+      if (url.origin !== new URL(base).origin) continue
+      crawled++
+      const hit = forbidden.find(([, prefix]) => url.pathname === prefix || url.pathname.startsWith(prefix))
+      if (hit) leaks++
+      if (hit) fail(`${path} links to ${url.pathname}, which is part "${hit[0]}" and is locked`)
+    }
+  }
+  if (!leaks) ok(`${open.length} open pages, ${crawled} same-site links, none to a locked part`)
+
+  // …and the locked parts are really there for whoever has the address.
+  for (const [key, prefix] of forbidden) {
+    // networkidle, then a moment: the deck is a single-page app and writes its slide after load.
+    const response = await page.goto(base + prefix, { waitUntil: 'networkidle', timeout: 45_000 }).catch(() => null)
+    if (response) await page.waitForTimeout(800)
+    const text = response ? (await page.evaluate(() => document.body.innerText.trim().length)) : 0
+    if (response?.ok() && text > 20) ok(`${prefix} is deployed (part "${key}", locked)`)
+    else fail(`${prefix} — part "${key}" — is not deployed (${response ? response.status() : 'no response'}). Locked means unlinked, not missing. Locally: node scripts/build-subpaths.mjs`)
+  }
   await context.close()
 }
 
@@ -333,7 +411,7 @@ for (const path of ['/', '/workshop/', '/pl/', '/pl/workshop/']) {
 {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } })
   const page = await context.newPage()
-  await page.goto(base + '/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/before/', { waitUntil: 'networkidle', timeout: 30_000 })
   const shown = await visibleOses(page)
   if (shown.length === OSES.length) ok('with JavaScript off, all three systems are shown — nothing is lost')
   else fail(`with JavaScript off only ${shown.join(', ') || 'nothing'} is reachable; the rest is unreadable`)
@@ -348,4 +426,4 @@ if (failures.length) {
   for (const f of failures) console.log(`  - ${f}`)
   process.exit(1)
 }
-console.log(`\nPASS — ${argUrl ? 'live' : 'locally'}: the picker switches, the keyboard works, and every command copies itself`)
+console.log(`\nPASS — ${argUrl ? 'live' : 'locally'}: the picker switches, the keyboard works, every command copies itself, and the hub opens only what is open`)

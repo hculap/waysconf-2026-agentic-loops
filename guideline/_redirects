@@ -1,16 +1,17 @@
 # waysconf.szymonpaluch.com — one address for the whole session.
 #
-# The deck and the finished festival site are separate Netlify deploys, so these are
-# redirects rather than proxies: both are single-page apps built for the root of their own
-# host, and proxying them under a subpath would break every asset URL they emit.
+# The deck and the finished festival site are folders on this site, /deck/ and /site/, built
+# with their base set to those paths by scripts/build-subpaths.mjs. The hub does not link to
+# them until they are unlocked (UNLOCK=… node scripts/build-guideline.mjs), but they are here.
 #
-# 302 rather than 301 on purpose. A permanent redirect is cached by browsers for a long
-# time, and these targets will move again after the conference.
+# No rule for /deck or /site without the slash: Netlify ignores a trailing slash when it
+# matches a rule, so "/deck → /deck/" would redirect to itself for ever. Its pretty URLs add
+# the slash on their own.
 
-/deck      https://turbine-deck.netlify.app/       302
-/deck/*    https://turbine-deck.netlify.app/:splat 302
-/site      https://turbine-festival.netlify.app/   302
-/site/*    https://turbine-festival.netlify.app/:splat 302
+# The deck is a single-page app with history routes: /deck/12 is slide 12, and there is no
+# file called 12. A real file under /deck/ is served as it is — Netlify only applies a 200
+# rewrite when nothing exists at the path — and everything else is the deck's own page.
+/deck/*    /deck/index.html                        200
 
 # The prompts page moved when the site was split into two tabs. Anyone holding the old
 # link — it was in an early draft of the organiser email — lands in the right place.

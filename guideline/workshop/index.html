@@ -6,6 +6,7 @@
 <title>The workshop · WaysConf 2026 masterclass</title>
 <meta name="description" content="The ideas, the diagrams and the eight prompts that take an empty folder to a deployed, verified website.">
 <meta name="theme-color" content="#0A0A0A">
+<meta name="robots" content="noindex">
 <link rel="alternate" hreflang="en" href="../workshop/">
 <link rel="alternate" hreflang="pl" href="../pl/workshop/">
 <link rel="stylesheet" href="../fonts/fonts.css">
@@ -36,10 +37,27 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .wordmark{font-family:'Space Grotesk',system-ui,sans-serif;font-weight:700;font-size:15px;text-decoration:none;color:var(--accent);display:inline-flex;gap:9px;align-items:baseline}
 .wordmark b{color:var(--fg);letter-spacing:-.02em;font-size:17px}
 .wordmark span{letter-spacing:.14em;text-transform:uppercase;font-size:12px}
-.tabs{display:flex;gap:6px;margin-left:auto}
-.tabs a{font-size:14px;font-weight:600;color:var(--fg-3);text-decoration:none;padding:8px 14px;border-radius:999px;border:1px solid transparent;min-height:34px;display:inline-flex;align-items:center}
-.tabs a:hover{color:var(--fg)}
-.tabs a[aria-current="page"]{background:var(--raised);border-color:var(--line-2);color:var(--fg)}
+.top .lang{margin-left:auto}
+
+/* The hub: four doors, one open. A locked door is not a link and not a button — there is
+   nothing to press — so it is a plain list item with the date it opens on, and a screen
+   reader hears exactly that. */
+.hub__kicker{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:52px 0 0}
+.hub__kicker::before{content:'// ';opacity:.75}
+.hub__kicker + h1{margin-top:12px}
+.hub__when{font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.doors{list-style:none;margin:24px 0;padding:0;display:grid;gap:14px}
+@media(min-width:700px){.doors{grid-template-columns:1fr 1fr}}
+.door{display:flex;flex-direction:column;gap:6px;height:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;text-decoration:none;color:inherit}
+a.door{border-color:rgb(16 185 129 / .45);background:linear-gradient(rgb(16 185 129 / .08),transparent)}
+a.door:hover{border-color:var(--accent);color:inherit}
+.door__n{font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.14em;color:var(--accent)}
+.door__n::before{content:'// ';opacity:.75}
+.door b{font-family:'Playfair Display',Georgia,serif;font-weight:700;font-size:24px;line-height:1.2;color:var(--fg)}
+.door span{color:var(--fg-2);font-size:15px}
+.door em{margin-top:auto;padding-top:10px;font-style:normal;font-family:'Space Grotesk',ui-monospace,monospace;font-weight:700;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.door--locked b{color:var(--fg-2)}
+.door--locked em{color:var(--fg-3)}
 
 /* EN / PL, the same lockup the main site uses. The current language is a span rather than
    a link: a link to the page you are already on is a promise the browser does not keep. */
@@ -191,11 +209,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <a class="skip" href="#main">Skip to main content</a>
 <header class="top">
   <div class="wrap">
-    <a class="wordmark" href="../"><b>SP.</b> <span>WaysConf 2026</span></a>
-    <nav class="tabs" aria-label="Workshop">
-      <a href="../">Before</a>
-      <a href="../workshop/" aria-current="page">During</a>
-    </nav>
+    <a class="wordmark" href="../" title="WaysConf 2026 — all parts of the workshop"><b>SP.</b> <span>WaysConf 2026</span></a>
     <nav class="lang" aria-label="Language">
       <span aria-current="true">EN</span>
       <a href="../pl/workshop/" lang="pl" hreflang="pl">PL</a>
@@ -440,6 +454,11 @@ before and I would like to follow along.</code></pre></div>
 Figma file itself, saved with &quot;Save local copy&quot;. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
+Work from that one file and nothing else. Do not search this computer for the design, a
+specification, reference images or anything else about this project: there is nothing else,
+and whatever you find is not the design. If the file names something it does not contain,
+put it under point 6 instead of going to look for it.
+
 There is no tool that opens it, so decode it. What is known about the format:
 
 - A .fig is a zip. The design is in canvas.fig inside it. thumbnail.png is only a small
@@ -483,7 +502,7 @@ Then stop and wait for me to answer point 6.</code></pre></div>
 <p><code>notes.md</code> matters later. Every prompt after this one reads it, and if you ever have to start a fresh session, it is what the new one knows.</p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
 <hr>
 <h3>Why this prompt exists at all</h3>
 <p>It produces no page. That is the point.</p>
@@ -779,6 +798,11 @@ PHASE 02 — LOOK
 Inside this project there is a folder called design with a .fig file in it. That is the
 Figma file itself, saved with &quot;Save local copy&quot;. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
+
+Work from that one file and nothing else. Do not search this computer for the design, a
+specification, reference images or anything else about this project: there is nothing else,
+and whatever you find is not the design. If the file names something it does not contain,
+put it under point 6 instead of going to look for it.
 
 There is no tool that opens it, so decode it. What is known about the format:
 

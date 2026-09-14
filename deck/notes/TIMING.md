@@ -16,7 +16,7 @@ block it belongs to, then talk over it.
 | Clock | Elapsed | Block | Room is… | You must be… |
 |---|---|---|---|---|
 | 14:55 | 0:00 | **The case** | listening | On the finished site within 90 seconds |
-| 15:03 | 0:08 | **Setup** | opening a terminal, empty folder, agent up | Asking for hands: who has a terminal open |
+| 15:03 | 0:08 | **Setup** | opening a terminal, cd into the repository, agent up | Asking for hands: who has a terminal open |
 | 15:06 | 0:11 | | **pasting 01** (≈2 min) | On the terminal slide |
 | 15:10 | 0:15 | **Design in** | **pasting 02** — it reads the `.fig` for 10–16 min | "Paste prompt 02 now" slide up *before* you speak |
 | 15:20 | 0:25 | **Sprint 1** | reading 02's findings, answering point 6, then **03** | Timer visible |

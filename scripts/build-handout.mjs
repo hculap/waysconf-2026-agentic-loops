@@ -159,7 +159,7 @@ const html = `<!doctype html>
 
   <footer>
     <div class="commands">
-      <b>mkdir turbine &amp;&amp; cd turbine</b> &nbsp;everything starts here<br>
+      <b>cd turbine</b> &nbsp;the empty repository you made at home<br>
       <b>claude</b> &nbsp;or <b>codex</b> &nbsp;the agent<br>
       <b>/goal npm run check exits 0</b> &nbsp;the loop
     </div>

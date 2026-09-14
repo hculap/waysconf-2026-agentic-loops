@@ -1,6 +1,9 @@
 ---
 theme: default
 title: Build an AI that checks and fixes its own work
+# Local, not Slidev's default on cdn.jsdelivr.net: both Netlify sites serve img-src 'self', so the
+# default is blocked and logs a CSP error on every slide.
+favicon: /favicon.svg
 info: |
   WaysConf 2026 masterclass. Agentic loops in practice:
   Figma design in, a verified, deployed website out.
@@ -204,15 +207,15 @@ Eight of them, with a copy button on each.
 </div>
 <div>
 
-### And an empty folder
+### And your empty repository
 
 ```bash
-mkdir turbine && cd turbine
+cd turbine      # made at home
 claude          # or: codex
 ```
 
 <p class="mt-6 text-xl">
-There is <b>nothing to clone</b> and no code to read.
+It is <b>empty</b>, and there is no code to read.
 </p>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
@@ -223,6 +226,10 @@ Agent up? Paste <b>prompt 01</b> now.
 </div>
 
 <!--
+Anyone who skipped the preparation page has no turbine repository: gh repo create turbine
+--private --clone, then cd turbine. That page ends with a prompt that has the agent check the
+whole setup — the people who ran it will not be the ones with their hands up.
+
 The .fig is on the page too, for anyone without a Figma account. Say it is the same file,
 not a lesser route — people who take it because they have to will otherwise spend the
 session feeling behind.
