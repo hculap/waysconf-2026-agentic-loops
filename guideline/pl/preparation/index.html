@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Zanim przyjdziesz · masterclass WaysConf 2026</title>
-<meta name="description" content="Około trzydziestu minut w domu: cztery konta, narzędzia, logowanie, własne repozytorium i agent, który na końcu wszystko sprawdza.">
+<title>Przygotowanie · masterclass WaysConf 2026</title>
+<meta name="description" content="Przygotuj komputer przed warsztatem: konta, narzędzia, logowanie, repozytorium na GitHubie i automatyczne sprawdzenie konfiguracji.">
 <meta name="theme-color" content="#0A0A0A">
-<link rel="alternate" hreflang="pl" href="../../pl/before/">
-<link rel="alternate" hreflang="en" href="../../before/">
+<link rel="alternate" hreflang="pl" href="../../pl/preparation/">
+<link rel="alternate" hreflang="en" href="../../preparation/">
 <link rel="stylesheet" href="../../fonts/fonts.css">
 <style>
 /* Speaker brand — szymonpaluch.com. Source of truth: design/tokens/speaker.css.
@@ -208,79 +208,79 @@ footer p{font-size:14px;color:var(--fg-3)}
 <a class="skip" href="#main">Przejdź do treści</a>
 <header class="top">
   <div class="wrap">
-    <a class="wordmark" href="../../pl/" title="WaysConf 2026 — wszystkie części warsztatu"><b>SP.</b> <span>WaysConf 2026</span></a>
+    <a class="wordmark" href="../../pl/" title="WaysConf 2026: materiały do warsztatu"><b>SP.</b> <span>WaysConf 2026</span></a>
     <nav class="lang" aria-label="Język">
       <span aria-current="true">PL</span>
-      <a href="../../before/" lang="en" hreflang="en">EN</a>
+      <a href="../../preparation/" lang="en" hreflang="en">EN</a>
     </nav>
   </div>
 </header>
 <nav class="toc" aria-label="On this page">
   <p class="toc__t">Na tej stronie</p>
   <ol>
-    <li><a href="#co-bedziemy-budowac">Co będziemy budować</a></li>
-    <li><a href="#zaloz-konta">Załóż konta</a></li>
-    <li><a href="#wybierz-swoj-komputer">Wybierz swój komputer</a></li>
+    <li><a href="#wymagania">Wymagania</a></li>
+    <li><a href="#czego-dotyczy-warsztat">Czego dotyczy warsztat</a></li>
+    <li><a href="#konta">Konta</a></li>
+    <li><a href="#system-operacyjny">System operacyjny</a></li>
     <li><a href="#otworz-terminal">Otwórz terminal</a></li>
     <li><a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a></li>
     <li><a href="#zaloguj-sie">Zaloguj się</a></li>
     <li><a href="#zaloz-repozytorium">Załóż repozytorium</a></li>
-    <li><a href="#niech-agent-sprawdzi-wszystko">Niech agent sprawdzi wszystko</a></li>
-    <li><a href="#jesli-instalacja-nie-wchodzi-w-gre">Jeśli instalacja nie wchodzi w grę</a></li>
-    <li><a href="#pytania-ktore-ludzie-zadaja">Pytania, które ludzie zadają</a></li>
+    <li><a href="#sprawdz-konfiguracje">Sprawdź konfigurację</a></li>
+    <li><a href="#bez-instalacji-github-codespaces">Bez instalacji: GitHub Codespaces</a></li>
+    <li><a href="#pytania">Pytania</a></li>
     <li><a href="#w-dniu-warsztatu">W dniu warsztatu</a></li>
   </ol>
 </nav>
 <main id="main" tabindex="-1"><div class="wrap">
-<h1>Zanim przyjdziesz</h1>
-<p class="lede">Dziewięćdziesiąt minut, trzydzieści osób, jedna pętla. Agent dostaje design, pisze stronę, a potem program — nie on sam — mówi mu wszystko, co jest z nią nie tak. Agent to poprawia i słyszy to jeszcze raz.</p>
-<p class="lede">Ta strona to przygotowanie. Zajmuje około trzydziestu minut, idzie dużo lepiej w domu niż na konferencyjnym wifi i kończy się tym, że agent mówi ci, czy jesteś gotowy.</p>
-<p>Około trzydziestu minut, od góry do dołu: cztery konta, kilka narzędzi, logowanie, własne repozytorium — a na końcu agent sprawdza całość i mówi, czego brakuje. Zrób to w domu. Na sali będzie trzydzieści osób i jedno wifi, a instalator to marny sposób na spędzenie pierwszych dwudziestu minut warsztatu.</p>
-<p><strong>Nie musisz umieć programować.</strong> Ta sesja jest zrobiona dla projektantów i ludzi od produktu. Każda komenda na tej stronie ma przycisk do kopiowania: kopiujesz, wklejasz do terminala, naciskasz Enter i czekasz, aż się skończy, zanim wkleisz następną.</p>
+<h1>Przygotowanie</h1>
+<p class="lede">Wykonaj te kroki przed 16 września, na komputerze, który przyniesiesz na warsztat. Zajmie to około 30 minut.</p>
+<p class="lede">Ostatni krok to prompt: agent sprawdza konfigurację i wypisuje, czego brakuje.</p>
+<h2 id="wymagania">Wymagania</h2>
+<ul><li>Laptop z macOS, Windows albo Linuksem, na którym możesz instalować oprogramowanie. Jeśli nie możesz, użyj GitHub Codespace. Opis znajdziesz na końcu strony.</li><li>Płatna subskrypcja <strong>Claude Pro lub Max</strong> albo <strong>ChatGPT Plus</strong>. Darmowe plany nie obejmują agentów w terminalu.</li><li>Umiejętność programowania nie jest potrzebna.</li></ul>
 <hr>
-<h2 id="co-bedziemy-budowac">Co będziemy budować</h2>
+<h2 id="czego-dotyczy-warsztat">Czego dotyczy warsztat</h2>
 <figure class="fig"><img src="../../diagrams/01-the-loop.svg" alt="Pętla: generuj, sprawdź, napraw, z wyjściem przez publikację" loading="lazy" width="1600" height="900"></figure>
-<p>Agent pisze stronę. <strong>Program</strong> — nie agent — sprawdza ją względem designu, reguł kontrastu i tekstów, po czym spisuje, co jest nie tak. Agent to czyta i poprawia. I w kółko, aż program nie ma już nic do powiedzenia, a wtedy strona idzie na serwer.</p>
-<p>Ciekawe jest to pudełko, które odmawia. Wszystko poniżej to rzeczy, których potrzebujesz, żeby w środę zbudować taką pętlę samodzielnie.</p>
+<p>Agent buduje stronę na podstawie projektu z Figmy. Osobny program, który agent też pisze, porównuje stronę z projektem i zgłasza każdą różnicę. Agent poprawia zgłoszone błędy i uruchamia program ponownie, aż wszystkie testy przejdą. Na końcu strona trafia na Netlify.</p>
 <hr>
-<h2 id="zaloz-konta">Załóż konta</h2>
+<h2 id="konta">Konta</h2>
 
 <div class="cards">
   <div class="card">
     <p class="card__n">01</p>
     <h3>GitHub</h3>
-    <p>Za darmo. Tam mieszka repozytorium twojego projektu, przez GitHuba logujesz się do Netlify jednym kliknięciem i to na nim działa wersja w przeglądarce, jeśli nic nie możesz zainstalować.</p>
+    <p>Za darmo. Przechowuje repozytorium projektu. Przez GitHuba zakładasz też konto w Netlify i uruchamiasz Codespace.</p>
     <p><a class="btn" href="https://github.com/signup">Załóż konto</a></p>
-    <p class="card__t">2 min · potwierdź maila</p>
+    <p class="card__t">2 min · potwierdź e-mail</p>
   </div>
   <div class="card card--pay">
     <p class="card__n">02</p>
-    <h3>Jeden agent do kodu</h3>
-    <p><strong>Claude Pro</strong> albo <strong>ChatGPT Plus</strong> — jeden, nie oba. Są tu równorzędne: każdy prompt z tego warsztatu był pisany i uruchamiany na obu.</p>
+    <h3>Agent do kodu</h3>
+    <p><strong>Claude Pro lub Max</strong> (dla Claude Code) albo <strong>ChatGPT Plus</strong> (dla Codeksa). Wystarczy jedna subskrypcja. Prompty działają z obydwoma.</p>
     <p><a class="btn" href="https://claude.ai/">Claude</a> <a class="btn btn--ghost" href="https://chatgpt.com/">ChatGPT</a></p>
-    <p class="card__t">jedyna rzecz na tej stronie, która kosztuje · około 20 €</p>
+    <p class="card__t">płatne · około 20 € miesięcznie</p>
   </div>
   <div class="card">
     <p class="card__n">03</p>
     <h3>Netlify</h3>
-    <p>Za darmo, i to tutaj wyląduje twoja strona. Wybierz <strong>Sign up with GitHub</strong> i nie ma nic więcej do wypełnienia.</p>
+    <p>Za darmo. Publikuje twoją stronę. Wybierz <strong>Sign up with GitHub</strong>.</p>
     <p><a class="btn" href="https://app.netlify.com/signup">Załóż konto</a></p>
     <p class="card__t">2 min · bez karty</p>
   </div>
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Darmowa wystarczy. Design zapisujesz z Figmy jako jeden plik i ten plik dajesz agentowi. Nic w warsztacie nie wymaga płatnego miejsca.</p>
+    <p>Darmowy plan. Zapisujesz projekt z Figmy jako plik i przekazujesz go agentowi.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Załóż konto</a></p>
-    <p class="card__t">darmowy plan w zupełności wystarczy</p>
+    <p class="card__t">darmowy plan</p>
   </div>
 </div>
 <hr>
-<h2 id="wybierz-swoj-komputer">Wybierz swój komputer</h2>
+<h2 id="system-operacyjny">System operacyjny</h2>
 
 <fieldset class="ospick" data-os-labels="{&quot;mac&quot;:&quot;macOS&quot;,&quot;windows&quot;:&quot;Windows&quot;,&quot;linux&quot;:&quot;Linux&quot;}"
-  data-os-guessed="Zgadliśmy %s na podstawie przeglądarki. Nie ten? Wybierz inny — wszystko poniżej się dopasuje." data-os-set="Wszystko poniżej jest dla systemu %s.">
-  <legend>Na jakim komputerze pracujesz?</legend>
+  data-os-guessed="Wykryty system: %s. Jeśli to nie ten, wybierz inny." data-os-set="Instrukcje poniżej są dla systemu %s.">
+  <legend>System operacyjny</legend>
   <div class="ospick__row">
     <input type="radio" name="os" id="os-mac" value="mac" checked>
     <label for="os-mac">macOS</label>
@@ -289,65 +289,64 @@ footer p{font-size:14px;color:var(--fg-3)}
     <input type="radio" name="os" id="os-linux" value="linux">
     <label for="os-linux">Linux</label>
   </div>
-  <p class="ospick__hint" data-os-hint>Wszystko poniżej dopasuje się do wyboru.</p>
+  <p class="ospick__hint" data-os-hint>Instrukcje poniżej dopasują się do wyboru.</p>
 </fieldset>
 <hr>
 <h2 id="otworz-terminal">Otwórz terminal</h2>
-<p>Jeśli nigdy go nie otwierałeś, to jest ten moment, w którym ludzie odpadają — i odpadają, zanim w ogóle zaczną. To dwa kroki i nie jest niebezpieczne.</p>
-<p>Terminal to okno, w którym wpisujesz nazwę programu, naciskasz Enter, a on wypisuje odpowiedź jako tekst. <code>npm install</code> i przycisk z napisem <strong>Instaluj</strong> robią dokładnie to samo — jedno wywołujesz nazwą, drugie kliknięciem.</p>
+<p>Terminal to okno, w którym uruchamiasz programy, wpisując komendy. Każda komenda na tej stronie ma przycisk <strong>Kopiuj</strong>: kopiujesz ją, wklejasz do terminala i naciskasz Enter, a następną uruchamiasz dopiero wtedy, gdy wróci znak zachęty.</p>
 <div data-os="mac">
-  <h3>Jak otworzyć terminal na macOS</h3>
+  <h3>macOS</h3>
   <ol>
     <li>Naciśnij <kbd>Cmd</kbd> + <kbd>Spacja</kbd>.</li>
     <li>Wpisz <code>Terminal</code>.</li>
     <li>Naciśnij <kbd>Enter</kbd>.</li>
   </ol>
-  <p>Otworzy się okno z linijką tekstu i migającym kursorem. To wszystko. Wklejasz do niego przez <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
+  <p>Wklejanie: <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
 </div>
 
 <div data-os="windows">
-  <h3>Jak otworzyć terminal na Windows</h3>
+  <h3>Windows</h3>
   <ol>
     <li>Naciśnij klawisz <kbd>Windows</kbd>.</li>
     <li>Wpisz <code>PowerShell</code>.</li>
-    <li>Kliknij <strong>Windows PowerShell</strong> — <em>nie</em> „Wiersz polecenia", który wygląda podobnie i zachowuje się inaczej.</li>
+    <li>Kliknij <strong>Windows PowerShell</strong>. Nie używaj Wiersza polecenia.</li>
   </ol>
-  <p>Otworzy się niebieskie okno z linijką tekstu i migającym kursorem. To wszystko. Wklejasz przez <kbd>Ctrl</kbd> + <kbd>V</kbd> albo prawym przyciskiem myszy.</p>
+  <p>Wklejanie: <kbd>Ctrl</kbd> + <kbd>V</kbd> albo prawy przycisk myszy.</p>
 </div>
 
 <div data-os="linux">
-  <h3>Jak otworzyć terminal na Linuksie</h3>
+  <h3>Linux</h3>
   <ol>
     <li>Naciśnij <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>.</li>
-    <li>Jeśli nic się nie stanie, otwórz menu aplikacji i poszukaj <code>Terminal</code>.</li>
+    <li>Jeśli okno się nie otworzy, wyszukaj <code>Terminal</code> w menu aplikacji.</li>
   </ol>
-  <p>Wklejasz przez <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> — samo <kbd>Ctrl</kbd> + <kbd>V</kbd> znaczy w terminalu coś innego.</p>
+  <p>Wklejanie: <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>. Samo <kbd>Ctrl</kbd> + <kbd>V</kbd> w terminalu nie wkleja.</p>
 </div>
-<h3>Sześć rzeczy, których nikt nie mówi</h3>
+<h3>Jak działa terminal</h3>
 
 <div class="rules">
-  <div><b>Linijka z kursorem to prompt.</b> Kończy się na <code>$</code>, <code>%</code> albo <code>&gt;</code> i oznacza, że terminal czeka na ciebie.</div>
-  <div><b>Wklej, potem naciśnij <kbd>Enter</kbd>.</b> Nic się nie uruchomi, dopóki tego nie zrobisz.</div>
-  <div><b>Cisza jest normalna.</b> Komenda potrafi stać przez minutę i nic nie wypisywać. Nie zawiesiła się — pracuje. Nauczysz się czekać.</div>
-  <div><b>Skończyła się, kiedy wraca prompt.</b> To jedyny sygnał, jaki dostajesz.</div>
-  <div><b>To, co przewinęło się do góry, jest zapisem.</b> Nie da się kliknąć w starą linijkę i jej poprawić. Żyje tylko ta, którą właśnie piszesz.</div>
-  <div><b>Niczym z tej strony nie zepsujesz komputera.</b> Każda komenda tutaj coś instaluje, loguje cię albo wypisuje, co znalazła.</div>
+  <div><b>Znak zachęty:</b> linijka z kursorem, zakończona na <code>$</code>, <code>%</code> albo <code>&gt;</code>. Terminal czeka na komendę.</div>
+  <div><b>Uruchomienie komendy:</b> wklej ją i naciśnij <kbd>Enter</kbd>.</div>
+  <div><b>Brak komunikatów:</b> niektóre komendy przez minutę albo dłużej nic nie wypisują. Nadal działają.</div>
+  <div><b>Koniec:</b> komenda skończyła działanie, kiedy znów pojawi się znak zachęty.</div>
+  <div><b>Wcześniejsze linijki:</b> nie da się ich edytować. Wpisywać można tylko w bieżącej.</div>
+  <div><b>Komendy na tej stronie:</b> instalują narzędzia, logują cię, zakładają repozytorium albo wypisują status.</div>
 </div>
 <hr>
 <h2 id="zainstaluj-narzedzia">Zainstaluj narzędzia</h2>
-<p>Cztery rzeczy: <strong>Node</strong>, który uruchamia stronę na twoim komputerze; <strong>Git</strong> i <strong>GitHub w terminalu</strong>, które trzymają projekt w repozytorium; <strong>jeden agent do kodu</strong>; i <strong>Netlify w terminalu</strong>, które publikuje stronę. Skopiuj każdą komendę, wklej do terminala, naciśnij Enter i poczekaj, aż wróci prompt, zanim przejdziesz do następnej.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Narzędzie</th><th>Do czego służy</th></tr></thead><tbody><tr><td>Node</td><td>uruchamia stronę na twoim komputerze</td></tr><tr><td>Git i GitHub CLI (<code>gh</code>)</td><td>przechowują projekt w repozytorium na GitHubie</td></tr><tr><td>Claude Code albo Codex</td><td>agent, który pisze kod</td></tr><tr><td>Netlify CLI</td><td>publikuje stronę</td></tr></tbody></table></div>
 
 <div data-os="mac">
-  <h3>Node, Git i GitHub w terminalu, na macOS</h3>
+  <h3>Node, Git i GitHub CLI na macOS</h3>
   <div class="cmd">
   <pre id="cmd-26"><code>brew install node gh</code></pre>
   <button class="copy copy--sm" data-for="cmd-26" aria-label="Skopiuj komendę: brew install node gh">Kopiuj</button>
 </div>
-  <p>To wymaga Homebrew. Nie masz? Najpierw wklej jedną komendę ze strony <a href="https://brew.sh">brew.sh</a> — zapyta o hasło do Maca, a przy wpisywaniu nic się nie pokazuje i tak ma być. Git przychodzi razem z nim. Kiedy wszystko się skończy, zamknij terminal i otwórz nowy.</p>
+  <p>Wymaga Homebrew. Jeśli go nie masz, najpierw uruchom komendę instalacyjną ze strony <a href="https://brew.sh">brew.sh</a>. Zapyta o hasło do Maca, a wpisywane znaki nie będą widoczne. Homebrew instaluje też Gita. Na koniec zamknij terminal i otwórz nowy.</p>
 </div>
 
 <div data-os="windows">
-  <h3>Node, Git i GitHub w terminalu, na Windows</h3>
+  <h3>Node, Git i GitHub CLI na Windows</h3>
   <div class="cmd">
   <pre id="cmd-27"><code>winget install --id OpenJS.NodeJS.LTS</code></pre>
   <button class="copy copy--sm" data-for="cmd-27" aria-label="Skopiuj komendę: winget install --id OpenJS.NodeJS.LTS">Kopiuj</button>
@@ -364,11 +363,11 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-30"><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
   <button class="copy copy--sm" data-for="cmd-30" aria-label="Skopiuj komendę: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Kopiuj</button>
 </div>
-  <p>Po jednej. Ostatnia pozwala PowerShellowi uruchamiać narzędzia, które instalujesz dalej — bez niej <code>npm</code> i agent zatrzymają się na <em>running scripts is disabled on this system</em>. Jeśli zapyta, wpisz <code>Y</code> i naciśnij Enter. Potem zamknij PowerShell i otwórz nowy: nowe programy zauważa tylko przy starcie.</p>
+  <p>Uruchamiaj komendy po jednej. Ostatnia pozwala PowerShellowi uruchamiać npm i agenta. Bez niej pojawi się błąd <em>running scripts is disabled on this system</em>. Jeśli padnie pytanie, wpisz <code>Y</code> i naciśnij Enter. Na koniec zamknij PowerShell i otwórz nowy.</p>
 </div>
 
 <div data-os="linux">
-  <h3>Node, Git i GitHub w terminalu, na Linuksie</h3>
+  <h3>Node, Git i GitHub CLI na Linuksie</h3>
   <div class="cmd">
   <pre id="cmd-31"><code>sudo apt install -y curl git gh</code></pre>
   <button class="copy copy--sm" data-for="cmd-31" aria-label="Skopiuj komendę: sudo apt install -y curl git gh">Kopiuj</button>
@@ -381,15 +380,15 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-33"><code>nvm install --lts</code></pre>
   <button class="copy copy--sm" data-for="cmd-33" aria-label="Skopiuj komendę: nvm install --lts">Kopiuj</button>
 </div>
-  <p>Przed trzecią komendą zamknij terminal i otwórz nowy. Pierwsza zapyta o hasło; przy wpisywaniu nic się nie pokazuje i tak ma być. Node idzie przez nvm, bo większość dystrybucji ma starszy, niż potrzeba, i dlatego, że instalacje poniżej nie wymagają wtedy <code>sudo</code>. Nie Ubuntu ani Debian? Zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek — <a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>.</p>
+  <p>Pierwsza komenda zapyta o hasło, a wpisywane znaki nie będą widoczne. Przed trzecią komendą zamknij terminal i otwórz nowy. Node instalujemy przez nvm, bo paczki z dystrybucji bywają starsze niż wymagana wersja 20.11. Dzięki temu instalacja przez npm nie wymaga też <code>sudo</code>. Inne dystrybucje: zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek (<a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>).</p>
 </div>
 
-<h3>Jeden agent — ten, za którego już płacisz</h3>
-<p>Potrzebujesz <strong>jednego</strong> z tych dwóch, nie obu. Masz subskrypcję Claude — bierz pierwszy. Masz ChatGPT Plus — drugi.</p>
+<h3>Agent do kodu (jeden z dwóch)</h3>
+<p>Zainstaluj agenta, który pasuje do twojej subskrypcji.</p>
 
 <div class="picktwo">
   <div class="picktwo__col">
-    <p class="picktwo__t">Claude Pro albo Max</p>
+    <p class="picktwo__t">Claude Pro lub Max</p>
     <div class="cmd">
   <pre id="cmd-34"><code>npm install -g @anthropic-ai/claude-code</code></pre>
   <button class="copy copy--sm" data-for="cmd-34" aria-label="Skopiuj komendę: npm install -g @anthropic-ai/claude-code">Kopiuj</button>
@@ -404,42 +403,42 @@ footer p{font-size:14px;color:var(--fg-3)}
   </div>
 </div>
 
-<h3>Netlify w terminalu</h3>
-<p>To tym narzędziem twoja strona trafi na koniec warsztatu do internetu.</p>
+<h3>Netlify CLI</h3>
+<p>Publikuje stronę na końcu warsztatu.</p>
 <div class="cmd">
   <pre id="cmd-36"><code>npm install -g netlify-cli</code></pre>
   <button class="copy copy--sm" data-for="cmd-36" aria-label="Skopiuj komendę: npm install -g netlify-cli">Kopiuj</button>
 </div>
 
-<p class="cmd__note">Jeśli komenda zaraz po instalacji mówi <code>command not found</code>, zamknij terminal i otwórz nowy. Prawie zawsze to wystarcza.</p>
+<p class="cmd__note">Jeśli komenda zaraz po instalacji zwraca <code>command not found</code>, zamknij terminal i otwórz nowy.</p>
 <hr>
 <h2 id="zaloguj-sie">Zaloguj się</h2>
 
-<p>Każde narzędzie musi wiedzieć, kim jesteś, i każde robi to tak samo: komenda otwiera przeglądarkę, klikasz zgodę i wracasz do terminala. Potem jedna komenda pokazuje, że się udało.</p>
+<p>Każda komenda logowania otwiera przeglądarkę. Tam zatwierdzasz dostęp i wracasz do terminala. Komenda statusu potwierdza wynik.</p>
 
 <h3>GitHub</h3>
 <div class="cmd">
   <pre id="cmd-37"><code>gh auth login</code></pre>
   <button class="copy copy--sm" data-for="cmd-37" aria-label="Skopiuj komendę: gh auth login">Kopiuj</button>
 </div>
-<p>Zada kilka pytań; poruszasz się strzałkami, zatwierdzasz Enterem. Wybierz <strong>GitHub.com</strong>, potem <strong>HTTPS</strong>, potem <strong>Yes</strong> przy logowaniu Gita, potem <strong>Login with a web browser</strong>. Pokaże jednorazowy kod: naciśnij Enter, wklej kod w przeglądarce i kliknij <strong>Authorize</strong>.</p>
+<p>Odpowiadaj strzałkami i klawiszem <kbd>Enter</kbd>: <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (logowanie Gita) → <strong>Login with a web browser</strong>. Skopiuj jednorazowy kod i naciśnij <kbd>Enter</kbd>. W przeglądarce wklej kod i kliknij <strong>Authorize</strong>.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-38"><code>gh auth status</code></pre><span>mówi Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-38" aria-label="Skopiuj komendę: gh auth status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-38"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-38" aria-label="Skopiuj komendę: gh auth status">Kopiuj</button></div>
 </div>
 
-<h3>Twój agent</h3>
+<h3>Agent do kodu</h3>
 <div class="picktwo">
   <div class="picktwo__col">
-    <p class="picktwo__t">Claude Pro albo Max</p>
+    <p class="picktwo__t">Claude Pro lub Max</p>
     <div class="cmd">
   <pre id="cmd-39"><code>claude auth login</code></pre>
   <button class="copy copy--sm" data-for="cmd-39" aria-label="Skopiuj komendę: claude auth login">Kopiuj</button>
 </div>
-<p>Przeglądarka otworzy claude.ai. Zaloguj się i kliknij <strong>Authorize</strong>. Jeśli terminal zamiast tego poprosi o kod, skopiuj go z przeglądarki i wklej z powrotem.</p>
+<p>Zaloguj się na claude.ai w przeglądarce i kliknij <strong>Authorize</strong>. Jeśli terminal poprosi o kod, skopiuj go z przeglądarki i wklej.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-40"><code>claude auth status</code></pre><span>pokazuje &quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-40" aria-label="Skopiuj komendę: claude auth status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-40"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-40" aria-label="Skopiuj komendę: claude auth status">Kopiuj</button></div>
 </div>
   </div>
   <div class="picktwo__col">
@@ -448,10 +447,10 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-41"><code>codex login</code></pre>
   <button class="copy copy--sm" data-for="cmd-41" aria-label="Skopiuj komendę: codex login">Kopiuj</button>
 </div>
-<p>Przeglądarka otworzy ChatGPT. Zaloguj się i zezwól. Terminal powie, kiedy skończy.</p>
+<p>Zaloguj się do ChatGPT w przeglądarce i zezwól na dostęp. Terminal potwierdzi zakończenie logowania.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-42"><code>codex login status</code></pre><span>mówi Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-42" aria-label="Skopiuj komendę: codex login status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-42"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-42" aria-label="Skopiuj komendę: codex login status">Kopiuj</button></div>
 </div>
   </div>
 </div>
@@ -461,15 +460,15 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-43"><code>netlify login</code></pre>
   <button class="copy copy--sm" data-for="cmd-43" aria-label="Skopiuj komendę: netlify login">Kopiuj</button>
 </div>
-<p>Przeglądarka otworzy stronę Netlify. Kliknij <strong>Authorize</strong> i wróć do terminala.</p>
+<p>Kliknij <strong>Authorize</strong> w przeglądarce i wróć do terminala.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-44"><code>netlify status</code></pre><span>pokazuje twój adres e-mail</span><button class="copy copy--sm" data-for="cmd-44" aria-label="Skopiuj komendę: netlify status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-44"><code>netlify status</code></pre><span>twój adres e-mail</span><button class="copy copy--sm" data-for="cmd-44" aria-label="Skopiuj komendę: netlify status">Kopiuj</button></div>
 </div>
 <hr>
 <h2 id="zaloz-repozytorium">Załóż repozytorium</h2>
 
-<p>Twój projekt potrzebuje domu na GitHubie. Jedna komenda zakłada repozytorium — prywatne, więc widzisz je tylko ty — i kładzie jego pustą kopię na twoim komputerze, w folderze <code>turbine</code>.</p>
+<p>Ta komenda zakłada na twoim koncie GitHub prywatne repozytorium <code>turbine</code>. Klonuje je też do folderu <code>turbine</code> w bieżącym katalogu.</p>
 <div class="cmd">
   <pre id="cmd-45"><code>gh repo create turbine --private --clone</code></pre>
   <button class="copy copy--sm" data-for="cmd-45" aria-label="Skopiuj komendę: gh repo create turbine --private --clone">Kopiuj</button>
@@ -478,81 +477,78 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-46"><code>cd turbine</code></pre>
   <button class="copy copy--sm" data-for="cmd-46" aria-label="Skopiuj komendę: cd turbine">Kopiuj</button>
 </div>
-<p>W tym folderze zaczyna się warsztat. W dniu warsztatu otwierasz terminal, wchodzisz do niego przez <code>cd turbine</code> i tam uruchamiasz agenta. Do tego czasu zostaw go pustym.</p>
+<p>Warsztat zaczyna się w tym folderze: <code>cd turbine</code>, potem uruchom agenta. Nie dodawaj do niego plików.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-47"><code>git remote -v</code></pre><span>pokazuje github.com/twoja-nazwa/turbine</span><button class="copy copy--sm" data-for="cmd-47" aria-label="Skopiuj komendę: git remote -v">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-47"><code>git remote -v</code></pre><span>github.com/twoja-nazwa/turbine</span><button class="copy copy--sm" data-for="cmd-47" aria-label="Skopiuj komendę: git remote -v">Kopiuj</button></div>
 </div>
-<p class="cmd__note">Masz już repozytorium o nazwie turbine? Wybierz inną nazwę i używaj jej wszędzie, gdzie ta strona mówi turbine.</p>
+<p class="cmd__note">Jeśli masz już repozytorium o nazwie turbine, wybierz inną nazwę. Używaj jej wszędzie tam, gdzie ta strona pisze turbine.</p>
 <hr>
-<h2 id="niech-agent-sprawdzi-wszystko">Niech agent sprawdzi wszystko</h2>
+<h2 id="sprawdz-konfiguracje">Sprawdź konfigurację</h2>
 
-<p>Ostatni krok i nie musisz niczego sprawdzać sam. Agent przegląda wszystko powyżej i mówi ci po ludzku, czego jeszcze brakuje.</p>
+<p>Agent sprawdza wszystko z poprzednich kroków i wypisuje, czego brakuje. Niczego nie zmienia.</p>
 <ol class="steps">
-  <li>W terminalu wejdź do folderu projektu:<div class="cmd">
+  <li>Przejdź do folderu projektu:<div class="cmd">
   <pre id="cmd-48"><code>cd turbine</code></pre>
   <button class="copy copy--sm" data-for="cmd-48" aria-label="Skopiuj komendę: cd turbine">Kopiuj</button>
 </div></li>
-  <li>Uruchom agenta — <code>claude</code> albo <code>codex</code>. Jeśli zapyta, czy ufasz temu folderowi, odpowiedz tak.</li>
-  <li>Skopiuj prompt poniżej, wklej go i naciśnij Enter.</li>
+  <li>Uruchom agenta: <code>claude</code> albo <code>codex</code>. Jeśli zapyta, czy ufasz temu folderowi, odpowiedz tak.</li>
+  <li>Wklej prompt poniżej i naciśnij <kbd>Enter</kbd>.</li>
 </ol>
 <div class="prompt"><div class="prompt__bar">
   <span class="prompt__label">Wklej to agentowi</span>
   <button class="copy" type="button" data-for="ready-pl" aria-label="Skopiuj komendę: Wklej to agentowi">Kopiuj</button></div>
-  <pre id="ready-pl"><code>Przygotowuję się do warsztatu i mało pracowałem w terminalu. Sprawdź, czy ten komputer
-jest do niego gotowy. Niczego sam nie instaluj, nie loguj się i niczego nie zmieniaj: tylko
-patrz, i uruchamiaj takie komendy, jakich do tego potrzebujesz.
+  <pre id="ready-pl"><code>Sprawdź, czy ten komputer jest gotowy do warsztatu. Niczego nie instaluj, nie loguj się
+i niczego nie zmieniaj: tylko sprawdzaj i uruchamiaj takie komendy, jakich do tego potrzebujesz.
 
-Sprawdź każdą z tych rzeczy i pokaż mi wynik jako tabelę — co sprawdziłeś, co znalazłeś,
-i OK albo NIE OK:
+Sprawdź każdy punkt i podaj wynik w tabeli z trzema kolumnami: co sprawdziłeś, co znalazłeś,
+OK albo NIE OK.
 
-1. Node jest zainstalowany, w wersji 20.11 albo nowszej, i npm działa.
-2. Git jest zainstalowany i zna imię oraz adres e-mail, które wpisuje do commitów.
-3. GitHub w terminalu (gh) jest zainstalowany i zalogowany.
-4. Netlify w terminalu jest zainstalowany i zalogowany.
-5. Ty, agent, z którym rozmawiam, jesteś zainstalowany i zalogowany. Powiedz, którym agentem
-   jesteś.
-6. Ten folder jest repozytorium git połączonym z repozytorium na GitHubie, to repozytorium
-   istnieje i należy do konta, na które zalogowany jest gh.
-7. Ten folder jest pusty, poza plikami samego gita. Warsztat zaczyna się od zera.
+1. Node jest zainstalowany, w wersji 20.11 lub nowszej, i npm działa.
+2. Git jest zainstalowany i ma ustawione imię oraz adres e-mail.
+3. GitHub CLI (gh) jest zainstalowane i zalogowane.
+4. Netlify CLI jest zainstalowane i zalogowane.
+5. Ty, agent, który robi to sprawdzenie, jesteś zainstalowany i zalogowany. Napisz, którym
+   agentem jesteś.
+6. Ten folder jest repozytorium git z remote na GitHubie, a to repozytorium istnieje na
+   koncie, na które zalogowane jest gh.
+7. W tym folderze nie ma nic poza plikami samego gita.
 
-Przy każdym NIE OK napisz w jednym, dwóch zdaniach, po ludzku, co mam zrobić — z dokładną
-komendą do wpisania, jeśli taka jest. Na końcu, w osobnej linijce: GOTOWE albo NIEGOTOWE
-i ile rzeczy zostało.</code></pre></div>
-<p>Przed każdą komendą zapyta o zgodę. Zgadzaj się — tylko patrzy. Popraw to, co oznaczy jako NIE OK, i wklej ten sam prompt jeszcze raz, aż powie <strong>GOTOWE</strong>. Jeśli agent w ogóle się nie uruchamia, wróć do sekcji <a href="#zaloguj-sie">Zaloguj się</a>.</p>
+Dla każdego punktu NIE OK podaj poprawkę w jednym lub dwóch prostych zdaniach, z dokładną
+komendą, jeśli taka jest. Zakończ jedną linijką: GOTOWE albo NIEGOTOWE i liczba punktów
+do poprawienia.</code></pre></div>
+<p>Przed każdą komendą agent pyta o zgodę. Zgódź się. Popraw każdy punkt NIE OK i uruchom ten sam prompt jeszcze raz, aż wynik będzie <strong>GOTOWE</strong>. Jeśli agent się nie uruchamia, powtórz krok <a href="#zaloguj-sie">Zaloguj się</a>.</p>
 <hr>
-<h2 id="jesli-instalacja-nie-wchodzi-w-gre">Jeśli instalacja nie wchodzi w grę</h2>
+<h2 id="bez-instalacji-github-codespaces">Bez instalacji: GitHub Codespaces</h2>
 
-<p>Część służbowych laptopów nie pozwoli zainstalować niczego. Cały warsztat możesz wtedy zrobić w przeglądarce, w <strong>GitHub Codespace</strong>: komputerze w chmurze, który ma już Node, Gita i GitHuba w terminalu, i jest już zalogowany do GitHuba.</p>
+<p>Jeśli nie możesz instalować oprogramowania, użyj <strong>GitHub Codespace</strong>. To komputer w chmurze, dostępny w przeglądarce. Ma zainstalowane Node, Gita i GitHub CLI, zalogowane do GitHuba.</p>
 <ol class="steps">
-  <li>Na github.com kliknij <strong>+</strong> → <strong>New repository</strong>. Nazwij je <code>turbine</code>, wybierz <strong>Private</strong>, zaznacz <strong>Add a README file</strong> — codespace nie otworzy się na pustym repozytorium — i kliknij <strong>Create repository</strong>.</li>
-  <li>Na stronie repozytorium: <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. Trwa to minutę, dwie. Panel na dole to terminal, już w folderze repozytorium.</li>
-  <li>Usuń README, żeby folder zaczynał pusty:<div class="cmd">
+  <li>Na github.com kliknij <strong>+</strong> → <strong>New repository</strong>. Nazwa: <code>turbine</code>. Widoczność: <strong>Private</strong>. Zaznacz <strong>Add a README file</strong>, bo dla pustego repozytorium nie da się utworzyć Codespace. Kliknij <strong>Create repository</strong>.</li>
+  <li>Na stronie repozytorium kliknij <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. Terminal to panel na dole, otwarty w folderze repozytorium.</li>
+  <li>Usuń README, żeby folder był pusty:<div class="cmd">
   <pre id="cmd-49"><code>rm README.md</code></pre>
   <button class="copy copy--sm" data-for="cmd-49" aria-label="Skopiuj komendę: rm README.md">Kopiuj</button>
 </div></li>
-  <li>Zainstaluj agenta i Netlify — komendy z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>, od agenta w dół. Node, Git i GitHub już tam są.</li>
-  <li>Zaloguj się do agenta i do Netlify jak w sekcji <a href="#zaloguj-sie">Zaloguj się</a>. Terminal zamiast otwierać przeglądarkę wypisze link: przytrzymaj <kbd>Ctrl</kbd> albo <kbd>Cmd</kbd> i kliknij go. Codex potrzebuje logowania, które działa z innego urządzenia:<div class="cmd">
+  <li>Zainstaluj agenta i Netlify CLI komendami z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>. Node, Git i GitHub CLI są już zainstalowane.</li>
+  <li>Zaloguj się do agenta i do Netlify zgodnie z sekcją <a href="#zaloguj-sie">Zaloguj się</a>. Zamiast otwierać przeglądarkę, terminal wypisze link. Przytrzymaj <kbd>Ctrl</kbd> albo <kbd>Cmd</kbd> i kliknij go. W Codeksie użyj logowania kodem urządzenia:<div class="cmd">
   <pre id="cmd-50"><code>codex login --device-auth</code></pre>
   <button class="copy copy--sm" data-for="cmd-50" aria-label="Skopiuj komendę: codex login --device-auth">Kopiuj</button>
-</div><p class="cmd__note">Jeśli Codex powie, że logowanie kodem urządzenia nie jest włączone, włącz je w ChatGPT → Settings → Security i uruchom komendę jeszcze raz.</p></li>
-  <li>Zrób krok <a href="#niech-agent-sprawdzi-wszystko">Niech agent sprawdzi wszystko</a> w terminalu codespace’a. Jesteś już w folderze projektu, więc pomiń <code>cd turbine</code>.</li>
+</div><p class="cmd__note">Jeśli Codex zgłosi, że logowanie kodem urządzenia jest wyłączone, włącz je w ChatGPT → Settings → Security i uruchom komendę ponownie.</p></li>
+  <li>Wykonaj krok <a href="#sprawdz-konfiguracje">Sprawdź konfigurację</a> w terminalu Codespace. Pomiń <code>cd turbine</code>, bo terminal jest już w folderze projektu.</li>
 </ol>
-<p>Darmowy plan GitHuba obejmuje 120 rdzeniogodzin Codespaces miesięcznie. Warsztat zużywa około trzech. W dniu warsztatu otwórz ten sam codespace z <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+<p>Darmowy plan GitHuba obejmuje 120 rdzeniogodzin Codespaces miesięcznie. Warsztat zużywa około 3. W dniu warsztatu otwórz ten sam Codespace z <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
 <hr>
-<h2 id="pytania-ktore-ludzie-zadaja">Pytania, które ludzie zadają</h2>
-<div class="faq"><details><summary>Nigdy nie używałem terminala.</summary><p>Dobrze — jedna trzecia sali też nie. Jest o tym osobna sekcja wyżej, każda komenda ma przycisk do kopiowania, a pierwsze, o co na warsztacie poprosisz agenta, to żeby tłumaczył każdą komendę na bieżąco.</p></details><details><summary>Czy muszę umieć programować?</summary><p>Nie. Będziesz oglądać to, co zrobił agent, i mówić po ludzku, co jest nie tak. Dokładnie o tej robocie jest ta sesja.</p></details><details><summary>Nie chcę płacić za subskrypcję AI.</summary><p>Darmowe plany obu produktów nie obejmują narzędzia w terminalu, więc na darmowym koncie pętla nie ruszy. Najtańszy plan któregokolwiek wystarczy, a potem można zrezygnować.</p></details><details><summary>Po co mi repozytorium na GitHubie?</summary><p>To dom twojego projektu. Agent może zapisywać tam pracę na bieżąco, więc nic nie przepadnie, jeśli laptop odmówi posłuszeństwa, a z warsztatu wychodzisz z kodem, nie tylko z adresem.</p></details><details><summary>Mam darmową Figmę.</summary><p>To wszystko, czego potrzebujesz. Zapisujesz plik z Figmy — dwa kliknięcia — i dajesz go agentowi. Nic w warsztacie nie wymaga płatnego miejsca.</p></details><details><summary>Sprawdzenie mówi NIE OK i nie rozumiem dlaczego.</summary><p>Zapytaj agenta. Napisz „wytłumacz punkt 3, jakbym robił to pierwszy raz&quot; — on wie, co znalazł. Jeśli dalej stoi, przyjdź na salę piętnaście minut wcześniej.</p></details><details><summary>Czy na warsztacie będę potrzebować internetu?</summary><p>Tak, i na sali on jest. Agent instaluje paczki, rozkodowuje plik Figmy i publikuje twoją stronę — wszystko to idzie przez sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.</p></details><details><summary>Służbowy laptop nie pozwala mi nic instalować.</summary><p>Użyj Codespace, jak opisano wyżej. Na samym laptopie nie instalujesz niczego.</p></details><details><summary>Czy to zadziała na Windows?</summary><p>Tak. Używaj PowerShella, nie starego Wiersza polecenia. Reszta sesji jest identyczna.</p></details><details><summary>Co zabieram do domu?</summary><p>Działający adres w internecie, repozytorium z kodem i osiem promptów, które zadziałają w poniedziałek.</p></details></div>
+<h2 id="pytania">Pytania</h2>
+<div class="faq"><details><summary>Czy muszę umieć programować?</summary><p>Nie. Opisujesz problemy zwykłym językiem, a kod pisze agent.</p></details><details><summary>Czy wystarczy darmowy plan AI?</summary><p>Nie. Darmowe plany Claude i ChatGPT nie obejmują Claude Code ani Codeksa. Wystarczy najtańszy płatny plan jednego z nich.</p></details><details><summary>Po co repozytorium na GitHubie?</summary><p>Przechowuje projekt. Po warsztacie zostaje ci kod.</p></details><details><summary>Czy potrzebuję płatnej Figmy?</summary><p>Nie. Plik projektu zapiszesz z darmowego planu.</p></details><details><summary>Sprawdzenie zwraca NIE OK i nie wiem dlaczego.</summary><p>Poproś agenta, żeby wyjaśnił ten punkt krok po kroku. Jeśli problem zostanie, przyjdź 15 minut przed startem warsztatu.</p></details><details><summary>Czy w trakcie warsztatu potrzebny jest internet?</summary><p>Tak. Na sali jest wifi. Agent instaluje paczki, dekoduje plik Figmy i publikuje stronę.</p></details><details><summary>Nie mogę instalować programów na laptopie.</summary><p>Użyj Codespace. Opis jest w sekcji o pracy bez instalacji.</p></details><details><summary>Czy to działa na Windows?</summary><p>Tak. Używaj PowerShella, nie Wiersza polecenia.</p></details><details><summary>Co zostaje mi po warsztacie?</summary><p>Opublikowana strona, repozytorium z kodem i prompty.</p></details></div>
 <hr>
 <h2 id="w-dniu-warsztatu">W dniu warsztatu</h2>
-<p><strong>Weź ze sobą:</strong> laptopa, ładowarkę i słuchawki, jeśli lubisz przy nich pracować.</p>
-<p><strong>Przyjdź:</strong> piętnaście minut wcześniej, jeśli agent nie powiedział GOTOWE.</p>
-<p><strong>Wyjdziesz z:</strong> działającym adresem w internecie, repozytorium z kodem, stroną promptów, których użyjesz w poniedziałek, i dość konkretnym zdaniem na temat tego, kiedy ufać modelowi językowemu.</p>
+<ul><li>Weź laptop i ładowarkę.</li><li>Jeśli sprawdzenie nie zakończyło się wynikiem GOTOWE, przyjdź 15 minut przed startem.</li></ul>
 </div></main>
 <footer><div class="wrap">
   <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 września, 14:55, ROOM-PM · Szymon Paluch</p>
-  <p>Wszystko zostaje online po konferencji. Repozytorium, jeśli chcesz:
+  <p>Repozytorium warsztatu:
   <a href="https://github.com/hculap/waysconf-2026-agentic-loops">github.com/hculap/waysconf-2026-agentic-loops</a>.</p>
-  <p>TURBINE to zmyślony festiwal stworzony jako materiał dydaktyczny. Nazwy artystów, zdjęcia i teksty są wymyślone. Podobieństwo do prawdziwego wydarzenia lub wykonawcy jest przypadkowe.</p>
+  <p>TURBINE to zmyślony festiwal, stworzony jako materiał szkoleniowy. Nazwy artystów, zdjęcia i teksty są wymyślone.</p>
 </div></footer>
 <script src="../../app.js" defer></script>
 </body>

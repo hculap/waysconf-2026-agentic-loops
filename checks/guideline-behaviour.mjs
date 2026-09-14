@@ -111,7 +111,7 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
   page.on('console', (m) => { if (m.type() === 'error') consoleErrors.push(m.text()) })
   page.on('pageerror', (e) => consoleErrors.push(`uncaught: ${e.message}`))
 
-  await page.goto(base + '/before/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/preparation/', { waitUntil: 'networkidle', timeout: 30_000 })
   await page.waitForTimeout(500)
 
   // Did OUR script run? An absence of errors is an inference; this is a measurement.
@@ -205,7 +205,7 @@ console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${b
 }
 
 // ── the section rail, on both long pages ─────────────────────────────────────
-for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
+for (const path of ['/preparation/', '/workshop/', '/pl/preparation/', '/pl/workshop/']) {
   const context = await browser.newContext({ viewport: { width: 1440, height: 900 } })
   const page = await context.newPage()
   await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
@@ -286,10 +286,10 @@ for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
 
   for (const [from, expectLang, expectHref] of [
     ['/', 'pl', '/pl/'],
-    ['/before/', 'pl', '/pl/before/'],
+    ['/preparation/', 'pl', '/pl/preparation/'],
     ['/workshop/', 'pl', '/pl/workshop/'],
     ['/pl/', 'en', '/'],
-    ['/pl/before/', 'en', '/before/'],
+    ['/pl/preparation/', 'en', '/preparation/'],
     ['/pl/workshop/', 'en', '/workshop/'],
   ]) {
     await page.goto(base + from, { waitUntil: 'networkidle', timeout: 30_000 })
@@ -315,20 +315,20 @@ for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
   }
 
   // the Polish picker must speak Polish, including the hint the script writes
-  await page.goto(base + '/pl/before/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/pl/preparation/', { waitUntil: 'networkidle', timeout: 30_000 })
   await page.locator('.ospick label[for="os-windows"]').click()
   await page.waitForTimeout(300)
   const shown = await visibleOses(page)
-  if (shown.length === 1 && shown[0] === 'windows') ok('/pl/before/: the picker switches')
-  else fail(`/pl/before/: clicking Windows showed ${shown.join(', ') || 'nothing'}`)
+  if (shown.length === 1 && shown[0] === 'windows') ok('/pl/preparation/: the picker switches')
+  else fail(`/pl/preparation/: clicking Windows showed ${shown.join(', ') || 'nothing'}`)
 
   const hint = (await page.locator('[data-os-hint]').innerText()).trim()
-  if (/[ąćęłńóśźż]/i.test(hint)) ok(`/pl/before/: the hint is Polish — "${hint.slice(0, 52)}…"`)
-  else fail(`/pl/before/: the operating-system hint is not Polish: "${hint.slice(0, 70)}"`)
+  if (/[ąćęłńóśźż]/i.test(hint)) ok(`/pl/preparation/: the hint is Polish — "${hint.slice(0, 52)}…"`)
+  else fail(`/pl/preparation/: the operating-system hint is not Polish: "${hint.slice(0, 70)}"`)
 
   const button = (await page.locator('.copy').first().innerText()).trim()
-  if (button !== 'Copy') ok(`/pl/before/: the copy button says "${button}"`)
-  else fail('/pl/before/: the copy button still says "Copy"')
+  if (button !== 'Copy') ok(`/pl/preparation/: the copy button says "${button}"`)
+  else fail('/pl/preparation/: the copy button still says "Copy"')
 
   await context.close()
 }
@@ -362,13 +362,13 @@ for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
     lockedBy[hub] = doors.filter((d) => d.locked).map((d) => d.locked).sort()
 
     if (!doors[0]?.href) {
-      fail(`${hub}: "before the workshop" is not a link — the one part that is always open`)
+      fail(`${hub}: "preparation" is not a link — the one part that is always open`)
     } else {
       await page.locator('.doors > li').first().locator('a').click()
       await page.waitForLoadState('networkidle')
       const landed = new URL(page.url()).pathname
-      if (landed === `${hub}before/`) ok(`${hub}: the first part opens ${landed}`)
-      else fail(`${hub}: the first part led to ${landed}, expected ${hub}before/`)
+      if (landed === `${hub}preparation/`) ok(`${hub}: the first part opens ${landed}`)
+      else fail(`${hub}: the first part led to ${landed}, expected ${hub}preparation/`)
     }
     ok(`${hub}: ${doors.length - lockedBy[hub].length} open, locked: ${lockedBy[hub].join(', ') || 'none'}`)
   }
@@ -378,7 +378,7 @@ for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
 
   const locked = lockedBy['/']
   const forbidden = locked.flatMap((key) => PREFIXES[key].map((prefix) => [key, prefix]))
-  const open = ['/', '/pl/', '/before/', '/pl/before/', ...(locked.includes('workshop') ? [] : ['/workshop/', '/pl/workshop/'])]
+  const open = ['/', '/pl/', '/preparation/', '/pl/preparation/', ...(locked.includes('workshop') ? [] : ['/workshop/', '/pl/workshop/'])]
   let crawled = 0
   let leaks = 0
   for (const path of open) {
@@ -411,7 +411,7 @@ for (const path of ['/before/', '/workshop/', '/pl/before/', '/pl/workshop/']) {
 {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } })
   const page = await context.newPage()
-  await page.goto(base + '/before/', { waitUntil: 'networkidle', timeout: 30_000 })
+  await page.goto(base + '/preparation/', { waitUntil: 'networkidle', timeout: 30_000 })
   const shown = await visibleOses(page)
   if (shown.length === OSES.length) ok('with JavaScript off, all three systems are shown — nothing is lost')
   else fail(`with JavaScript off only ${shown.join(', ') || 'nothing'} is reachable; the rest is unreadable`)

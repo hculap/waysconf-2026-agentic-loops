@@ -13,6 +13,12 @@
 # rewrite when nothing exists at the path — and everything else is the deck's own page.
 /deck/*    /deck/index.html                        200
 
+# The preparation page was /before/ until 14 September. Links already sent keep working.
+/before      /preparation/      301
+/before/*    /preparation/      301
+/pl/before   /pl/preparation/   301
+/pl/before/* /pl/preparation/   301
+
 # The prompts page moved when the site was split into two tabs. Anyone holding the old
 # link — it was in an early draft of the organiser email — lands in the right place.
 /prompts   /workshop/                              301

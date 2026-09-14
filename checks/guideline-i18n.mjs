@@ -80,7 +80,7 @@ const prose = (md) =>
     .replace(/https?:\/\/\S+/g, ' ')
 
 const pairs = [
-  ['guideline/src/before.md', 'guideline/src/before.pl.md'],
+  ['guideline/src/preparation.md', 'guideline/src/preparation.pl.md'],
   ['guideline/src/ideas.md', 'guideline/src/ideas.pl.md'],
 ]
 

@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Before you come · WaysConf 2026 masterclass</title>
-<meta name="description" content="About thirty minutes at home: four accounts, the tools, signing in, your own repository, and an agent that checks it all for you.">
+<title>Preparation · WaysConf 2026 masterclass</title>
+<meta name="description" content="Set up your computer before the workshop: accounts, tools, sign-in, a GitHub repository and an automated setup check.">
 <meta name="theme-color" content="#0A0A0A">
-<link rel="alternate" hreflang="en" href="../before/">
-<link rel="alternate" hreflang="pl" href="../pl/before/">
+<link rel="alternate" hreflang="en" href="../preparation/">
+<link rel="alternate" hreflang="pl" href="../pl/preparation/">
 <link rel="stylesheet" href="../fonts/fonts.css">
 <style>
 /* Speaker brand — szymonpaluch.com. Source of truth: design/tokens/speaker.css.
@@ -208,79 +208,79 @@ footer p{font-size:14px;color:var(--fg-3)}
 <a class="skip" href="#main">Skip to main content</a>
 <header class="top">
   <div class="wrap">
-    <a class="wordmark" href="../" title="WaysConf 2026 — all parts of the workshop"><b>SP.</b> <span>WaysConf 2026</span></a>
+    <a class="wordmark" href="../" title="WaysConf 2026: workshop materials"><b>SP.</b> <span>WaysConf 2026</span></a>
     <nav class="lang" aria-label="Language">
       <span aria-current="true">EN</span>
-      <a href="../pl/before/" lang="pl" hreflang="pl">PL</a>
+      <a href="../pl/preparation/" lang="pl" hreflang="pl">PL</a>
     </nav>
   </div>
 </header>
 <nav class="toc" aria-label="On this page">
   <p class="toc__t">On this page</p>
   <ol>
-    <li><a href="#what-we-are-going-to-build">What we are going to build</a></li>
-    <li><a href="#create-the-accounts">Create the accounts</a></li>
-    <li><a href="#pick-your-computer">Pick your computer</a></li>
+    <li><a href="#requirements">Requirements</a></li>
+    <li><a href="#what-the-workshop-covers">What the workshop covers</a></li>
+    <li><a href="#accounts">Accounts</a></li>
+    <li><a href="#operating-system">Operating system</a></li>
     <li><a href="#open-a-terminal">Open a terminal</a></li>
     <li><a href="#install-the-tools">Install the tools</a></li>
     <li><a href="#sign-in">Sign in</a></li>
-    <li><a href="#create-your-repository">Create your repository</a></li>
-    <li><a href="#let-your-agent-check-everything">Let your agent check everything</a></li>
-    <li><a href="#if-installing-is-not-an-option">If installing is not an option</a></li>
-    <li><a href="#questions-people-ask">Questions people ask</a></li>
+    <li><a href="#create-the-repository">Create the repository</a></li>
+    <li><a href="#check-the-setup">Check the setup</a></li>
+    <li><a href="#without-installing-github-codespaces">Without installing: GitHub Codespaces</a></li>
+    <li><a href="#faq">FAQ</a></li>
     <li><a href="#on-the-day">On the day</a></li>
   </ol>
 </nav>
 <main id="main" tabindex="-1"><div class="wrap">
-<h1>Before you come</h1>
-<p class="lede">Ninety minutes, thirty people, one loop. A coding agent is handed a design, writes a website, and is then told by a program — not by itself — everything that is wrong with it. Then it fixes those things and is told again.</p>
-<p class="lede">This page is the preparation. It takes about thirty minutes, goes much better at home than on conference wifi, and ends with your agent telling you whether you are ready.</p>
-<p>About thirty minutes, top to bottom: four accounts, a few tools, signing in, your own repository — and at the end your agent checks the lot and tells you what is missing. Do it at home. The room has thirty people and one wifi network, and an installer is a miserable way to spend the first twenty minutes of a workshop.</p>
-<p><strong>You do not need to know how to code.</strong> This session is built for designers and product people. Every command on this page has a copy button: copy, paste into the terminal, press Enter, and wait for it to finish before the next one.</p>
+<h1>Preparation</h1>
+<p class="lede">Complete these steps before 16 September, on the computer you will bring to the workshop. Time required: about 30 minutes.</p>
+<p class="lede">The last step is a prompt: your coding agent checks the setup and lists anything that is missing.</p>
+<h2 id="requirements">Requirements</h2>
+<ul><li>A laptop with macOS, Windows or Linux on which you can install software. If you cannot install software, use a GitHub Codespace instead, as described at the end of this page.</li><li>A paid <strong>Claude Pro or Max</strong> or <strong>ChatGPT Plus</strong> subscription. The free plans do not include the command-line agents.</li><li>No programming experience is required.</li></ul>
 <hr>
-<h2 id="what-we-are-going-to-build">What we are going to build</h2>
+<h2 id="what-the-workshop-covers">What the workshop covers</h2>
 <figure class="fig"><img src="../diagrams/01-the-loop.svg" alt="The loop: generate, verify, repair, with a deploy exit" loading="lazy" width="1600" height="900"></figure>
-<p>An agent writes a page. A <strong>program</strong> — not the agent — checks it against the design, the contrast rules and the copy, and writes down what is wrong. The agent reads that and fixes it. Round and round until the program says nothing is wrong, and then it goes live.</p>
-<p>The interesting box is the one that refuses. Everything below is what you need so you can build one of those on Wednesday.</p>
+<p>A coding agent builds a page from the Figma design. A separate program, which the agent also writes, checks the page against the design and reports every difference. The agent fixes the reported problems and runs the program again until it passes. The page is then published on Netlify.</p>
 <hr>
-<h2 id="create-the-accounts">Create the accounts</h2>
+<h2 id="accounts">Accounts</h2>
 
 <div class="cards">
   <div class="card">
     <p class="card__n">01</p>
     <h3>GitHub</h3>
-    <p>Free. Your project lives in a repository there, you sign in to Netlify with it in one click, and it is the browser option if you cannot install anything.</p>
+    <p>Free. Stores your project repository. Also used to sign up for Netlify and to run a Codespace.</p>
     <p><a class="btn" href="https://github.com/signup">Create an account</a></p>
-    <p class="card__t">2 min · confirm the email</p>
+    <p class="card__t">2 min · confirm your email</p>
   </div>
   <div class="card card--pay">
     <p class="card__n">02</p>
-    <h3>One coding agent</h3>
-    <p><strong>Claude Pro</strong> or <strong>ChatGPT Plus</strong> — one, not both. They are equals here: every prompt in this workshop was written and run against both.</p>
+    <h3>Coding agent</h3>
+    <p><strong>Claude Pro or Max</strong> (for Claude Code) or <strong>ChatGPT Plus</strong> (for Codex). You need one. The prompts work with both.</p>
     <p><a class="btn" href="https://claude.ai/">Claude</a> <a class="btn btn--ghost" href="https://chatgpt.com/">ChatGPT</a></p>
-    <p class="card__t">the only thing on this page that costs money · about €20</p>
+    <p class="card__t">paid · about €20 per month</p>
   </div>
   <div class="card">
     <p class="card__n">03</p>
     <h3>Netlify</h3>
-    <p>Free, and this is where your site ends up. Choose <strong>Sign up with GitHub</strong> and there is nothing else to fill in.</p>
+    <p>Free. Publishes your site. Choose <strong>Sign up with GitHub</strong>.</p>
     <p><a class="btn" href="https://app.netlify.com/signup">Create an account</a></p>
-    <p class="card__t">2 min · no card</p>
+    <p class="card__t">2 min · no card required</p>
   </div>
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Free is enough. You save the design out of Figma as one file and hand that file to your agent. Nothing in the workshop needs a paid seat.</p>
+    <p>Free plan. You save the design from Figma as a file and give the file to the agent.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Create an account</a></p>
-    <p class="card__t">free tier is fine</p>
+    <p class="card__t">free plan</p>
   </div>
 </div>
 <hr>
-<h2 id="pick-your-computer">Pick your computer</h2>
+<h2 id="operating-system">Operating system</h2>
 
 <fieldset class="ospick" data-os-labels="{&quot;mac&quot;:&quot;macOS&quot;,&quot;windows&quot;:&quot;Windows&quot;,&quot;linux&quot;:&quot;Linux&quot;}"
-  data-os-guessed="We guessed %s from your browser. Not right? Pick another — everything below changes to match." data-os-set="Everything below is for %s.">
-  <legend>Which computer are you on?</legend>
+  data-os-guessed="Detected: %s. If this is wrong, choose another system." data-os-set="The instructions below are for %s.">
+  <legend>Operating system</legend>
   <div class="ospick__row">
     <input type="radio" name="os" id="os-mac" value="mac" checked>
     <label for="os-mac">macOS</label>
@@ -289,65 +289,64 @@ footer p{font-size:14px;color:var(--fg-3)}
     <input type="radio" name="os" id="os-linux" value="linux">
     <label for="os-linux">Linux</label>
   </div>
-  <p class="ospick__hint" data-os-hint>Everything below changes to match.</p>
+  <p class="ospick__hint" data-os-hint>The instructions below change to match.</p>
 </fieldset>
 <hr>
 <h2 id="open-a-terminal">Open a terminal</h2>
-<p>If you have never opened one, this is the part that stops people, and it stops them before they have started. It is two steps and it is not dangerous.</p>
-<p>A terminal is a window where you type the name of a program, press Enter, and it prints the answer back as text. <code>npm install</code> and a button labelled <strong>Install</strong> do the same work — one is addressed by name, the other by clicking.</p>
+<p>A terminal is a window for running programs by typing commands. Every command on this page has a <strong>Copy</strong> button: copy the command, paste it into the terminal, press Enter, and wait for the prompt to return before running the next one.</p>
 <div data-os="mac">
-  <h3>Opening a terminal on macOS</h3>
+  <h3>macOS</h3>
   <ol>
     <li>Press <kbd>Cmd</kbd> + <kbd>Space</kbd>.</li>
     <li>Type <code>Terminal</code>.</li>
     <li>Press <kbd>Enter</kbd>.</li>
   </ol>
-  <p>A window opens with a line of text and a blinking cursor. That is it. Paste into it with <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
+  <p>Paste with <kbd>Cmd</kbd> + <kbd>V</kbd>.</p>
 </div>
 
 <div data-os="windows">
-  <h3>Opening a terminal on Windows</h3>
+  <h3>Windows</h3>
   <ol>
     <li>Press the <kbd>Windows</kbd> key.</li>
     <li>Type <code>PowerShell</code>.</li>
-    <li>Click <strong>Windows PowerShell</strong> — <em>not</em> "Command Prompt", which looks similar and behaves differently.</li>
+    <li>Click <strong>Windows PowerShell</strong>. Do not use Command Prompt.</li>
   </ol>
-  <p>A blue window opens with a line of text and a blinking cursor. That is it. Paste into it with <kbd>Ctrl</kbd> + <kbd>V</kbd>, or by right-clicking.</p>
+  <p>Paste with <kbd>Ctrl</kbd> + <kbd>V</kbd> or a right-click.</p>
 </div>
 
 <div data-os="linux">
-  <h3>Opening a terminal on Linux</h3>
+  <h3>Linux</h3>
   <ol>
     <li>Press <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>.</li>
-    <li>If nothing happens, open your applications menu and search for <code>Terminal</code>.</li>
+    <li>If no window opens, search for <code>Terminal</code> in the applications menu.</li>
   </ol>
-  <p>Paste into it with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd> — the plain <kbd>Ctrl</kbd> + <kbd>V</kbd> means something else in a terminal.</p>
+  <p>Paste with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd>. In a terminal, <kbd>Ctrl</kbd> + <kbd>V</kbd> does not paste.</p>
 </div>
-<h3>Six things nobody tells you</h3>
+<h3>How the terminal behaves</h3>
 
 <div class="rules">
-  <div><b>The line with the cursor is the prompt.</b> It ends in <code>$</code>, <code>%</code> or <code>&gt;</code>, and it means the terminal is waiting for you.</div>
-  <div><b>Paste, then press <kbd>Enter</kbd>.</b> Nothing runs until you do.</div>
-  <div><b>Silence is normal.</b> A command can sit there for a minute printing nothing. It has not frozen — it is working. You will learn to wait.</div>
-  <div><b>It is finished when the prompt comes back.</b> That is the only signal there is.</div>
-  <div><b>What has scrolled past is a transcript.</b> You cannot click into an old line and fix it. Only the line you are typing now is live.</div>
-  <div><b>You cannot break your computer with anything on this page.</b> Every command here installs something, signs you in, or prints what it finds.</div>
+  <div><b>Prompt:</b> the line with the cursor, ending in <code>$</code>, <code>%</code> or <code>&gt;</code>. The terminal is waiting for a command.</div>
+  <div><b>Running a command:</b> paste it and press <kbd>Enter</kbd>.</div>
+  <div><b>No output:</b> some commands print nothing for a minute or longer. They are still running.</div>
+  <div><b>Finished:</b> a command has finished when the prompt appears again.</div>
+  <div><b>Earlier lines:</b> cannot be edited. Only the current line accepts input.</div>
+  <div><b>Commands on this page:</b> install tools, sign you in, create the repository or print a status.</div>
 </div>
 <hr>
 <h2 id="install-the-tools">Install the tools</h2>
-<p>Four things: <strong>Node</strong>, which runs the website on your machine; <strong>Git</strong> and the <strong>GitHub command line</strong>, which keep your project in a repository; <strong>one coding agent</strong>; and the <strong>Netlify command line</strong>, which publishes the site. Copy each command, paste it into the terminal, press Enter, and wait for the prompt to come back before the next one.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody><tr><td>Node</td><td>runs the website on your computer</td></tr><tr><td>Git and GitHub CLI (<code>gh</code>)</td><td>store the project in a GitHub repository</td></tr><tr><td>Claude Code or Codex</td><td>the coding agent</td></tr><tr><td>Netlify CLI</td><td>publishes the site</td></tr></tbody></table></div>
 
 <div data-os="mac">
-  <h3>Node, Git and the GitHub command line, on macOS</h3>
+  <h3>Node, Git and GitHub CLI on macOS</h3>
   <div class="cmd">
   <pre id="cmd-1"><code>brew install node gh</code></pre>
   <button class="copy copy--sm" data-for="cmd-1" aria-label="Copy the command: brew install node gh">Copy</button>
 </div>
-  <p>This needs Homebrew. No Homebrew? Paste the one command from <a href="https://brew.sh">brew.sh</a> first — it asks for your Mac password, and nothing appears as you type it, which is normal. Git comes with it. When everything has finished, close the terminal and open a new one.</p>
+  <p>Requires Homebrew. Without it, first run the install command from <a href="https://brew.sh">brew.sh</a>; it asks for your Mac password, and typing shows nothing. Homebrew installs Git. Afterwards, close the terminal and open a new one.</p>
 </div>
 
 <div data-os="windows">
-  <h3>Node, Git and the GitHub command line, on Windows</h3>
+  <h3>Node, Git and GitHub CLI on Windows</h3>
   <div class="cmd">
   <pre id="cmd-2"><code>winget install --id OpenJS.NodeJS.LTS</code></pre>
   <button class="copy copy--sm" data-for="cmd-2" aria-label="Copy the command: winget install --id OpenJS.NodeJS.LTS">Copy</button>
@@ -364,11 +363,11 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-5"><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
   <button class="copy copy--sm" data-for="cmd-5" aria-label="Copy the command: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Copy</button>
 </div>
-  <p>One at a time. The last one lets PowerShell start the tools you install next — without it, <code>npm</code> and your agent stop with <em>running scripts is disabled on this system</em>. If it asks, type <code>Y</code> and press Enter. Then close PowerShell and open a new one: it only notices new programs when it starts.</p>
+  <p>Run the commands one at a time. The last one allows PowerShell to run npm and the agent; without it they fail with <em>running scripts is disabled on this system</em>. If asked, type <code>Y</code> and press Enter. Afterwards, close PowerShell and open a new one.</p>
 </div>
 
 <div data-os="linux">
-  <h3>Node, Git and the GitHub command line, on Linux</h3>
+  <h3>Node, Git and GitHub CLI on Linux</h3>
   <div class="cmd">
   <pre id="cmd-6"><code>sudo apt install -y curl git gh</code></pre>
   <button class="copy copy--sm" data-for="cmd-6" aria-label="Copy the command: sudo apt install -y curl git gh">Copy</button>
@@ -381,11 +380,11 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-8"><code>nvm install --lts</code></pre>
   <button class="copy copy--sm" data-for="cmd-8" aria-label="Copy the command: nvm install --lts">Copy</button>
 </div>
-  <p>Close the terminal and open a new one before the third command. The first asks for your password; nothing appears as you type it, which is normal. Node comes through nvm because most distributions ship one older than the workshop needs, and because the installs below then need no <code>sudo</code>. Not on Ubuntu or Debian? Install <code>curl</code>, <code>git</code> and <code>gh</code> with your own package manager — <a href="https://github.com/cli/cli#installation">instructions for gh</a>.</p>
+  <p>The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 20.11, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).</p>
 </div>
 
-<h3>One coding agent — whichever you already pay for</h3>
-<p>You need <strong>one</strong> of these two, not both. If you have a Claude subscription take the first; if you have ChatGPT Plus take the second.</p>
+<h3>Coding agent (one of the two)</h3>
+<p>Install the agent that matches your subscription.</p>
 
 <div class="picktwo">
   <div class="picktwo__col">
@@ -404,31 +403,31 @@ footer p{font-size:14px;color:var(--fg-3)}
   </div>
 </div>
 
-<h3>The Netlify command line</h3>
-<p>This is what puts your site on the internet at the end of the workshop.</p>
+<h3>Netlify CLI</h3>
+<p>Publishes the site at the end of the workshop.</p>
 <div class="cmd">
   <pre id="cmd-11"><code>npm install -g netlify-cli</code></pre>
   <button class="copy copy--sm" data-for="cmd-11" aria-label="Copy the command: npm install -g netlify-cli">Copy</button>
 </div>
 
-<p class="cmd__note">If a command says <code>command not found</code> straight after you installed it, close the terminal and open a new one. That fixes it nearly every time.</p>
+<p class="cmd__note">If a command reports <code>command not found</code> right after installation, close the terminal and open a new one.</p>
 <hr>
 <h2 id="sign-in">Sign in</h2>
 
-<p>Each tool needs to know who you are, and they all do it the same way: the command opens your browser, you click to allow it, and you come back to the terminal. Then one more command shows it worked.</p>
+<p>Each sign-in command opens the browser. Approve access there, then return to the terminal. The status command confirms the result.</p>
 
 <h3>GitHub</h3>
 <div class="cmd">
   <pre id="cmd-12"><code>gh auth login</code></pre>
   <button class="copy copy--sm" data-for="cmd-12" aria-label="Copy the command: gh auth login">Copy</button>
 </div>
-<p>It asks a few questions; move with the arrow keys and press Enter. Choose <strong>GitHub.com</strong>, then <strong>HTTPS</strong>, then <strong>Yes</strong> to authenticating Git, then <strong>Login with a web browser</strong>. It shows a one-time code: press Enter, paste the code in the browser, and click <strong>Authorize</strong>.</p>
+<p>Answer with the arrow keys and <kbd>Enter</kbd>: <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (authenticate Git) → <strong>Login with a web browser</strong>. Copy the one-time code, press <kbd>Enter</kbd>, paste the code in the browser and click <strong>Authorize</strong>.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-13"><code>gh auth status</code></pre><span>says Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-13" aria-label="Copy the command: gh auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-13"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-13" aria-label="Copy the command: gh auth status">Copy</button></div>
 </div>
 
-<h3>Your agent</h3>
+<h3>Coding agent</h3>
 <div class="picktwo">
   <div class="picktwo__col">
     <p class="picktwo__t">Claude Pro or Max</p>
@@ -436,10 +435,10 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-14"><code>claude auth login</code></pre>
   <button class="copy copy--sm" data-for="cmd-14" aria-label="Copy the command: claude auth login">Copy</button>
 </div>
-<p>Your browser opens on claude.ai. Sign in and click <strong>Authorize</strong>. If the terminal asks for a code instead, copy it from the browser and paste it back.</p>
+<p>Sign in on claude.ai in the browser and click <strong>Authorize</strong>. If the terminal asks for a code, copy it from the browser and paste it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-15"><code>claude auth status</code></pre><span>shows &quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Copy the command: claude auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-15"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Copy the command: claude auth status">Copy</button></div>
 </div>
   </div>
   <div class="picktwo__col">
@@ -448,10 +447,10 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-16"><code>codex login</code></pre>
   <button class="copy copy--sm" data-for="cmd-16" aria-label="Copy the command: codex login">Copy</button>
 </div>
-<p>Your browser opens on ChatGPT. Sign in and allow it. The terminal says when it is done.</p>
+<p>Sign in to ChatGPT in the browser and allow access. The terminal confirms when sign-in is complete.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-17"><code>codex login status</code></pre><span>says Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Copy the command: codex login status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-17"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Copy the command: codex login status">Copy</button></div>
 </div>
   </div>
 </div>
@@ -461,15 +460,15 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-18"><code>netlify login</code></pre>
   <button class="copy copy--sm" data-for="cmd-18" aria-label="Copy the command: netlify login">Copy</button>
 </div>
-<p>Your browser opens a Netlify page. Click <strong>Authorize</strong>, then come back to the terminal.</p>
+<p>Click <strong>Authorize</strong> in the browser, then return to the terminal.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-19"><code>netlify status</code></pre><span>shows your email address</span><button class="copy copy--sm" data-for="cmd-19" aria-label="Copy the command: netlify status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-19"><code>netlify status</code></pre><span>your email address</span><button class="copy copy--sm" data-for="cmd-19" aria-label="Copy the command: netlify status">Copy</button></div>
 </div>
 <hr>
-<h2 id="create-your-repository">Create your repository</h2>
+<h2 id="create-the-repository">Create the repository</h2>
 
-<p>Your project needs a home on GitHub. One command creates the repository — private, so only you can see it — and puts an empty copy on your computer, in a folder called <code>turbine</code>.</p>
+<p>This command creates a private repository named <code>turbine</code> on your GitHub account and clones it into a <code>turbine</code> folder in the current directory.</p>
 <div class="cmd">
   <pre id="cmd-20"><code>gh repo create turbine --private --clone</code></pre>
   <button class="copy copy--sm" data-for="cmd-20" aria-label="Copy the command: gh repo create turbine --private --clone">Copy</button>
@@ -478,80 +477,76 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-21"><code>cd turbine</code></pre>
   <button class="copy copy--sm" data-for="cmd-21" aria-label="Copy the command: cd turbine">Copy</button>
 </div>
-<p>That folder is where the workshop starts. On the day you open a terminal, go into it with <code>cd turbine</code>, and start your agent there. Leave it empty until then.</p>
+<p>The workshop starts in this folder: <code>cd turbine</code>, then start the agent. Do not add files to it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-22"><code>git remote -v</code></pre><span>shows github.com/your-name/turbine</span><button class="copy copy--sm" data-for="cmd-22" aria-label="Copy the command: git remote -v">Copy</button></div>
+  <div class="check__row"><pre id="cmd-22"><code>git remote -v</code></pre><span>github.com/your-username/turbine</span><button class="copy copy--sm" data-for="cmd-22" aria-label="Copy the command: git remote -v">Copy</button></div>
 </div>
-<p class="cmd__note">Already have a repository called turbine? Pick another name, and use it wherever this page says turbine.</p>
+<p class="cmd__note">If a repository named turbine already exists on your account, choose another name and use it wherever this page says turbine.</p>
 <hr>
-<h2 id="let-your-agent-check-everything">Let your agent check everything</h2>
+<h2 id="check-the-setup">Check the setup</h2>
 
-<p>Last step, and you do not have to check anything yourself. Your agent looks at everything above and tells you, in plain words, what is still missing.</p>
+<p>The agent checks every item from the previous steps and reports what is missing. It does not change anything.</p>
 <ol class="steps">
-  <li>In a terminal, go into your project folder:<div class="cmd">
+  <li>Go to the project folder:<div class="cmd">
   <pre id="cmd-23"><code>cd turbine</code></pre>
   <button class="copy copy--sm" data-for="cmd-23" aria-label="Copy the command: cd turbine">Copy</button>
 </div></li>
-  <li>Start your agent — <code>claude</code> or <code>codex</code>. If it asks whether you trust this folder, say yes.</li>
-  <li>Copy the prompt below, paste it, and press Enter.</li>
+  <li>Start the agent: <code>claude</code> or <code>codex</code>. If it asks whether to trust the folder, answer yes.</li>
+  <li>Paste the prompt below and press <kbd>Enter</kbd>.</li>
 </ol>
 <div class="prompt"><div class="prompt__bar">
   <span class="prompt__label">Paste this to your agent</span>
   <button class="copy" type="button" data-for="ready-en" aria-label="Copy the command: Paste this to your agent">Copy</button></div>
-  <pre id="ready-en"><code>I am getting ready for a workshop and I have not used a terminal much. Check that this
-computer is set up for it. Do not install, sign in to or change anything yourself: only
-look, and run whatever commands you need in order to look.
+  <pre id="ready-en"><code>Check that this computer is ready for a workshop. Do not install, sign in to or change
+anything: only inspect, and run whatever commands you need to do that.
 
-Check each of these, and show me the result as a table — what you checked, what you found,
-and OK or NOT OK:
+Check each item and report the result as a table with three columns: what you checked,
+what you found, OK or NOT OK.
 
 1. Node is installed, version 20.11 or newer, and npm works.
-2. Git is installed, and knows a name and an email address to put on commits.
-3. The GitHub command line is installed and signed in.
-4. The Netlify command line is installed and signed in.
-5. You, the agent I am talking to, are installed and signed in. Say which agent you are.
-6. This folder is a git repository connected to a repository on GitHub, that repository
-   exists, and it belongs to the account the GitHub command line is signed in as.
-7. This folder is empty apart from git's own files. The workshop starts from nothing.
+2. Git is installed and has a user name and email configured.
+3. The GitHub CLI (gh) is installed and signed in.
+4. The Netlify CLI is installed and signed in.
+5. You, the agent running this check, are installed and signed in. State which agent you are.
+6. This folder is a git repository with a GitHub remote, and that repository exists on
+   GitHub under the account gh is signed in as.
+7. This folder contains nothing except git's own files.
 
-For every NOT OK, tell me in one or two sentences what to do, in plain words, with the exact
-command to type if there is one. Finish with one line on its own: READY, or NOT READY and
-how many things are left.</code></pre></div>
-<p>It asks before running each command. Say yes — it only looks. Fix whatever it marks NOT OK, then paste the same prompt again until it says <strong>READY</strong>. If your agent will not start at all, go back to <a href="#sign-in">Sign in</a>.</p>
+For every NOT OK item, give the fix in one or two plain sentences, with the exact command
+if there is one. End with one line: READY, or NOT READY and the number of items left.</code></pre></div>
+<p>The agent asks for permission before each command; allow it. Fix every NOT OK item and run the same prompt again until the result is <strong>READY</strong>. If the agent does not start, repeat <a href="#sign-in">Sign in</a>.</p>
 <hr>
-<h2 id="if-installing-is-not-an-option">If installing is not an option</h2>
+<h2 id="without-installing-github-codespaces">Without installing: GitHub Codespaces</h2>
 
-<p>Some work laptops will not let you install anything. You can do the whole workshop in the browser instead, in a <strong>GitHub Codespace</strong>: a computer in the cloud that already has Node, Git and the GitHub command line, and is already signed in to GitHub.</p>
+<p>If you cannot install software, use a <strong>GitHub Codespace</strong>: a cloud computer in the browser with Node, Git and GitHub CLI preinstalled and already signed in to GitHub.</p>
 <ol class="steps">
-  <li>On github.com, click <strong>+</strong> → <strong>New repository</strong>. Name it <code>turbine</code>, choose <strong>Private</strong>, tick <strong>Add a README file</strong> — a codespace cannot open on an empty repository — and click <strong>Create repository</strong>.</li>
-  <li>On the repository page: <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. It takes a minute or two. The panel along the bottom is a terminal, already in your repository folder.</li>
-  <li>Remove the README, so the folder starts empty:<div class="cmd">
+  <li>On github.com, click <strong>+</strong> → <strong>New repository</strong>. Name: <code>turbine</code>. Visibility: <strong>Private</strong>. Select <strong>Add a README file</strong>, because a Codespace cannot be created for an empty repository. Click <strong>Create repository</strong>.</li>
+  <li>On the repository page, click <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. The terminal is the panel at the bottom, already in the repository folder.</li>
+  <li>Delete the README so the folder is empty:<div class="cmd">
   <pre id="cmd-24"><code>rm README.md</code></pre>
   <button class="copy copy--sm" data-for="cmd-24" aria-label="Copy the command: rm README.md">Copy</button>
 </div></li>
-  <li>Install your agent and the Netlify command line — the commands from <a href="#install-the-tools">Install the tools</a>, from the agent onwards. Node, Git and GitHub are already there.</li>
-  <li>Sign in to your agent and to Netlify as in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening your browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. Codex needs the version of its login that works from another device:<div class="cmd">
+  <li>Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. Node, Git and GitHub CLI are already installed.</li>
+  <li>Sign in to the agent and to Netlify as described in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening the browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. For Codex, use the device sign-in:<div class="cmd">
   <pre id="cmd-25"><code>codex login --device-auth</code></pre>
   <button class="copy copy--sm" data-for="cmd-25" aria-label="Copy the command: codex login --device-auth">Copy</button>
-</div><p class="cmd__note">If Codex says device code login is not enabled, turn it on in ChatGPT → Settings → Security, then run it again.</p></li>
-  <li>Run <a href="#let-your-agent-check-everything">Let your agent check everything</a>, in the codespace terminal. You are already in the project folder, so skip <code>cd turbine</code>.</li>
+</div><p class="cmd__note">If Codex reports that device code login is not enabled, turn it on in ChatGPT → Settings → Security and run the command again.</p></li>
+  <li>Run <a href="#check-the-setup">Check the setup</a> in the Codespace terminal. Skip <code>cd turbine</code>: the terminal is already in the project folder.</li>
 </ol>
-<p>GitHub’s free plan includes 120 core-hours of Codespaces a month. The workshop uses about three. On the day, open the same codespace from <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
+<p>The GitHub free plan includes 120 core-hours of Codespaces per month; the workshop uses about 3. On the day, reopen the same Codespace from <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
 <hr>
-<h2 id="questions-people-ask">Questions people ask</h2>
-<div class="faq"><details><summary>I have never used a terminal.</summary><p>Good — a third of the room has not either. There is a section on it above, every command has a copy button, and the first thing your agent is asked to do in the workshop is explain each command as it goes.</p></details><details><summary>Do I need to know how to code?</summary><p>No. You will read what the agent made and say what is wrong with it in plain English. That is the job the session is about.</p></details><details><summary>I do not want to pay for an AI subscription.</summary><p>The free tiers of both products do not include the command-line tool, so a free account will not run the loop. The cheapest tier of either is enough, and you can cancel afterwards.</p></details><details><summary>Why do I need a GitHub repository?</summary><p>It is where your project lives. Your agent can save its work there as it goes, so nothing is lost if a laptop gives up, and you leave with the code as well as the address.</p></details><details><summary>My Figma is free.</summary><p>That is all you need. You save the file out of Figma — two clicks — and hand it to your agent. Nothing in the workshop needs a paid seat.</p></details><details><summary>The check says NOT OK and I do not understand why.</summary><p>Ask it. Type &quot;explain point 3 like I have never done this&quot; — it knows what it found. If it is still stuck, bring it to the room fifteen minutes early.</p></details><details><summary>Will I need the internet during the workshop?</summary><p>Yes, and the room has it. Your agent installs packages, decodes the Figma file and publishes your site, and all three go over the network. If Codex asks before going online, say yes.</p></details><details><summary>My work laptop will not let me install things.</summary><p>Use a Codespace, as described above. You install nothing on the laptop itself.</p></details><details><summary>Will this work on Windows?</summary><p>Yes. Use PowerShell rather than the old Command Prompt. Everything in the session is the same.</p></details><details><summary>What do I take home?</summary><p>A live address, your repository with the code in it, and eight prompts that work on Monday.</p></details></div>
+<h2 id="faq">FAQ</h2>
+<div class="faq"><details><summary>Do I need programming experience?</summary><p>No. You describe problems in plain language; the agent writes the code.</p></details><details><summary>Can I use a free AI plan?</summary><p>No. The free plans of Claude and ChatGPT do not include Claude Code or Codex. The cheapest paid plan of either is enough.</p></details><details><summary>Why do I need a GitHub repository?</summary><p>The project is stored in it, and you keep the code after the workshop.</p></details><details><summary>Do I need a paid Figma plan?</summary><p>No. The design file can be saved from the free plan.</p></details><details><summary>The check reports NOT OK and I do not know why.</summary><p>Ask the agent to explain that item step by step. If the problem remains, come 15 minutes before the workshop starts.</p></details><details><summary>Is internet access required during the workshop?</summary><p>Yes. The room has Wi-Fi. The agent installs packages, decodes the Figma file and publishes the site.</p></details><details><summary>I cannot install software on my laptop.</summary><p>Use a Codespace, as described in the section on working without installing.</p></details><details><summary>Does it work on Windows?</summary><p>Yes. Use PowerShell, not Command Prompt.</p></details><details><summary>What do I keep after the workshop?</summary><p>The published site, the repository with its code, and the prompts.</p></details></div>
 <hr>
 <h2 id="on-the-day">On the day</h2>
-<p><strong>Bring:</strong> your laptop, your charger, and headphones if you like working with them.</p>
-<p><strong>Arrive:</strong> fifteen minutes early if your agent did not say READY.</p>
-<p><strong>You will leave with:</strong> a live address, your repository with the code in it, a page of prompts you can reuse on Monday, and a fairly specific opinion about when to trust a language model.</p>
+<ul><li>Bring your laptop and charger.</li><li>If the setup check did not report READY, come 15 minutes before the start.</li></ul>
 </div></main>
 <footer><div class="wrap">
   <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 September, 14:55, ROOM-PM · Szymon Paluch</p>
-  <p>Everything here stays online after the conference. The repository, if you want it:
+  <p>Workshop repository:
   <a href="https://github.com/hculap/waysconf-2026-agentic-loops">github.com/hculap/waysconf-2026-agentic-loops</a>.</p>
-  <p>TURBINE is a fictional festival created as teaching material. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental.</p>
+  <p>TURBINE is a fictional festival created as teaching material. Artist names, imagery and copy are invented.</p>
 </div></footer>
 <script src="../app.js" defer></script>
 </body>
