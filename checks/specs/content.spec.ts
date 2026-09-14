@@ -90,7 +90,7 @@ const TIERS = [
     name: 'Full Pass',
     price: '€110',
     inclusions: [
-      'All three nights, 12–14 June',
+      'All three nights, 11–13 June',
       'All three stages',
       'Re-entry on every night',
       '€25 less than three single nights',
@@ -118,7 +118,7 @@ const SOLD_OUT_BUTTON = 'Workshop sold out'
 
 /**
  * AC-42. Each fact is compared against the rendered text with dashes intact — this is the
- * criterion that owns "12–14 June 2027" and the en dash in it, so it is the one place
+ * criterion that owns "11–13 June 2027" and the en dash in it, so it is the one place
  * where a hyphen must be reported rather than folded away.
  *
  * `accept` exists for exactly one fact. CANON §1 states the capacity as "4 000 per night";
@@ -140,7 +140,7 @@ const EVENT_FACTS: EventFact[] = [
   { field: 'edition', expected: 'Fourth edition' },
   {
     field: 'dates',
-    expected: '12–14 June 2027',
+    expected: '11–13 June 2027',
     nearMiss: /12\s*[-–—−~/]{1,2}\s*14\s+June\s+2027/,
   },
   { field: 'venue', expected: 'The Powerhouse, Hall E' },
@@ -204,7 +204,7 @@ const BANNED_WORDS = /\b(?:immersive|journeys?|unleash(?:es|ed|ing)?|elevat(?:e|
  *    source wraps at 100 columns and the DOM wraps wherever the markup happens to break;
  *    neither is a fact about the copy.
  *  - **Dashes, only when `foldDashes` is set.** AC-42 compares with dashes intact because
- *    the en dash in "12–14 June 2027" is a criterion in its own right. Everywhere else a
+ *    the en dash in "11–13 June 2027" is a criterion in its own right. Everywhere else a
  *    hyphen-for-en-dash would be reported as a whole missing sentence, sending the loop
  *    off to rewrite a paragraph when one character is wrong. AC-38 notes the difference
  *    instead, so it is visible without being fatal.
@@ -665,7 +665,7 @@ function checkCopyStrings(ctx: Context): void {
 
   gate.note(`AC-38: ${checked} distinct copy strings extracted from the fenced blocks of brief/CONTENT.md.`)
   if (dashOnly.length) {
-    gate.note(`AC-38: string(s) ${dashOnly.join(', ')} matched only after folding dash variants — brief/CONTENT.md writes an en dash (U+2013) there and the page does not. Not a failure here; AC-42 enforces the dash in "12–14 June 2027".`)
+    gate.note(`AC-38: string(s) ${dashOnly.join(', ')} matched only after folding dash variants — brief/CONTENT.md writes an en dash (U+2013) there and the page does not. Not a failure here; AC-42 enforces the dash in "11–13 June 2027".`)
   }
 }
 
@@ -1028,7 +1028,7 @@ function checkEventFacts(ctx: Context): void {
       where: 'rendered text',
       expected: fact.expected,
       actual: observed,
-      hint: fact.field === 'dates' ? 'The separator is an en dash (U+2013), not a hyphen: 12–14 June 2027.' : undefined,
+      hint: fact.field === 'dates' ? 'The separator is an en dash (U+2013), not a hyphen: 11–13 June 2027.' : undefined,
     })
   }
 }

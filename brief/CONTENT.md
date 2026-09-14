@@ -42,13 +42,13 @@ The building is talked about as much as the music. The words *immersive*, *journ
 **Page title** (42 characters):
 
 ```
-TURBINE — 12–14 June 2027 — Hall E, Kraków
+TURBINE — 11–13 June 2027 — Hall E, Kraków
 ```
 
 **Meta description** (134 characters):
 
 ```
-Three nights of ambient, techno and modular sound in a power station that stopped making electricity in 1998. Kraków, 12–14 June 2027.
+Three nights of ambient, techno and modular sound in a power station that stopped making electricity in 1998. Kraków, 11–13 June 2027.
 ```
 
 **Open Graph title:**
@@ -60,7 +60,7 @@ TURBINE — Three nights inside the machine
 **Open Graph description:**
 
 ```
-Ambient, techno and modular sound in a hall built for power. Twelve artists, three stages, three nights. Kraków, 12–14 June 2027.
+Ambient, techno and modular sound in a hall built for power. Twelve artists, three stages, three nights. Kraków, 11–13 June 2027.
 ```
 
 Remaining head values:
@@ -151,7 +151,7 @@ Ambient, techno and modular sound in a hall built for power.
 **Dates line:**
 
 ```
-Friday 12 – Sunday 14 June 2027
+Friday 11 – Sunday 13 June 2027
 ```
 
 **Venue line:**
@@ -244,18 +244,18 @@ name is set with `aria-label`, because `Fri` on its own says too little.
 | Visible | Accessible name | Shows |
 |---|---|---|
 | `All` | `All twelve artists` | 12 cards |
-| `Fri` | `Friday 12 June` | 4 cards |
-| `Sat` | `Saturday 13 June` | 4 cards |
-| `Sun` | `Sunday 14 June` | 4 cards |
+| `Fri` | `Friday 11 June` | 4 cards |
+| `Sat` | `Saturday 12 June` | 4 cards |
+| `Sun` | `Sunday 13 June` | 4 cards |
 
 **Status line** under the tabs, `aria-live="polite"`, rewritten on every filter change:
 
 | Tab | String |
 |---|---|
 | All | `Showing all twelve artists.` |
-| Fri | `Showing four artists playing Friday 12 June.` |
-| Sat | `Showing four artists playing Saturday 13 June.` |
-| Sun | `Showing four artists playing Sunday 14 June.` |
+| Fri | `Showing four artists playing Friday 11 June.` |
+| Sat | `Showing four artists playing Saturday 12 June.` |
+| Sun | `Showing four artists playing Sunday 13 June.` |
 
 **Cards.** Twelve, in the CANON §2 order below. Each card carries a portrait, the artist name
 (`h3`), a billing badge, a day-and-stage line formatted `<Day> · <Stage>`, a genre tag and one
@@ -441,12 +441,12 @@ mobile. Table columns are always `Time`, `Turbine Hall`, `Boiler Room`, `Cooling
 order. A cell with no set contains the character `—` marked `aria-hidden="true"` alongside the
 visually hidden string `No set`.
 
-### Friday 12 June
+### Friday 11 June
 
 `h3` label:
 
 ```
-Friday 12 June
+Friday 11 June
 ```
 
 Doors line:
@@ -458,7 +458,7 @@ Doors 19:00 · Last set ends 04:00 · Hall clears 04:30
 Table caption (visually hidden is acceptable):
 
 ```
-Friday 12 June, set times by stage
+Friday 11 June, set times by stage
 ```
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
@@ -477,12 +477,12 @@ Stacked mobile order, one block per set, each reading time, stage, artist:
 01:00 – 04:00 · Turbine Hall · KASIMIR VOLT
 ```
 
-### Saturday 13 June
+### Saturday 12 June
 
 `h3` label:
 
 ```
-Saturday 13 June
+Saturday 12 June
 ```
 
 Doors line:
@@ -501,7 +501,7 @@ Workshop entry from 13:30 at the gate. The hall opens to everyone at 19:00.
 Table caption:
 
 ```
-Saturday 13 June, set times by stage
+Saturday 12 June, set times by stage
 ```
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
@@ -520,12 +520,12 @@ Stacked mobile order:
 01:15 – 04:00 · Turbine Hall · Lena Orbis
 ```
 
-### Sunday 14 June
+### Sunday 13 June
 
 `h3` label:
 
 ```
-Sunday 14 June
+Sunday 13 June
 ```
 
 Doors line:
@@ -537,7 +537,7 @@ Doors 17:30 · Last set ends 02:00 · Hall clears 02:30
 Table caption:
 
 ```
-Sunday 14 June, set times by stage
+Sunday 13 June, set times by stage
 ```
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
@@ -682,7 +682,7 @@ image, and the card's accessible name begins with the badge so the emphasis is n
 Inclusion list:
 
 ```
-All three nights, 12–14 June
+All three nights, 11–13 June
 All three stages
 Re-entry on every night
 €25 less than three single nights
@@ -1060,7 +1060,7 @@ Three lines, in this order:
 ```
 
 ```
-Fourth edition · 12–14 June 2027 · 18+
+Fourth edition · 11–13 June 2027 · 18+
 ```
 
 Fiction disclaimer, verbatim from CANON §1 — do not rewrite, shorten or move it above the legal
@@ -1267,9 +1267,9 @@ above.
     h2  Lineup
         h3  one per artist, twelve, in the §6 order
     h2  Programme
-        h3  Friday 12 June
-        h3  Saturday 13 June
-        h3  Sunday 14 June
+        h3  Friday 11 June
+        h3  Saturday 12 June
+        h3  Sunday 13 June
     h2  The Powerhouse, Hall E
         h3  Getting here
     h2  Tickets

@@ -59,7 +59,7 @@ align left, justify bottom.
 |---|---|---|
 | `cover/wordmark` | `Display/Wordmark-Hero` at 96, fill `color/text/primary` | `TURBINE` |
 | `cover/subtitle` | `Body/Lead`, fill `color/accent/sodium` | `Landing page — design file` |
-| `cover/meta` | `Mono/Time`, fill `color/text/secondary` | `12–14 June 2027 · The Powerhouse, Hall E · Kraków` |
+| `cover/meta` | `Mono/Time`, fill `color/text/secondary` | `11–13 June 2027 · The Powerhouse, Hall E · Kraków` |
 | `cover/provenance` | `Legal/Fine`, fill `color/text/muted` | `Fictional festival. Teaching material for WaysConf 2026. Source of truth: docs/CANON.md` |
 
 Set this frame as the file thumbnail.
@@ -824,7 +824,7 @@ number and passes the gate.
 | `hero/wordmark` | The `h1`, on two lines: `TURBINE`, then `hero/tagline` nested inside it | `Display/Wordmark-Hero` at 96, `color/text/primary` |
 | `hero/tagline` | `Three nights inside the machine` | A child of `hero/wordmark`, not a sibling. `Body/Lead`, `color/text/primary` |
 | `hero/secondary` | `Ambient, techno and modular sound in a hall built for power.` | `Body/Lead`, `color/text/secondary` |
-| `hero/dates` | `Friday 12 – Sunday 14 June 2027` | `Body/Base`, `color/text/secondary` |
+| `hero/dates` | `Friday 11 – Sunday 13 June 2027` | `Body/Base`, `color/text/secondary` |
 | `hero/venue` | `The Powerhouse, Hall E · Kraków` | `Body/Base`, `color/text/secondary` |
 | `hero/ctas` | Horizontal auto-layout, gap `space/4` (16) | `Button` primary md `Get tickets` to `#tickets`; `Button` secondary md `See the lineup` to `#lineup` |
 | `hero/scroll-cue` | Visible text `Scroll` beside a 24×24 chevron, absolute, bottom 32, centre | `Body/Small`, `color/text/secondary`. A link to `#lineup`; the chevron is decorative. Motion stops under `prefers-reduced-motion`; annotate it. |
@@ -879,7 +879,7 @@ Three `programme/day` frames — vertical auto-layout, gap `space/4` (16), fill 
 
 | Part | Spec |
 |---|---|
-| `day/heading` | `Display/Subsection`, `color/text/primary`. `Friday 12 June`, `Saturday 13 June`, `Sunday 14 June`. |
+| `day/heading` | `Display/Subsection`, `color/text/primary`. `Friday 11 June`, `Saturday 12 June`, `Sunday 13 June`. |
 | `day/doors` | `Mono/Time`, `color/text/secondary`. One per day, from `brief/CONTENT.md` §7. Friday and Saturday read `Doors 19:00 · Last set ends 04:00 · Hall clears 04:30`; Sunday is a different day and reads `Doors 17:30 · Last set ends 02:00 · Hall clears 02:30`. |
 | `day/daytime` | Saturday only, above the table. `Body/Small`, `color/text/secondary`. The 14:00 – 17:00 modular synthesis workshop line in `brief/CONTENT.md` §7. |
 | `day/caption` | The table caption for that day from `brief/CONTENT.md` §7. Visually hidden is acceptable, so in the composed frames it sits at 0% opacity and its visible state lives on `Design system`. |
@@ -894,7 +894,7 @@ rule puts two sets in one slot on one stage. CONTENT.md's lineup intro promises 
 hear runs against anything else you want to hear, and a timetable with a clash printed under that sentence
 is exactly the failure this workshop exists to demonstrate.
 
-**Friday 12 June**
+**Friday 11 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|
@@ -903,7 +903,7 @@ is exactly the failure this workshop exists to demonstrate.
 | 23:00 – 00:45 | — | Auric Drift | — |
 | 01:00 – 04:00 | KASIMIR VOLT | — | — |
 
-**Saturday 13 June**
+**Saturday 12 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|
@@ -912,7 +912,7 @@ is exactly the failure this workshop exists to demonstrate.
 | 23:15 – 01:00 | — | Mara Teschke | — |
 | 01:15 – 04:00 | Lena Orbis | — | — |
 
-**Sunday 14 June**
+**Sunday 13 June**
 
 | Time | Turbine Hall | Boiler Room | Cooling Tower |
 |---|---|---|---|

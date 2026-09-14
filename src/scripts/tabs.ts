@@ -21,9 +21,9 @@
  *       <button data-tab data-tab-value="all" data-tab-status="Showing all twelve artists."
  *               type="button" role="tab" id="lineup-tab-all"
  *               aria-controls="lineup-panel" aria-selected="true" aria-label="All twelve artists">All</button>
- *       <button data-tab data-tab-value="fri" data-tab-status="Showing four artists playing Friday 12 June."
+ *       <button data-tab data-tab-value="fri" data-tab-status="Showing four artists playing Friday 11 June."
  *               type="button" role="tab" id="lineup-tab-fri"
- *               aria-controls="lineup-panel" aria-selected="false" aria-label="Friday 12 June">Fri</button>
+ *               aria-controls="lineup-panel" aria-selected="false" aria-label="Friday 11 June">Fri</button>
  *       ...
  *     </div>
  *     <p data-tabs-status aria-live="polite">Showing all twelve artists.</p>

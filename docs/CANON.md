@@ -12,7 +12,7 @@
 | Tagline | *Three nights inside the machine* |
 | Secondary line | *Ambient, techno and modular sound in a hall built for power* |
 | Edition | Fourth edition |
-| Dates | **12–14 June 2027** (Fri–Sun) |
+| Dates | **11–13 June 2027** (Fri–Sun) |
 | Venue | The Powerhouse, Hall E — a decommissioned 1928 coal power station |
 | City | Kraków, Poland |
 | Capacity | 4 000 per night |

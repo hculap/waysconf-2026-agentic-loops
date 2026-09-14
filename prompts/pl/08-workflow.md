@@ -53,6 +53,11 @@ W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, z
 przez „Save local copy". To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
+Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
+specyfikacji, obrazków referencyjnych ani niczego innego o tym projekcie: nic więcej nie ma,
+a cokolwiek znajdziesz, nie jest designem. Jeśli plik wymienia coś, czego w nim nie ma,
+wpisz to w punkt 6, zamiast tego szukać.
+
 Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
 
 - Plik .fig to zip. Design jest w środku, w canvas.fig. thumbnail.png to tylko mały

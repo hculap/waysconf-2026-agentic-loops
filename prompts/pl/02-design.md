@@ -36,6 +36,11 @@ W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, z
 przez „Save local copy". To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
+Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
+specyfikacji, obrazków referencyjnych ani niczego innego o tym projekcie: nic więcej nie ma,
+a cokolwiek znajdziesz, nie jest designem. Jeśli plik wymienia coś, czego w nim nie ma,
+wpisz to w punkt 6, zamiast tego szukać.
+
 Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
 
 - Plik .fig to zip. Design jest w środku, w canvas.fig. thumbnail.png to tylko mały
@@ -96,6 +101,7 @@ musiał zacząć nową sesję, to jest wszystko, co nowa sesja wie.
 | Zaczyna budować | `Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.` |
 | W menu nie ma „Save local copy" | Jesteś w pliku, który możesz tylko oglądać. Najpierw zduplikuj go do swoich draftów i zapisz ze swojej kopii. |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
+| Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
 | „Nie mogę otworzyć pliku binarnego" | `To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |
 | Opisuje małą, rozmytą stronę | Przeczytał `thumbnail.png`. `To jest podgląd. Pracuj na canvas.fig.` |
 | `zstd` nieobsługiwany albo dekompresja się sypie | Twój Node jest starszy niż 22.15. `Zainstaluj paczkę, która czyta zstd, i działaj dalej.` |

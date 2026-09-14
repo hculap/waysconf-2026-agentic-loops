@@ -88,7 +88,7 @@ About three thousand layers across six pages, in the order `design/FIGMA-SPEC.md
 | `Desktop 1440` | `TURBINE / Desktop 1440` — the ten exported section frames, composed |
 | `Tablet 768` | The same sections at 768, with the §6 deltas applied |
 | `Mobile 390` | The same sections at 390, with the §7 deltas applied |
-| `Exports` | The thirty-three-file export manifest; the sixteen images with their alt text, each set to export at its original width under its own file name; and `exports/content`, every string the frames do not show |
+| `Exports` | The sixteen images with their alt text, and `exports/content`, every string the frames do not show |
 
 Underneath that:
 
@@ -116,8 +116,8 @@ Underneath that:
   the earlier numbers.
 - **`exports/content`**: the document head, the seventeen accessible names and hidden labels, the
   lineup tab status lines, the newsletter messages, the programme as it reads at 390, and all eight
-  FAQ answers. None of them is visible in a composed frame, so an SVG export of the sections alone
-  would lose them — export this frame too.
+  FAQ answers. None of them is visible in a composed frame, so without this sheet the file would not
+  hold the whole page.
 - **Nothing in the file points outside it.** The file goes to people who have none of this
   repository, so no description, annotation or note says "CANON §6", "See CONTRAST.md" or
   `design/assets/…` — each says the rule itself. `node scripts/build-figma-plugin.mjs` fails if
@@ -127,11 +127,13 @@ Underneath that:
   `design/assets/` by `node scripts/build-figma-plugin.mjs` and injected into `code.js` as base64,
   which is why that file is about 1.7 MB. The hero, the venue and all twelve artist portraits are
   image fills, so the file — and anything exported from it — carries the photographs, not grey
-  boxes. On the `Exports` page, select the sixteen images and press Export to get the files back
-  by name. Figma re-encodes them on export: the dimensions match `design/assets/`, the file bytes
-  and JPEG compression will not.
-- **Export settings already applied** to all thirty-three source layers: PNG, 1×, sRGB, contents-only
-  off. You do not pick layers by hand.
+  boxes.
+- **No export settings and no export manifest.** The file is handed to an agent as the whole design.
+  An earlier build listed thirty-three reference PNGs on the `Exports` page and set export settings
+  on their source layers; the file contains none of those PNGs, so an agent reading it reported
+  thirty-three missing files and went looking for them on the disk. The generator now fails if any
+  string in the file names an image the file does not carry. Visual baselines come from
+  `npm run baseline`, not from Figma.
 - **Dev Mode annotations** on the five interactive areas CANON §9 makes non-negotiable demands about
   — nav, lineup tabs, programme tables, FAQ trigger, newsletter form — plus alt text on every image
   frame, because a picture of an accordion does not say `aria-expanded`.
@@ -165,9 +167,7 @@ fails on a `.fig` that carries any deleted history.
    then copy a node link per section (right-click the section frame → Copy link to selection). The
    loop is given a node link per section, not a link to the whole page — a whole-page selection
    returns thousands of nodes and the model summarises instead of reading.
-4. **Export**, if you are regenerating the visual baselines. Every source layer already carries its
-   settings, so one Export action produces the lot. See the note on filenames below.
-5. `Ready for dev` is set on the three viewport frames and on nothing else.
+4. `Ready for dev` is set on the three viewport frames and on nothing else.
 
 ---
 
@@ -185,16 +185,6 @@ The filenames are resolved by role rather than by literal string: the hero is wh
 artist's slug. The asset pack has already been re-cut once during this project, and a plugin that
 hard-codes `hero-hall-e.webp` quietly loses its alt text the day somebody renames it to
 `hero-hall.jpg`. If §13 renames a file again, re-run the generator and the plugin follows.
-
-**Three of the thirty-three exports need renaming.** Figma builds an export filename from the layer
-name plus the suffix. The thirty section exports come out right, because `section-hero` plus `-1440`
-is `section-hero-1440.png`, which is the name `checks/specs/visual.spec.ts` looks for. The three
-full-page exports come from frames named `TURBINE / Desktop 1440`, and a slash in a Figma layer name
-creates a folder, so they land as `Desktop 1440-1440.png` inside a `TURBINE` folder and have to be
-renamed. Rename them to `full-page-1440.png` and its two siblings: the visual gate accepts both that
-spelling and the bare `1440.png` that `npm run baseline` writes, and prints every path it tried when
-it finds neither. The manifest on the `Exports` page lists all thirty-three source layers against
-their target filenames so nothing has to be worked out twice.
 
 ---
 

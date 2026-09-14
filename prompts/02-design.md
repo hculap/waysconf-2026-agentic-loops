@@ -37,6 +37,11 @@ Inside this project there is a folder called design with a .fig file in it. That
 Figma file itself, saved with "Save local copy". It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
+Work from that one file and nothing else. Do not search this computer for the design, a
+specification, reference images or anything else about this project: there is nothing else,
+and whatever you find is not the design. If the file names something it does not contain,
+put it under point 6 instead of going to look for it.
+
 There is no tool that opens it, so decode it. What is known about the format:
 
 - A .fig is a zip. The design is in canvas.fig inside it. thumbnail.png is only a small
@@ -97,6 +102,7 @@ start a fresh session, it is what the new one knows.
 | It starts building | `Stop. I asked what you found, not for code. Undo anything you wrote.` |
 | There is no "Save local copy" in the menu | You are in a file you can only view. Duplicate it to your drafts first and save from your copy. |
 | It asks to read a file outside the folder | The `.fig` is beside the project, not in it. Move it into `design` inside the project and say `It is in design now.` |
+| It searches your disk, or reads another project | `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
 | "I cannot open binary files" | `It is a zip. Unzip it and decode canvas.fig as described in my last message.` |
 | It describes a small, blurry page | It read `thumbnail.png`. `That is the preview picture. Work from canvas.fig.` |
 | `zstd` is not supported, or decompression fails | Your Node is older than 22.15. `Install a package that reads zstd and carry on.` |

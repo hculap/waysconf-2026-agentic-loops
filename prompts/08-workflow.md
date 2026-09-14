@@ -53,6 +53,11 @@ Inside this project there is a folder called design with a .fig file in it. That
 Figma file itself, saved with "Save local copy". It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
+Work from that one file and nothing else. Do not search this computer for the design, a
+specification, reference images or anything else about this project: there is nothing else,
+and whatever you find is not the design. If the file names something it does not contain,
+put it under point 6 instead of going to look for it.
+
 There is no tool that opens it, so decode it. What is known about the format:
 
 - A .fig is a zip. The design is in canvas.fig inside it. thumbnail.png is only a small

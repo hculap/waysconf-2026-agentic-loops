@@ -404,7 +404,6 @@ const FIGMA_SPEC = {
   ],
 
   /* §8.1 — the slug is the Figma layer name, the section id and the export filename. */
-  exportSections: ['nav', 'hero', 'ticker', 'lineup', 'programme', 'venue', 'tickets', 'faq', 'newsletter', 'footer'],
 
   /* §5.4 to §5.8 — the section eyebrows.
      These are the one set of visible strings on the composed page that brief/CONTENT.md
@@ -428,7 +427,7 @@ const FIGMA_SPEC = {
     padding: 128,
     gap: 32,
     subtitle: 'Landing page — design file',
-    meta: '12–14 June 2027 · The Powerhouse, Hall E · Kraków',
+    meta: '11–13 June 2027 · The Powerhouse, Hall E · Kraków',
     provenance: 'Fictional festival. Teaching material for WaysConf 2026.',
   },
 
@@ -481,7 +480,7 @@ function inFile(text) {
 }
 
 const OUTSIDE_REFERENCE =
-  /§|\b[\w-]+\.md\b|\bCANON\b|FIGMA-SPEC|\bCONTRAST\b|\b(brief|docs|design|checks|src|prompts|scripts|guideline|figma-plugin)\/|reference site/
+  /§|\b[\w-]+\.md\b|\bCANON\b|FIGMA-SPEC|\bCONTRAST\b|\b(brief|docs|design|checks|src|prompts|scripts|guideline|figma-plugin)\/|reference site|(^|[\s'"`(])\/(images|fonts|_astro)\/|\bmanifest\b/
 
 /** Every string in the bundle that can end up in the file, with where it sits. */
 function outsideReferences(value, path = '', out = []) {
@@ -880,7 +879,6 @@ function buildContent(md) {
        the design does not place; they are listed, not positioned. */
     other: altKeys.filter((k) => !claimed.has(k)).map((k) => ({ file: k, alt: alt[k] })),
     all: alt,
-    manifest: tableWithHeader(imageBody, 'Path').rows.map((r) => ({ path: r[0].replace(/design\/assets\//g, ''), where: r[1], size: r[2] })),
     /* §13 is explicit that the venue map is a bordered placeholder box and not a
        file. Kept as a field so the plugin does not have to infer its absence. */
     map: altKeys.some((k) => /map/i.test(k)) ? roleOf(/map/i, 'map') : null,
@@ -919,26 +917,7 @@ function slugify(name) {
 }
 
 /* ==========================================================================
-   6. Export manifest — FIGMA-SPEC §8.2, thirty-three files
-   ========================================================================== */
-
-function buildExports() {
-  const widths = FIGMA_SPEC.breakpoints.map((b) => b.width).sort((a, b) => a - b)
-  const rows = []
-  for (const slug of FIGMA_SPEC.exportSections) {
-    for (const width of widths) {
-      rows.push({ layer: `section-${slug}`, suffix: `-${width}`, file: `section-${slug}-${width}.png` })
-    }
-  }
-  for (const bp of [...FIGMA_SPEC.breakpoints].sort((a, b) => a.width - b.width)) {
-    rows.push({ layer: bp.frame, suffix: `-${bp.width}`, file: `full-page-${bp.width}.png` })
-  }
-  expect(rows.length === 33, `FIGMA-SPEC §8.2 expects 33 export files, built ${rows.length}`)
-  return { sections: FIGMA_SPEC.exportSections, widths, rows }
-}
-
-/* ==========================================================================
-   7. Emit
+   6. Emit
    ========================================================================== */
 
 const tokensRaw = JSON.parse(await readFile(TOKENS_IN, 'utf8'))
@@ -968,13 +947,20 @@ const data = {
   skipLink: FIGMA_SPEC.skipLink,
   breakpoints: FIGMA_SPEC.breakpoints,
   annotations: FIGMA_SPEC.annotations,
-  exports: buildExports(),
   content,
 }
 
 /* meta names this generator's inputs for whoever reads data.generated.js; nothing in it is
    written into Figma. Everything else can be. */
 const leaks = outsideReferences({ ...data, meta: undefined })
+/* A file name in the bundle is a promise that the .fig contains that file. The images do — they
+   are injected below. Anything else, like the thirty-three reference PNGs an export manifest
+   once listed, is a file an agent reading the design will go looking for. */
+const carried = new Set(Object.keys(content.images.all))
+const named = JSON.stringify({ ...data, meta: undefined }).match(/[\w.-]+\.(?:png|jpe?g|webp|svg|avif)\b/gi) ?? []
+for (const file of new Set(named)) {
+  if (!carried.has(file)) leaks.push(`names ${file}, which the file does not contain`)
+}
 expect(
   leaks.length === 0,
   `${leaks.length} string(s) would point outside the Figma file:\n  ${leaks.join('\n  ')}`,
@@ -1041,7 +1027,6 @@ const counts = {
   textStyles: data.textStyles.length,
   artists: content.lineup.artists.length,
   faq: content.faq.items.length,
-  exports: data.exports.rows.length,
   bytes: bundle.length,
   images: Object.keys(images).length,
   imageBytes: imagesBody.length,
@@ -1053,8 +1038,7 @@ console.log(
     `${counts.responsive} responsive variables`
 )
 console.log(
-  `  ${counts.textStyles} text styles, ${counts.artists} artists, ${counts.faq} questions, ` +
-    `${counts.exports} export targets, ${counts.bytes} bytes`
+  `  ${counts.textStyles} text styles, ${counts.artists} artists, ${counts.faq} questions, ${counts.bytes} bytes`
 )
 console.log(`  ${counts.images} images from design/assets, ${counts.imageBytes} bytes of base64 (code.js only)`)
 console.log(injected ? `  injected into ${rel(CODE_OUT)}` : `  ${rel(CODE_OUT)} not present yet — nothing injected`)

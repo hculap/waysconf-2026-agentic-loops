@@ -17,7 +17,7 @@ Any term here that is new to you is defined in plain language in `docs/GLOSSARY.
 
 TURBINE is an electronic music festival in Kraków: three nights of ambient, techno and modular sound in
 Hall E of The Powerhouse, a coal power station that stopped making electricity in 1998. The fourth edition
-runs 12–14 June 2027, 4 000 people a night across three stages, twelve artists. The design is finished and
+runs 11–13 June 2027, 4 000 people a night across three stages, twelve artists. The design is finished and
 the lineup is locked. We are asking you to build the landing page at `turbine.fm`: one static page, eleven
 sections, dark theme only, WCAG 2.2 AA, deployed to Netlify. Everything you need is in this repository.
 Build what is specified; do not decide what it says.

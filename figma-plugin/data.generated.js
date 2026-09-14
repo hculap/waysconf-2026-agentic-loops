@@ -1060,7 +1060,7 @@ const TURBINE_DATA = {
     "padding": 128,
     "gap": 32,
     "subtitle": "Landing page — design file",
-    "meta": "12–14 June 2027 · The Powerhouse, Hall E · Kraków",
+    "meta": "11–13 June 2027 · The Powerhouse, Hall E · Kraków",
     "provenance": "Fictional festival. Teaching material for WaysConf 2026."
   },
   "skipLink": {
@@ -1357,198 +1357,12 @@ const TURBINE_DATA = {
       "text": "Visible label above the input, never a placeholder standing in for it. Consent unchecked on load. Messages announced politely, never as an alert dialog."
     }
   ],
-  "exports": {
-    "sections": [
-      "nav",
-      "hero",
-      "ticker",
-      "lineup",
-      "programme",
-      "venue",
-      "tickets",
-      "faq",
-      "newsletter",
-      "footer"
-    ],
-    "widths": [
-      390,
-      768,
-      1440
-    ],
-    "rows": [
-      {
-        "layer": "section-nav",
-        "suffix": "-390",
-        "file": "section-nav-390.png"
-      },
-      {
-        "layer": "section-nav",
-        "suffix": "-768",
-        "file": "section-nav-768.png"
-      },
-      {
-        "layer": "section-nav",
-        "suffix": "-1440",
-        "file": "section-nav-1440.png"
-      },
-      {
-        "layer": "section-hero",
-        "suffix": "-390",
-        "file": "section-hero-390.png"
-      },
-      {
-        "layer": "section-hero",
-        "suffix": "-768",
-        "file": "section-hero-768.png"
-      },
-      {
-        "layer": "section-hero",
-        "suffix": "-1440",
-        "file": "section-hero-1440.png"
-      },
-      {
-        "layer": "section-ticker",
-        "suffix": "-390",
-        "file": "section-ticker-390.png"
-      },
-      {
-        "layer": "section-ticker",
-        "suffix": "-768",
-        "file": "section-ticker-768.png"
-      },
-      {
-        "layer": "section-ticker",
-        "suffix": "-1440",
-        "file": "section-ticker-1440.png"
-      },
-      {
-        "layer": "section-lineup",
-        "suffix": "-390",
-        "file": "section-lineup-390.png"
-      },
-      {
-        "layer": "section-lineup",
-        "suffix": "-768",
-        "file": "section-lineup-768.png"
-      },
-      {
-        "layer": "section-lineup",
-        "suffix": "-1440",
-        "file": "section-lineup-1440.png"
-      },
-      {
-        "layer": "section-programme",
-        "suffix": "-390",
-        "file": "section-programme-390.png"
-      },
-      {
-        "layer": "section-programme",
-        "suffix": "-768",
-        "file": "section-programme-768.png"
-      },
-      {
-        "layer": "section-programme",
-        "suffix": "-1440",
-        "file": "section-programme-1440.png"
-      },
-      {
-        "layer": "section-venue",
-        "suffix": "-390",
-        "file": "section-venue-390.png"
-      },
-      {
-        "layer": "section-venue",
-        "suffix": "-768",
-        "file": "section-venue-768.png"
-      },
-      {
-        "layer": "section-venue",
-        "suffix": "-1440",
-        "file": "section-venue-1440.png"
-      },
-      {
-        "layer": "section-tickets",
-        "suffix": "-390",
-        "file": "section-tickets-390.png"
-      },
-      {
-        "layer": "section-tickets",
-        "suffix": "-768",
-        "file": "section-tickets-768.png"
-      },
-      {
-        "layer": "section-tickets",
-        "suffix": "-1440",
-        "file": "section-tickets-1440.png"
-      },
-      {
-        "layer": "section-faq",
-        "suffix": "-390",
-        "file": "section-faq-390.png"
-      },
-      {
-        "layer": "section-faq",
-        "suffix": "-768",
-        "file": "section-faq-768.png"
-      },
-      {
-        "layer": "section-faq",
-        "suffix": "-1440",
-        "file": "section-faq-1440.png"
-      },
-      {
-        "layer": "section-newsletter",
-        "suffix": "-390",
-        "file": "section-newsletter-390.png"
-      },
-      {
-        "layer": "section-newsletter",
-        "suffix": "-768",
-        "file": "section-newsletter-768.png"
-      },
-      {
-        "layer": "section-newsletter",
-        "suffix": "-1440",
-        "file": "section-newsletter-1440.png"
-      },
-      {
-        "layer": "section-footer",
-        "suffix": "-390",
-        "file": "section-footer-390.png"
-      },
-      {
-        "layer": "section-footer",
-        "suffix": "-768",
-        "file": "section-footer-768.png"
-      },
-      {
-        "layer": "section-footer",
-        "suffix": "-1440",
-        "file": "section-footer-1440.png"
-      },
-      {
-        "layer": "TURBINE / Mobile 390",
-        "suffix": "-390",
-        "file": "full-page-390.png"
-      },
-      {
-        "layer": "TURBINE / Tablet 768",
-        "suffix": "-768",
-        "file": "full-page-768.png"
-      },
-      {
-        "layer": "TURBINE / Desktop 1440",
-        "suffix": "-1440",
-        "file": "full-page-1440.png"
-      }
-    ]
-  },
   "content": {
     "meta": {
-      "title": "TURBINE — 12–14 June 2027 — Hall E, Kraków",
-      "description": "Three nights of ambient, techno and modular sound in a power station that stopped making electricity in 1998. Kraków, 12–14 June 2027.",
+      "title": "TURBINE — 11–13 June 2027 — Hall E, Kraków",
+      "description": "Three nights of ambient, techno and modular sound in a power station that stopped making electricity in 1998. Kraków, 11–13 June 2027.",
       "ogTitle": "TURBINE — Three nights inside the machine",
-      "ogDescription": "Ambient, techno and modular sound in a hall built for power. Twelve artists, three stages, three nights. Kraków, 12–14 June 2027."
+      "ogDescription": "Ambient, techno and modular sound in a hall built for power. Twelve artists, three stages, three nights. Kraków, 11–13 June 2027."
     },
     "skipLink": "Skip to main content",
     "nav": {
@@ -1583,7 +1397,7 @@ const TURBINE_DATA = {
       "wordmark": "TURBINE",
       "tagline": "Three nights inside the machine",
       "secondary": "Ambient, techno and modular sound in a hall built for power.",
-      "dates": "Friday 12 – Sunday 14 June 2027",
+      "dates": "Friday 11 – Sunday 13 June 2027",
       "venue": "The Powerhouse, Hall E · Kraków",
       "ctaPrimary": {
         "label": "Get tickets",
@@ -1631,25 +1445,25 @@ const TURBINE_DATA = {
         },
         {
           "label": "Fri",
-          "accessibleName": "Friday 12 June",
+          "accessibleName": "Friday 11 June",
           "shows": "4 cards"
         },
         {
           "label": "Sat",
-          "accessibleName": "Saturday 13 June",
+          "accessibleName": "Saturday 12 June",
           "shows": "4 cards"
         },
         {
           "label": "Sun",
-          "accessibleName": "Sunday 14 June",
+          "accessibleName": "Sunday 13 June",
           "shows": "4 cards"
         }
       ],
       "status": {
         "All": "Showing all twelve artists.",
-        "Fri": "Showing four artists playing Friday 12 June.",
-        "Sat": "Showing four artists playing Saturday 13 June.",
-        "Sun": "Showing four artists playing Sunday 14 June."
+        "Fri": "Showing four artists playing Friday 11 June.",
+        "Sat": "Showing four artists playing Saturday 12 June.",
+        "Sun": "Showing four artists playing Sunday 13 June."
       },
       "artists": [
         {
@@ -1779,10 +1593,10 @@ const TURBINE_DATA = {
       "intro": "One stage plays at a time. The night opens in the Cooling Tower, moves down to the Boiler Room and finishes on the main floor. Changeovers take fifteen minutes and the walk between stages takes about four.",
       "days": [
         {
-          "label": "Friday 12 June",
+          "label": "Friday 11 June",
           "doors": "Doors 19:00 · Last set ends 04:00 · Hall clears 04:30",
           "daytime": null,
-          "caption": "Friday 12 June, set times by stage",
+          "caption": "Friday 11 June, set times by stage",
           "columns": [
             "Time",
             "Turbine Hall",
@@ -1831,10 +1645,10 @@ const TURBINE_DATA = {
           ]
         },
         {
-          "label": "Saturday 13 June",
+          "label": "Saturday 12 June",
           "doors": "Doors 19:00 · Last set ends 04:00 · Hall clears 04:30",
           "daytime": "14:00 – 17:00 · Boiler Room · Modular synthesis workshop with Mara Teschke. Full Pass + Workshop only, 40 places.\nWorkshop entry from 13:30 at the gate. The hall opens to everyone at 19:00.",
-          "caption": "Saturday 13 June, set times by stage",
+          "caption": "Saturday 12 June, set times by stage",
           "columns": [
             "Time",
             "Turbine Hall",
@@ -1883,10 +1697,10 @@ const TURBINE_DATA = {
           ]
         },
         {
-          "label": "Sunday 14 June",
+          "label": "Sunday 13 June",
           "doors": "Doors 17:30 · Last set ends 02:00 · Hall clears 02:30",
           "daytime": null,
-          "caption": "Sunday 14 June, set times by stage",
+          "caption": "Sunday 13 June, set times by stage",
           "columns": [
             "Time",
             "Turbine Hall",
@@ -1996,7 +1810,7 @@ const TURBINE_DATA = {
           "priceSuffix": "three nights",
           "badge": "Most popular",
           "includes": [
-            "All three nights, 12–14 June",
+            "All three nights, 11–13 June",
             "All three stages",
             "Re-entry on every night",
             "€25 less than three single nights"
@@ -2257,7 +2071,7 @@ const TURBINE_DATA = {
       ],
       "legal": [
         "© 2027 TURBINE · The Powerhouse, Hall E · ul. Kotłowa 3 · 30-702 Kraków",
-        "Fourth edition · 12–14 June 2027 · 18+"
+        "Fourth edition · 11–13 June 2027 · 18+"
       ],
       "disclaimer": "TURBINE is a fictional festival created as teaching material for a conference workshop. Artist names, imagery and copy are invented. Any resemblance to a real event or performer is coincidental."
     },
@@ -2372,33 +2186,6 @@ const TURBINE_DATA = {
         "og-card.jpg": "The curved flank of a huge riveted turbine casing lit orange from one side, the rest of the frame falling away into darkness.",
         "texture-grain.png": ""
       },
-      "manifest": [
-        {
-          "path": "hero-hall.jpg",
-          "where": "Hero, full-bleed",
-          "size": "2400 × 1350"
-        },
-        {
-          "path": "artist-01-kasimir-volt.jpg` … `artist-12-vitrine.jpg",
-          "where": "Lineup cards, twelve files",
-          "size": "800 × 800"
-        },
-        {
-          "path": "venue-exterior.jpg",
-          "where": "Venue, left column",
-          "size": "1600 × 1200"
-        },
-        {
-          "path": "og-card.jpg",
-          "where": "Social card, published at `/images/og-card.jpg`",
-          "size": "1200 × 630"
-        },
-        {
-          "path": "texture-grain.png",
-          "where": "Decorative overlay",
-          "size": "256 × 256, tiles"
-        }
-      ],
       "map": null
     },
     "microcopy": [
