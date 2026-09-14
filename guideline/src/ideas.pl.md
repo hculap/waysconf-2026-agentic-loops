@@ -268,7 +268,7 @@ robota.**
 | Nie przestaje, choć jest gotowe | Nic nie uruchamia testu *najpierw* | Sprawdzaj przed naprawianiem, w każdej rundzie |
 | Robi się mętne i wolne | Kontekst się zapełnił | Zapisz stan do pliku, zacznij od nowa, wklej plik |
 | „Teraz działa", a nie działa | Raportuje, zamiast mierzyć | Wierz wyłącznie kodowi wyjścia |
-| Nic, przez dłuższą chwilę | Czeka na coś, co nie ma terminu | Każdy krok potrzebuje limitu czasu. Ten projekt stracił na tym godzinę trzy razy |
+| Nic, przez dłuższą chwilę | Czeka na coś, co nie ma terminu | Każdy krok potrzebuje limitu czasu. Ten projekt wpadł w to trzy razy: sześć minut, siedem i godzina |
 
 ---
 

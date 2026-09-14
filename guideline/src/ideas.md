@@ -266,7 +266,7 @@ what colour that comes out as.
 | It keeps going after it is done | Nothing runs the check *first* | Check before you fix, every round |
 | It gets vaguer and slower | Context is full | Write the state to a file, start fresh, paste the file |
 | "It works now" and it does not | It is reporting, not measuring | Only believe the exit code |
-| Nothing at all, for a long time | It is waiting on something with no deadline | Every step needs a time limit. This project lost an hour to it three separate times |
+| Nothing at all, for a long time | It is waiting on something with no deadline | Every step needs a time limit. This project hit it three times: six minutes, seven, and an hour |
 
 ---
 

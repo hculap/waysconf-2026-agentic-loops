@@ -58,7 +58,7 @@ children and no text.
 and the 404. That redundancy is deliberate: a lazy image below the fold that is simply never
 requested produces neither, which is why the gate scrolls the whole page first and then
 waits on every image against a 15-second deadline. A wait without a deadline is how this
-project lost an hour, three separate times (INCIDENTS #3, #6, #10).
+project hung three times — six minutes, seven minutes and an hour (INCIDENTS #3, #6, #10).
 
 ## What this does not show
 

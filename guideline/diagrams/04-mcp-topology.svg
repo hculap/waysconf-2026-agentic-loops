@@ -15,7 +15,7 @@
   <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 
     <text x="60" y="78" font-size="40" font-weight="700" fill="#FFFFFF">What MCP actually connects</text>
-    <text x="60" y="118" font-size="24" fill="#9CA3AF">Three tools around one agent, and a repository underneath that every one of them reads and writes.</text>
+    <text x="60" y="118" font-size="24" fill="#9CA3AF">Three tools around one agent, and a folder underneath that every one of them reads and writes.</text>
 
     <line x1="60" y1="151" x2="110" y2="151" stroke="#FBBF24" stroke-width="5"/>
     <text x="122" y="158" font-size="21" fill="#9CA3AF">design data</text>
@@ -30,7 +30,7 @@
     <rect x="90" y="200" width="380" height="140" rx="10" fill="#161616" stroke="#FBBF24" stroke-width="4"/>
     <text x="280" y="252" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">FIGMA</text>
     <text x="280" y="284" font-size="20" fill="#FBBF24" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">mcp.figma.com/mcp</text>
-    <text x="280" y="314" font-size="20" fill="#9CA3AF" text-anchor="middle">fallback: design/export/</text>
+    <text x="280" y="314" font-size="20" fill="#9CA3AF" text-anchor="middle">or the .fig, on disk</text>
 
     <rect x="1130" y="200" width="380" height="140" rx="10" fill="#161616" stroke="#F59E0B" stroke-width="4"/>
     <text x="1320" y="252" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">BROWSER</text>
@@ -48,9 +48,9 @@
     <text x="1320" y="694" font-size="20" fill="#9CA3AF" text-anchor="middle">dist/ to a public URL</text>
 
     <rect x="90" y="820" width="1420" height="120" rx="10" fill="#1F1F1F" stroke="#9CA3AF" stroke-width="3"/>
-    <text x="130" y="868" font-size="28" font-weight="700" fill="#FFFFFF">THE REPOSITORY</text>
-    <text x="1470" y="868" font-size="21" fill="#F59E0B" text-anchor="end">checks/ is off limits to the agent</text>
-    <text x="130" y="902" font-size="21" fill="#9CA3AF">src/ · public/ · loop/ — the agent writes here. design/ · brief/ · checks/ — it only reads.</text>
+    <text x="130" y="868" font-size="28" font-weight="700" fill="#FFFFFF">YOUR FOLDER</text>
+    <text x="1470" y="868" font-size="21" fill="#F59E0B" text-anchor="end">the checker is off limits to the agent</text>
+    <text x="130" y="902" font-size="21" fill="#9CA3AF">the page — the agent writes here. The .fig and the checker — it only reads.</text>
 
     <polyline points="280,342 280,480 604,480" fill="none" stroke="#FBBF24" stroke-width="4" marker-end="url(#ah-arc)"/>
     <text x="442" y="462" font-size="21" fill="#FBBF24" text-anchor="middle">design data</text>
@@ -71,8 +71,8 @@
     <text x="784" y="690" font-size="19" fill="#9CA3AF" text-anchor="end">on every iteration</text>
 
     <line x1="180" y1="346" x2="180" y2="814" stroke="#9CA3AF" stroke-width="3" stroke-dasharray="9 8" marker-start="url(#ah-neutral-r)" marker-end="url(#ah-neutral)"/>
-    <text x="200" y="640" font-size="19" fill="#9CA3AF">design/export/ and tokens.json</text>
-    <text x="200" y="666" font-size="19" fill="#9CA3AF">are committed here too</text>
+    <text x="200" y="640" font-size="19" fill="#9CA3AF">the .fig, saved from Figma,</text>
+    <text x="200" y="666" font-size="19" fill="#9CA3AF">sits here too</text>
 
     <line x1="1400" y1="726" x2="1400" y2="814" stroke="#9CA3AF" stroke-width="3" stroke-dasharray="9 8" marker-start="url(#ah-neutral-r)" marker-end="url(#ah-neutral)"/>
     <text x="1386" y="778" font-size="19" fill="#9CA3AF" text-anchor="end" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">dist/</text>

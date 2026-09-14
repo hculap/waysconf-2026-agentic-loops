@@ -71,8 +71,8 @@
 
     <rect x="1260" y="280" width="300" height="120" rx="8" fill="#1F1F1F" stroke="#FBBF24" stroke-width="3"/>
     <text x="1410" y="326" font-size="24" font-weight="700" fill="#FFFFFF" text-anchor="middle">THE CONTRACT</text>
-    <text x="1410" y="358" font-size="19" fill="#FBBF24" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">brief/ACCEPTANCE.md</text>
-    <text x="1410" y="386" font-size="19" fill="#9CA3AF" text-anchor="middle">written before the page</text>
+    <text x="1410" y="358" font-size="19" fill="#FBBF24" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">the design file</text>
+    <text x="1410" y="386" font-size="19" fill="#9CA3AF" text-anchor="middle">read before the page</text>
 
     <line x1="1410" y1="402" x2="1410" y2="436" stroke="#FBBF24" stroke-width="4" marker-end="url(#ah-arc)"/>
 
@@ -92,6 +92,6 @@
     <text x="1330" y="706" font-size="20" fill="#34D399" text-anchor="middle">it ships</text>
 
     <polyline points="1490,674 1490,800 860,800 860,340 876,340" fill="none" stroke="#F87171" stroke-width="4" marker-end="url(#ah-danger)"/>
-    <text x="1175" y="832" font-size="21" fill="#9CA3AF" text-anchor="middle">checks/report.md, handed back verbatim</text>
+    <text x="1175" y="832" font-size="21" fill="#9CA3AF" text-anchor="middle">the report, handed back verbatim</text>
   </g>
 </svg>

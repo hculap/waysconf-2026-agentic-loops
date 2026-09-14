@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 700" width="1800" height="700" role="img" aria-labelledby="t06 d06">
   <title id="t06">Ninety minutes: the shape of the session</title>
-  <desc id="d06">A horizontal timeline marked from 0 to 90 minutes, running 14:55 to 16:25, split into two lanes. The upper lane, ON STAGE, holds the eight blocks of the deck: The case from 0 to 8; Setup, the Checkpoint 0 block, from 8 to 15; Design in from 15 to 25; Plan, then build from 25 to 40; The verifier from 40 to 55; The loop and workflows from 55 to 70; Ship it from 70 to 82; and Honesty from 82 to 90. The lower lane, ON YOUR MACHINE, holds the three hands-on sprints: SPRINT 1 from 25 to 40, planning and then building the nav and the hero; SPRINT 2 from 55 to 70, in which the loop runs unattended while the talk continues; and SPRINT 3 from 70 to 82, deploying, with every URL going on the board. Sprint 2 and the block called The loop and workflows occupy exactly the same span, and are bracketed by dashed orange lines and a tinted band labelled at the same time. Checkpoint marks sit at the end of each sprint, labelled step-1, step-4 and step-5, and a bracket under the last block marks where the eight-minute buffer lives.</desc>
+  <desc id="d06">A horizontal timeline from 0 to 90 minutes, 14:55 to 16:25, in two lanes. The upper lane, ON STAGE, holds the eight blocks of the deck: The case 0 to 8, Setup 8 to 15, Design in 15 to 25, Plan then build 25 to 40, The verifier 40 to 55, The loop and workflows 55 to 70, Ship it 70 to 82, Honesty 82 to 90. The lower lane, ON YOUR MACHINE, alternates solid blocks where you are typing with dashed blocks where the agent works alone while the talk continues: prompt 01 during setup; prompt 02 reading the .fig through Design in; sprint 1, reading what 02 found and building with 03; prompt 04 writing the checker through the verifier talk; sprint 2, the loop from prompt 05, through the loop and workflows talk; and sprint 3, deploying with 06. A row of markers shows where each prompt, 01 to 07, is pasted. The eight-minute buffer sits at the end.</desc>
 
   <defs>
     <pattern id="sprint2hatch" width="16" height="16" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -14,7 +14,7 @@
   <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
 
     <text x="60" y="72" font-size="38" font-weight="700" fill="#FFFFFF">Ninety minutes</text>
-    <text x="60" y="110" font-size="22" fill="#9CA3AF">14:55 to 16:25. Eight blocks, three sprints, and one stretch where the machines work while the talking continues.</text>
+    <text x="60" y="110" font-size="22" fill="#9CA3AF">14:55 to 16:25. Eight blocks, three sprints, and three stretches where the machine works while the talk continues.</text>
 
     <line x1="180" y1="176" x2="1770" y2="176" stroke="#9CA3AF" stroke-width="1.5"/>
     <g stroke="#9CA3AF" stroke-width="1.5">
@@ -40,12 +40,6 @@
       <text x="1417" y="160">70</text>
       <text x="1593" y="160">80</text>
       <text x="1782" y="160" text-anchor="end">90 min</text>
-    </g>
-
-    <rect x="1152" y="210" width="265" height="280" fill="#10B981" opacity="0.12"/>
-    <g stroke="#10B981" stroke-width="2" stroke-dasharray="9 8">
-      <line x1="1152" y1="198" x2="1152" y2="506"/>
-      <line x1="1417" y1="198" x2="1417" y2="506"/>
     </g>
 
     <text x="60" y="248" font-size="18" font-weight="700" fill="#FFFFFF">ON STAGE</text>
@@ -84,42 +78,60 @@
       <text x="1699" y="272" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="middle">Honesty</text>
     </g>
 
-    <text x="1284" y="358" font-size="21" font-weight="700" fill="#10B981" text-anchor="middle">at the same time</text>
-
     <g>
-      <rect x="622" y="380" width="265" height="110" rx="6" fill="#10B981"/>
-      <text x="754" y="418" font-size="24" font-weight="700" fill="#0A0A0A" text-anchor="middle">SPRINT 1</text>
-      <text x="754" y="446" font-size="19" fill="#0A0A0A" text-anchor="middle">plan, then build the</text>
-      <text x="754" y="472" font-size="19" fill="#0A0A0A" text-anchor="middle">nav and the hero</text>
+      <rect x="323" y="380" width="120" height="110" rx="6" fill="#10B981"/>
+      <text x="383" y="426" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">01</text>
+      <text x="383" y="456" font-size="18" fill="#0A0A0A" text-anchor="middle">start</text>
 
-      <rect x="1152" y="380" width="265" height="110" rx="6" fill="url(#sprint2hatch)"/>
-      <rect x="1152" y="380" width="265" height="110" rx="6" fill="none" stroke="#10B981" stroke-width="2"/>
-      <text x="1284" y="418" font-size="24" font-weight="700" fill="#0A0A0A" text-anchor="middle">SPRINT 2</text>
-      <text x="1284" y="446" font-size="19" fill="#0A0A0A" text-anchor="middle">the loop runs unattended</text>
-      <text x="1284" y="472" font-size="19" fill="#0A0A0A" text-anchor="middle">while the talk continues</text>
+      <rect x="447" y="380" width="173" height="110" rx="6" fill="#161616" stroke="#10B981" stroke-width="2" stroke-dasharray="8 6"/>
+      <text x="534" y="426" font-size="22" font-weight="700" fill="#34D399" text-anchor="middle">02</text>
+      <text x="534" y="456" font-size="18" fill="#D1D5DB" text-anchor="middle">reads the .fig</text>
 
-      <rect x="1417" y="380" width="212" height="110" rx="6" fill="#10B981"/>
-      <text x="1523" y="418" font-size="24" font-weight="700" fill="#0A0A0A" text-anchor="middle">SPRINT 3</text>
-      <text x="1523" y="446" font-size="19" fill="#0A0A0A" text-anchor="middle">deploy, and every</text>
-      <text x="1523" y="472" font-size="19" fill="#0A0A0A" text-anchor="middle">URL on the board</text>
+      <rect x="624" y="380" width="261" height="110" rx="6" fill="#10B981"/>
+      <text x="755" y="418" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">SPRINT 1</text>
+      <text x="755" y="446" font-size="18" fill="#0A0A0A" text-anchor="middle">read what 02 found,</text>
+      <text x="755" y="472" font-size="18" fill="#0A0A0A" text-anchor="middle">then 03 builds</text>
+
+      <rect x="889" y="380" width="261" height="110" rx="6" fill="#161616" stroke="#10B981" stroke-width="2" stroke-dasharray="8 6"/>
+      <text x="1020" y="418" font-size="22" font-weight="700" fill="#34D399" text-anchor="middle">04</text>
+      <text x="1020" y="446" font-size="18" fill="#D1D5DB" text-anchor="middle">writes the checker</text>
+      <text x="1020" y="472" font-size="18" fill="#D1D5DB" text-anchor="middle">while the talk goes on</text>
+
+      <rect x="1154" y="380" width="261" height="110" rx="6" fill="#161616" stroke="#10B981" stroke-width="2" stroke-dasharray="8 6"/>
+      <text x="1285" y="418" font-size="22" font-weight="700" fill="#34D399" text-anchor="middle">SPRINT 2 · 05</text>
+      <text x="1285" y="446" font-size="18" fill="#D1D5DB" text-anchor="middle">the loop runs alone</text>
+      <text x="1285" y="472" font-size="18" fill="#D1D5DB" text-anchor="middle">while the talk goes on</text>
+
+      <rect x="1419" y="380" width="208" height="110" rx="6" fill="#10B981"/>
+      <text x="1523" y="418" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">SPRINT 3</text>
+      <text x="1523" y="446" font-size="18" fill="#0A0A0A" text-anchor="middle">06 deploys,</text>
+      <text x="1523" y="472" font-size="18" fill="#0A0A0A" text-anchor="middle">URL on the board</text>
     </g>
 
-    <text x="60" y="566" font-size="17" fill="#9CA3AF">checkpoints</text>
+    <text x="60" y="566" font-size="17" fill="#9CA3AF">prompts</text>
     <g stroke="#9CA3AF" stroke-width="2">
-      <line x1="887" y1="492" x2="887" y2="546"/>
-      <line x1="1417" y1="492" x2="1417" y2="546"/>
-      <line x1="1629" y1="492" x2="1629" y2="546"/>
+      <line x1="321" y1="494" x2="321" y2="546"/>
+      <line x1="445" y1="494" x2="445" y2="546"/>
+      <line x1="710" y1="494" x2="710" y2="546"/>
+      <line x1="887" y1="494" x2="887" y2="546"/>
+      <line x1="1152" y1="494" x2="1152" y2="546"/>
+      <line x1="1417" y1="494" x2="1417" y2="546"/>
+      <line x1="1540" y1="494" x2="1540" y2="546"/>
     </g>
-    <g font-size="18" fill="#9CA3AF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
-      <text x="887" y="570">step-1</text>
-      <text x="1417" y="570">step-4</text>
-      <text x="1629" y="570">step-5</text>
+    <g font-size="18" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+      <text x="321" y="570">01</text>
+      <text x="445" y="570">02</text>
+      <text x="710" y="570">03</text>
+      <text x="887" y="570">04</text>
+      <text x="1152" y="570">05</text>
+      <text x="1417" y="570">06</text>
+      <text x="1540" y="570">07</text>
     </g>
 
     <path d="M1629 336 v10 h141 v-10" fill="none" stroke="#9CA3AF" stroke-width="2"/>
     <text x="1770" y="376" font-size="18" fill="#9CA3AF" text-anchor="end">the buffer lives here</text>
 
-    <text x="60" y="632" font-size="22" fill="#9CA3AF">Sprint 2 is the only block that asks nothing of the room. It starts at 0:55, runs unattended, and the talk continues over it.</text>
-    <text x="60" y="662" font-size="22" fill="#9CA3AF">Every sprint ends on a checkpoint branch, so nobody stays stuck for more than one block. The eight-minute buffer is the last one.</text>
+    <text x="60" y="632" font-size="22" fill="#9CA3AF">Solid: you are typing. Dashed: the agent works alone while the talk goes on — reading the .fig, writing the checker, running the loop.</text>
+    <text x="60" y="662" font-size="22" fill="#9CA3AF">Every prompt stands alone, so nobody stays stuck for more than one block. 08 is the whole run as one message, to take home.</text>
   </g>
 </svg>

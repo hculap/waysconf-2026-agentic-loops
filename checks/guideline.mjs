@@ -12,8 +12,8 @@
  *
  *   1. A check that cannot run is a FAILURE. If the browser will not start, a page will not
  *      load, or an image never decodes inside its deadline, this exits 1. Nothing is skipped
- *      quietly, and every wait has a deadline — an unbounded wait cost this project an hour,
- *      three separate times.
+ *      quietly, and every wait has a deadline — unbounded waits hung this project three times:
+ *      six minutes, seven minutes, and an hour.
  *
  *   2. axe's `incomplete` is not a pass. axe cannot judge contrast it cannot compute — text
  *      over a photograph, or a cell clipped by a scroll container — and reports `incomplete`,

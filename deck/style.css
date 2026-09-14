@@ -112,6 +112,15 @@
   line-height: 1.5;
 }
 
+/* A paragraph inside an emphasis wrapper takes the wrapper's size. The rule above fixes
+   p at 1.1rem, which silently flattened every <div class="text-xl"> in the deck: the
+   markdown inside renders as a <p>, and a slide meant to shout "This is the workshop" said
+   it at body size. */
+.slidev-layout :is(.text-lg, .text-xl, .text-2xl, .text-3xl) :is(p, li) {
+  font-size: inherit;
+  line-height: 1.4;
+}
+
 .slidev-layout strong {
   color: var(--sp-fg);
   font-weight: 600;

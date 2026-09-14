@@ -49,7 +49,7 @@ Timing card is in deck/notes/TIMING.md. Total 90 minutes, three hands-on sprints
 eight-minute buffer.
 
 Before you start: the finished site should already be open in a browser tab, and
-the repo QR should be on the room's screen as people come in.
+waysconf.szymonpaluch.com should be on the room's screen as people come in.
 -->
 
 ---
@@ -120,35 +120,24 @@ If you only land one sentence in ninety minutes, land this one.
 <div class="cols mt-8">
 <div>
 
-A landing page for a music festival that does not exist, built from a Figma design by
-an agent you instructed, checked by a verifier that does not care what the agent thinks,
-fixed by the agent when it failed, and deployed to a URL you can send to someone.
+A landing page for a music festival that does not exist, built from a Figma file by an
+agent you instructed, checked by a program that agent wrote and is not allowed to change,
+fixed when it failed, and deployed to a URL you can send to someone.
 
 <div class="mt-6">
-<span class="verdict pass">all gates green</span>
+<span class="verdict pass">exit 0</span>
 </div>
 
 </div>
 <div>
 
-```bash
-npm run check
-```
+### You leave with
 
-```txt
-✓ 10/10 gates passed.
+A URL, live on the internet.
 
-  Build             PASS
-  Runtime           PASS
-  Structure         PASS
-  Accessibility     PASS
-  Design tokens     PASS
-  Visual fidelity   PASS
-  Content           PASS
-  Links             PASS
-  Text over images  PASS
-  Lighthouse        PASS
-```
+A folder: the page, and the checker that judged it.
+
+Eight prompts that work on Monday, on something that is not a festival.
 
 </div>
 </div>
@@ -156,6 +145,9 @@ npm run check
 <!--
 Switch to the browser here and show the real deployed site for about twenty seconds.
 Scroll it. Then come back. Do not narrate the design; they can see it.
+
+Their checker will be smaller than this repository's ten gates, and it should be. It is
+the one they wrote themselves, in prompt 04.
 -->
 
 ---
@@ -177,13 +169,16 @@ class: section
 
 <div class="kicker">0:08 — 0:15</div>
 
-# Checkpoint 0
-## Everyone gets a working environment
+# Setup
+## An agent running in an empty folder
 
 <!--
-Hard stop at 0:15. Anyone not working by then goes to Codespaces, no discussion.
-Ask for hands first: "who has a terminal open right now?" Send the rest to the
-browser path immediately rather than one at a time.
+Hard stop at 0:15. Anyone not working by then goes to Codespaces, no discussion — the
+click path is on the Before tab.
+Ask for hands first: "who has a terminal open right now?" Send the rest to the browser
+path immediately rather than one at a time.
+
+The moment an agent is up, prompt 01 goes in. It takes about two minutes.
 -->
 
 ---
@@ -221,36 +216,16 @@ There is <b>nothing to clone</b> and no code to read.
 </p>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-The project, the page, and the program that checks the page — the agent makes all
-three for itself.
+Agent up? Paste <b>prompt 01</b> now.
 </p>
 
 </div>
 </div>
 
 <!--
-Say out loud that the browser path is not the lesser path. People who pick it
-because they have to will otherwise spend the session feeling behind.
--->
-
----
-
-# Two shapes, and neither is a script
-
-<div class="mt-4">
-  <img src="/diagrams/07-loop-vs-workflow.svg" alt="A loop defined by its exit condition, beside a workflow defined by its phases" class="w-full">
-</div>
-
-<!--
-This is the slide people will still be using in a year, when the tools have all
-changed names.
-
-A loop: you define the exit condition. A workflow: you define the phases and the bar
-between them. Both are things you SAY. That is why changing one is a sentence rather
-than an edit, a test run and a redeploy.
-
-Point at phase 4 and say: a loop lives inside a workflow. That nesting is the usual
-arrangement and nobody draws it.
+The .fig is on the page too, for anyone without a Figma account. Say it is the same file,
+not a lesser route — people who take it because they have to will otherwise spend the
+session feeling behind.
 -->
 
 ---
@@ -263,8 +238,8 @@ arrangement and nobody draws it.
 ```bash
 pwd                 # where am I
 ls                  # what is here
-cd my-turbine       # go in there
-npm run dev         # start the site
+cd turbine          # go in there
+claude              # or: codex
 ```
 
 <p class="mt-6">
@@ -283,7 +258,7 @@ When a command finishes you get the prompt back. When you do not get the prompt 
 it is still going.
 
 <p class="mt-4" style="color: var(--sp-fg-3)">
-Full version: docs/TERMINAL-IN-TEN-MINUTES.md
+Full version: the Before tab, for your operating system
 </p>
 
 </div>
@@ -302,6 +277,50 @@ class: section
 <div class="kicker">0:15 — 0:25</div>
 
 # Design in, not screenshots in
+
+---
+
+# Paste prompt 02 now, then listen
+
+<div class="mt-6 text-xl">
+
+Put the `.fig` in a folder called `design`, next to your project, and paste **prompt 02**.
+
+</div>
+
+<div class="cols mt-8">
+<div>
+
+### What it does
+
+Your agent has never seen a `.fig`. It writes a decoder, reads what comes out, and tries
+again until twelve cards carry twelve names.
+
+That is the first loop of the day, and you did not have to set it up.
+
+</div>
+<div>
+
+### What you do
+
+Nothing, for ten to fifteen minutes. Let it use the network if it asks — it may install a
+small package.
+
+<p class="mt-4" style="color: var(--sp-accent-2)">
+It writes no page. It will stop and tell you what it found.
+</p>
+
+</div>
+</div>
+
+<!--
+This is the longest thing any agent does all afternoon: sixteen minutes in the Claude Code
+trial. Starting it now is what makes sprint 1 fit — it decodes while you talk about MCP and
+the file, and the findings are waiting when sprint 1 starts.
+
+Claude Code in its default mode asks before each command. Tell the room to pick the option
+that stops asking for that kind of command, or they will spend the time clicking yes.
+-->
 
 ---
 
@@ -342,17 +361,16 @@ It looks roughly right.
 </div>
 <div>
 
-### The design itself
+### The file itself
 
 Colours arrive as values.
 Spacing arrives as numbers.
 
-```json
-"color": {
-  "accent": {
-    "sodium": { "$value": "#FF6A1A" }
-  }
-}
+```txt
+TURBINE / Color
+  accent/sodium     #FF6A1A
+  text/secondary    #A7AEBB
+  text/muted        #6B7280
 ```
 
 Nothing is guessed, so nothing is guessed wrong.
@@ -456,19 +474,19 @@ gesture teaches more than the slide.
 <div class="cols mt-8">
 <div>
 
-```bash
-mkdir turbine && cd turbine
-claude          # or: codex
-```
+### 1. Read what 02 found
 
-Then, from the prompts page:
+Check two things against the design yourself. Then answer its **point 6** — the things the
+file does not say — in your own words.
 
-<p class="mt-2 text-xl">
-<b>01</b> start &nbsp;→&nbsp; <b>02</b> look at the design &nbsp;→&nbsp; <b>03</b> build
+### 2. Paste prompt 03
+
+<p class="mt-2">
+It builds one section, stops, and waits for you to say <b>next</b>.
 </p>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-Prompt 02 writes nothing. Read what it says it found before you let it near a file.
+02 still decoding? Let it finish. Nothing here is a race.
 </p>
 
 </div>
@@ -490,6 +508,10 @@ a finished page with none.
 
 <!--
 Circulate. Do not answer architecture questions now; answer setup questions.
+The commonest stuck state: prompt 02 still reading the .fig at 0:31. That is normal; it is
+the sixteen-minute prompt. Anyone whose agent cannot decode it after ten minutes takes the
+ready-made pack from the page instead.
+
 At 0:37 give a two-minute warning regardless of where anyone is.
 -->
 
@@ -502,6 +524,38 @@ class: section
 
 # The verifier
 ## The only part that matters
+
+---
+
+# Paste prompt 04 now, then listen
+
+<div class="mt-8 text-2xl" style="color: var(--sp-fg)">
+
+This is the workshop.
+
+</div>
+
+<div class="mt-6 text-xl">
+
+Your agent writes a program that judges its own page — and in the next prompt, you forbid it
+from ever touching that program again.
+
+</div>
+
+<div class="mt-8">
+<span class="verdict fail">it should be red</span>
+</div>
+
+<p class="mt-6" style="color: var(--sp-fg-3)">
+About eight minutes. If it passes first time, it is not checking anything.
+</p>
+
+<!--
+495 seconds in the Codex trial. It runs through the next four slides and the live demo.
+
+Without this prompt, prompt 05 has nothing to run: npm run check is created here. Do not
+skip it to save time — cut the demo before you cut this.
+-->
 
 ---
 
@@ -583,7 +637,7 @@ Top tier: catches what the others cannot, least reliable, never the only gate.
 
 ---
 
-# Ten gates, sixty-one criteria, no opinions
+# The reference site: ten gates, no opinions
 
 <div class="mt-4">
 
@@ -605,6 +659,9 @@ Top tier: catches what the others cannot, least reliable, never the only gate.
 <!--
 Do not read the table. Let them read it while you say: every one of these returns
 pass or fail the same way every time, and none of them asks a model anything.
+
+Theirs, being written right now in prompt 04, is smaller. It should be. The shape is the
+same: a program, the same answer twice, a report a stranger can act on.
 -->
 
 ---
@@ -658,8 +715,11 @@ LIVE DEMO. This is the money shot of the whole session.
   4. paste checks/report.md back to the agent
   5. show the green
 
-Rehearse this until it takes under three minutes. If the room's wifi is gone, the
-recording is at evidence/loop-repair.mp4.
+Rehearse this until it takes under three minutes.
+
+There is no recording of this demo yet. Make one before the talk — deck/notes/TIMING.md,
+"Before you start". Without it, a dead wifi means skipping the demo and showing the
+report file instead, which still makes the point.
 -->
 
 ---
@@ -702,16 +762,16 @@ The agent may never edit the verifier.
 
 <div class="mt-8 text-xl">
 
-It is written into `AGENTS.md`. It is checked in the dry-run harness. If an agent modifies
-anything under `checks/`, the run is recorded as compromised regardless of what the gates
-then say.
+It is in prompt 05, in capitals, and it comes first:
 
 </div>
 
-<div class="mt-8">
+<div class="mt-6">
 
-```txt
-| Verifier modified by the agent | no |
+```text
+1. NEVER change the checker to make a check pass. Not a threshold,
+   not a skipped assertion, not a rule switched off. If you believe
+   a check is wrong, STOP, tell me which one and why.
 ```
 
 </div>
@@ -727,47 +787,42 @@ along, not with an opinion.
 
 <div class="mt-4">
 
-These prompts, an **empty folder** outside every repository, Codex. Exactly what you have
-in front of you now.
+These prompts, an **empty folder** outside every repository, nothing else.
 
 </div>
 
-<div class="mt-6">
+<div class="mt-4">
 
-| Codex CLI, empty folder | |
-|---|---|
-| 01 — a project exists | **107s** |
-| 03 — a hero, from the values given | **41s** |
-| 04 — **the agent writes its own checker** | **495s** |
-| 05 — the loop runs | **46s** |
-| What 04 produced | `check.mjs`, 264 lines — plus tests for it and a document explaining it, unasked |
-| What it decided alone | to treat axe's *incomplete* results as failures |
+| Prompt | Agent | Result |
+|---|---|---|
+| 01 — a project exists | Codex | **107 s** |
+| 02 — reads the `.fig` | Claude Code | **16 min** — 12/12 names, every colour, all widths |
+| 03 — a hero from the design | Codex | **41 s** |
+| 04 — **writes its own checker** | Codex | **495 s** — 264 lines, tests unasked |
+| 05 — the loop runs | Codex | **46 s** |
 
 </div>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-That last row came out of one sentence in the prompt: <b>&ldquo;a check that cannot run is a
-failure, never a skip&rdquo;</b>. Finding it by hand cost me an afternoon.
+Unasked, 04 treated axe's <em>incomplete</em> results as failures — from one sentence:
+<b>&ldquo;a check that cannot run is a failure, never a skip&rdquo;</b>.
 </p>
 
 <!--
-The Claude Code line is deliberately NOT on the slide — it was 150px of overflow and
-checks/deck.mjs failed the slide for it. Say it out loud instead; it is in the notes
-below and it is worth more spoken than read.
--->
+Numbers come from evidence/prompt-trial.md (Codex: 01, 03, 04, 05) and
+evidence/fig-trial-claude-2026-09-14.md (Claude Code: 02). Refill the table from those
+files, not from memory — the whole point of the slide is that it is measured.
 
-<!--
-Numbers come from evidence/prompt-trial.md. Refill this table from that file before the
-talk rather than from memory — the whole point of the slide is that it is measured.
+Say the caveats out loud, because they are what make the numbers credible:
+- two agents, one prompt each; nobody has run the whole sequence end to end on one agent
+- the Claude run bypassed permission prompts; a participant will be asked before each
+  command, and prompt 02 is sixty commands
+- 02's fell into the component-text trap first — nine cards read "KASIMIR VOLT" — then
+  noticed and fixed it itself
 
-The row that matters is the last one. Nobody asked for the incomplete-results decision;
-it fell out of one sentence in prompt 04. That is the argument for writing the standard
-into the prompt rather than trusting the agent to hold it.
-
-Say the Claude line out loud rather than skipping it. "I promised two agents and I am
-showing you one, and here is exactly why" is worth more than a second column of numbers,
-and it sets up the honesty slide at the end. If you run the trial on your laptop before
-the conference, replace this with the second column and drop the caveat.
+The 04 line is the one that matters. Nobody asked for the incomplete-results decision; it
+fell out of one sentence. That is the argument for writing the standard into the prompt
+rather than trusting the agent to hold it.
 -->
 
 ---
@@ -832,10 +887,10 @@ will look at what it did.
 
 ```text
 Run npm run check. If it exits 0, stop and tell me.
-If it does not, read check-report.md, fix what it names, run it again.
-Repeat until it exits 0.
+If it does not, read the report it wrote, fix what it names,
+run it again. Repeat until it exits 0.
 
-NEVER change check.mjs to make a check pass.
+NEVER change the checker to make a check pass.
 ```
 
 </div>
@@ -892,6 +947,26 @@ The three things that make it work, in order of how often they are missed:
 
 ---
 
+# Two shapes, and neither is a script
+
+<div class="mt-4">
+  <img src="/diagrams/07-loop-vs-workflow.svg" alt="A loop defined by its exit condition, beside a workflow defined by its phases" class="w-full">
+</div>
+
+<!--
+This is the slide people will still be using in a year, when the tools have all
+changed names.
+
+A loop: you define the exit condition. A workflow: you define the phases and the bar
+between them. Both are things you SAY. That is why changing one is a sentence rather
+than an edit, a test run and a redeploy.
+
+Point at phase 4 and say: a loop lives inside a workflow. That nesting is the usual
+arrangement and nobody draws it.
+-->
+
+---
+
 # Why a fresh context beats a long one
 
 <div class="cols mt-8">
@@ -912,7 +987,7 @@ Reasoning gets worse as it fills.
 
 ### A fresh context each pass
 
-Reads `checks/report.md` — the current failures.
+Reads the report — the current failures.
 
 Reads `notes.md` — what was already tried, and what it cost.
 
@@ -958,21 +1033,22 @@ The instruction is **"refute this, and default to refuted if you are unsure"**.
 
 </div>
 
-<div class="mt-8">
+<div class="mt-6">
 
-```js
-const votes = await parallel(LENSES.map(lens => () =>
-  agent(`Try to refute: ${finding}. Default to refuted if uncertain.`,
-        { schema: VERDICT })))
+```text
+ultracode. … inside a phase, spawn as many subagents as the work
+needs and run them in parallel, deciding how many from what you find.
 
-const survives = votes.filter(v => !v.refuted).length >= 2
+PHASE 6 — ATTACK
+Send every candidate finding to a separate subagent whose only job
+is to argue that it is wrong. Report only what survives.
 ```
 
 </div>
 
-<div class="mt-8 text-xl">
-A reviewer asked to find problems finds problems. A reviewer asked to destroy a
-specific claim either destroys it or fails to.
+<div class="mt-6 text-lg">
+That is <b>prompt 08</b> — the whole run as one message. Take it home.
+Today, if there is time, <b>prompt 07</b> is the one-agent version.
 </div>
 
 <!--
@@ -980,6 +1056,9 @@ This is the tier that catches what no gate can: copy that drifted, a focus order
 that is valid and incoherent, a name that is a massacre.
 
 That last one is real. It is in evidence/INCIDENTS.md and it is worth telling.
+
+`ultracode` is a Claude Code keyword that unlocks multi-agent orchestration. Codex has no
+equivalent; the word is harmless there, and the sentence after it does the work on both.
 -->
 
 ---
@@ -995,12 +1074,14 @@ class: section
 
 # Deploy
 
-```bash
-npm run build
-npx netlify deploy --prod --dir=dist
-```
+<div class="mt-6 text-xl">
 
-<div class="mt-8 text-xl">
+Paste **prompt 06**. It builds, deploys to Netlify, and then checks that the page the
+server returns is the page that passed — not an older one.
+
+</div>
+
+<div class="mt-6 text-xl">
 
 It will ask you to sign in, then to pick or create a site. Take the URL it prints.
 
@@ -1018,8 +1099,10 @@ Put your URL on the board. We are going to look at all of them.
 Have the shared board open on the projector. Thirty URLs appearing one at a time
 is the best ending this session has, and it costs nothing to arrange.
 
-If Netlify CLI auth is fighting someone, the Netlify MCP server can do it, and
-dragging the dist/ folder onto netlify.com works with no CLI at all.
+If Netlify CLI auth is fighting someone, dragging the build folder onto netlify.com works
+with no CLI at all.
+
+Anyone with a URL and time left: prompt 07, try to break it.
 -->
 
 ---
@@ -1135,8 +1218,8 @@ each other. Cap the iterations and read the log.
 
 **It reports success without running anything.** Only believe the exit code.
 
-**It hangs.** Not failing, just waiting. Every step needs a deadline — this repository
-lost six minutes to exactly that, and it is written down.
+**It hangs.** Not failing, just waiting. Every step needs a deadline — this project hung
+three times: six minutes, seven, and an hour.
 
 </div>
 </div>
@@ -1180,16 +1263,17 @@ class: cover
 
 # <span class="wordmark">TURBINE</span>
 
-<div class="mt-8 text-xl">
+<div class="mt-8 text-2xl" style="color: var(--sp-accent)">
 
-`github.com/hculap/waysconf-2026-agentic-loops`
+waysconf.szymonpaluch.com
 
 </div>
 
-<div class="mt-10" style="color: var(--sp-fg-2)">
+<div class="mt-8" style="color: var(--sp-fg-2)">
 
-The brief · every prompt I used · the verifier · the Figma plugin ·<br>
-the evidence from both clean-room runs · these slides
+The eight prompts, in English and Polish · the `.fig` · these slides<br>
+and the repository, with the checker and the evidence:
+`github.com/hculap/waysconf-2026-agentic-loops`
 
 </div>
 
@@ -1198,5 +1282,6 @@ the evidence from both clean-room runs · these slides
 </div>
 
 <!--
-Hold the QR up for a slow ten seconds. People photograph it late.
+Leave this slide up through the questions. Read the address out loud once — people
+photograph it late.
 -->

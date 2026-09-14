@@ -58,13 +58,24 @@ const leftovers = []
 for (const file of files) {
   const path = join(DIR, file)
   const before = await readFile(path, 'utf8')
+  // Colours are rewritten ONLY where they are paint — an attribute value or a style
+  // declaration. Never inside <text>. The first version replaced every hex in the file,
+  // including the ones the diagrams QUOTE: the loop diagram's example report reads
+  // "#6B7280 on .card__genre … 4.07:1", and after recolouring it read "#71717A … 4.07:1"
+  // and "#FFFFFF on #10B981 … 2.87:1" — numbers that are true of the old colours and false
+  // of the new ones, on a slide and on the participant site, looking entirely authoritative.
+  const recolour = (hex) => MAP[hex.toUpperCase()] ?? hex
   let after = before
-  for (const [from, to] of Object.entries(MAP)) {
-    after = after.replaceAll(from, to).replaceAll(from.toLowerCase(), to)
-  }
+    .replace(/((?:fill|stroke|stop-color|flood-color|lighting-color|color)=")(#[0-9a-fA-F]{6})(")/g,
+      (_, a, hex, b) => a + recolour(hex) + b)
+    .replace(/(style="[^"]*")/g, (style) => style.replace(/#[0-9a-fA-F]{6}/g, recolour))
 
-  const stale = [...new Set([...after.matchAll(/#[0-9a-fA-F]{6}/g)].map((m) => m[0].toUpperCase()))]
-    .filter((c) => c in MAP)
+  // Only paint counts as stale. A TURBINE hex inside <text> is a quotation, and is correct.
+  const paint = [
+    ...after.matchAll(/(?:fill|stroke|stop-color|flood-color|lighting-color|color)="(#[0-9a-fA-F]{6})"/g),
+    ...[...after.matchAll(/style="([^"]*)"/g)].flatMap((m) => [...m[1].matchAll(/(#[0-9a-fA-F]{6})/g)]),
+  ].map((m) => m[1].toUpperCase())
+  const stale = [...new Set(paint)].filter((c) => c in MAP)
   if (stale.length) leftovers.push(`${file}: ${stale.join(' ')}`)
 
   if (after !== before) {
