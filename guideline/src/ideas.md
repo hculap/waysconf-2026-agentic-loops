@@ -6,14 +6,45 @@
 |---|---|---|
 | 14:55 | Introduction | Listen. |
 | 15:03 | Setup | Open a terminal in the `turbine` folder, start the agent, paste prompt 01. |
-| 15:10 | Design | Put `turbine.fig` in `design/` and paste prompt 02. The agent decodes the file for 10 to 16 minutes. |
-| 15:20 | Build | Read the agent's findings, answer its open questions, paste prompt 03. Review the page section by section. |
-| 15:35 | Checker | Paste prompt 04. The agent writes `npm run check`. Demo: a failing check and its report. |
-| 15:50 | Loop | Paste prompt 05. The agent fixes the page until the check passes. |
-| 16:05 | Deploy | Paste prompt 06, then prompt 07. |
-| 16:17 | Limits and questions | Listen, ask. |
+| 15:10 | Design | Put `turbine.fig` in `design/`. Plan mode, prompt 02: the agent plans and builds a decoder, `npm run design`, that writes the design data as JSON. Answer its open questions. |
+| 15:25 | Checker, tests first | Plan mode, prompt 03: the agent writes `npm run check` from the design data before any page exists. The check fails. Demo: a failing check and its report. |
+| 15:40 | Build | Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section. |
+| 15:55 | Loop | Prompt 05: the agent fixes the page until the check passes. |
+| 16:05 | Review | `/clear`, prompt 06: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them and the check still passes. |
+| 16:12 | Deploy | `/clear`, prompt 07: the page goes live and the check runs against the live address. |
+| 16:20 | Limits and questions | Listen, ask. |
 
 Each prompt works on its own. If one fails, tell the agent to stop and paste the next one. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.
+
+---
+
+## How every step runs
+
+Prompts 02, 03 and 04 each build something real: the decoder, the checker, the page. Each one runs the same way:
+
+1. **Plan mode.** Before you paste the prompt, switch the agent to plan mode: in Claude Code press `Shift+Tab` until the footer shows *plan mode on*; in Codex type `/plan`. The agent researches and shows a plan. It cannot change files until you approve.
+2. **Implement.** Read the plan, correct it in plain words, approve it. The agent builds.
+3. **Commit.** At the end of the step the agent commits its work with a message saying what the step did, and pushes it to your GitHub repository. Every step can be undone.
+4. **Clear.** Type `/clear` (the same command in Claude Code and in Codex). The next prompt starts with an empty context and reads what it needs from files: the design data, the report and `notes.md`.
+
+---
+
+## Design data, not a picture
+
+Prompt 02 does not decode the `.fig` once and throw the work away. The agent writes a small tool, `npm run design`, that reads the file and saves what the page and the checker need as JSON in `design/data/`: sections, colours, typography, layout, components, copy and images. Every later step reads those files. When the design changes, run `npm run design` again.
+
+An agent given a screenshot infers every colour and measurement from pixels and gets them nearly right. Given the file, it reads `#FF6A1A` from the file.
+
+---
+
+## Tests first
+
+Test-driven development means writing the test before the code. In this workshop the test is `npm run check`, and prompt 03 writes it before the page exists:
+
+1. **Red.** The check is written from the design data and run against the empty project. It fails, and the report lists everything the page does not have yet.
+2. **Green.** Prompt 04 builds the page, and prompt 05 fixes it until the check passes.
+
+A check written after the page tends to describe the page that exists. A check written first can only describe the design.
 
 ---
 
@@ -23,9 +54,9 @@ Each prompt works on its own. If one fails, tell the agent to stop and paste the
 
 - **Plan.** The agent states what it will change and why. From the second round on, the plan starts from the report.
 - **Implement.** The agent writes code. The first time it generates the page; after that it fixes what the report names.
-- **Verify.** A program, `npm run check`, tests the page in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.
+- **Verify.** The check from prompt 03, `npm run check`, tests the page in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.
 
-The loop ends when the check exits 0. Then the page is deployed.
+The loop ends when the check exits 0. Then the work is committed and the page is deployed.
 
 ---
 
@@ -41,19 +72,7 @@ An agent can check work on two conditions: it did not do the work in the same co
 | A program: `npm run check` | Everything with an exact answer: sections, colours, copy, contrast, overflow. |
 | Agents with a fresh context, told to attack (adversarial review) | What a program cannot measure: reading order, useless alt text, text over photos, copy that does not match the brand. |
 
-Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop, the review is prompt 07, pasted in a new session.
-
----
-
-## Plan before code
-
-In Claude Code, press `Shift+Tab` until the footer shows *plan mode on*. The agent cannot edit files until you approve the plan. In Codex, ask for the plan explicitly:
-
-```text
-Do not write any code yet. Tell me what you found and what you intend to build, and wait.
-```
-
-Prompt 02 works the same way: the agent reads the design and writes no page code.
+Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop, the review is prompt 06, pasted in a new session before the deploy.
 
 ---
 
@@ -95,14 +114,14 @@ A long session collects abandoned attempts and old reasoning. When the agent slo
 |---|---|
 | Holds every earlier attempt | Reads the report: the current failures |
 | Repeats its own earlier reasoning | Reads `notes.md`: what was tried and what happened |
-| Slows down | Reads `docs/`: the design, written down in prompt 02 |
+| Slows down | Reads `design/data/`: the design as JSON, written in prompt 02 |
 
 ```text
 Write what is left to do into notes.md, in ten lines: what you tried, what worked,
 what did not, and why.
 ```
 
-Then start a new session and tell the agent to read `docs` and `notes.md`.
+Then type `/clear` and tell the agent to read `notes.md` and the report.
 
 ---
 
@@ -117,7 +136,7 @@ A workflow can contain a loop: phase 05 of prompt 08 is the loop from prompt 05.
 
 ### Workflow patterns
 
-Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 03), loop until done (phase 05) and adversarial verification (phase 07).
+Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 04), loop until done (phase 05) and adversarial verification (phase 06).
 
 #### 1. Classify and act
 
@@ -133,7 +152,7 @@ Six ways to arrange several agents inside a workflow. Prompt 08 uses three of th
 
 **How it works:** the task is split into independent parts, one agent per part works in parallel, and a final step merges the results.
 
-**When to use it:** parts that do not depend on each other. Example: phase 03 of prompt 08 builds every page section with its own agent and puts them together in order.
+**When to use it:** parts that do not depend on each other. Example: phase 04 of prompt 08 builds every page section with its own agent and puts them together in order.
 
 #### 3. Adversarial verification
 
@@ -141,7 +160,7 @@ Six ways to arrange several agents inside a workflow. Prompt 08 uses three of th
 
 **How it works:** one agent produces a result, several agents with a fresh context try to break it, and their findings go back to the first agent.
 
-**When to use it:** anything a program cannot check. Example: prompt 07, and phase 07 of prompt 08.
+**When to use it:** anything a program cannot check. Example: prompt 06, and phase 06 of prompt 08.
 
 #### 4. Generate and filter
 

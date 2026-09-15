@@ -1,15 +1,17 @@
 # 05 — Pętla
 
-Agent uruchamia checker napisany w prompcie 04 (`npm run check`), czyta plik z raportem, który
-checker zapisuje, naprawia pierwszy błąd i uruchamia checker ponownie, aż zakończy się kodem 0.
-Każda runda ma trzy kroki: zaplanuj poprawkę, wprowadź ją, uruchom checker.
+W nowej sesji agent uruchamia checker z promptu 03 (`npm run check`), czyta plik z raportem,
+który checker zapisuje, naprawia pierwszy błąd i uruchamia checker ponownie, aż zakończy się
+kodem 0. Każda runda ma trzy kroki: zaplanuj poprawkę, wprowadź ją, uruchom checker. Kiedy test
+przejdzie, agent robi commit i push.
 
 ---
 
 ```text
-Uruchom npm run check.
+Przeczytaj notes.md. Potem uruchom npm run check.
 
-Jeśli kończy się kodem 0, zatrzymaj się i powiedz mi — skończyliśmy.
+Jeśli kończy się kodem 0, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+i powiedz mi, że skończyliśmy.
 
 Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
 npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
@@ -53,9 +55,11 @@ agent zatrzyma się za wcześnie, powiedz `jedź dalej`.
 
 ---
 
-**Oczekiwany wynik.** Kilka rund: sprawdź, napraw, sprawdź. Liczba błędów spada, może wzrosnąć
+**Oczekiwany wynik.** Kilka rund: zaplanuj, napraw, sprawdź. Liczba błędów spada, może wzrosnąć
 o jeden, kiedy naprawa zepsuje coś innego, i znowu spada. W `notes.md` przybywa jedna linijka
-na rundę. Przebieg kończy się, gdy `npm run check` zwróci kod 0.
+na rundę. Kiedy `npm run check` zwróci kod 0, agent robi commit i push.
+
+**Po tym prompcie wpisz `/clear`.**
 
 ---
 
@@ -67,7 +71,7 @@ na rundę. Przebieg kończy się, gdy `npm run check` zwróci kod 0.
 | Przestaje po jednej rundzie | `Jedź dalej. Nie zatrzymuj się, dopóki npm run check nie skończy się kodem 0.` Albo użyj `/goal`. |
 | Ten sam błąd wraca w kółko | `Próbowałeś tego trzy razy. Stop. Powiedz mi, co próbowałeś i co się stało za każdym razem.` |
 | Mówi, że skończone, a test jest czerwony | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
-| Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. `Zapisz do notes.md, co zostało, w dziesięciu linijkach`, zacznij nową sesję, wklej notatki, jedź dalej. |
+| Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. Powiedz `Zapisz do notes.md, co zostało, w dziesięciu linijkach`, wpisz `/clear`, potem wklej ten prompt jeszcze raz. |
 
 ---
 

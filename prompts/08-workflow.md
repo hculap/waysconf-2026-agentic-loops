@@ -5,6 +5,9 @@ to 07, and each phase contains the text of the prompt with the same number: phas
 prompt 03 does. The agent works through the phases in order on its own, and stops for you only
 after phase 02 and wherever a rule says to stop and ask.
 
+Paste it in normal mode, not plan mode, in a new session. The phases that ask for a plan write
+it into `notes.md` and continue.
+
 ---
 
 ```text
@@ -17,11 +20,16 @@ them in parallel, deciding how many from what you find rather than from a number
 you — one per section, one per review lens, one per finding, whatever the phase calls for.
 Merge their results before you leave the phase.
 
-Because this is one run rather than seven messages, exactly two things change:
-- In phase 03 you build the sections in parallel, one subagent each, instead of one
-  after another.
-- You stop and wait for me only where a phase tells you to: at the end of phase 02, and
-  whenever a rule says to stop and ask. Everywhere else, keep going.
+Because this is one run rather than seven messages, these things change:
+- You stop and wait for me only at the end of phase 02, for my answer to point 6, and
+  wherever a rule says to stop and ask. Where a phase says to show me a plan and wait for
+  my approval, write the plan into notes.md and carry on.
+- Where a phase says I will clear the session, do not stop: start the next phase by reading
+  notes.md and design/data again.
+- In phase 04 you build the sections in parallel, one subagent each, instead of one after
+  another.
+- In phase 06 the review is done by subagents that start with a fresh context, and you fix
+  the findings that survive without waiting for me to choose.
 
 PHASE 01 — START
 
@@ -38,9 +46,15 @@ the page to still be empty when it does.
 While you work, tell me in one line what each command is doing. I have not used a terminal
 before and I would like to follow along.
 
+Then commit everything with a message that says what this step did, and push. Tell me the
+step is done, so I can clear the session.
+
 Before moving on: the development server is running and you have told me its address.
 
 PHASE 02 — LOOK
+
+Plan first. Research what you need, then show me a plan and wait for my approval. Do not
+create or change any file until I approve it.
 
 Inside this project there is a folder called design with a .fig file in it. That is the
 Figma file itself, saved with "Save local copy". It is not a picture: it is the whole
@@ -51,7 +65,13 @@ specification, reference images or anything else about this project: there is no
 and whatever you find is not the design. If the file names something it does not contain,
 put it under point 6 instead of going to look for it.
 
-There is no tool that opens it, so decode it. What is known about the format:
+What I want is a tool, not a one-off decode: a script in this project that reads the .fig in
+design and writes the design data that the page and the checker will need. Make
+"npm run design" run it. Running it again on a new .fig must refresh the data, so that nobody
+has to decode or export the design by hand again.
+
+There is no program that opens a .fig, so the script decodes it itself. What is known about
+the format:
 
 - A .fig is a zip. The design is in canvas.fig inside it. thumbnail.png is only a small
   preview picture: do not work from it.
@@ -67,39 +87,40 @@ There is no tool that opens it, so decode it. What is known about the format:
   card of the same kind shows the same words, you are reading the component rather than
   the instances. Resolve that before you trust any copy.
 
-You may install a package to do this; the network is available. Keep the decoded data and
-the photos in a folder called design-data inside this project. Do not write any page code
-yet.
+The script may use a package; the network is available. Do not write any page code.
 
-Then write the design down as documentation, in a folder called docs, so that nobody — not
-me, not you, not a fresh session — has to open the .fig again. Write each document as soon
-as you have read that part of the file, not all of them at the end:
+The script writes JSON files into design/data, and the photos into design/images:
 
-- docs/sections.md: every section, in the order they appear down the page, and what is in
-  each one
-- docs/colours.md: every colour, by its name in the design, with its exact value and what
-  it is used for
-- docs/typography.md: every font and text style, with size, weight, line height and letter
-  spacing, and where each one is used
-- docs/layout.md: every width the design covers, and the spacing, sizes, corner radii and
-  columns at each width
-- docs/components.md: every component, with its variants and states
-- docs/copy.md: every piece of text, section by section, word for word, including alt text
-  and labels that no frame shows
-- docs/images.md: every image, with its file in design-data, where it is used, its size and
-  its alt text
+- design/data/sections.json: every section, in the order they appear down the page, and
+  what is in each one
+- design/data/colours.json: every colour, by its name in the design, with its exact value
+  and where it is used
+- design/data/typography.json: every text style, with font, size, weight, line height and
+  letter spacing, and where each one is used
+- design/data/layout.json: every width the design covers, and the spacing, sizes, corner
+  radii and columns at each width
+- design/data/components.json: every component, with its variants and states
+- design/data/copy.json: every piece of text, section by section, word for word, including
+  alt text and labels that no frame shows
+- design/data/images.json: every image, with its file in design/images, where it is used,
+  its size and its alt text
 
-Copy every value exactly as the file has it: no rounding, no renaming. From now on these
-documents are the design, and every later step reads them instead of the .fig. When a value
-turns out to be missing, the fix is to add it to the right document first.
+Every value is copied exactly as the file has it: no rounding, no renaming. From now on
+design/data is the design. Every later step reads it instead of the .fig, and the checker
+tests the page against it. If a value turns out to be missing, the fix goes into the script,
+and then npm run design runs again.
 
-Then show me a list, and write point 6 of it into notes.md:
+Your plan must say how the script reads the file, which package it uses if any, and the
+shape of each JSON file.
+
+After I approve the plan, write the script, run npm run design, then show me a list and
+write point 6 of it into notes.md:
 
 1. Every section, in the order they appear down the page.
 2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
-5. Each document you wrote in docs, and what is in it, one line each.
+5. Each file in design/data, and what is in it, one line each.
 6. Anything the file disagrees with itself about, or does not tell you, and that you would
    otherwise have to guess.
 
@@ -108,39 +129,18 @@ state I have no values for" is more useful to me than a confident guess.
 
 Then stop and wait for me to answer point 6.
 
-Before moving on: every document in docs is written, notes.md exists, and I have answered point 6.
+When I have answered point 6, write my answers into notes.md. Then commit everything with a
+message that says what this step did, and push. Tell me the step is done, so I can clear the
+session.
 
-PHASE 03 — BUILD
+Before moving on: npm run design has written design/data, notes.md exists, and I have answered point 6.
 
-Build the page now, from the design. Read docs and notes.md; do not decode the .fig again.
+PHASE 03 — ARM
 
-Build every section in docs/sections.md at the same time, one subagent per section, then
-put them together in that order. Do not stop between sections to ask me. When it is done,
-tell me which sections you built, one line each, and the address to open.
+Plan first. Research what you need, then show me a plan and wait for my approval. Do not
+create or change any file until I approve it.
 
-Rules, all of them non-negotiable:
-
-- Every colour and every size comes from docs. If a value you need is not there, look for it
-  in design-data; if it is there, add it to the right document first, then use it. If it is
-  nowhere, do not choose one: it is a question for notes.md, below.
-- Every word comes from docs/copy.md. Do not write copy. Do not improve copy. If a piece of
-  text seems to be missing, write that into notes.md — do not fill the gap.
-- Every photo comes from the design: use the images docs/images.md lists, never a
-  placeholder.
-- Nothing new goes into the page itself: no UI framework, no component library, no font or
-  icon service. The page is made of Astro and Tailwind.
-- The page must work with images that have not loaded and with JavaScript switched off.
-  Anything clever is an addition on top of something that already works without it.
-
-If the design does not tell you something, do not guess. Write the question into notes.md,
-pick the reading you think is likeliest, tell me both, and carry on. I would rather correct
-one assumption than discover six.
-
-Before moving on: every section in docs/sections.md is built, and the project builds with no errors.
-
-PHASE 04 — ARM
-
-Now write a program that checks your own work against the design.
+Now write a program that checks the page against the design, before the page exists.
 
 It must be a program, not an opinion. It runs, it looks at the real page in a real
 browser, and it exits with code 0 if everything is right and a non-zero code if anything
@@ -154,8 +154,9 @@ By default it checks the site running on this machine. It must also take an addr
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
-Derive what to check from the documents in docs, not from me. At minimum it must decide, against the
-page as a browser actually renders it rather than against the source:
+Derive what to check from design/data, not from me. There is no page to look at yet: every
+check comes from the design. At minimum it must decide, against the page as a browser
+actually renders it rather than against the source:
 
 1. that the project builds, with no errors
 2. that loading the page produces no errors in the browser console
@@ -171,26 +172,75 @@ what the design says it should be, and what was actually there. "Contrast issue 
 page" is useless. Naming the element, the expected value, the measured value and the
 threshold is the whole job.
 
-Write the report to a file as well as printing it, because in the next step I am going to
-hand that file straight back to you. Tell me what you called it.
+Write the report to a file as well as printing it, because later I am going to hand that
+file straight back to you. Tell me what you called it.
 
 Two rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
-  a document in docs is missing — that is a FAILURE, never a pass and never a silent skip. A
+  design/data is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
-- Do not make the checks lenient so that they pass. I am expecting this to fail. If it
-  passes first time I will assume it is not checking anything.
+- Do not make the checks lenient so that they pass.
 
-When it is written, run it and show me the output.
+Your plan must list each check, what it reads from design/data, and how it measures.
 
-Before moving on: npm run check runs and reports something. It will be red. Good.
+There is no page yet. When the checker is written, run it now against the project as it is:
+it must fail, and the report must say why. A check that passes on an empty page is not
+checking anything.
+
+Then commit everything with a message that says what this step did, and push. Tell me the
+step is done, so I can clear the session.
+
+Before moving on: npm run check runs, and it fails on the project as it is.
+
+PHASE 04 — BUILD
+
+Plan first. Research what you need, then show me a plan and wait for my approval. Do not
+create or change any file until I approve it.
+
+Build the page now, from the design. Read design/data and notes.md; do not decode the .fig
+again.
+
+Your plan must list the sections in the order of design/data/sections.json, and say which
+colours, text styles, layout values, copy and images each one uses.
+
+Build every section in design/data/sections.json at the same time, one subagent per section,
+then put them together in that order. Do not stop between sections to ask me. When it is done,
+tell me which sections you built, one line each, and the address to open.
+
+Rules, all of them non-negotiable:
+
+- Every colour and every size comes from design/data. If a value you need is not there,
+  check whether the script behind npm run design misses it; if it does, fix the script and
+  run it again. If the design does not have it, do not choose one: it is a question for
+  notes.md, below.
+- Every word comes from design/data/copy.json. Do not write copy. Do not improve copy. If a
+  piece of text seems to be missing, write that into notes.md; do not fill the gap.
+- Every photo comes from the design: use the images design/data/images.json lists, never a
+  placeholder.
+- Nothing new goes into the page itself: no UI framework, no component library, no font or
+  icon service. The page is made of Astro and Tailwind.
+- The page must work with images that have not loaded and with JavaScript switched off.
+  Anything clever is an addition on top of something that already works without it.
+
+If the design does not tell you something, do not guess. Write the question into notes.md,
+pick the reading you think is likeliest, tell me both, and carry on. I would rather correct
+one assumption than discover six.
+
+When the page is built, run npm run check once and show me how many checks fail and which.
+Do not fix them yet, and do not change the checker.
+
+Then commit everything with a message that says what this step did, and push. Tell me the
+step is done, so I can clear the session.
+
+Before moving on: every section in design/data/sections.json is built, and the project builds with no errors.
 
 PHASE 05 — REPAIR
 
-Run npm run check.
+Read notes.md. Then run npm run check.
 
-If it exits 0, stop and tell me — we are finished.
+If it exits 0, commit everything with a message that says the check passes, push, and tell
+me we are finished.
 
 If it does not, read the report it wrote and fix what it names. Then run npm run check again.
 Repeat until it exits 0.
@@ -219,25 +269,7 @@ could pick this up. Keep going on your own. Do not ask me to confirm each round.
 
 Before moving on: npm run check exits 0.
 
-PHASE 06 — SHIP
-
-Put this on the internet.
-
-Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
-I am signed in; if it says I am not, tell me what to do rather than doing it silently.
-
-When it is live, do not just tell me it worked. Check:
-
-- fetch the public URL and confirm it returns 200
-- confirm the page it serves is the page you just built, not an older one — compare what
-  comes back against what is in the dist folder
-- run npm run check -- --url against the live URL, and show me the result
-
-Then give me the URL on its own line so I can copy it.
-
-Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
-
-PHASE 07 — ATTACK
+PHASE 06 — ATTACK
 
 The checks pass. Now try to prove the page is still wrong.
 
@@ -279,23 +311,47 @@ Report only the findings that survive all three. Default to discarding when you 
 unsure, and tell me how many you threw away. Four real findings beat five with a guess in
 them. If you cannot point at a specific element, it is not a finding.
 
-Do not fix anything yet. I want to decide which of these are real first.
+Then fix the findings that survived, run npm run check again, and move on only if it still
+exits 0. Write the findings and what you fixed into notes.md, then commit everything with a
+message that says which findings were fixed, and push.
 
-That is the end of the run.
+Before moving on: the findings that survived are fixed, and npm run check still exits 0.
+
+PHASE 07 — SHIP
+
+Put this on the internet.
+
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
+
+When it is live, do not just tell me it worked. Check:
+
+- fetch the public URL and confirm it returns 200
+- confirm the page it serves is the page you just built, not an older one — compare what
+  comes back against what is in the dist folder
+- run npm run check -- --url against the live URL, and show me the result
+
+Then commit anything that changed with a message that says what this step did, and push.
+
+Then give me the URL on its own line so I can copy it.
+
+That is the end of the run: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
 
 Rules for the whole run:
 - Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
-- Keep docs and notes.md current as you go. If we have to start a fresh session, they are
-  all it will have.
+- Keep notes.md current as you go. If we have to start a fresh session, notes.md and
+  design/data are all it will have.
 ```
 
 ---
 
 **Expected result.** The agent announces `PHASE 01 — START` and works without supervision.
-It stops once, after phase 02, for your answer to point 6 of its list. At the end: a live
-address and the findings from phase 07.
+It stops once, after phase 02, for your answer to point 6 of its list. Along the way:
+`npm run design`, `npm run check` failing on the empty project, the page, the loop until
+the check passes, the review and its fixes, a commit after each of those, and at the end a
+live address.
 
 ---
 
@@ -307,9 +363,11 @@ far. The main agent collects what its subagents return.
 
 ## What differs from the seven prompts
 
-- Phase 03 builds the sections of the page at the same time, one subagent per section, instead of one after another.
-- Phase 07 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Because each starts with an empty context, none of them saw the page being built.
 - The run waits for you only after phase 02 and where a rule says to stop and ask.
+- Plans are not shown for approval. In the seven prompts you switch to plan mode before 02, 03 and 04 and approve each plan; here each of those phases writes its plan into `notes.md` and continues.
+- There is no `/clear` between phases. Each phase starts by reading `notes.md` and `design/data` again.
+- Phase 04 builds the sections of the page at the same time, one subagent per section, instead of one after another.
+- Phase 06 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Each starts with an empty context, so none of them saw the page being built. The agent fixes the findings that survive without waiting for you to choose.
 
 `scripts/build-workflow-prompt.mjs` generates this prompt from prompts 01 to 07, and its
 `--check` fails if they differ in anything else.
@@ -327,11 +385,11 @@ The workshop page describes six workflow patterns. This prompt uses three:
 
 | Phase | Pattern | What happens |
 |---|---|---|
-| 03 | Fan out and synthesize | the work is split into parts done at the same time, one subagent per section, then merged into one page |
+| 04 | Fan out and synthesize | the page is split into sections built at the same time, one subagent per section, then merged into one page |
 | 05 | Loop until done | plan, implement, verify, repeated until `npm run check` exits 0 |
-| 07 | Adversarial verification | subagents with an empty context look for problems, separate subagents argue against each one |
+| 06 | Adversarial verification | subagents with an empty context look for problems, separate subagents argue against each one |
 
-The review in phase 07 runs alongside `npm run check`. The checker decides what can be
+The review in phase 06 runs alongside `npm run check`. The checker decides what can be
 measured; the review looks for what cannot.
 
 ## Loop and workflow
@@ -349,19 +407,19 @@ Phase 05 is a loop inside the workflow.
 
 Change the phase list and you change the job:
 
-> Phase 03 builds only the hero and the lineup. Leave the rest.
+> Phase 04 builds only the hero and the lineup. Leave the rest.
 
-> Between phases 03 and 04, add a phase: show me each section as a screenshot at the
+> Between phases 04 and 05, add a phase: show me each section as a screenshot at the
 > narrowest width and wait for my approval.
 
-> Skip phase 06. I am not deploying today.
+> Skip phase 07. I am not deploying today.
 
-> In phase 07, look only at widths the design does not specify.
+> In phase 06, look only at widths the design does not specify.
 
 ## When to use it
 
 - **The workflow**: you know the stages and want a result without supervising each step.
-- **The seven prompts**: you are learning, want to steer, or expect to change the design halfway.
+- **The seven prompts**: you are learning, want to approve each plan, or expect to change the design halfway.
 
 ---
 
@@ -369,11 +427,13 @@ Change the phase list and you change the job:
 
 | What you see | Say this |
 |---|---|
-| It announces phase 04 before phase 03 is built | `You skipped part of phase 03. Go back and finish it before phase 04.` |
+| It announces phase 04 before `npm run check` exists | `You skipped phase 03. The check comes first. Go back and write it.` |
+| `npm run check` passes in phase 03 | `The check passed on an empty project. It is not checking anything. Fix the checker before phase 04.` |
 | It does not wait after phase 02 | `Phase 02 said wait for my answer to point 6. Stop and show me notes.md.` |
-| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then start a new session, paste this prompt again, and say `docs and notes.md have the state. Continue from phase 05.` |
+| It waits for plan approval in phase 03 or 04 | `Write the plan into notes.md and carry on.` |
+| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then type `/clear`, paste this prompt again, and say `notes.md and design/data have the state. Continue from phase 05.` |
 | It declares the whole thing done | `Run npm run check and paste the last five lines, unedited.` |
 | A phase fails and it continues anyway | `You were told to stop on a failed phase. What failed, and why did you continue?` |
-| It builds the sections one at a time | `Phase 03 is independent sections. Build them in parallel, one subagent each.` |
-| Phase 07 reports findings and discarded none | `How many candidates did you discard, and why?` |
+| It builds the sections one at a time | `Phase 04 is independent sections. Build them in parallel, one subagent each.` |
+| Phase 06 reports findings and discarded none | `How many candidates did you discard, and why?` |
 | It starts twenty subagents for a small page | `Use as many as the work needs. Tell me the number and your reason before you start.` |

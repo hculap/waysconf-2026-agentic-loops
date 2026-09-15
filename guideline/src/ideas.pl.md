@@ -6,14 +6,45 @@
 |---|---|---|
 | 14:55 | Wprowadzenie | Słuchasz. |
 | 15:03 | Start | Otwierasz terminal w folderze `turbine`, uruchamiasz agenta, wklejasz prompt 01. |
-| 15:10 | Projekt | Wkładasz `turbine.fig` do `design/` i wklejasz prompt 02. Agent dekoduje plik przez 10 do 16 minut. |
-| 15:20 | Budowa | Czytasz ustalenia agenta, odpowiadasz na jego otwarte pytania, wklejasz prompt 03. Przeglądasz stronę sekcja po sekcji. |
-| 15:35 | Checker | Wklejasz prompt 04. Agent pisze `npm run check`. Pokaz: test, który nie przechodzi, i jego raport. |
-| 15:50 | Pętla | Wklejasz prompt 05. Agent poprawia stronę, aż test przejdzie. |
-| 16:05 | Publikacja | Wklejasz prompt 06, potem prompt 07. |
-| 16:17 | Ograniczenia i pytania | Słuchasz, pytasz. |
+| 15:10 | Projekt | Wkładasz `turbine.fig` do `design/`. Plan mode, prompt 02: agent planuje i buduje dekoder `npm run design`, który zapisuje dane projektu w JSON. Odpowiadasz na jego otwarte pytania. |
+| 15:25 | Checker, najpierw testy | Plan mode, prompt 03: agent pisze `npm run check` z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport. |
+| 15:40 | Budowa | Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. Przeglądasz stronę sekcja po sekcji. |
+| 15:55 | Pętla | Prompt 05: agent poprawia stronę, aż test przejdzie. |
+| 16:05 | Review | `/clear`, prompt 06: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, a test dalej przechodzi. |
+| 16:12 | Publikacja | `/clear`, prompt 07: strona trafia na produkcję, a test uruchamia się na adresie na żywo. |
+| 16:20 | Ograniczenia i pytania | Słuchasz, pytasz. |
 
 Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi przerwać i wklej następny. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.
+
+---
+
+## Jak przebiega każdy krok
+
+Prompty 02, 03 i 04 budują coś konkretnego: dekoder, checker, stronę. Każdy przebiega tak samo:
+
+1. **Plan mode.** Zanim wkleisz prompt, przełącz agenta w tryb planowania: w Claude Code naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*; w Codeksie wpisz `/plan`. Agent robi rozpoznanie i pokazuje plan. Nie może zmieniać plików, dopóki go nie zatwierdzisz.
+2. **Implementacja.** Przeczytaj plan, popraw go zwykłymi słowami, zatwierdź. Agent buduje.
+3. **Commit.** Na końcu kroku agent robi commit z opisem tego, co zrobił ten krok, i wypycha go do twojego repozytorium na GitHubie. Każdy krok da się cofnąć.
+4. **Czyszczenie.** Wpisz `/clear` (ta sama komenda w Claude Code i w Codeksie). Następny prompt zaczyna z pustym kontekstem i czyta to, czego potrzebuje, z plików: dane projektu, raport i `notes.md`.
+
+---
+
+## Dane projektu, nie obrazek
+
+Prompt 02 nie dekoduje pliku `.fig` jednorazowo. Agent pisze małe narzędzie, `npm run design`, które czyta plik i zapisuje w `design/data/` jako JSON to, czego potrzebują strona i checker: sekcje, kolory, typografię, layout, komponenty, teksty i obrazy. Każdy kolejny krok czyta te pliki. Kiedy projekt się zmieni, uruchom `npm run design` jeszcze raz.
+
+Agent, który dostaje zrzut ekranu, wyprowadza każdy kolor i wymiar z pikseli i trafia prawie. Kiedy dostaje plik, odczytuje z niego `#FF6A1A`.
+
+---
+
+## Najpierw testy
+
+Test-driven development to pisanie testu przed kodem. Na tym warsztacie testem jest `npm run check`, a prompt 03 pisze go, zanim powstanie strona:
+
+1. **Czerwono.** Test powstaje z danych projektu i uruchamia się na pustym projekcie. Nie przechodzi, a raport wypisuje wszystko, czego strona jeszcze nie ma.
+2. **Zielono.** Prompt 04 buduje stronę, a prompt 05 poprawia ją, aż test przejdzie.
+
+Test napisany po stronie zwykle opisuje stronę, która już jest. Test napisany wcześniej może opisać tylko projekt.
 
 ---
 
@@ -23,9 +54,9 @@ Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi 
 
 - **Plan.** Agent mówi, co zmieni i dlaczego. Od drugiej rundy plan zaczyna się od raportu.
 - **Implementacja.** Agent pisze kod. Za pierwszym razem generuje stronę, potem poprawia to, co wskazuje raport.
-- **Weryfikacja.** Program `npm run check` testuje stronę w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.
+- **Weryfikacja.** Test z promptu 03, `npm run check`, sprawdza stronę w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.
 
-Pętla kończy się, gdy test zwraca 0. Wtedy strona idzie na produkcję.
+Pętla kończy się, gdy test zwraca 0. Wtedy praca trafia do commita, a strona na produkcję.
 
 ---
 
@@ -41,19 +72,7 @@ Agent może sprawdzać pracę pod dwoma warunkami: nie wykonywał jej w tym samy
 | Program: `npm run check` | Do wszystkiego, co ma dokładną odpowiedź: sekcje, kolory, teksty, kontrast, przewijanie w poziomie. |
 | Agenci ze świeżym kontekstem, którzy mają atakować (adversarial review) | Do tego, czego program nie zmierzy: kolejność czytania, bezużyteczny tekst alternatywny, tekst na zdjęciach, teksty niepasujące do marki. |
 
-Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie review to prompt 07, wklejany w nowej sesji.
-
----
-
-## Najpierw plan, potem kod
-
-W Claude Code naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*. Agent nie może edytować plików, dopóki nie zatwierdzisz planu. W Codeksie poproś o plan wprost:
-
-```text
-Nie pisz jeszcze żadnego kodu. Powiedz mi, co znalazłeś i co zamierzasz zbudować, i czekaj.
-```
-
-Prompt 02 działa tak samo: agent czyta projekt i nie pisze kodu strony.
+Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie review to prompt 06, wklejany w nowej sesji przed publikacją.
 
 ---
 
@@ -95,14 +114,14 @@ Długa sesja zbiera porzucone próby i stare rozumowanie. Kiedy agent zwalnia al
 |---|---|
 | Trzyma wszystkie wcześniejsze próby | Czyta raport: aktualne błędy |
 | Powtarza własne wcześniejsze rozumowanie | Czyta `notes.md`: co próbowano i z jakim skutkiem |
-| Zwalnia | Czyta `docs/`: projekt spisany w prompcie 02 |
+| Zwalnia | Czyta `design/data/`: projekt w JSON, zapisany w prompcie 02 |
 
 ```text
 Zapisz do notes.md, co zostało do zrobienia, w dziesięciu linijkach: co próbowałeś,
 co zadziałało, co nie i dlaczego.
 ```
 
-Potem zacznij nową sesję i każ agentowi przeczytać `docs` i `notes.md`.
+Potem wpisz `/clear` i każ agentowi przeczytać `notes.md` i raport.
 
 ---
 
@@ -117,7 +136,7 @@ Workflow może zawierać pętlę: faza 05 promptu 08 to pętla z promptu 05.
 
 ### Wzorce workflow
 
-Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 03), pętla do skutku (faza 05) i adversarial verification (faza 07).
+Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 04), pętla do skutku (faza 05) i adversarial verification (faza 06).
 
 #### 1. Klasyfikuj i działaj
 
@@ -133,7 +152,7 @@ Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech:
 
 **Jak działa:** zadanie dzieli się na niezależne części, każdą obsługuje osobny agent równolegle, a ostatni krok scala wyniki.
 
-**Kiedy użyć:** części, które od siebie nie zależą. Przykład: faza 03 promptu 08 buduje każdą sekcję strony osobnym agentem i składa je w kolejności.
+**Kiedy użyć:** części, które od siebie nie zależą. Przykład: faza 04 promptu 08 buduje każdą sekcję strony osobnym agentem i składa je w kolejności.
 
 #### 3. Adversarial verification
 
@@ -141,7 +160,7 @@ Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech:
 
 **Jak działa:** jeden agent daje wynik, kilku agentów ze świeżym kontekstem próbuje go podważyć, a ich uwagi wracają do pierwszego agenta.
 
-**Kiedy użyć:** do wszystkiego, czego nie sprawdzi program. Przykład: prompt 07 i faza 07 promptu 08.
+**Kiedy użyć:** do wszystkiego, czego nie sprawdzi program. Przykład: prompt 06 i faza 06 promptu 08.
 
 #### 4. Generuj i filtruj
 

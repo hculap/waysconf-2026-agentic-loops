@@ -1,13 +1,24 @@
-# 04 — Napisz checker
+# 03 — Najpierw checker
 
 Agent pisze `npm run check`: program, który testuje stronę w prawdziwej przeglądarce względem
-dokumentów w `docs` i zapisuje raport do pliku. Prompt nie podaje żadnego koloru, szerokości
-ani sekcji; agent bierze je z designu.
+`design/data` i zapisuje raport do pliku. Pisze go, zanim strona powstanie.
+
+Pisanie testu przed kodem nazywa się test-driven development. Test powstaje pierwszy i nie
+przechodzi, bo nie ma jeszcze czego sprawdzać. Prompt 04 buduje potem stronę, a prompt 05
+poprawia ją, aż test przejdzie.
+
+## Zanim wkleisz
+
+Przełącz agenta w plan mode, tak jak przed promptem 02. Claude Code: `Shift+Tab`, aż w stopce
+pojawi się *plan mode on*. Codex: `/plan`.
 
 ---
 
 ```text
-Napisz teraz program, który sprawdza twoją własną pracę względem designu.
+Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
+twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
+
+Napisz teraz program, który sprawdza stronę względem designu, zanim strona powstanie.
 
 To musi być program, nie opinia. Uruchamia się, patrzy na prawdziwą stronę w prawdziwej
 przeglądarce i kończy kodem 0, jeśli wszystko jest w porządku, a kodem różnym od zera,
@@ -22,8 +33,9 @@ Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmowa�
 npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
 później mógł ocenić też stronę na żywo.
 
-Co sprawdzać, wyprowadź z dokumentów w docs, nie ode mnie. Minimum, i to względem strony tak, jak
-renderuje ją przeglądarka, a nie względem kodu źródłowego:
+Co sprawdzać, wyprowadź z design/data, nie ode mnie. Nie ma jeszcze strony, na którą można
+patrzeć: każdy test wynika z designu. Minimum, i to względem strony tak, jak renderuje ją
+przeglądarka, a nie względem kodu źródłowego:
 
 1. że projekt się buduje, bez błędów
 2. że wczytanie strony nie produkuje błędów w konsoli przeglądarki
@@ -39,25 +51,34 @@ stronie, co według designu powinno tam być i co faktycznie tam było. „Probl
 z kontrastem na stronie" jest bezużyteczne. Nazwanie elementu, wartości oczekiwanej,
 wartości zmierzonej i progu — to jest cała robota.
 
-Zapisz raport do pliku, nie tylko wypisz go na ekran, bo w następnym kroku podam ci ten
-plik z powrotem. Powiedz mi, jak go nazwałeś.
+Zapisz raport do pliku, nie tylko wypisz go na ekran, bo później podam ci ten plik
+z powrotem. Powiedz mi, jak go nazwałeś.
 
 Dwie reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
-  brakuje dokumentu w docs — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
+  brakuje design/data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
-- Nie rozluźniaj testów, żeby przechodziły. Spodziewam się, że to się wywali. Jeśli
-  przejdzie za pierwszym razem, uznam, że nic nie sprawdza.
+- Nie rozluźniaj testów, żeby przechodziły.
 
-Kiedy będzie gotowe, uruchom to i pokaż mi wynik.
+Twój plan ma wymienić każdy test, co czyta z design/data i jak mierzy.
+
+Strony jeszcze nie ma. Kiedy checker będzie napisany, uruchom go od razu na projekcie takim,
+jaki jest: ma nie przejść, a raport ma powiedzieć dlaczego. Test, który przechodzi na pustej
+stronie, niczego nie sprawdza.
+
+Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok
+jest skończony, żebym mógł wyczyścić sesję.
 ```
 
 ---
 
-**Oczekiwany wynik.** Checker się uruchamia i nie przechodzi, z listą błędów. Każdy błąd
-podaje element, wartość oczekiwaną, wartość zmierzoną i próg. Checker, który przechodzi przy
-pierwszym uruchomieniu, niczego nie sprawdza.
+**Oczekiwany wynik.** Najpierw plan: testy, co każdy czyta z `design/data`, jak mierzy, jakie
+narzędzia instaluje i jak nazywa się plik z raportem. Zatwierdź go albo popraw. Potem checker
+powstaje i uruchamia się na pustym projekcie. Nie przechodzi, a raport mówi dlaczego przy
+każdym teście: brakuje sekcji, brakuje tekstów i tak dalej. Potem commit i push.
+
+**Po tym prompcie wpisz `/clear`.**
 
 ---
 
@@ -65,9 +86,12 @@ pierwszym uruchomieniu, niczego nie sprawdza.
 
 | Co widzisz | Powiedz to |
 |---|---|
-| Przechodzi przy pierwszym uruchomieniu | `Przeszło za pierwszym razem. Pokaż mi, które testy się wykonały i co każdy zmierzył.` |
+| Pisze kod, zanim pokaże plan | `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
+| Przechodzi na pustym projekcie | `Przeszło bez strony. Pokaż mi, które testy się wykonały i co każdy zmierzył.` |
+| Chce najpierw zbudować stronę, żeby test miał co sprawdzać | `W tym kroku bez strony. Test ma nie przejść na projekcie takim, jaki jest.` |
 | Test jest pominięty albo oznaczony jako incomplete | `Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.` |
 | Raport mówi „problem z kontrastem" bez szczegółów | `Każdy błąd musi podać element, wartość oczekiwaną, wartość zmierzoną i próg.` |
+| Bierze wartości z własnego wyobrażenia o designie | `Każdy test czyta wartości z design/data. Pokaż mi, skąd pochodzi każda z nich.` |
 | Pyta, jakiej biblioteki testowej użyć | `Twój wybór. Weź taką, która steruje prawdziwą przeglądarką i testuje dostępność.` |
 | `npm run check -- --url https://example.com` niczego nie zmienia | `Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.` |
 
@@ -75,6 +99,6 @@ pierwszym uruchomieniu, niczego nie sprawdza.
 
 ### Dlaczego jest tak napisany
 
+- Najpierw testy: test powstaje z designu, zanim jest jakakolwiek strona, więc nie da się go dopasować do tego, co zbudowano.
 - Program, nie opinia: kod wyjścia 0 albo nie, ta sama odpowiedź przy każdym uruchomieniu, bez modelu językowego.
 - Test, który nie może się wykonać, to porażka: narzędzia do dostępności zgłaszają tekst na zdjęciu jako „incomplete", a reguła „zero naruszeń" liczyłaby to jako zaliczenie.
-- Przyjmuje `--url`: prompt 06 uruchamia te same testy na stronie na żywo.

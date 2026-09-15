@@ -150,7 +150,7 @@ Switch to the browser here and show the real deployed site for about twenty seco
 Scroll it. Then come back. Do not narrate the design; they can see it.
 
 Their checker will be smaller than this repository's ten gates, and it should be. It is
-the one they wrote themselves, in prompt 04.
+the one they wrote themselves, in prompt 03.
 -->
 
 ---
@@ -278,6 +278,32 @@ questions. Say it twice.
 -->
 
 ---
+
+# Every step runs the same way
+
+<div class="mt-6">
+
+| | What you do | Claude Code | Codex |
+|---|---|---|---|
+| 1. Plan | Switch to plan mode, paste the prompt, read the plan, approve it | `Shift+Tab` until *plan mode on* | `/plan` |
+| 2. Implement | The agent builds what the plan says | | |
+| 3. Commit | The agent commits the step and pushes it to your repository | written into the prompt | written into the prompt |
+| 4. Clear | Empty the context before the next prompt | `/clear` | `/clear` |
+
+</div>
+
+<div class="mt-6 text-xl">
+Prompts 02, 03 and 04 start in plan mode. The next prompt reads its state from files, not from the conversation.
+</div>
+
+<!--
+Say this once, clearly, before prompt 02. It is the same four moves three times: the decoder,
+the checker, the page. Clearing after each step is what keeps every step in a fresh context;
+the commit is what makes every step undoable. Codex: /plan switches to Plan mode, /clear
+starts a new chat. Claude Code: Shift+Tab cycles to plan mode, /clear empties the context.
+-->
+
+---
 layout: section
 class: section
 ---
@@ -288,34 +314,33 @@ class: section
 
 ---
 
-# Paste prompt 02 now, then listen
+# Plan mode, then prompt 02
 
 <div class="mt-6 text-xl">
 
-Put the `.fig` in a folder called `design` inside your project, and paste **prompt 02**.
+Put `turbine.fig` in `design/` inside your project. Switch to **plan mode**, paste **prompt 02**, read the plan, approve it.
 
 </div>
 
 <div class="cols mt-8">
 <div>
 
-### What it does
+### What it builds
 
-Your agent has never seen a `.fig`. It writes a decoder, reads what comes out, and tries
-again until twelve cards carry twelve names.
+A decoder in your project: `npm run design`. It reads the `.fig` and writes the design as
+JSON in `design/data/`: sections, colours, typography, layout, components, copy, images.
 
-That is the first loop of the day, and you did not have to set it up.
+The checker and the page both read those files. Nobody decodes or exports the design again.
 
 </div>
 <div>
 
 ### What you do
 
-Nothing, for ten to fifteen minutes. Let it use the network if it asks — it may install a
-small package.
+Approve the plan, then wait ten to fifteen minutes. Let it use the network if it asks.
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-It writes no page. It will stop and tell you what it found.
+It writes no page. It stops with a list and its open questions (point 6). Answer them; it commits and pushes. Then <code>/clear</code>.
 </p>
 
 </div>
@@ -323,8 +348,8 @@ It writes no page. It will stop and tell you what it found.
 
 <!--
 This is the longest thing any agent does all afternoon: sixteen minutes in the Claude Code
-trial. Starting it now is what makes sprint 1 fit — it decodes while you talk about handing
-over the file, and the findings are waiting when sprint 1 starts.
+trial. Starting it now is what makes the checker block fit — it decodes while you talk about handing
+over the file, and the findings are waiting when the checker block starts.
 
 Claude Code in its default mode asks before each command. Tell the room to pick the option
 that stops asking for that kind of command, or they will spend the time clicking yes.
@@ -395,11 +420,11 @@ Nothing in this workshop is blocked by a free Figma account.
 </div>
 <div>
 
-### And the agent decodes it
+### And the agent builds a decoder
 
-It has never seen a `.fig`. It writes a decoder, reads what comes out, and tries again
-until twelve cards carry twelve names — the first loop of the day. It may install a
-package to do it, so let it use the network.
+It has never seen a `.fig`. It plans a decoder, writes it, runs `npm run design`, and fixes
+it until twelve cards carry twelve names. The result stays in the project as JSON, for the
+checker and for the page.
 
 </div>
 </div>
@@ -416,125 +441,78 @@ layout: section
 class: section
 ---
 
-<div class="kicker">0:25 — 0:40 · sprint 1</div>
-
-# Plan first, then build
-
----
-
-# Read the plan before it writes the code
-
-<div class="mt-8 text-xl">
-
-Plan mode is the cheapest correction in the entire loop. A wrong assumption costs one
-sentence to fix here, and twenty minutes of generated code to fix later.
-
-</div>
-
-```bash
-# Claude Code: Shift+Tab until the footer says "plan mode on"
-# Codex CLI:   ask for a plan and refuse to accept code until you have read it
-```
-
-<div class="mt-8">
-
-Then read it. Actually read it. The plan is where you find out it misunderstood the brief.
-
-</div>
-
-<!--
-Show a real plan on screen. Point at one line you would have changed. That single
-gesture teaches more than the slide.
--->
-
----
-
-# Your turn — 15 minutes
-
-<div class="cols mt-8">
-<div>
-
-### 1. Read what 02 found
-
-Check two things against the design yourself. Then answer its **point 6** — the things the
-file does not say — in your own words.
-
-### 2. Paste prompt 03
-
-<p class="mt-2">
-It builds the whole page. Then you review it, one section at a time.
-</p>
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-02 still decoding? Let it finish. Nothing here is a race.
-</p>
-
-</div>
-<div>
-
-<p class="text-xl">Falling behind cannot hurt you.</p>
-
-<blockquote>
-Stop where you are. Leave whatever is unfinished. I want to move on.
-</blockquote>
-
-<p class="mt-4" style="color: var(--sp-fg-2)">
-Every prompt stands alone. A half-built page with a working checker teaches more than
-a finished page with none.
-</p>
-
-</div>
-</div>
-
-<!--
-Circulate. Do not answer architecture questions now; answer setup questions.
-The commonest stuck state: prompt 02 still reading the .fig at 0:31. That is normal; it is
-the sixteen-minute prompt. Anyone whose agent cannot decode it after ten minutes takes the
-ready-made pack from the page instead.
-
-At 0:37 give a two-minute warning regardless of where anyone is.
--->
-
----
-layout: section
-class: section
----
-
-<div class="kicker">0:40 — 0:55</div>
+<div class="kicker">0:25 — 0:40 · tests first</div>
 
 # The verifier
-## The only part that matters
+## Written before the page
 
 ---
 
-# Paste prompt 04 now, then listen
+# Plan mode, then prompt 03
 
-<div class="mt-8 text-2xl" style="color: var(--sp-fg)">
+<div class="mt-6 text-xl">
 
-This is the workshop.
+Answer 02's open questions first. Then `/clear`, switch to **plan mode**, paste **prompt 03**.
 
 </div>
 
 <div class="mt-6 text-xl">
 
-Your agent writes a program that judges its own page — and in the next prompt, you forbid it
-from ever touching that program again.
+Your agent plans and writes `npm run check` from `design/data/`, before any page exists, and
+runs it on the empty project.
 
 </div>
 
-<div class="mt-8">
-<span class="verdict fail">it should be red</span>
+<div class="mt-6">
+<span class="verdict fail">it must be red</span>
 </div>
 
 <p class="mt-6" style="color: var(--sp-fg-3)">
-About eight minutes. If it passes first time, it is not checking anything.
+About eight minutes. A check that passes on an empty page is not checking anything. It commits; then <code>/clear</code>.
 </p>
 
-<!--
-495 seconds in the Codex trial. It runs through the next four slides and the live demo.
+---
 
-Without this prompt, prompt 05 has nothing to run: npm run check is created here. Do not
-skip it to save time — cut the demo before you cut this.
+# Tests first
+
+<div class="cols mt-8">
+<div>
+
+### Red
+
+The check is written from the design data and run on the empty project.
+
+It fails. The report lists everything the page does not have yet.
+
+<div class="mt-4"><span class="verdict fail">prompt 03</span></div>
+
+</div>
+<div>
+
+### Green
+
+The page is built against that report, then fixed until the check passes.
+
+<div class="mt-4"><span class="verdict pass">prompts 04 and 05</span></div>
+
+</div>
+</div>
+
+<div class="mt-8 text-xl">
+A check written after the page describes the page. A check written first can only describe the design.
+</div>
+
+<!--
+Test-driven development, in one sentence: write the test before the code. Here the test is the
+whole checker, and the code is the whole page. The point for this room: if the agent writes the
+page first, its checker will quietly agree with whatever it built.
+-->
+
+<!--
+495 seconds in the Codex trial. It runs through the next slides and the live demo.
+
+Prompt 04 builds against this check and prompt 05 loops on it: npm run check is created here.
+Do not skip it to save time — cut the demo before you cut this.
 -->
 
 ---
@@ -575,7 +553,7 @@ Run the last two <b>side by side</b>. One report. It ships when the report is em
 <!--
 The objection is usually "but the model is very good at reviewing now". Agreed, and that is
 the third row. What does not work is the first row: the agent that did the work, in the
-context where it decided everything, grading itself. In the workshop, prompt 07 is the third
+context where it decided everything, grading itself. In the workshop, prompt 06 is the third
 row, pasted in a new session.
 -->
 
@@ -618,7 +596,7 @@ Top tier: fresh-context agents attack the page; it runs alongside the program, a
 Do not read the table. Let them read it while you say: every one of these returns
 pass or fail the same way every time, and none of them asks a model anything.
 
-Theirs, being written right now in prompt 04, is smaller. It should be. The shape is the
+Theirs, being written right now in prompt 03, is smaller. It should be. The shape is the
 same: a program, the same answer twice, a report a stranger can act on.
 -->
 
@@ -823,6 +801,86 @@ layout: section
 class: section
 ---
 
+<div class="kicker">0:40 — 0:55 · sprint 1</div>
+
+# Build the page
+
+---
+
+# Read the plan before it writes the code
+
+<div class="mt-8 text-xl">
+
+Plan mode is the cheapest correction in the entire loop. A wrong assumption costs one
+sentence to fix here, and twenty minutes of generated code to fix later.
+
+</div>
+
+```bash
+# Claude Code: Shift+Tab until the footer says "plan mode on"
+# Codex:       /plan
+```
+
+<div class="mt-8">
+
+Then read it. Actually read it. The plan is where you find out it misunderstood the brief.
+
+</div>
+
+<!--
+Show a real plan on screen. Point at one line you would have changed. That single
+gesture teaches more than the slide.
+-->
+
+---
+
+# Your turn — 15 minutes
+
+<div class="cols mt-8">
+<div>
+
+### 1. Plan mode, prompt 04
+
+<p class="mt-2">
+It plans the page from <code>design/data/</code>, builds all of it, and runs the check once. Still red, with fewer failures.
+</p>
+
+### 2. Review it
+
+<p class="mt-2">
+Beside Figma, one section at a time. Say what is wrong in plain words. Then it commits, and you <code>/clear</code>.
+</p>
+
+</div>
+<div>
+
+<p class="text-xl">Falling behind cannot hurt you.</p>
+
+<blockquote>
+Stop where you are. Leave whatever is unfinished. I want to move on.
+</blockquote>
+
+<p class="mt-4" style="color: var(--sp-fg-2)">
+Every prompt stands alone. A half-built page with a working checker teaches more than
+a finished page with none.
+</p>
+
+</div>
+</div>
+
+<!--
+Circulate. Do not answer architecture questions now; answer setup questions.
+The commonest stuck state: a checker still being written at 0:42. Let it finish; prompt 04 needs
+it. Anyone whose page is not built by 0:53 goes on to prompt 05 anyway: the loop builds what is missing.
+
+At 0:52 give a two-minute warning regardless of where anyone is.
+-->
+
+---
+layout: section
+class: section
+---
+
 <div class="kicker">0:55 — 1:10 · sprint 2 runs in the background</div>
 
 # The loop, and workflows
@@ -837,8 +895,8 @@ is where the fifteen minutes comes from.
 # Start your loop now, then listen
 
 <div class="mt-4 text-xl">
-Paste <b>prompt 05</b>. Then leave it alone — I will talk over it, and when it stops we
-will look at what it did.
+<code>/clear</code>, then paste <b>prompt 05</b>. Then leave it alone — I will talk over it, and when it
+stops we will look at what it did.
 </div>
 
 <div class="mt-6">
@@ -932,8 +990,8 @@ several agents at once. That is the next slide.
 </div>
 
 <!--
-Prompt 08 uses three: fan out and synthesize in phase 03, loop until done in phase 05,
-adversarial verification in phase 07. The other three are for later: classify and act routes
+Prompt 08 uses three: fan out and synthesize in phase 04, loop until done in phase 05,
+adversarial verification in phase 06. The other three are for later: classify and act routes
 different kinds of task, generate and filter gives options, tournament picks between complete
 attempts. Each one, with when to use it, is on the workshop page.
 -->
@@ -1021,7 +1079,7 @@ job is to argue against it from those three angles.
 
 <div class="mt-6 text-lg">
 That is <b>prompt 08</b>: prompts 01–07 as one message, phase for phase, word for word.
-Take it home. Today, if there is time, <b>prompt 07</b> in a new session is the one-agent version.
+Take it home. Today, <b>prompt 06</b> in a new session is the one-agent version, before you deploy.
 </div>
 
 <!--
@@ -1034,9 +1092,9 @@ That last one is real. It is in evidence/INCIDENTS.md and it is worth telling.
 equivalent; the word is harmless there, and the sentence after it does the work on both.
 
 Say the 1:1 out loud: phase 03 of prompt 08 is prompt 03. Everything they did by hand today
-is in it, in the same words. The differences are named in 08: phase 03 builds sections in
-parallel, the run waits only after phase 02, and phase 07 runs its reviewers as subagents with
-a fresh context. A script writes 08 from 01–07, so the two cannot drift apart.
+is in it, in the same words. The differences are named in 08: plans go into notes.md instead of
+waiting for approval, there is no /clear between phases, phase 04 builds sections in parallel,
+and phase 06 runs its reviewers as subagents with a fresh context. A script writes 08 from 01–07, so the two cannot drift apart.
 -->
 
 ---
@@ -1046,22 +1104,28 @@ class: section
 
 <div class="kicker">1:10 — 1:22 · sprint 3</div>
 
-# Ship it
+# Review, then ship
 
 ---
 
-# Deploy
+# Break it, then deploy it
 
 <div class="mt-6 text-xl">
 
-Paste **prompt 06**. It builds, deploys to Netlify, and then checks that the page the
-server returns is the page that passed — not an older one.
+<code>/clear</code>, then **prompt 06**. An agent that never saw the build tries to break the page. Pick the findings that are real; it fixes them, and the check still passes.
 
 </div>
 
 <div class="mt-6 text-xl">
 
-It will ask you to sign in, then to pick or create a site. Take the URL it prints.
+<code>/clear</code>, then **prompt 07**, the last step. It builds, deploys to Netlify, and checks that the page the
+server returns is the page that passed.
+
+</div>
+
+<div class="mt-6 text-xl">
+
+It asks you to pick or create a site. Take the URL it prints.
 
 </div>
 
@@ -1080,7 +1144,7 @@ is the best ending this session has, and it costs nothing to arrange.
 If Netlify CLI auth is fighting someone, dragging the build folder onto netlify.com works
 with no CLI at all.
 
-Anyone with a URL and time left: prompt 07, try to break it.
+Short on time: skip prompt 06 and deploy. The URL on the board matters more.
 -->
 
 ---

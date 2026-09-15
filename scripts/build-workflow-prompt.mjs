@@ -41,36 +41,49 @@ them in parallel, deciding how many from what you find rather than from a number
 you — one per section, one per review lens, one per finding, whatever the phase calls for.
 Merge their results before you leave the phase.
 
-Because this is one run rather than seven messages, exactly two things change:
-- In phase 03 you build the sections in parallel, one subagent each, instead of one
-  after another.
-- You stop and wait for me only where a phase tells you to: at the end of phase 02, and
-  whenever a rule says to stop and ask. Everywhere else, keep going.`,
-    names: ['START', 'LOOK', 'BUILD', 'ARM', 'REPAIR', 'SHIP', 'ATTACK'],
+Because this is one run rather than seven messages, these things change:
+- You stop and wait for me only at the end of phase 02, for my answer to point 6, and
+  wherever a rule says to stop and ask. Where a phase says to show me a plan and wait for
+  my approval, write the plan into notes.md and carry on.
+- Where a phase says I will clear the session, do not stop: start the next phase by reading
+  notes.md and design/data again.
+- In phase 04 you build the sections in parallel, one subagent each, instead of one after
+  another.
+- In phase 06 the review is done by subagents that start with a fresh context, and you fix
+  the findings that survive without waiting for me to choose.`,
+    names: ['START', 'LOOK', 'ARM', 'BUILD', 'REPAIR', 'ATTACK', 'SHIP'],
     phase: (n, name) => `PHASE ${n} — ${name}`,
     bars: [
       'Before moving on: the development server is running and you have told me its address.',
-      'Before moving on: every document in docs is written, notes.md exists, and I have answered point 6.',
-      'Before moving on: every section in docs/sections.md is built, and the project builds with no errors.',
-      'Before moving on: npm run check runs and reports something. It will be red. Good.',
+      'Before moving on: npm run design has written design/data, notes.md exists, and I have answered point 6.',
+      'Before moving on: npm run check runs, and it fails on the project as it is.',
+      'Before moving on: every section in design/data/sections.json is built, and the project builds with no errors.',
       'Before moving on: npm run check exits 0.',
-      'Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.',
-      'That is the end of the run.',
+      'Before moving on: the findings that survived are fixed, and npm run check still exits 0.',
+      'That is the end of the run: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.',
     ],
     replace: {
-      3: [
+      4: [
         {
-          from: `Build the whole page in one go: every section in docs/sections.md, in that order. Do not
-stop between sections to ask me. When it is done, tell me which sections you built, one line
-each, and the address to open.`,
-          to: `Build every section in docs/sections.md at the same time, one subagent per section, then
-put them together in that order. Do not stop between sections to ask me. When it is done,
+          from: `Build the whole page in one go: every section in design/data/sections.json, in that order. Do
+not stop between sections to ask me. When it is done, tell me which sections you built, one
+line each, and the address to open.`,
+          to: `Build every section in design/data/sections.json at the same time, one subagent per section,
+then put them together in that order. Do not stop between sections to ask me. When it is done,
 tell me which sections you built, one line each, and the address to open.`,
+        },
+      ],
+      6: [
+        {
+          from: `Do not fix anything yet. I want to decide which of these are real first.`,
+          to: `Then fix the findings that survived, run npm run check again, and move on only if it still
+exits 0. Write the findings and what you fixed into notes.md, then commit everything with a
+message that says which findings were fixed, and push.`,
         },
       ],
     },
     insertBefore: {
-      7: [
+      6: [
         {
           before: `Report only the findings that survive all three.`,
           text: `In this phase, do it with subagents, each starting with a fresh context that has not seen
@@ -84,8 +97,8 @@ those three angles.`,
 - Announce each phase as you enter it, and say how many subagents you are using and why.
 - If a phase cannot finish, stop there and tell me why. Do not carry on into the next one
   with the previous one broken.
-- Keep docs and notes.md current as you go. If we have to start a fresh session, they are
-  all it will have.`,
+- Keep notes.md current as you go. If we have to start a fresh session, notes.md and
+  design/data are all it will have.`,
   },
 
   pl: {
@@ -99,36 +112,49 @@ uruchamiaj je równolegle, decydując o liczbie na podstawie tego, co zastaniesz
 liczby, którą ci podałem — jeden na sekcję, jeden na soczewkę review, jeden na znalezisko,
 czego akurat wymaga faza. Scal ich wyniki, zanim z niej wyjdziesz.
 
-Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się dokładnie dwie rzeczy:
-- W fazie 03 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
+Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się te rzeczy:
+- Zatrzymujesz się i czekasz na mnie tylko na końcu fazy 02, na moją odpowiedź na punkt 6,
+  i tam, gdzie reguła mówi, żeby się zatrzymać i zapytać. Tam, gdzie faza każe pokazać mi
+  plan i czekać na zgodę, zapisz plan do notes.md i jedź dalej.
+- Tam, gdzie faza mówi, że wyczyszczę sesję, nie zatrzymuj się: zacznij następną fazę od
+  ponownego przeczytania notes.md i design/data.
+- W fazie 04 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
   drugiej.
-- Zatrzymujesz się i czekasz na mnie tylko tam, gdzie faza ci to każe: na końcu fazy 02 i
-  zawsze, gdy reguła mówi, żeby się zatrzymać i zapytać. Wszędzie indziej jedziesz dalej.`,
-    names: ['START', 'POPATRZ', 'BUDUJ', 'UZBRÓJ', 'NAPRAWIAJ', 'WYSTAW', 'ATAKUJ'],
+- W fazie 06 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
+  które przetrwały, naprawiasz bez czekania, aż wybiorę.`,
+    names: ['START', 'POPATRZ', 'UZBRÓJ', 'BUDUJ', 'NAPRAWIAJ', 'ATAKUJ', 'WYSTAW'],
     phase: (n, name) => `FAZA ${n} — ${name}`,
     bars: [
       'Zanim pójdziesz dalej: serwer deweloperski działa i podałeś mi jego adres.',
-      'Zanim pójdziesz dalej: każdy dokument w docs jest zapisany, notes.md istnieje, a ja odpowiedziałem na punkt 6.',
-      'Zanim pójdziesz dalej: każda sekcja z docs/sections.md jest zbudowana, a projekt buduje się bez błędów.',
-      'Zanim pójdziesz dalej: npm run check uruchamia się i coś raportuje. Będzie czerwono. Dobrze.',
+      'Zanim pójdziesz dalej: npm run design zapisał design/data, notes.md istnieje, a ja odpowiedziałem na punkt 6.',
+      'Zanim pójdziesz dalej: npm run check uruchamia się i nie przechodzi na projekcie takim, jaki jest.',
+      'Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, a projekt buduje się bez błędów.',
       'Zanim pójdziesz dalej: npm run check kończy się kodem 0.',
-      'Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.',
-      'To jest koniec przebiegu.',
+      'Zanim pójdziesz dalej: znaleziska, które przetrwały, są naprawione, a npm run check nadal kończy się kodem 0.',
+      'To jest koniec przebiegu: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.',
     ],
     replace: {
-      3: [
+      4: [
         {
-          from: `Zbuduj całą stronę za jednym razem: każdą sekcję z docs/sections.md, w tej kolejności. Nie
-zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy skończysz, powiedz mi, które sekcje
-zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
-          to: `Zbuduj wszystkie sekcje z docs/sections.md naraz, po jednym subagencie na sekcję, a potem
-złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
+          from: `Zbuduj całą stronę za jednym razem: każdą sekcję z design/data/sections.json, w tej
+kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy skończysz, powiedz mi,
+które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
+          to: `Zbuduj wszystkie sekcje z design/data/sections.json naraz, po jednym subagencie na sekcję,
+a potem złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
 skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
+        },
+      ],
+      6: [
+        {
+          from: `Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są prawdziwe.`,
+          to: `Potem napraw znaleziska, które przetrwały, uruchom npm run check jeszcze raz i idź dalej
+tylko wtedy, gdy nadal kończy się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do
+notes.md, potem zrób commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push.`,
         },
       ],
     },
     insertBefore: {
-      7: [
+      6: [
         {
           before: `Zgłoś tylko te znaleziska, które przeżyją wszystkie trzy.`,
           text: `W tej fazie zrób to subagentami, z których każdy zaczyna ze świeżym kontekstem, który nie
@@ -142,8 +168,8 @@ jest argumentować przeciwko niemu z tych trzech stron.`,
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
 - Jeśli faza nie może się skończyć, zatrzymaj się na niej i powiedz dlaczego. Nie idź
   dalej z poprzednią zepsutą.
-- Utrzymuj docs i notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, to będzie
-  wszystko, co będzie miała.`,
+- Utrzymuj notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, notes.md
+  i design/data to wszystko, co będzie miała.`,
   },
 }
 

@@ -1,7 +1,12 @@
-# 06 — Ship it
+# 07 — Ship it
 
-The agent builds the site, deploys it to Netlify with the Netlify CLI and checks the live
-address.
+The last step. In a new session, the agent builds the site, deploys it to Netlify with the
+Netlify CLI, checks the live address with the same checker, and commits and pushes anything
+that changed.
+
+## Before you paste
+
+Type `/clear`, if you have not already.
 
 ---
 
@@ -18,6 +23,8 @@ When it is live, do not just tell me it worked. Check:
   comes back against what is in the dist folder
 - run npm run check -- --url against the live URL, and show me the result
 
+Then commit anything that changed with a message that says what this step did, and push.
+
 Then give me the URL on its own line so I can copy it.
 ```
 
@@ -26,8 +33,8 @@ Then give me the URL on its own line so I can copy it.
 **Expected result.** If the Netlify CLI asks which site to use, choose to create a new
 project. It prints an address like `https://something-123456.netlify.app`. The agent then
 reports three checks: the address returns 200, the served page matches `dist`, and
-`npm run check -- --url` passes against the live address. The address comes last, on its
-own line.
+`npm run check -- --url` passes against the live address. It commits and pushes anything that
+changed, for example the Netlify settings it created. The address comes last, on its own line.
 
 ---
 
@@ -40,7 +47,7 @@ own line.
 | No styles on the live page | `Deploy the dist folder, not the project root.` |
 | "Deployed successfully" and no address | `Give me the public address on its own line.` |
 | The live check fails where the local one passed | `Show me exactly which checks differ between local and live, and why. Do not change the checker.` |
-| It says the checker cannot take an address | `Prompt 04 asked for --url. Add it without changing what any check decides, then run it against the live address.` |
+| It says the checker cannot take an address | `Prompt 03 asked for --url. Add it without changing what any check decides, then run it against the live address.` |
 
 ---
 

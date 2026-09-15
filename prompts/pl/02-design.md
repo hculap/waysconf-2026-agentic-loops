@@ -1,19 +1,21 @@
 # 02 — Popatrz na design
 
-Agent dekoduje plik Figmy, spisuje design jako dokumenty w `docs` i wypisuje, co znalazł. Nie
-pisze kodu strony.
+Agent planuje i buduje dekoder pliku Figmy: skrypt w projekcie, uruchamiany przez
+`npm run design`, który zapisuje design jako JSON w `design/data`. Każdy kolejny krok i checker
+czytają te dane. Jeszcze bez kodu strony.
 
 ## Zanim wkleisz
 
 1. Na stronie warsztatu kliknij **Pobierz turbine.fig**.
-2. W folderze projektu załóż folder `design` i włóż do niego plik.
-
-Plik musi leżeć w folderze projektu: Claude Code pyta o zgodę, zanim przeczyta plik spoza
-niego.
+2. W folderze projektu załóż folder `design` i włóż do niego plik. Musi leżeć w projekcie: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.
+3. Przełącz agenta w plan mode. W plan mode agent robi rozpoznanie i pokazuje plan, a nie zmienia żadnego pliku, dopóki go nie zatwierdzisz. Claude Code: naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*. Codex: wpisz `/plan` i naciśnij Enter.
 
 ---
 
 ```text
+Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
+twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
+
 W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
 przez „Save local copy". To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
@@ -23,7 +25,13 @@ specyfikacji, obrazków referencyjnych ani niczego innego o tym projekcie: nic w
 a cokolwiek znajdziesz, nie jest designem. Jeśli plik wymienia coś, czego w nim nie ma,
 wpisz to w punkt 6, zamiast tego szukać.
 
-Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
+Chcę narzędzia, a nie jednorazowego rozkodowania: skryptu w tym projekcie, który czyta plik
+.fig z folderu design i zapisuje dane designu, których będą potrzebować strona i checker.
+Spraw, żeby uruchamiała go komenda „npm run design". Ponowne uruchomienie na nowym pliku .fig
+ma odświeżyć dane, żeby nikt już nie musiał ręcznie rozkodowywać ani eksportować designu.
+
+Nie ma programu, który otwiera plik .fig, więc skrypt rozkodowuje go sam. Co wiadomo
+o formacie:
 
 - Plik .fig to zip. Design jest w środku, w canvas.fig. thumbnail.png to tylko mały
   podgląd: nie pracuj na nim.
@@ -39,38 +47,40 @@ Nie ma narzędzia, które go otwiera, więc go rozkoduj. Co wiadomo o formacie:
   karta tego samego rodzaju pokazuje te same słowa, czytasz komponent zamiast instancji.
   Rozwiąż to, zanim zaufasz jakiemukolwiek tekstowi.
 
-Możesz zainstalować paczkę, żeby to zrobić; sieć jest dostępna. Rozkodowane dane i zdjęcia
-trzymaj w folderze design-data w tym projekcie. Nie pisz jeszcze żadnego kodu strony.
+Skrypt może użyć paczki; sieć jest dostępna. Nie pisz żadnego kodu strony.
 
-Potem spisz design jako dokumentację, w folderze docs, żeby nikt — ani ja, ani ty, ani nowa
-sesja — nie musiał już otwierać pliku .fig. Każdy dokument zapisuj od razu, gdy przeczytasz
-tę część pliku, a nie wszystkie na końcu:
+Skrypt zapisuje pliki JSON do design/data, a zdjęcia do design/images:
 
-- docs/sections.md: każda sekcja, w kolejności od góry strony, i co jest w każdej z nich
-- docs/colours.md: każdy kolor, po nazwie z designu, z dokładną wartością i do czego jest
-  używany
-- docs/typography.md: każdy font i styl tekstu, z rozmiarem, grubością, interlinią
+- design/data/sections.json: każda sekcja, w kolejności od góry strony, i co jest w każdej
+  z nich
+- design/data/colours.json: każdy kolor, po nazwie z designu, z dokładną wartością i miejscem
+  użycia
+- design/data/typography.json: każdy styl tekstu, z fontem, rozmiarem, grubością, interlinią
   i odstępem między literami, i gdzie który jest użyty
-- docs/layout.md: każda szerokość, którą design obejmuje, a przy każdej odstępy, rozmiary,
-  zaokrojenia rogów i kolumny
-- docs/components.md: każdy komponent, z jego wariantami i stanami
-- docs/copy.md: każdy tekst, sekcja po sekcji, słowo w słowo, razem z tekstami
+- design/data/layout.json: każda szerokość, którą design obejmuje, a przy każdej odstępy,
+  rozmiary, zaokrąglenia rogów i kolumny
+- design/data/components.json: każdy komponent, z jego wariantami i stanami
+- design/data/copy.json: każdy tekst, sekcja po sekcji, słowo w słowo, razem z tekstami
   alternatywnymi i etykietami, których nie pokazuje żadna ramka
-- docs/images.md: każdy obraz, z jego plikiem w design-data, miejscem użycia, rozmiarem
-  i tekstem alternatywnym
+- design/data/images.json: każdy obraz, z jego plikiem w design/images, miejscem użycia,
+  rozmiarem i tekstem alternatywnym
 
-Przepisuj każdą wartość dokładnie tak, jak jest w pliku: bez zaokrąglania, bez zmiany nazw.
-Od teraz te dokumenty są designem i każdy kolejny krok czyta je zamiast pliku .fig. Kiedy
-okaże się, że jakiejś wartości brakuje, poprawka polega na tym, żeby najpierw dopisać ją do
-właściwego dokumentu.
+Każda wartość jest przepisana dokładnie tak, jak jest w pliku: bez zaokrąglania, bez zmiany
+nazw. Od teraz design/data jest designem. Każdy kolejny krok czyta je zamiast pliku .fig,
+a checker sprawdza stronę względem nich. Jeśli okaże się, że jakiejś wartości brakuje,
+poprawka trafia do skryptu, a potem npm run design uruchamia się jeszcze raz.
 
-Potem pokaż mi listę, a jej punkt 6 zapisz do notes.md:
+Twój plan ma powiedzieć, jak skrypt czyta plik, jakiej paczki używa, jeśli jakiejś, i jaki
+kształt ma każdy plik JSON.
+
+Kiedy zatwierdzę plan, napisz skrypt, uruchom npm run design, potem pokaż mi listę, a jej
+punkt 6 zapisz do notes.md:
 
 1. Każdą sekcję, w kolejności od góry strony.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
-5. Każdy dokument, który zapisałeś w docs, i co w nim jest, po jednej linijce.
+5. Każdy plik w design/data i co w nim jest, po jednej linijce.
 6. Wszystko, co w pliku się nie zgadza albo czego w nim nie ma, a co inaczej musiałbyś
    zgadnąć.
 
@@ -78,18 +88,27 @@ Punkt 6 obchodzi mnie najbardziej. Bądź konkretny i bądź szczery: „w pliku
 do którego nie mam żadnych wartości" jest warte więcej niż pewne siebie zgadnięcie.
 
 Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.
+
+Kiedy odpowiem na punkt 6, zapisz moje odpowiedzi do notes.md. Potem zrób commit wszystkiego
+z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok jest skończony, żebym mógł
+wyczyścić sesję.
 ```
 
 ---
 
-**Oczekiwany wynik.** Od 10 do 16 minut dekodowania. W `docs` pojawia się siedem dokumentów
-(sekcje, kolory, typografia, layout, komponenty, teksty, obrazy), a w `design-data`
-rozkodowane dane i zdjęcia. Na końcu w czacie jest lista z sześcioma punktami.
+**Oczekiwany wynik.** Najpierw plan: jak skrypt czyta plik, jakiej paczki używa i jaki kształt
+ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem od 10 do 16
+minut pracy. Na końcu jest `npm run design`, w `design/data` siedem plików JSON, w
+`design/images` zdjęcia, a w czacie lista z sześcioma punktami.
 
 Sprawdź w liście dwie rzeczy:
 
 - Sekcje zgadzają się z designem: dwanaście kart artystów z dwunastoma różnymi nazwami, a nie ogólny landing page.
 - Punkt 6 nie jest pusty. Odpowiedz na każdą pozycję własnymi słowami. Jeśli jest pusty, zapytaj `co z tego przeczytałeś, a co wywnioskowałeś?`
+
+Po twoich odpowiedziach agent robi commit i push.
+
+**Po tym prompcie wpisz `/clear`.**
 
 ---
 
@@ -97,23 +116,25 @@ Sprawdź w liście dwie rzeczy:
 
 | Co widzisz | Powiedz to |
 |---|---|
-| Zaczyna budować | `Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.` |
-| Zostawia dokumenty na koniec | `Zapisz teraz docs/colours.md z tego, co już przeczytałeś, i jedź dalej.` |
-| W dokumencie brakuje wartości | `W docs/typography.md nie ma interlinii. Odczytaj je z pliku i dopisz.` |
+| Pisze kod, zanim pokaże plan | `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
+| Rozkodowuje plik raz i nie pisze skryptu | `Prosiłem o narzędzie. Przenieś rozkodowanie do skryptu, niech uruchamia go npm run design, i uruchom go.` |
+| W pliku JSON brakuje wartości | `W design/data/typography.json nie ma interlinii. Popraw skrypt, żeby je czytał, i uruchom npm run design jeszcze raz.` |
+| Zaczyna budować stronę | `Stop. W tym kroku bez kodu strony. Cofnij wszystko, co napisałeś dla strony.` |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
 | Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
-| „Nie mogę otworzyć pliku binarnego" | `To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |
+| „Nie mogę otworzyć pliku binarnego" | `To jest zip. Skrypt ma go rozpakować i rozkodować canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |
 | Opisuje małą, rozmytą stronę | Przeczytał `thumbnail.png`. `To jest podgląd. Pracuj na canvas.fig.` |
-| `zstd` nieobsługiwany albo dekompresja się sypie | Node jest starszy niż 22.15. `Zainstaluj paczkę, która czyta zstd, i działaj dalej.` |
+| `zstd` nieobsługiwany albo dekompresja się sypie | Node jest starszy niż 22.15. `Użyj paczki, która czyta zstd, i działaj dalej.` |
 | Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja paczki go wymaga. |
 | Claude Code pyta przed każdą komendą | Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend. |
-| Każda karta artysty ma to samo imię | `Czytasz komponent, a nie instancje. Rozwiąż właściwości komponentu i nadpisania.` |
-| Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli nie potrafisz ich odczytać, powiedz to.` |
+| Każda karta artysty ma to samo imię | `Czytasz komponent, a nie instancje. Rozwiąż w skrypcie właściwości komponentu i nadpisania.` |
+| Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli skrypt nie potrafi ich odczytać, powiedz to.` |
+| `git push` nie działa | Uruchom `gh auth status` w drugim terminalu. Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
 
 ---
 
 ### Dlaczego jest tak napisany
 
-- Bez kodu strony: błędne założenie poprawiasz tu jednym zdaniem, zanim rozejdzie się po całej stronie.
-- Dokumenty w `docs`: każdy kolejny prompt czyta je zamiast dekodować plik od nowa, a ty możesz je otworzyć.
+- Najpierw plan: złe podejście do pliku poprawiasz jednym zdaniem, zanim skrypt powstanie.
+- Skrypt, a nie jednorazowe rozkodowanie: nowa wersja pliku `.fig` to jedno `npm run design`, a strona i checker czytają ten sam JSON.
 - Punkt 6: lista rzeczy, których plik nie określa, to ta część briefu, której nikt nie napisał.

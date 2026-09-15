@@ -1,74 +1,41 @@
 # The prompts
 
-Eight things to say to a coding agent. That is the whole workshop.
+Eight messages to paste into a coding agent, Claude Code or Codex. Together they take an
+empty repository to a website on the internet that the agent built, checked and corrected.
 
-You need two things and nothing else: **the Figma file** and **this page**. No repository to
-clone, no script to run, no code to read. You start in an empty folder and finish with a
-website on the internet that the agent built, checked and corrected by itself.
+You need the Figma file, saved as `turbine.fig`, and these prompts. Open your agent in your
+project folder, the empty repository you created before the workshop (`cd turbine`), and paste
+the prompts in order. Paste each one whole: the rules inside a prompt matter as much as the
+request.
 
-## Two shapes, and neither is a script
+## The order
 
-Almost everything people build on top of coding agents is one of two shapes. Both are
-things you *say*, not things you install.
+The stages end with deployment: read the design, write the check, build, loop, review, deploy.
 
-**A loop** is *do this again until a condition holds*. You define the exit condition and
-the agent keeps going until a program — not an opinion — says it is met. Prompt 05.
-
-**A workflow** is *do these things, in this order, with a bar between each*. You define the
-phases and what has to be true before the next one starts. Prompt 08.
-
-They nest. The workflow gets you from nothing to nearly-right; a loop inside one of its
-phases closes the last gap. Once you can see which one a piece of work wants, most of the
-tooling people write for this becomes unnecessary.
+| | Prompt | What it does |
+|---|---|---|
+| 01 | [Start](01-start.md) | Creates the Astro project, starts the development server, commits |
+| 02 | [Look at the design](02-design.md) | Plans and builds a decoder, `npm run design`, that writes the Figma file as JSON into `design/data`; lists what it found; commits |
+| 03 | [Write the checker first](03-checker.md) | Plans and writes `npm run check` from `design/data` before any page exists; it fails on the empty project; commits |
+| 04 | [Build it](04-build.md) | Plans and builds the whole page from `design/data`, runs the check once; commits |
+| 05 | [The loop](05-loop.md) | Plan a fix, make it, run the check; repeats until `npm run check` exits 0; commits |
+| 06 | [Try to break it](06-review.md) | A review by an agent that did not build the page; you choose what to fix; commits |
+| 07 | [Ship it](07-deploy.md) | Deploys to Netlify and runs the same check against the live address; commits |
+| 08 | [The same job, as a workflow](08-workflow.md) | Prompts 01 to 07 as one message, with subagents |
 
 ## How to use them
 
-Open your agent — `claude` or `codex` — in your project folder, the empty repository you
-created before the workshop (`cd turbine`), and paste them in order. Each
-one is written to be pasted whole: the agent needs the rules as much as the request, and
-trimming a prompt to its first sentence is the commonest way to get a disappointing answer.
+- **Plan mode before 02, 03 and 04.** Each of these prompts starts with a plan that you approve before any file changes. Claude Code: press `Shift+Tab` until the footer shows *plan mode on*. Codex: type `/plan`.
+- **Commits are inside the prompts.** At the end of each step the agent commits with a message that says what the step did, and pushes to your GitHub repository.
+- **`/clear` after 01, 02, 03, 04 and 05, and before 06 and 07.** `/clear` starts a new session with an empty context, in Claude Code and in Codex. The next prompt reads what it needs from files: `design/data`, the check report and `notes.md`.
+- **Test-driven development.** Prompt 03 writes the check before prompt 04 builds the page. The check fails first, and the page is built and fixed until it passes.
 
-After each prompt there is an **Expected result** line. If you see something else, that
-is not a failure — it is the moment to say so to the agent, in your own words. The whole
-point of this session is that you are allowed to.
+Every prompt has an **Expected result** and a table of what to say when something goes wrong.
 
-## The eight
+## Prompt 08
 
-| | Prompt | What it does | Roughly |
-|---|---|---|---|
-| 01 | [Start](01-start.md) | Empty folder → a site running on your machine | 3 min |
-| 02 | [Look at the design](02-design.md) | The agent decodes the Figma file, writes it down as documents in `docs`, and tells you what it found, before writing any page | 15 min |
-| 03 | [Build it](03-build.md) | The whole page in one go, from the documents 02 wrote; you review it section by section | 15 min |
-| 04 | **[Write the checker](04-checker.md)** | The agent writes the program that will judge its own work | 6 min |
-| 05 | **[The loop](05-loop.md)** | Plan a fix, make it, run the checker; repeat until `npm run check` exits 0 | 10 min |
-| 06 | [Ship it](06-deploy.md) | A public URL you can send to someone | 4 min |
-| 07 | [Try to break it](07-review.md) | A review in a new session: find what the checker cannot see | 5 min |
-| 08 | **[The same job, as a workflow](08-workflow.md)** | Prompts 01–07 as one message — phase 01 is prompt 01, word for word — with subagents | — |
-
-Prompts 04 and 05 are the workshop. Prompt 08 is what you do with it on Monday.
-
-Prompt 08 is not a summary of the others. Its seven phases are the seven prompts, in the same
-words, so anything you learned from one prompt is true of its phase. Three things differ, and 08
-says all three: phase 03 builds the sections in parallel, phase 07 reviews with subagents that
-start with an empty context, and the run waits for you only after phase 02. `scripts/build-workflow-prompt.mjs` writes 08 from 01–07,
-so they cannot drift apart.
-
-## The one idea
-
-Prompt 03 asks the agent to build something. Prompt 04 asks it to build **the thing that
-decides whether prompt 03 worked** — and then prompt 05 forbids it from touching that thing
-ever again.
-
-That separation is the difference between an AI demo and an AI that works. A model asked
-"is this good?" will say yes, warmly and at length. A program asked the same question exits
-0 or it does not.
-
-## If you fall behind
-
-You cannot fall behind in a way that matters, because every prompt is self-contained. If
-prompt 03 is going badly when the room moves on to 04, say to your agent:
-
-> Stop where you are. Leave whatever is unfinished. I want to move on.
-
-and paste the next one. A half-built page with a working checker teaches you more than a
-finished page with none.
+Its seven phases are the seven prompts, in the same words. What differs, and 08 says so: plans
+are written into `notes.md` instead of waiting for approval, there is no `/clear` between
+phases, phase 04 builds the sections in parallel, and phase 06 reviews with subagents that
+start with an empty context and fixes what survives. `scripts/build-workflow-prompt.mjs` writes
+08 from 01 to 07, so they cannot drift apart.

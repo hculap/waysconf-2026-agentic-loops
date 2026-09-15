@@ -77,7 +77,7 @@ Do not add anything that is not listed above. No packages.`,
   },
   {
     id: '04',
-    file: 'prompts/04-checker.md',
+    file: 'prompts/03-checker.md',
     expect: ['check.mjs'],
     note: 'a checker exists and npm run check is wired',
   },

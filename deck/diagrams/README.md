@@ -38,7 +38,7 @@ generated and gitignored. If you start Slidev with a bare `slidev slides.md` rat
 
 ### `01-the-loop.svg` — 1600 × 900
 
-**The idea:** a loop is three steps, plan, implement and verify, and the step that decides is a program.
+**The idea:** the check is written first and fails; then a loop of three steps, plan, implement and verify, and the step that decides is a program.
 
 Plan states a hypothesis: what to change, and why. Implement writes the code: it generates the page the
 first time and fixes it every time after, so generate and repair are one step with different input.
@@ -126,9 +126,10 @@ pass or fail; it opens items for a person to triage.
 
 **The idea:** the two shapes, and that a workflow branches.
 
-Left, the loop of `01` drawn vertically with its exit condition. Right, the seven phases of prompt 08 with
-the bar between each, and the three phases that branch: 03 fans out to one agent per section and merges,
-05 is the loop, 07 sends the page to fresh-context reviewers and every finding to a refuter.
+Left, the loop of `01` drawn vertically with its exit condition. Right, the seven phases of prompt 08 in the
+workshop order, tests first and deploy last (START, LOOK, ARM, BUILD, REPAIR, ATTACK, SHIP), with the bar
+between each and the phases that branch: 02 waits for an answer, 04 fans out to one agent per section and
+merges, 05 is the loop, 06 sends the page to fresh-context reviewers and every finding to a refuter.
 
 ---
 

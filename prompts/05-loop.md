@@ -1,15 +1,17 @@
 # 05 — The loop
 
-The agent runs the checker it wrote in prompt 04 (`npm run check`), reads the report file the
-checker writes, fixes the first failure and runs the checker again, until it exits 0. Each
-round has three steps: plan the fix, make it, run the checker.
+In a new session, the agent runs the checker from prompt 03 (`npm run check`), reads the report
+file it writes, fixes the first failure and runs the checker again, until it exits 0. Each
+round has three steps: plan the fix, make it, run the checker. When the check passes, the agent
+commits and pushes.
 
 ---
 
 ```text
-Run npm run check.
+Read notes.md. Then run npm run check.
 
-If it exits 0, stop and tell me — we are finished.
+If it exits 0, commit everything with a message that says the check passes, push, and tell
+me we are finished.
 
 If it does not, read the report it wrote and fix what it names. Then run npm run check again.
 Repeat until it exits 0.
@@ -53,9 +55,11 @@ early, say `keep going`.
 
 ---
 
-**Expected result.** Several rounds of check, fix, check. The number of failures goes down,
+**Expected result.** Several rounds of plan, fix, check. The number of failures goes down,
 can rise by one when a fix breaks something else, and goes down again. `notes.md` gets one
-line per round. The run ends when `npm run check` exits 0.
+line per round. When `npm run check` exits 0, the agent commits and pushes.
+
+**After this prompt: type `/clear`.**
 
 ---
 
@@ -67,7 +71,7 @@ line per round. The run ends when `npm run check` exits 0.
 | It stops after one round | `Keep going. Do not stop until npm run check exits 0.` Or use `/goal`. |
 | The same failure keeps coming back | `You have tried that three times. Stop. Tell me what you tried and what happened each time.` |
 | It says it is done but the check is red | `Run npm run check and paste the last five lines, unedited.` |
-| It gets slower and vaguer | The context is full. `Write what is left into notes.md in ten lines`, start a new session, paste the notes, continue. |
+| It gets slower and vaguer | The context is full. Say `Write what is left into notes.md in ten lines`, type `/clear`, then paste this prompt again. |
 
 ---
 
