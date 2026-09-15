@@ -30,7 +30,7 @@ export default {
       'Set up your computer before the workshop: accounts, tools, sign-in, a GitHub repository and an automated setup check.',
     duringTitle: 'Workshop · WaysConf 2026 masterclass',
     duringDesc:
-      'Workshop materials: the design file, the plan, the ideas and the eight prompts.',
+      'Workshop materials: the design file, the plan, the ideas, the rescue packs and the prompts.',
   },
 
   chrome: {
@@ -68,7 +68,7 @@ export default {
         key: 'workshop',
         n: '02',
         title: 'Workshop',
-        body: 'The Figma file and the eight prompts you paste during the session.',
+        body: 'The Figma file, the seven prompts you paste during the session, and an eighth to take home.',
       },
       {
         key: 'deck',
@@ -114,9 +114,9 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Free plan. You save the design from Figma as a file and give the file to the agent.',
+      body: 'Optional. Lets you open the design in Figma while the agent works. The design file itself is downloaded from the workshop page.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Create an account' }],
-      meta: 'free plan',
+      meta: 'optional · free plan',
     },
   ],
 
@@ -191,7 +191,7 @@ export default {
         'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash',
         'nvm install --lts',
       ],
-      note: 'The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 20.11, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).',
+      note: 'The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 22.15, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).',
     },
     agentHeading: 'Coding agent (one of the two)',
     agentBody: 'Install the agent that matches your subscription.',
@@ -199,6 +199,8 @@ export default {
     chatgpt: 'ChatGPT Plus',
     netlifyHeading: 'Netlify CLI',
     netlifyBody: 'Publishes the site at the end of the workshop.',
+    browserHeading: 'A browser for the checker',
+    browserBody: 'The checker you build in the workshop opens the page in Chromium through Playwright. Downloading it now saves about 150 MB on the conference wifi. On Linux, if it reports missing libraries, run <code>npx playwright install --with-deps chromium</code> instead; it asks for your password.',
     after:
       'If a command reports <code>command not found</code> right after installation, close the terminal and open a new one.',
   },
@@ -265,7 +267,7 @@ anything: only inspect, and run whatever commands you need to do that.
 Check each item and report the result as a table with three columns: what you checked,
 what you found, OK or NOT OK.
 
-1. Node is installed, version 20.11 or newer, and npm works.
+1. Node is installed, version 22.15 or newer, and npm works.
 2. Git is installed and has a user name and email configured.
 3. The GitHub CLI (gh) is installed and signed in.
 4. The Netlify CLI is installed and signed in.
@@ -273,6 +275,8 @@ what you found, OK or NOT OK.
 6. This folder is a git repository with a GitHub remote, and that repository exists on
    GitHub under the account gh is signed in as.
 7. This folder contains nothing except git's own files.
+8. Playwright's Chromium browser is already downloaded (look in Playwright's browser cache;
+   do not download it yourself).
 
 For every NOT OK item, give the fix in one or two plain sentences, with the exact command
 if there is one. End with one line: READY, or NOT READY and the number of items left.`,
@@ -295,7 +299,7 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
         cmds: ['rm README.md'],
       },
       {
-        text: 'Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. Node, Git and GitHub CLI are already installed.',
+        text: 'Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. For the browser use <code>npx playwright install --with-deps chromium</code>. Node, Git and GitHub CLI are already installed.',
       },
       {
         text: 'Sign in to the agent and to Netlify as described in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening the browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. For Codex, use the device sign-in:',
@@ -324,8 +328,8 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
       'The project is stored in it, and you keep the code after the workshop.',
     ],
     [
-      'Do I need a paid Figma plan?',
-      'No. The design file can be saved from the free plan.',
+      'Do I need a Figma account?',
+      'No. The design file is downloaded from the workshop page. A free Figma account only lets you look at the design in Figma.',
     ],
     [
       'The check reports NOT OK and I do not know why.',
@@ -350,7 +354,7 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
   ],
 
   during: {
-    promptsHeading: 'The eight prompts',
+    promptsHeading: 'The prompts',
     designTitle: 'View the design',
     designBody: 'Opens the TURBINE file in Figma. Use it to look at the design while your agent works.',
     designCta: 'Open in Figma',
@@ -369,11 +373,11 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
     ],
     duringH1: 'Workshop',
     duringLede:
-      'The workshop is eight prompts: messages you paste to your coding agent, in order. They are at the bottom of this page, each with a Copy button. Above them: the design file, the plan of the workshop, and the ideas the prompts are built on.',
+      'The workshop is seven prompts: messages you paste to your coding agent, in order, plus an eighth to take home. They are at the bottom of this page, each with a Copy button. Above them: the design file, the plan of the workshop, and the ideas the prompts are built on.',
     pasteNote:
       'Paste each prompt whole. The rules inside a prompt matter as much as the request.',
     promptsIntro:
-      'Paste them in order, one at a time. Each prompt works on its own: if one fails, tell the agent to stop and paste the next.',
+      'Paste them in order, one at a time, and type /clear after each. Prompts 02 to 05 build on each other; if one does not finish in time, use its rescue pack from the table above.',
     promptLabel: (n) => `Prompt ${n}`,
   },
 

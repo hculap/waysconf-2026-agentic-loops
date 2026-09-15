@@ -53,6 +53,7 @@ the prompt to return before running the next one.
 | Git and GitHub CLI (`gh`) | store the project in a GitHub repository |
 | Claude Code or Codex | the coding agent |
 | Netlify CLI | publishes the site |
+| Chromium for Playwright | lets the checker open the page in a real browser |
 
 ::install::
 

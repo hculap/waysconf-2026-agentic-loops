@@ -48,19 +48,21 @@ Because this is one run rather than seven messages, these things change:
 - Where a phase says I will clear the session, do not stop: start the next phase by reading
   notes.md and design/data again.
 - In phase 04 you build the sections in parallel, one subagent each, instead of one after
-  another.
-- In phase 06 the review is done by subagents that start with a fresh context, and you fix
+  another, and you review the page against design/data yourself instead of waiting for my
+  review.
+- Phase 05 is not the end of the run: when npm run check exits 0, continue to phase 06.
+- In phase 07 the review is done by subagents that start with a fresh context, and you fix
   the findings that survive without waiting for me to choose.`,
-    names: ['START', 'LOOK', 'ARM', 'BUILD', 'REPAIR', 'ATTACK', 'SHIP'],
+    names: ['START', 'LOOK', 'ARM', 'BUILD', 'REPAIR', 'SHIP', 'ATTACK'],
     phase: (n, name) => `PHASE ${n} — ${name}`,
     bars: [
       'Before moving on: the development server is running and you have told me its address.',
       'Before moving on: npm run design has written design/data, notes.md exists, and I have answered point 6.',
       'Before moving on: npm run check runs, and it fails on the project as it is.',
-      'Before moving on: every section in design/data/sections.json is built, and the project builds with no errors.',
+      'Before moving on: every section in design/data/sections.json is built, the project builds with no errors, and notes.md has a "Design review" section.',
       'Before moving on: npm run check exits 0.',
-      'Before moving on: the findings that survived are fixed, and npm run check still exits 0.',
-      'That is the end of the run: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.',
+      'Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.',
+      'That is the end of the run: the findings that survived are fixed, npm run check still exits 0, the page is deployed again, and npm run check -- --url passes against the live address.',
     ],
     replace: {
       4: [
@@ -72,18 +74,44 @@ line each, and the address to open.`,
 then put them together in that order. Do not stop between sections to ask me. When it is done,
 tell me which sections you built, one line each, and the address to open.`,
         },
+        {
+          from: `Then wait while I review the page. When I tell you my review, write it into notes.md under
+"Design review", and do not fix anything yet. Then commit everything with a message that says
+what this step did, and push. Tell me the step is done, so I can clear the session.`,
+          to: `Then review the page yourself: compare what the browser shows with design/data, and write
+every difference into notes.md under "Design review". Do not fix anything yet. Then commit
+everything with a message that says what this step did, and push.`,
+        },
       ],
-      6: [
+      5: [
+        {
+          from: `The items under "Design review" in notes.md are problems I found by looking at the page.
+Treat the ones that design/data supports like failures in the report and fix them too. For
+each one design/data does not support, write one line into notes.md saying so, and leave it.`,
+          to: `The items under "Design review" in notes.md are the differences you found in phase 04.
+Treat the ones that design/data supports like failures in the report and fix them too. For
+each one design/data does not support, write one line into notes.md saying so, and leave it.`,
+        },
+        {
+          from: `If npm run check exits 0 and no Design review item that design/data supports is left, commit
+everything with a message that says the check passes, push, and tell me we are finished.`,
+          to: `If npm run check exits 0 and no Design review item that design/data supports is left, commit
+everything with a message that says the check passes, push, and continue to phase 06.`,
+        },
+      ],
+      7: [
         {
           from: `Do not fix anything yet. I want to decide which of these are real first.`,
-          to: `Then fix the findings that survived, run npm run check again, and move on only if it still
-exits 0. Write the findings and what you fixed into notes.md, then commit everything with a
-message that says which findings were fixed, and push.`,
+          to: `Then fix the findings that survived and run npm run check again; it must still exit 0.
+Write the findings and what you fixed into notes.md, commit everything with a message that
+says which findings were fixed, and push. Then deploy again to the same site with
+netlify deploy --prod --dir=dist --site <the site name in notes.md>, and run
+npm run check -- --url against the live address.`,
         },
       ],
     },
     insertBefore: {
-      6: [
+      7: [
         {
           before: `Report only the findings that survive all three.`,
           text: `In this phase, do it with subagents, each starting with a fresh context that has not seen
@@ -119,19 +147,21 @@ Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się te rzec
 - Tam, gdzie faza mówi, że wyczyszczę sesję, nie zatrzymuj się: zacznij następną fazę od
   ponownego przeczytania notes.md i design/data.
 - W fazie 04 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
-  drugiej.
-- W fazie 06 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
+  drugiej, i sam przeglądasz stronę względem design/data, zamiast czekać na mój przegląd.
+- Faza 05 nie jest końcem przebiegu: kiedy npm run check skończy się kodem 0, przejdź do
+  fazy 06.
+- W fazie 07 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
   które przetrwały, naprawiasz bez czekania, aż wybiorę.`,
-    names: ['START', 'POPATRZ', 'UZBRÓJ', 'BUDUJ', 'NAPRAWIAJ', 'ATAKUJ', 'WYSTAW'],
+    names: ['START', 'POPATRZ', 'UZBRÓJ', 'BUDUJ', 'NAPRAWIAJ', 'WYSTAW', 'ATAKUJ'],
     phase: (n, name) => `FAZA ${n} — ${name}`,
     bars: [
       'Zanim pójdziesz dalej: serwer deweloperski działa i podałeś mi jego adres.',
       'Zanim pójdziesz dalej: npm run design zapisał design/data, notes.md istnieje, a ja odpowiedziałem na punkt 6.',
       'Zanim pójdziesz dalej: npm run check uruchamia się i nie przechodzi na projekcie takim, jaki jest.',
-      'Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, a projekt buduje się bez błędów.',
+      'Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, projekt buduje się bez błędów, a notes.md ma sekcję „Design review".',
       'Zanim pójdziesz dalej: npm run check kończy się kodem 0.',
-      'Zanim pójdziesz dalej: znaleziska, które przetrwały, są naprawione, a npm run check nadal kończy się kodem 0.',
-      'To jest koniec przebiegu: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.',
+      'Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.',
+      'To jest koniec przebiegu: znaleziska, które przetrwały, są naprawione, npm run check nadal kończy się kodem 0, strona jest opublikowana jeszcze raz, a npm run check -- --url przechodzi na adresie na żywo.',
     ],
     replace: {
       4: [
@@ -143,18 +173,49 @@ które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
 a potem złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
 skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.`,
         },
+        {
+          from: `Potem poczekaj, aż przejrzę stronę. Kiedy podam ci mój przegląd, zapisz go do notes.md pod
+nagłówkiem „Design review" i jeszcze niczego nie naprawiaj. Potem zrób commit wszystkiego
+z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok jest skończony, żebym mógł
+wyczyścić sesję.`,
+          to: `Potem sam przejrzyj stronę: porównaj to, co pokazuje przeglądarka, z design/data i zapisz
+każdą różnicę do notes.md pod nagłówkiem „Design review". Jeszcze niczego nie naprawiaj.
+Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push.`,
+        },
       ],
-      6: [
+      5: [
+        {
+          from: `Pozycje pod nagłówkiem „Design review" w notes.md to problemy, które znalazłem, oglądając
+stronę. Te, które mają pokrycie w design/data, traktuj jak błędy z raportu i też je napraw. Przy
+każdej, która nie ma pokrycia w design/data, zapisz do notes.md jedną linijkę, że go nie ma,
+i zostaw ją.`,
+          to: `Pozycje pod nagłówkiem „Design review" w notes.md to różnice, które znalazłeś w fazie 04.
+Te, które mają pokrycie w design/data, traktuj jak błędy z raportu i też je napraw. Przy
+każdej, która nie ma pokrycia w design/data, zapisz do notes.md jedną linijkę, że go nie ma,
+i zostaw ją.`,
+        },
+        {
+          from: `Jeśli npm run check kończy się kodem 0 i nie została żadna pozycja z „Design review", która ma
+pokrycie w design/data, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+i powiedz mi, że skończyliśmy.`,
+          to: `Jeśli npm run check kończy się kodem 0 i nie została żadna pozycja z „Design review", która ma
+pokrycie w design/data, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+i przejdź do fazy 06.`,
+        },
+      ],
+      7: [
         {
           from: `Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są prawdziwe.`,
-          to: `Potem napraw znaleziska, które przetrwały, uruchom npm run check jeszcze raz i idź dalej
-tylko wtedy, gdy nadal kończy się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do
-notes.md, potem zrób commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push.`,
+          to: `Potem napraw znaleziska, które przetrwały, i uruchom npm run check jeszcze raz; musi nadal
+kończyć się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do notes.md, zrób commit
+wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push. Potem opublikuj jeszcze raz
+na tę samą stronę przez netlify deploy --prod --dir=dist --site <nazwa strony z notes.md>
+i uruchom npm run check -- --url na adresie na żywo.`,
         },
       ],
     },
     insertBefore: {
-      6: [
+      7: [
         {
           before: `Zgłoś tylko te znaleziska, które przeżyją wszystkie trzy.`,
           text: `W tej fazie zrób to subagentami, z których każdy zaczyna ze świeżym kontekstem, który nie

@@ -1,24 +1,31 @@
-# 06 — Try to break it
+# 07 — Try to break it
 
 A review of the page by an agent that did not build it. The agent looks for problems the
 checker from prompt 03 cannot catch, argues against each one, and reports only those that
-survive. You choose which to fix; the agent fixes them, checks that `npm run check` still
-passes, commits and pushes. The review adds to `npm run check`; it does not replace it.
+survive. You choose which to fix; the agent fixes them, runs `npm run check` again, commits,
+pushes and deploys again to the site from prompt 06. The review adds to `npm run check`; it
+does not replace it.
+
+The page is already live after prompt 06. If time runs out, skip this prompt: the address you
+have stays.
 
 ## Before you paste
 
 Type `/clear`, so the reviewer has not seen the page being built. An agent asked to grade its
 own work in the same session remembers its reasons for every decision and defends them; that
-is not a review. The page is reviewed on this machine, at the address of the development
-server: nothing is deployed yet.
+is not a review. The page is reviewed on this machine; the agent starts the development server
+if it is not running.
 
 ---
 
 ```text
-The checks pass. Now try to prove the page is still wrong.
+Whatever npm run check says right now, try to prove the page is wrong.
 
 You did not build this page. Judge it only by what a browser shows and what is in this
 project, not by anything said earlier in this conversation.
+
+Look at the page on this machine. If the development server is not running, start it yourself
+and give me the address.
 
 Your job now is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that the checker in this project cannot catch, and for each one
@@ -30,8 +37,9 @@ tell me:
 
 Look specifically where an automated check has no reach:
 
-- text over a photograph or a gradient: an automated contrast check cannot compute that
-  pair at all, and reports it as inconclusive rather than as a failure
+- text over a photograph or a gradient: an accessibility tool cannot compute that pair and
+  marks it incomplete; the checker in this project may measure it from the pixels, so look
+  at what it actually measured there
 - reading order for someone using a keyboard or a screen reader: technically valid and
   incoherent is a thing that exists
 - alt text that is present, and useless
@@ -57,15 +65,20 @@ Do not fix anything yet. I want to decide which of these are real first.
 
 **Expected result.** Up to five findings, each with the element, the problem and why the
 checker missed it, plus the number of candidates the agent discarded. Decide which findings
-are real, then paste, with your own numbers:
+are real. Then type `Fix findings` and the numbers you chose, press Shift+Enter for a new line,
+and paste the block below:
 
 ```text
-Fix findings 2 and 4. Leave the rest. Then run npm run check again — I want to know if
-fixing them broke anything that was passing. If it still exits 0, commit everything with a
-message that says which findings were fixed, and push.
+Fix only the findings I listed above. Leave the rest. Then run npm run check again: I want
+to know if fixing them broke anything that was passing. If it exits 0, commit everything
+with a message that says which findings were fixed, and push. If it exits non-zero, tell me
+which failures are new since your fixes, then commit and push anyway. Then deploy again to
+the same site with netlify deploy --prod --dir=dist --site <the site name in notes.md>, and
+run npm run check -- --url against the live address.
 ```
 
-The agent fixes the chosen findings, runs the check, and commits and pushes when it passes.
+The agent fixes the chosen findings, runs the check, commits and pushes, deploys again to the
+site from prompt 06 and runs the check against the live address.
 
 **After this prompt: type `/clear`.**
 
@@ -77,9 +90,11 @@ The agent fixes the chosen findings, runs the check, and commits and pushes when
 |---|---|
 | A finding with no specific element | `Name the element as I would see it on screen, or drop the finding.` |
 | Five findings and nothing discarded | `How many candidates did you discard, and why?` If arguing against the findings removed none, it did not really happen. |
-| It starts fixing before you chose | `Stop. No fixes yet. I decide which findings are real first.` |
+| It starts fixing before you chose | Press Esc, then say `Stop. No fixes yet. I decide which findings are real first.` |
 | It mentions decisions made while building | The session was not cleared. Type `/clear` and paste the prompt again. |
-| A fix makes `npm run check` fail | `The check failed after your fix. Undo that fix, tell me why it broke the check, and do not change the checker.` |
+| The development server is not running | `Start the development server yourself and give me the address.` |
+| A fix makes a check fail that passed before | `That fix broke a check that passed before. Undo that fix, tell me why it broke the check, and do not change the checker.` |
+| It cannot find the site name | `The site name from prompt 06 is in notes.md. If it is not there, run netlify status and use that site.` |
 
 ---
 

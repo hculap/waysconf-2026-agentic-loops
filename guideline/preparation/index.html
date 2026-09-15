@@ -280,9 +280,9 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Free plan. You save the design from Figma as a file and give the file to the agent.</p>
+    <p>Optional. Lets you open the design in Figma while the agent works. The design file itself is downloaded from the workshop page.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Create an account</a></p>
-    <p class="card__t">free plan</p>
+    <p class="card__t">optional · free plan</p>
   </div>
 </div>
 <hr>
@@ -344,7 +344,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 </div>
 <hr>
 <h2 id="install-the-tools">Install the tools</h2>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody><tr><td>Node</td><td>runs the website on your computer</td></tr><tr><td>Git and GitHub CLI (<code>gh</code>)</td><td>store the project in a GitHub repository</td></tr><tr><td>Claude Code or Codex</td><td>the coding agent</td></tr><tr><td>Netlify CLI</td><td>publishes the site</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Tool</th><th>Purpose</th></tr></thead><tbody><tr><td>Node</td><td>runs the website on your computer</td></tr><tr><td>Git and GitHub CLI (<code>gh</code>)</td><td>store the project in a GitHub repository</td></tr><tr><td>Claude Code or Codex</td><td>the coding agent</td></tr><tr><td>Netlify CLI</td><td>publishes the site</td></tr><tr><td>Chromium for Playwright</td><td>lets the checker open the page in a real browser</td></tr></tbody></table></div>
 
 <div data-os="mac">
   <h3>Node, Git and GitHub CLI on macOS</h3>
@@ -390,7 +390,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <pre id="cmd-8"><code>nvm install --lts</code></pre>
   <button class="copy copy--sm" data-for="cmd-8" aria-label="Copy: nvm install --lts">Copy</button>
 </div>
-  <p>The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 20.11, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).</p>
+  <p>The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 22.15, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).</p>
 </div>
 
 <h3>Coding agent (one of the two)</h3>
@@ -420,6 +420,13 @@ footer p{font-size:14px;color:var(--fg-3)}
   <button class="copy copy--sm" data-for="cmd-11" aria-label="Copy: npm install -g netlify-cli">Copy</button>
 </div>
 
+<h3>A browser for the checker</h3>
+<p>The checker you build in the workshop opens the page in Chromium through Playwright. Downloading it now saves about 150 MB on the conference wifi. On Linux, if it reports missing libraries, run <code>npx playwright install --with-deps chromium</code> instead; it asks for your password.</p>
+<div class="cmd">
+  <pre id="cmd-12"><code>npx playwright install chromium</code></pre>
+  <button class="copy copy--sm" data-for="cmd-12" aria-label="Copy: npx playwright install chromium">Copy</button>
+</div>
+
 <p class="cmd__note">If a command reports <code>command not found</code> right after installation, close the terminal and open a new one.</p>
 <hr>
 <h2 id="sign-in">Sign in</h2>
@@ -428,13 +435,13 @@ footer p{font-size:14px;color:var(--fg-3)}
 
 <h3>GitHub</h3>
 <div class="cmd">
-  <pre id="cmd-12"><code>gh auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-12" aria-label="Copy: gh auth login">Copy</button>
+  <pre id="cmd-13"><code>gh auth login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-13" aria-label="Copy: gh auth login">Copy</button>
 </div>
 <p>Answer with the arrow keys and <kbd>Enter</kbd>: <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (authenticate Git) → <strong>Login with a web browser</strong>. Copy the one-time code, press <kbd>Enter</kbd>, paste the code in the browser and click <strong>Authorize</strong>.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-13"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-13" aria-label="Copy: gh auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-14"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-14" aria-label="Copy: gh auth status">Copy</button></div>
 </div>
 
 <h3>Coding agent</h3>
@@ -442,55 +449,55 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="picktwo__col">
     <p class="picktwo__t">Claude Pro or Max</p>
     <div class="cmd">
-  <pre id="cmd-14"><code>claude auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-14" aria-label="Copy: claude auth login">Copy</button>
+  <pre id="cmd-15"><code>claude auth login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-15" aria-label="Copy: claude auth login">Copy</button>
 </div>
 <p>Sign in on claude.ai in the browser and click <strong>Authorize</strong>. If the terminal asks for a code, copy it from the browser and paste it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-15"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Copy: claude auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-16"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-16" aria-label="Copy: claude auth status">Copy</button></div>
 </div>
   </div>
   <div class="picktwo__col">
     <p class="picktwo__t">ChatGPT Plus</p>
     <div class="cmd">
-  <pre id="cmd-16"><code>codex login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-16" aria-label="Copy: codex login">Copy</button>
+  <pre id="cmd-17"><code>codex login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-17" aria-label="Copy: codex login">Copy</button>
 </div>
 <p>Sign in to ChatGPT in the browser and allow access. The terminal confirms when sign-in is complete.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-17"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Copy: codex login status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-18"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-18" aria-label="Copy: codex login status">Copy</button></div>
 </div>
   </div>
 </div>
 
 <h3>Netlify</h3>
 <div class="cmd">
-  <pre id="cmd-18"><code>netlify login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-18" aria-label="Copy: netlify login">Copy</button>
+  <pre id="cmd-19"><code>netlify login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-19" aria-label="Copy: netlify login">Copy</button>
 </div>
 <p>Click <strong>Authorize</strong> in the browser, then return to the terminal.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-19"><code>netlify status</code></pre><span>your email address</span><button class="copy copy--sm" data-for="cmd-19" aria-label="Copy: netlify status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-20"><code>netlify status</code></pre><span>your email address</span><button class="copy copy--sm" data-for="cmd-20" aria-label="Copy: netlify status">Copy</button></div>
 </div>
 <hr>
 <h2 id="create-the-repository">Create the repository</h2>
 
 <p>This command creates a private repository named <code>turbine</code> on your GitHub account and clones it into a <code>turbine</code> folder in the current directory.</p>
 <div class="cmd">
-  <pre id="cmd-20"><code>gh repo create turbine --private --clone</code></pre>
-  <button class="copy copy--sm" data-for="cmd-20" aria-label="Copy: gh repo create turbine --private --clone">Copy</button>
+  <pre id="cmd-21"><code>gh repo create turbine --private --clone</code></pre>
+  <button class="copy copy--sm" data-for="cmd-21" aria-label="Copy: gh repo create turbine --private --clone">Copy</button>
 </div>
 <div class="cmd">
-  <pre id="cmd-21"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-21" aria-label="Copy: cd turbine">Copy</button>
+  <pre id="cmd-22"><code>cd turbine</code></pre>
+  <button class="copy copy--sm" data-for="cmd-22" aria-label="Copy: cd turbine">Copy</button>
 </div>
 <p>The workshop starts in this folder: <code>cd turbine</code>, then start the agent. Do not add files to it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-22"><code>git remote -v</code></pre><span>github.com/your-username/turbine</span><button class="copy copy--sm" data-for="cmd-22" aria-label="Copy: git remote -v">Copy</button></div>
+  <div class="check__row"><pre id="cmd-23"><code>git remote -v</code></pre><span>github.com/your-username/turbine</span><button class="copy copy--sm" data-for="cmd-23" aria-label="Copy: git remote -v">Copy</button></div>
 </div>
 <p class="cmd__note">If a repository named turbine already exists on your account, choose another name and use it wherever this page says turbine.</p>
 <hr>
@@ -499,8 +506,8 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>The agent checks every item from the previous steps and reports what is missing. It does not change anything.</p>
 <ol class="steps">
   <li>Go to the project folder:<div class="cmd">
-  <pre id="cmd-23"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-23" aria-label="Copy: cd turbine">Copy</button>
+  <pre id="cmd-24"><code>cd turbine</code></pre>
+  <button class="copy copy--sm" data-for="cmd-24" aria-label="Copy: cd turbine">Copy</button>
 </div></li>
   <li>Start the agent: <code>claude</code> or <code>codex</code>. If it asks whether to trust the folder, answer yes.</li>
   <li>Paste the prompt below and press <kbd>Enter</kbd>.</li>
@@ -514,7 +521,7 @@ anything: only inspect, and run whatever commands you need to do that.
 Check each item and report the result as a table with three columns: what you checked,
 what you found, OK or NOT OK.
 
-1. Node is installed, version 20.11 or newer, and npm works.
+1. Node is installed, version 22.15 or newer, and npm works.
 2. Git is installed and has a user name and email configured.
 3. The GitHub CLI (gh) is installed and signed in.
 4. The Netlify CLI is installed and signed in.
@@ -522,6 +529,8 @@ what you found, OK or NOT OK.
 6. This folder is a git repository with a GitHub remote, and that repository exists on
    GitHub under the account gh is signed in as.
 7. This folder contains nothing except git's own files.
+8. Playwright's Chromium browser is already downloaded (look in Playwright's browser cache;
+   do not download it yourself).
 
 For every NOT OK item, give the fix in one or two plain sentences, with the exact command
 if there is one. End with one line: READY, or NOT READY and the number of items left.</code></pre></div>
@@ -534,20 +543,20 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
   <li>On github.com, click <strong>+</strong> → <strong>New repository</strong>. Name: <code>turbine</code>. Visibility: <strong>Private</strong>. Select <strong>Add a README file</strong>, because a Codespace cannot be created for an empty repository. Click <strong>Create repository</strong>.</li>
   <li>On the repository page, click <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. The terminal is the panel at the bottom, already in the repository folder.</li>
   <li>Delete the README so the folder is empty:<div class="cmd">
-  <pre id="cmd-24"><code>rm README.md</code></pre>
-  <button class="copy copy--sm" data-for="cmd-24" aria-label="Copy: rm README.md">Copy</button>
+  <pre id="cmd-25"><code>rm README.md</code></pre>
+  <button class="copy copy--sm" data-for="cmd-25" aria-label="Copy: rm README.md">Copy</button>
 </div></li>
-  <li>Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. Node, Git and GitHub CLI are already installed.</li>
+  <li>Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. For the browser use <code>npx playwright install --with-deps chromium</code>. Node, Git and GitHub CLI are already installed.</li>
   <li>Sign in to the agent and to Netlify as described in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening the browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. For Codex, use the device sign-in:<div class="cmd">
-  <pre id="cmd-25"><code>codex login --device-auth</code></pre>
-  <button class="copy copy--sm" data-for="cmd-25" aria-label="Copy: codex login --device-auth">Copy</button>
+  <pre id="cmd-26"><code>codex login --device-auth</code></pre>
+  <button class="copy copy--sm" data-for="cmd-26" aria-label="Copy: codex login --device-auth">Copy</button>
 </div><p class="cmd__note">If Codex reports that device code login is not enabled, turn it on in ChatGPT → Settings → Security and run the command again.</p></li>
   <li>Run <a href="#check-the-setup">Check the setup</a> in the Codespace terminal. Skip <code>cd turbine</code>: the terminal is already in the project folder.</li>
 </ol>
 <p>The GitHub free plan includes 120 core-hours of Codespaces per month; the workshop uses about 3. On the day, reopen the same Codespace from <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
 <hr>
 <h2 id="faq">FAQ</h2>
-<div class="faq"><details><summary>Do I need programming experience?</summary><p>No. You describe problems in plain language; the agent writes the code.</p></details><details><summary>Can I use a free AI plan?</summary><p>No. The free plans of Claude and ChatGPT do not include Claude Code or Codex. The cheapest paid plan of either is enough.</p></details><details><summary>Why do I need a GitHub repository?</summary><p>The project is stored in it, and you keep the code after the workshop.</p></details><details><summary>Do I need a paid Figma plan?</summary><p>No. The design file can be saved from the free plan.</p></details><details><summary>The check reports NOT OK and I do not know why.</summary><p>Ask the agent to explain that item step by step. If the problem remains, come 15 minutes before the workshop starts.</p></details><details><summary>Is internet access required during the workshop?</summary><p>Yes. The room has Wi-Fi. The agent installs packages, decodes the Figma file and publishes the site.</p></details><details><summary>I cannot install software on my laptop.</summary><p>Use a Codespace, as described in the section on working without installing.</p></details><details><summary>Does it work on Windows?</summary><p>Yes. Use PowerShell, not Command Prompt.</p></details><details><summary>What do I keep after the workshop?</summary><p>The published site, the repository with its code, and the prompts.</p></details></div>
+<div class="faq"><details><summary>Do I need programming experience?</summary><p>No. You describe problems in plain language; the agent writes the code.</p></details><details><summary>Can I use a free AI plan?</summary><p>No. The free plans of Claude and ChatGPT do not include Claude Code or Codex. The cheapest paid plan of either is enough.</p></details><details><summary>Why do I need a GitHub repository?</summary><p>The project is stored in it, and you keep the code after the workshop.</p></details><details><summary>Do I need a Figma account?</summary><p>No. The design file is downloaded from the workshop page. A free Figma account only lets you look at the design in Figma.</p></details><details><summary>The check reports NOT OK and I do not know why.</summary><p>Ask the agent to explain that item step by step. If the problem remains, come 15 minutes before the workshop starts.</p></details><details><summary>Is internet access required during the workshop?</summary><p>Yes. The room has Wi-Fi. The agent installs packages, decodes the Figma file and publishes the site.</p></details><details><summary>I cannot install software on my laptop.</summary><p>Use a Codespace, as described in the section on working without installing.</p></details><details><summary>Does it work on Windows?</summary><p>Yes. Use PowerShell, not Command Prompt.</p></details><details><summary>What do I keep after the workshop?</summary><p>The published site, the repository with its code, and the prompts.</p></details></div>
 <hr>
 <h2 id="on-the-day">On the day</h2>
 <ul><li>Bring your laptop and charger.</li><li>If the setup check did not report READY, come 15 minutes before the start.</li></ul>

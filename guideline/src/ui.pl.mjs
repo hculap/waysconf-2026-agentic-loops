@@ -26,7 +26,7 @@ export default {
       'Przygotuj komputer przed warsztatem: konta, narzędzia, logowanie, repozytorium na GitHubie i automatyczne sprawdzenie konfiguracji.',
     duringTitle: 'Warsztat · masterclass WaysConf 2026',
     duringDesc:
-      'Materiały warsztatu: plik projektu, plan, idee i osiem promptów.',
+      'Materiały warsztatu: plik projektu, plan, idee, paczki awaryjne i prompty.',
   },
 
   chrome: {
@@ -64,7 +64,7 @@ export default {
         key: 'workshop',
         n: '02',
         title: 'Warsztat',
-        body: 'Plik Figmy i osiem promptów, które wklejasz w trakcie sesji.',
+        body: 'Plik Figmy, siedem promptów, które wklejasz w trakcie sesji, i ósmy do domu.',
       },
       {
         key: 'deck',
@@ -110,9 +110,9 @@ export default {
     {
       n: '04',
       title: 'Figma',
-      body: 'Darmowy plan. Zapisujesz projekt z Figmy jako plik i przekazujesz go agentowi.',
+      body: 'Opcjonalnie. Pozwala oglądać projekt w Figmie, kiedy agent pracuje. Sam plik projektu pobierasz ze strony warsztatu.',
       buttons: [{ href: 'https://www.figma.com/signup', label: 'Załóż konto' }],
-      meta: 'darmowy plan',
+      meta: 'opcjonalnie · darmowy plan',
     },
   ],
 
@@ -187,7 +187,7 @@ export default {
         'curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash',
         'nvm install --lts',
       ],
-      note: 'Pierwsza komenda zapyta o hasło, a wpisywane znaki nie będą widoczne. Przed trzecią komendą zamknij terminal i otwórz nowy. Node instalujemy przez nvm, bo paczki z dystrybucji bywają starsze niż wymagana wersja 20.11. Dzięki temu instalacja przez npm nie wymaga też <code>sudo</code>. Inne dystrybucje: zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek (<a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>).',
+      note: 'Pierwsza komenda zapyta o hasło, a wpisywane znaki nie będą widoczne. Przed trzecią komendą zamknij terminal i otwórz nowy. Node instalujemy przez nvm, bo paczki z dystrybucji bywają starsze niż wymagana wersja 22.15. Dzięki temu instalacja przez npm nie wymaga też <code>sudo</code>. Inne dystrybucje: zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek (<a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>).',
     },
     agentHeading: 'Agent do kodu (jeden z dwóch)',
     agentBody: 'Zainstaluj agenta, który pasuje do twojej subskrypcji.',
@@ -195,6 +195,8 @@ export default {
     chatgpt: 'ChatGPT Plus',
     netlifyHeading: 'Netlify CLI',
     netlifyBody: 'Publikuje stronę na końcu warsztatu.',
+    browserHeading: 'Przeglądarka dla checkera',
+    browserBody: 'Checker, który zbudujesz na warsztacie, otwiera stronę w Chromium przez Playwright. Pobranie go teraz oszczędza około 150 MB na konferencyjnym wifi. Na Linuksie, jeśli zgłosi brak bibliotek, uruchom zamiast tego <code>npx playwright install --with-deps chromium</code>; zapyta o hasło.',
     after:
       'Jeśli komenda zaraz po instalacji zwraca <code>command not found</code>, zamknij terminal i otwórz nowy.',
   },
@@ -261,7 +263,7 @@ i niczego nie zmieniaj: tylko sprawdzaj i uruchamiaj takie komendy, jakich do te
 Sprawdź każdy punkt i podaj wynik w tabeli z trzema kolumnami: co sprawdziłeś, co znalazłeś,
 OK albo NIE OK.
 
-1. Node jest zainstalowany, w wersji 20.11 lub nowszej, i npm działa.
+1. Node jest zainstalowany, w wersji 22.15 lub nowszej, i npm działa.
 2. Git jest zainstalowany i ma ustawione imię oraz adres e-mail.
 3. GitHub CLI (gh) jest zainstalowane i zalogowane.
 4. Netlify CLI jest zainstalowane i zalogowane.
@@ -270,6 +272,8 @@ OK albo NIE OK.
 6. Ten folder jest repozytorium git z remote na GitHubie, a to repozytorium istnieje na
    koncie, na które zalogowane jest gh.
 7. W tym folderze nie ma nic poza plikami samego gita.
+8. Przeglądarka Chromium dla Playwright jest już pobrana (sprawdź w katalogu przeglądarek
+   Playwright; nie pobieraj jej sam).
 
 Dla każdego punktu NIE OK podaj poprawkę w jednym lub dwóch prostych zdaniach, z dokładną
 komendą, jeśli taka jest. Zakończ jedną linijką: GOTOWE albo NIEGOTOWE i liczba punktów
@@ -293,7 +297,7 @@ do poprawienia.`,
         cmds: ['rm README.md'],
       },
       {
-        text: 'Zainstaluj agenta i Netlify CLI komendami z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>. Node, Git i GitHub CLI są już zainstalowane.',
+        text: 'Zainstaluj agenta i Netlify CLI komendami z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>. Przeglądarkę zainstaluj przez <code>npx playwright install --with-deps chromium</code>. Node, Git i GitHub CLI są już zainstalowane.',
       },
       {
         text: 'Zaloguj się do agenta i do Netlify zgodnie z sekcją <a href="#zaloguj-sie">Zaloguj się</a>. Zamiast otwierać przeglądarkę, terminal wypisze link. Przytrzymaj <kbd>Ctrl</kbd> albo <kbd>Cmd</kbd> i kliknij go. W Codeksie użyj logowania kodem urządzenia:',
@@ -322,8 +326,8 @@ do poprawienia.`,
       'Przechowuje projekt. Po warsztacie zostaje ci kod.',
     ],
     [
-      'Czy potrzebuję płatnej Figmy?',
-      'Nie. Plik projektu zapiszesz z darmowego planu.',
+      'Czy potrzebuję konta w Figmie?',
+      'Nie. Plik projektu pobierasz ze strony warsztatu. Darmowe konto w Figmie pozwala tylko oglądać projekt w Figmie.',
     ],
     [
       'Sprawdzenie zwraca NIE OK i nie wiem dlaczego.',
@@ -348,7 +352,7 @@ do poprawienia.`,
   ],
 
   during: {
-    promptsHeading: 'Osiem promptów',
+    promptsHeading: 'Prompty',
     designTitle: 'Zobacz projekt',
     designBody: 'Otwiera plik TURBINE w Figmie. Możesz w nim oglądać projekt, kiedy agent pracuje.',
     designCta: 'Otwórz w Figmie',
@@ -367,11 +371,11 @@ do poprawienia.`,
     ],
     duringH1: 'Warsztat',
     duringLede:
-      'Warsztat to osiem promptów: wiadomości, które wklejasz agentowi po kolei. Są na dole tej strony, każdy z przyciskiem Kopiuj. Nad nimi: plik projektu, plan warsztatu i idee, na których prompty są oparte.',
+      'Warsztat to siedem promptów: wiadomości, które wklejasz agentowi po kolei, i ósmy do domu. Są na dole tej strony, każdy z przyciskiem Kopiuj. Nad nimi: plik projektu, plan warsztatu i idee, na których prompty są oparte.',
     pasteNote:
       'Wklejaj każdy prompt w całości. Reguły w prompcie znaczą tyle samo co samo polecenie.',
     promptsIntro:
-      'Wklejaj je po kolei, po jednym. Każdy prompt działa samodzielnie: jeśli któryś się nie uda, każ agentowi przerwać i wklej następny.',
+      'Wklejaj je po kolei, po jednym, i po każdym wpisz /clear. Prompty od 02 do 05 zależą od siebie; jeśli któryś nie skończy się na czas, użyj jego paczki awaryjnej z tabeli wyżej.',
     promptLabel: (n) => `Prompt ${n}`,
   },
 

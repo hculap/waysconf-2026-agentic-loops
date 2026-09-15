@@ -4,26 +4,29 @@ One page. Print it. You do not need to know the material — you need to recogni
 these ten situations and say the right sentence.
 
 **The golden rule:** nobody waits more than two minutes. If you cannot fix it in two
-minutes, move them to a checkpoint branch or to Codespaces and keep them in the room
+minutes, move them to a rescue pack or to Codespaces and keep them in the room
 rather than in a setup problem.
 
 ---
 
 ## The two rescues that solve most things
 
-**Rescue A — skip forward.** They have fallen behind. Nothing is lost, because every
-prompt is self-contained: a half-built page with a working checker teaches more than a
-finished page with none.
+**Rescue A — skip forward.** They have fallen behind. Prompts 02 to 05 build on each other,
+so skipping a step means taking its result from a rescue pack on the workshop page: at
+RESCUE_TIME_1, `design-data.zip` replaces prompt 02; at RESCUE_TIME_2, `checker.zip` replaces
+prompt 03 and brings its own `design/data`. The last row of the table in prompt 02 and in
+prompt 03 has the exact words to say. A half-built page with a working checker teaches more
+than a finished page with none.
 
-```bash
-# Say this to their agent, in their own words:
-#   "Stop where you are. Leave whatever is unfinished. I want to move on."
-#
-# Then paste the next prompt from the prompts page. Every prompt stands alone.
+```text
+Press Esc, then say to their agent:
+  Stop. Commit what you have and push.
+Then type /clear and paste the next prompt.
 ```
 
-The current prompt number is always on the slide in the corner. Reassure them that
-moving on is the designed path, not giving up.
+At BUILD_END (prompt 04) and LOOP_END (prompt 05) the last row of the prompt's table says
+the same. The current prompt number is always on the slide in the corner. Reassure them
+that moving on is the designed path, not giving up.
 
 **Rescue B — move to the browser.** Their local setup is fighting them. Stop fighting
 it.
@@ -45,11 +48,10 @@ They lose nothing; they can copy their work across later.
 | "npm run dev did nothing" | It did work; it is waiting | Point at the `localhost:4321` line. That is the site. Leave that terminal alone and open a second one. |
 | "My terminal won't take any more commands" | A server is running in it | That is correct. Open a second terminal. Ctrl+C only if they want to stop the server. |
 | "Everything is red" | `npm run check` is doing its job | Correct and expected. That is the task list, not an error. |
-| "The agent says it's done but the check still fails" | The exact thing the talk is about | Say so — this is a good moment, not a problem. Have them paste `checks/report.md` back to the agent. |
-| "It changed the tests" | The agent edited `checks/` | `git checkout checks/` to restore, and tell them: this is the failure mode on the slide. |
-| "My Figma is free and the MCP thing won't connect" | Expected | They do not need it. File → Save local copy, or download `turbine.fig` from the workshop page, and use Route B in prompt 02. Nothing is blocked. |
-| "There's no Save local copy" | They are in a file they can only view | Duplicate to your drafts first, then save from the copy. |
-| "The agent is installing things" or "Codex wants the network" | It is decoding the `.fig` | Normal. Say yes — the room has network. |
+| "The agent says it's done but the check still fails" | The exact thing the talk is about | Say so: this is a good moment, not a problem. Have them tell the agent `Run npm run check and paste the last five lines, unedited.` |
+| "It changed the tests" | The agent edited its own checker | Have them say `Restore the checker exactly as it was and fix the page instead.`, and tell them: this is the failure mode on the slide. |
+| "Where does the .fig go?" | Prompt 02 reads it from a `design` folder in the project | Once prompt 01 has created the project, make a folder called `design` in it and put `turbine.fig` there. Not before: prompt 01 needs an empty folder. |
+| "The agent is installing things" or "Codex wants the network" | It is decoding the `.fig` | Normal. Say yes, the room has network. |
 | "Claude keeps asking me to approve commands" | Decoding the `.fig` is dozens of small commands | Say yes, and choose the option that stops it asking again for that kind of command. |
 | "Every artist card has the same name" | The agent read the component, not the instances | Have them tell it: resolve the component properties and overrides. The row is in prompt 02. |
 | "It's describing a tiny blurry page" | It read `thumbnail.png` inside the `.fig` | Have them tell it: work from `canvas.fig`, not the preview. |
@@ -58,7 +60,7 @@ They lose nothing; they can copy their work across later.
 
 ## Things to say, and not say
 
-**Say:** "That is the normal path, not a failure." Checkpoints are a designed feature.
+**Say:** "That is the normal path, not a failure." Rescue packs are a designed feature.
 People who feel behind stop participating.
 
 **Say:** "Leave it red for now." Half the failures clear themselves when an earlier one
@@ -87,4 +89,4 @@ Everything else, handle quietly.
 
 ## What "done" looks like
 
-They run `npm run check`, it prints green, they run `npm run deploy`, and they get a URL. That URL goes on the shared board. That is the finish line.
+`npm run check` exits 0, prompt 06 deploys the page to Netlify, and they get a URL. That URL goes on the shared board. That is the finish line.

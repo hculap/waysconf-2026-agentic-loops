@@ -7,8 +7,10 @@ checker, reads that data. No page code yet.
 ## Before you paste
 
 1. On the workshop page, click **Download turbine.fig**.
-2. Inside the project folder, create a folder named `design` and put the file in it. It must be inside the project: Claude Code asks for permission before it reads files outside the project folder.
+2. Put the file in a folder named `design` inside the project. Easiest: tell the agent `Move turbine.fig from my Downloads folder into a new folder called design in this project.` It must be inside the project: Claude Code asks for permission before it reads files outside the project folder.
 3. Switch to plan mode. In plan mode the agent researches and shows a plan, and changes no file until you approve it. Claude Code: press `Shift+Tab` until the footer shows *plan mode on*. Codex: type `/plan` and press Enter.
+
+You are not expected to understand the whole plan. Check three things: it is a script that `npm run design` runs, it writes JSON files into `design/data`, it writes no page code. Then approve. In Claude Code, choose **Yes, auto-accept edits**, so the agent does not ask before every file change.
 
 ---
 
@@ -17,7 +19,7 @@ Plan first. Research what you need, then show me a plan and wait for my approval
 create or change any file until I approve it.
 
 Inside this project there is a folder called design with a .fig file in it. That is the
-Figma file itself, saved with "Save local copy". It is not a picture: it is the whole
+Figma file itself, as Figma saves it. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
 Work from that one file and nothing else. Do not search this computer for the design, a
@@ -29,6 +31,9 @@ What I want is a tool, not a one-off decode: a script in this project that reads
 design and writes the design data that the page and the checker will need. Make
 "npm run design" run it. Running it again on a new .fig must refresh the data, so that nobody
 has to decode or export the design by hand again.
+
+Keep the decoder small: one script, no test suite for the decoder, no extra tooling. Stop
+working on it as soon as the seven JSON files and the images are written.
 
 There is no program that opens a .fig, so the script decodes it itself. What is known about
 the format:
@@ -76,7 +81,7 @@ shape of each JSON file.
 After I approve the plan, write the script, run npm run design, then show me a list and
 write point 6 of it into notes.md:
 
-1. Every section, in the order they appear down the page.
+1. Every section, in the order they appear down the page, and the name on every artist card.
 2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
@@ -97,14 +102,23 @@ session.
 ---
 
 **Expected result.** First, a plan: how the script reads the file, which package it uses and
-the shape of each JSON file. Read it, then correct it in plain words or approve it. Then 10 to
-16 minutes of work. At the end `npm run design` exists, `design/data` holds seven JSON files,
-`design/images` holds the photos, and the chat shows a six-point list.
+the shape of each JSON file. Read it, then correct it in plain words or approve it. Then the
+agent writes and runs the decoder. This can take longer than the workshop allows: at
+RESCUE_TIME_1, anyone who does not have `design/data` yet takes the rescue pack (the last
+row of the table below). At the end `npm run design` exists, `design/data` holds seven JSON
+files, `design/images` holds the photos, and the chat shows a six-point list.
 
 Check two things in the list:
 
-- The sections match the design: twelve artist cards with twelve different names, not a generic landing page.
-- Point 6 is not empty. Answer each item in your own words. If it is empty, ask `which of those did you read, and which did you infer?`
+- Point 1 matches the design: twelve artist cards with twelve different names, not a generic landing page.
+- Point 6 is not empty. Answer with names from the design, for example a colour or text style name from point 2, not with new values. If point 6 is empty, ask `which of those did you read, and which did you infer?`
+
+For anything you cannot answer that way, paste:
+
+```text
+For anything I have not answered: pick the likeliest reading, write it into notes.md as an
+assumption, and carry on.
+```
 
 After your answers the agent commits and pushes.
 
@@ -116,12 +130,13 @@ After your answers the agent commits and pushes.
 
 | What you see | Say this |
 |---|---|
-| It writes code before showing a plan | `Stop. Show me the plan first and wait for my approval.` |
+| It writes code before showing a plan | Press Esc, then say `Stop. Show me the plan first and wait for my approval.` |
 | It decodes the file once and writes no script | `I asked for a tool. Put the decoding in a script, make npm run design run it, and run it.` |
+| It writes tests or extra tooling for the decoder | `Keep the decoder to one script. No tests for it. Write the seven JSON files and the images, then stop.` |
 | A JSON file is missing values | `design/data/typography.json has no line heights. Fix the script so it reads them, and run npm run design again.` |
-| It starts building the page | `Stop. No page code in this step. Undo anything you wrote for the page.` |
+| It starts building the page | Press Esc, then say `Stop. No page code in this step. Undo anything you wrote for the page.` |
 | It asks to read a file outside the folder | The `.fig` is beside the project, not in it. Move it into `design` inside the project and say `It is in design now.` |
-| It searches your disk, or reads another project | `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
+| It searches your disk, or reads another project | Press Esc, then say `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
 | "I cannot open binary files" | `It is a zip. The script must unzip it and decode canvas.fig as described in my last message.` |
 | It describes a small, blurry page | It read `thumbnail.png`. `That is the preview picture. Work from canvas.fig.` |
 | `zstd` is not supported, or decompression fails | Node is older than 22.15. `Use a package that reads zstd and carry on.` |
@@ -129,7 +144,8 @@ After your answers the agent commits and pushes.
 | Claude Code asks before every command | Answer yes and pick the option that stops asking for that kind of command. |
 | Every artist card has the same name | `You are reading the component, not the instances. Resolve the component properties and overrides in the script.` |
 | Colours come back as "a dark grey" | `Give me exact values. If the script cannot read exact values, say so.` |
-| `git push` fails | Run `gh auth status` in another terminal. If it is not signed in, repeat Sign in from the Preparation page, then say `Push again.` |
+| `git push` fails | Run `gh auth status` in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say `Push again.` |
+| It is RESCUE_TIME_1 and you do not have `design/data` | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **design-data.zip** from the workshop page and tell the agent: `Unzip design-data.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` Then `/clear` and prompt 03. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip design-data.zip in this project, follow RESCUE.md inside it, and commit.` |
 
 ---
 

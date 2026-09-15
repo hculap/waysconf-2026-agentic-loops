@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Warsztat · masterclass WaysConf 2026</title>
-<meta name="description" content="Materiały warsztatu: plik projektu, plan, idee i osiem promptów.">
+<meta name="description" content="Materiały warsztatu: plik projektu, plan, idee, paczki awaryjne i prompty.">
 <meta name="theme-color" content="#0A0A0A">
 <meta name="robots" content="noindex">
 <link rel="alternate" hreflang="pl" href="../../pl/workshop/">
@@ -230,6 +230,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <p class="toc__t">Na tej stronie</p>
   <ol>
     <li><a href="#plan-warsztatu">Plan warsztatu</a></li>
+    <li><a href="#paczki-awaryjne">Paczki awaryjne</a></li>
     <li><a href="#jak-przebiega-kazdy-krok">Jak przebiega każdy krok</a></li>
     <li><a href="#dane-projektu-nie-obrazek">Dane projektu, nie obrazek</a></li>
     <li><a href="#najpierw-testy">Najpierw testy</a></li>
@@ -243,20 +244,20 @@ footer p{font-size:14px;color:var(--fg-3)}
     <li><a href="#ograniczenia-automatycznych-testow">Ograniczenia automatycznych testów</a></li>
     <li><a href="#czeste-problemy">Częste problemy</a></li>
     <li><a href="#po-warsztacie">Po warsztacie</a></li>
-    <li><a href="#osiem-promptow">Osiem promptów</a></li>
+    <li><a href="#prompty">Prompty</a></li>
     <li><a href="#start">Start</a></li>
     <li><a href="#popatrz-na-design">Popatrz na design</a></li>
     <li><a href="#najpierw-checker">Najpierw checker</a></li>
     <li><a href="#zbuduj-to">Zbuduj to</a></li>
     <li><a href="#petla-2">Pętla</a></li>
-    <li><a href="#sprobuj-to-zepsuc">Spróbuj to zepsuć</a></li>
     <li><a href="#opublikuj">Opublikuj</a></li>
+    <li><a href="#sprobuj-to-zepsuc">Spróbuj to zepsuć</a></li>
     <li><a href="#ta-sama-robota-jako-workflow">Ta sama robota, jako workflow</a></li>
   </ol>
 </nav>
 <main id="main" tabindex="-1"><div class="wrap">
 <h1>Warsztat</h1>
-<p class="lede">Warsztat to osiem promptów: wiadomości, które wklejasz agentowi po kolei. Są na dole tej strony, każdy z przyciskiem Kopiuj. Nad nimi: plik projektu, plan warsztatu i idee, na których prompty są oparte.</p>
+<p class="lede">Warsztat to siedem promptów: wiadomości, które wklejasz agentowi po kolei, i ósmy do domu. Są na dole tej strony, każdy z przyciskiem Kopiuj. Nad nimi: plik projektu, plan warsztatu i idee, na których prompty są oparte.</p>
 <div class="need">
   <a href="https://www.figma.com/design/OeDnL6CcJ0zFlWSEO8YfWD/Turbine?node-id=1-3" target="_blank" rel="noopener"><b>Zobacz projekt</b><span>Otwiera plik TURBINE w Figmie. Możesz w nim oglądać projekt, kiedy agent pracuje.</span><em>Otwórz w Figmie</em></a>
   <a href="../../turbine.fig" download><b>Pobierz turbine.fig</b><span>Ten sam projekt jako jeden plik (4,7&nbsp;MB). Ten plik czyta agent.</span><em>Pobierz</em></a>
@@ -265,12 +266,17 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p class="need__alt">Kiedy prompt 01 utworzy projekt, załóż w folderze projektu folder <code>design</code> i włóż do niego <code>turbine.fig</code>. Nie obok projektu: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.</p>
 <hr>
 <h2 id="plan-warsztatu">Plan warsztatu</h2>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Godzina</th><th>Część</th><th>Co robisz</th></tr></thead><tbody><tr><td>14:55</td><td>Wprowadzenie</td><td>Słuchasz.</td></tr><tr><td>15:03</td><td>Start</td><td>Otwierasz terminal w folderze <code>turbine</code>, uruchamiasz agenta, wklejasz prompt 01.</td></tr><tr><td>15:10</td><td>Projekt</td><td>Wkładasz <code>turbine.fig</code> do <code>design/</code>. Plan mode, prompt 02: agent planuje i buduje dekoder <code>npm run design</code>, który zapisuje dane projektu w JSON. Odpowiadasz na jego otwarte pytania.</td></tr><tr><td>15:25</td><td>Checker, najpierw testy</td><td>Plan mode, prompt 03: agent pisze <code>npm run check</code> z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport.</td></tr><tr><td>15:40</td><td>Budowa</td><td>Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. Przeglądasz stronę sekcja po sekcji.</td></tr><tr><td>15:55</td><td>Pętla</td><td>Prompt 05: agent poprawia stronę, aż test przejdzie.</td></tr><tr><td>16:05</td><td>Review</td><td><code>/clear</code>, prompt 06: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, a test dalej przechodzi.</td></tr><tr><td>16:12</td><td>Publikacja</td><td><code>/clear</code>, prompt 07: strona trafia na produkcję, a test uruchamia się na adresie na żywo.</td></tr><tr><td>16:20</td><td>Ograniczenia i pytania</td><td>Słuchasz, pytasz.</td></tr></tbody></table></div>
-<p>Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi przerwać i wklej następny. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Godzina</th><th>Część</th><th>Co robisz</th></tr></thead><tbody><tr><td>14:55</td><td>Wprowadzenie</td><td>Słuchasz.</td></tr><tr><td>15:03</td><td>Start</td><td>Otwierasz terminal w folderze <code>turbine</code>, uruchamiasz agenta, wklejasz prompt 01.</td></tr><tr><td>15:10</td><td>Projekt</td><td>Wkładasz <code>turbine.fig</code> do <code>design/</code>. Plan mode, prompt 02: agent planuje i buduje dekoder <code>npm run design</code>, który zapisuje dane projektu w JSON. Odpowiadasz na jego otwarte pytania.</td></tr><tr><td>15:25</td><td>Checker, najpierw testy</td><td>Plan mode, prompt 03: agent pisze <code>npm run check</code> z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport.</td></tr><tr><td>15:40</td><td>Budowa</td><td>Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. Przeglądasz stronę sekcja po sekcji.</td></tr><tr><td>15:55</td><td>Pętla</td><td>Prompt 05: agent poprawia stronę, aż test przejdzie.</td></tr><tr><td>16:05</td><td>Publikacja</td><td><code>/clear</code>, prompt 06: strona trafia na produkcję, a test uruchamia się na adresie na żywo.</td></tr><tr><td>16:12</td><td>Review</td><td><code>/clear</code>, prompt 07: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, test dalej przechodzi, a strona jest publikowana ponownie.</td></tr><tr><td>16:20</td><td>Ograniczenia i pytania</td><td>Słuchasz, pytasz.</td></tr></tbody></table></div>
+<p>Prompty od 02 do 05 zależą od siebie: checker potrzebuje danych projektu, a strona checkera. Jeśli krok nie skończy się na czas, użyj paczki awaryjnej poniżej i idź dalej. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.</p>
+<h2 id="paczki-awaryjne">Paczki awaryjne</h2>
+<p>Dwie paczki z pełnego przebiegu tych promptów. Każda zastępuje jeden krok.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Jeśli o</th><th>Nie masz</th><th>Pobierz</th><th>Potem</th></tr></thead><tbody><tr><td>RESCUE_TIME_1</td><td><code>design/data</code> z promptu 02</td><td><a href="../../design-data.zip">design-data.zip</a></td><td>Napisz agentowi <code>Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.</code> Potem <code>/clear</code> i prompt 03.</td></tr><tr><td>RESCUE_TIME_2</td><td>działającego <code>npm run check</code> z promptu 03</td><td><a href="../../checker.zip">checker.zip</a></td><td>Napisz agentowi <code>Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.</code> Potem <code>/clear</code> i prompt 04.</td></tr></tbody></table></div>
 <hr>
 <h2 id="jak-przebiega-kazdy-krok">Jak przebiega każdy krok</h2>
 <p>Prompty 02, 03 i 04 budują coś konkretnego: dekoder, checker, stronę. Każdy przebiega tak samo:</p>
-<ol><li><strong>Plan mode.</strong> Zanim wkleisz prompt, przełącz agenta w tryb planowania: w Claude Code naciskaj <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>; w Codeksie wpisz <code>/plan</code>. Agent robi rozpoznanie i pokazuje plan. Nie może zmieniać plików, dopóki go nie zatwierdzisz.</li><li><strong>Implementacja.</strong> Przeczytaj plan, popraw go zwykłymi słowami, zatwierdź. Agent buduje.</li><li><strong>Commit.</strong> Na końcu kroku agent robi commit z opisem tego, co zrobił ten krok, i wypycha go do twojego repozytorium na GitHubie. Każdy krok da się cofnąć.</li><li><strong>Czyszczenie.</strong> Wpisz <code>/clear</code> (ta sama komenda w Claude Code i w Codeksie). Następny prompt zaczyna z pustym kontekstem i czyta to, czego potrzebuje, z plików: dane projektu, raport i <code>notes.md</code>.</li></ol>
+<ol><li><strong>Plan mode.</strong> Zanim wkleisz prompt, przełącz agenta w tryb planowania: w Claude Code naciskaj <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>; w Codeksie wpisz <code>/plan</code>. Agent robi rozpoznanie i pokazuje plan. Nie może zmieniać plików, dopóki go nie zatwierdzisz.</li><li><strong>Implementacja.</strong> Przeczytaj plan, popraw go zwykłymi słowami, zatwierdź. W Claude Code wybierz <em>Yes, auto-accept edits</em>: agent zmienia wtedy pliki bez pytania. Kiedy pierwszy raz uruchamia nowy rodzaj komendy (<code>npm run check</code>, <code>git push</code>), wybierz <em>Yes, and don't ask again</em>. Przed promptem 05, który nie ma planu, naciśnij <code>Shift+Tab</code>, aż w stopce pojawi się <em>accept edits on</em> (Codex: <code>/permissions</code>).</li><li><strong>Commit.</strong> Na końcu kroku agent robi commit z opisem tego, co zrobił ten krok, i wypycha go do twojego repozytorium na GitHubie. Żeby cofnąć krok, napisz agentowi <code>Wróć do commita z kroku 03</code> (albo z innego kroku).</li></ol>
+<p>Żeby zatrzymać agenta w trakcie pracy, naciśnij <code>Esc</code>. <code>Ctrl+C</code> dwa razy zamyka agenta; uruchom go ponownie przez <code>claude --continue</code> albo <code>codex resume --last</code>.</p>
+<ol><li><strong>Czyszczenie.</strong> Wpisz <code>/clear</code> (ta sama komenda w Claude Code i w Codeksie). Następny prompt zaczyna z pustym kontekstem i czyta to, czego potrzebuje, z plików: dane projektu, raport i <code>notes.md</code>.</li></ol>
 <hr>
 <h2 id="dane-projektu-nie-obrazek">Dane projektu, nie obrazek</h2>
 <p>Prompt 02 nie dekoduje pliku <code>.fig</code> jednorazowo. Agent pisze małe narzędzie, <code>npm run design</code>, które czyta plik i zapisuje w <code>design/data/</code> jako JSON to, czego potrzebują strona i checker: sekcje, kolory, typografię, layout, komponenty, teksty i obrazy. Każdy kolejny krok czyta te pliki. Kiedy projekt się zmieni, uruchom <code>npm run design</code> jeszcze raz.</p>
@@ -283,27 +289,26 @@ footer p{font-size:14px;color:var(--fg-3)}
 <hr>
 <h2 id="petla">Pętla</h2>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/01-the-loop.svg" aria-label="Powiększ: Pętla: plan, implementacja, weryfikacja, powtarzane aż test przejdzie, potem publikacja"><img src="../../diagrams/01-the-loop.svg" alt="Pętla: plan, implementacja, weryfikacja, powtarzane aż test przejdzie, potem publikacja" loading="lazy" width="1600" height="900"></a></figure>
-<ul><li><strong>Plan.</strong> Agent mówi, co zmieni i dlaczego. Od drugiej rundy plan zaczyna się od raportu.</li><li><strong>Implementacja.</strong> Agent pisze kod. Za pierwszym razem generuje stronę, potem poprawia to, co wskazuje raport.</li><li><strong>Weryfikacja.</strong> Test z promptu 03, <code>npm run check</code>, sprawdza stronę w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.</li></ul>
+<ul><li><strong>Plan.</strong> Agent mówi, co zmieni i dlaczego. Od drugiej rundy plan zaczyna się od raportu.</li><li><strong>Implementacja.</strong> Agent pisze kod. Za pierwszym razem generuje stronę, potem poprawia to, co wskazuje raport.</li><li><strong>Weryfikacja.</strong> Test z promptu 03, <code>npm run check</code>, sam buduje i serwuje stronę, a potem sprawdza ją w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.</li></ul>
 <p>Pętla kończy się, gdy test zwraca 0. Wtedy praca trafia do commita, a strona na produkcję.</p>
 <hr>
 <h2 id="kto-sprawdza-prace">Kto sprawdza pracę</h2>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/02-fake-loop-vs-real-loop.svg" aria-label="Powiększ: Fałszywa pętla: ten sam agent ocenia własną pracę. Prawdziwa pętla: program i adversarial review ze świeżym kontekstem sprawdzają stronę równolegle"><img src="../../diagrams/02-fake-loop-vs-real-loop.svg" alt="Fałszywa pętla: ten sam agent ocenia własną pracę. Prawdziwa pętla: program i adversarial review ze świeżym kontekstem sprawdzają stronę równolegle" loading="lazy" width="1600" height="960"></a></figure>
 <p>Agent może sprawdzać pracę pod dwoma warunkami: nie wykonywał jej w tym samym kontekście i ma szukać błędów, a nie potwierdzać wynik.</p>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>Kto sprawdza</th><th>Do czego się nadaje</th></tr></thead><tbody><tr><td>Ten sam agent, w tym samym kontekście</td><td>Do niczego. Powtarza rozumowanie, które stworzyło pracę.</td></tr><tr><td>Program: <code>npm run check</code></td><td>Do wszystkiego, co ma dokładną odpowiedź: sekcje, kolory, teksty, kontrast, przewijanie w poziomie.</td></tr><tr><td>Agenci ze świeżym kontekstem, którzy mają atakować (adversarial review)</td><td>Do tego, czego program nie zmierzy: kolejność czytania, bezużyteczny tekst alternatywny, tekst na zdjęciach, teksty niepasujące do marki.</td></tr></tbody></table></div>
-<p>Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie review to prompt 06, wklejany w nowej sesji przed publikacją.</p>
+<p>Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie strona najpierw trafia na produkcję, żeby każdy miał adres. Review to prompt 07 w nowej sesji, a jego poprawki są publikowane ponownie.</p>
 <hr>
 <h2 id="poziomy-sprawdzania">Poziomy sprawdzania</h2>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/03-verification-tiers.svg" aria-label="Powiększ: Trzy poziomy sprawdzania: testy deterministyczne, porównanie mierzone, adversarial review"><img src="../../diagrams/03-verification-tiers.svg" alt="Trzy poziomy sprawdzania: testy deterministyczne, porównanie mierzone, adversarial review" loading="lazy" width="1600" height="980"></a></figure>
-<ol><li><strong>Testy deterministyczne.</strong> Build, błędy w konsoli, sekcje, kolory, teksty, kontrast, przewijanie w poziomie. Za każdym razem ten sam wynik.</li><li><strong>Porównanie mierzone.</strong> Zrzuty ekranu porównane z projektem. Wykrywa zmianę, ale jej nie ocenia.</li><li><strong>Adversarial review.</strong> Agenci ze świeżym kontekstem szukają tego, czego poziomy 1 i 2 nie zmierzą. Każda uwaga musi wskazać konkretny element i przetrwać próbę obalenia.</li></ol>
+<ol><li><strong>Testy deterministyczne.</strong> Build, błędy w konsoli, sekcje, kolory, teksty, kontrast, przewijanie w poziomie. Za każdym razem ten sam wynik.</li><li><strong>Porównanie mierzone.</strong> Zrzuty ekranu porównane z projektem. Wykrywa zmianę, ale jej nie ocenia. Rysunek pokazuje checker gotowej strony; checker, który piszesz w prompcie 03, obejmuje poziom 1.</li><li><strong>Adversarial review.</strong> Agenci ze świeżym kontekstem szukają tego, czego poziomy 1 i 2 nie zmierzą. Każda uwaga musi wskazać konkretny element i przetrwać próbę obalenia.</li></ol>
 <hr>
 <h2 id="raport-z-bledami">Raport z błędami</h2>
 <p>Test zapisuje każdy błąd do pliku. Przykład:</p>
-<pre class="plain"><code>**3. [check 07] kolor na stronie nie pochodzi z projektu**
+<pre class="plain"><code>**3. [check 4] tekst poniżej minimalnego kontrastu**
 
 - Gdzie: linijka pod nazwą w każdej karcie sekcji lineup
-- Oczekiwane: kolor projektu &quot;text / secondary&quot;
-- Faktyczne: kolor projektu &quot;text / muted&quot;, 4.07:1 do tła strony;
-             tekst podstawowy wymaga 4.5:1
+- Oczekiwane: kolor projektu &quot;text / secondary&quot;, co najmniej 4.5:1 do tła
+- Faktyczne: kolor projektu &quot;text / muted&quot;, 4.07:1
 - Wskazówka: muted jest przeznaczony tylko na tekst prawny i stopkę</code></pre>
 <p>Każdy błąd ma cztery pola: co nie przeszło, gdzie, czego oczekuje projekt, co jest na stronie. W następnej rundzie agent czyta ten plik, a nie swoją pamięć poprzedniej rundy.</p>
 <p>Agent nigdy nie może edytować checkera. Jeśli może zmienić test, zaliczenie nic nie znaczy.</p>
@@ -320,7 +325,7 @@ co zadziałało, co nie i dlaczego.</code></pre></div>
 <ul><li><strong>Pętla:</strong> plan, implementacja i weryfikacja powtarzane, aż warunek będzie spełniony. Ty definiujesz warunek wyjścia. Prompt 05; w Claude Code także <code>/goal npm run check exits 0</code>.</li><li><strong>Workflow:</strong> fazy w ustalonej kolejności, z warunkiem, który musi być spełniony przed następną fazą. Faza może uruchomić kilku agentów jednocześnie. Ty definiujesz fazy. Prompt 08.</li></ul>
 <p>Workflow może zawierać pętlę: faza 05 promptu 08 to pętla z promptu 05.</p>
 <h3>Wzorce workflow</h3>
-<p>Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 04), pętla do skutku (faza 05) i adversarial verification (faza 06).</p>
+<p>Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 04), pętla do skutku (faza 05) i adversarial verification (faza 07).</p>
 <h4>1. Klasyfikuj i działaj</h4>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/08-pattern-1-classify-and-act.svg" aria-label="Powiększ: Klasyfikuj i działaj: klasyfikator przekazuje zadanie jednemu z trzech agentów"><img src="../../diagrams/08-pattern-1-classify-and-act.svg" alt="Klasyfikuj i działaj: klasyfikator przekazuje zadanie jednemu z trzech agentów" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>Jak działa:</strong> jeden agent czyta zadanie i przekazuje je dokładnie jednemu wyspecjalizowanemu agentowi.</p>
@@ -332,7 +337,7 @@ co zadziałało, co nie i dlaczego.</code></pre></div>
 <h4>3. Adversarial verification</h4>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/08-pattern-3-adversarial-verification.svg" aria-label="Powiększ: Adversarial verification: jeden wykonawca, trzech weryfikatorów ze świeżym kontekstem próbuje podważyć wynik"><img src="../../diagrams/08-pattern-3-adversarial-verification.svg" alt="Adversarial verification: jeden wykonawca, trzech weryfikatorów ze świeżym kontekstem próbuje podważyć wynik" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>Jak działa:</strong> jeden agent daje wynik, kilku agentów ze świeżym kontekstem próbuje go podważyć, a ich uwagi wracają do pierwszego agenta.</p>
-<p><strong>Kiedy użyć:</strong> do wszystkiego, czego nie sprawdzi program. Przykład: prompt 06 i faza 06 promptu 08.</p>
+<p><strong>Kiedy użyć:</strong> do wszystkiego, czego nie sprawdzi program. Przykład: prompt 07 i faza 07 promptu 08.</p>
 <h4>4. Generuj i filtruj</h4>
 <figure class="fig"><a class="fig__zoom" href="../../diagrams/08-pattern-4-generate-and-filter.svg" aria-label="Powiększ: Generuj i filtruj: wiele propozycji, kryteria zostawiają najlepsze"><img src="../../diagrams/08-pattern-4-generate-and-filter.svg" alt="Generuj i filtruj: wiele propozycji, kryteria zostawiają najlepsze" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>Jak działa:</strong> kilku agentów tworzy wiele propozycji, a filtr z kryteriami usuwa duplikaty i słabe propozycje.</p>
@@ -347,12 +352,11 @@ co zadziałało, co nie i dlaczego.</code></pre></div>
 <p><strong>Kiedy użyć:</strong> poprawianie, aż test przejdzie, albo review, aż runda nie znajdzie nic nowego. Przykład: prompt 05.</p>
 <hr>
 <h2 id="publikacja-i-sprawdzenie-strony-na-zywo">Publikacja i sprawdzenie strony na żywo</h2>
-<pre class="plain"><code>npm run build
-netlify deploy --prod --dir=dist</code></pre>
+<p>Prompt 06 uruchamia te komendy za ciebie; nie wpisuj ich sam. Pierwszy deploy zakłada stronę: <code>netlify deploy --prod --dir=dist --site-name turbine-&lt;twoja nazwa na GitHubie&gt;</code>. Kolejne trafiają na tę samą stronę.</p>
 <p>Po publikacji porównaj serwowaną stronę z plikami w <code>dist</code> i uruchom <code>npm run check -- --url &lt;adres&gt;</code> na adresie na żywo. Zaliczony test lokalny nie dowodzi, że strona na żywo jest ta sama: stary build, zły folder albo kod dodany przez hosting mogą ją zmienić. Prompt 06 robi oba kroki.</p>
 <hr>
 <h2 id="ograniczenia-automatycznych-testow">Ograniczenia automatycznych testów</h2>
-<ul><li>Automatyczne reguły dostępności obejmują około 30 do 40% WCAG. Zaliczenie oznacza brak znanych błędów, a nie dostępną stronę.</li><li>axe nie ocenia tekstu na zdjęciach ani gradientach. Oznacza takie pary jako <em>incomplete</em>, a test z regułą „zero naruszeń” traktuje incomplete jak zaliczenie. Twój checker musi liczyć incomplete jako błąd.</li><li>Porównanie zrzutów ekranu wykrywa zmianę. Nie mówi, czy zmiana jest lepsza.</li><li>Żaden z tych testów nie ocenia, czy sam projekt jest dobry.</li></ul>
+<ul><li>Automatyczne reguły dostępności obejmują około 30 do 40% WCAG. Zaliczenie oznacza brak znanych błędów, a nie dostępną stronę.</li><li>axe nie ocenia tekstu na zdjęciach ani gradientach. Oznacza takie pary jako <em>incomplete</em>, a test z regułą „zero naruszeń” traktuje incomplete jak zaliczenie. Twój checker musi zmierzyć takie pary z wyrenderowanych pikseli i nie przejść, jeśli nie da się ich zmierzyć.</li><li>Porównanie zrzutów ekranu wykrywa zmianę. Nie mówi, czy zmiana jest lepsza.</li><li>Żaden z tych testów nie ocenia, czy sam projekt jest dobry.</li></ul>
 <hr>
 <h2 id="czeste-problemy">Częste problemy</h2>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>Objaw</th><th>Przyczyna</th><th>Co zrobić</th></tr></thead><tbody><tr><td>Test zmienia się na zielony, a nic nie zostało poprawione</td><td>Agent edytował test</td><td>Przywróć test i przeczytaj różnice</td></tr><tr><td>Dwa błędne stany na zmianę</td><td>Dwa wymagania, które nie mogą być spełnione naraz</td><td>Zatrzymaj pętlę. Sprzeczność jest w projekcie albo w briefie</td></tr><tr><td>Pracuje dalej, choć zadanie jest skończone</td><td>Nic nie uruchamia testu na początku</td><td>Uruchamiaj test przed każdą poprawką</td></tr><tr><td>Zwalnia i odpowiada ogólnikami</td><td>Kontekst jest pełny</td><td>Zapisz stan do <code>notes.md</code>, zacznij nową sesję</td></tr><tr><td>„Już działa”, a nie działa</td><td>Agent relacjonuje zamiast mierzyć</td><td>Ufaj tylko kodowi wyjścia <code>npm run check</code></td></tr><tr><td>Długo nic się nie dzieje</td><td>Krok czeka na dane bez limitu czasu</td><td>Daj każdemu krokowi limit czasu</td></tr></tbody></table></div>
@@ -361,13 +365,22 @@ netlify deploy --prod --dir=dist</code></pre>
 <p>Zacznij od jednego testu, nie od całej strony:</p>
 <ol><li>Wybierz test, który twój zespół robi ręcznie.</li><li>Zamień go w program, który kończy się kodem 0 albo 1.</li><li>Zapisuj jego wynik do pliku, który agent może przeczytać.</li><li>Dopiero wtedy postaw przed nim agenta.</li></ol>
 <hr>
-<h2 id="osiem-promptow">Osiem promptów</h2>
-<p>Wklejaj je po kolei, po jednym. Każdy prompt działa samodzielnie: jeśli któryś się nie uda, każ agentowi przerwać i wklej następny.</p>
+<h2 id="prompty">Prompty</h2>
+<p>Wklejaj je po kolei, po jednym, i po każdym wpisz /clear. Prompty od 02 do 05 zależą od siebie; jeśli któryś nie skończy się na czas, użyj jego paczki awaryjnej z tabeli wyżej.</p>
 <p>Wklejaj każdy prompt w całości. Reguły w prompcie znaczą tyle samo co samo polecenie.</p>
 <section class="step" id="p01">
   <p class="step__no">Prompt 01</p>
   <h2 id="start">Start</h2>
   <p>Zakłada w folderze repozytorium projekt Astro z Tailwindem, uruchamia serwer deweloperski i zapisuje projekt w twoim repozytorium na GitHubie. Bez stron i bez treści.</p>
+<h3>Zanim wkleisz</h3>
+<p>Otwórz terminal, wejdź do folderu projektu i uruchom agenta:</p>
+<div class="cmd">
+  <pre id="cmd-55"><code>cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-55" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+</div>
+<p>W Codeksie wpisz <code>codex</code> zamiast <code>claude</code>. Jeśli <code>cd turbine</code> mówi, że nie ma takiego folderu, wpisz <code>ls</code> i poszukaj <code>turbine</code> na liście.</p>
+<p><strong>Esc zatrzymuje agenta w trakcie pracy.</strong> Ctrl+C dwa razy go zamyka; uruchomisz go ponownie przez <code>claude --continue</code> albo <code>codex resume --last</code>.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p2" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p2"><code>Załóż w tym folderze nowy projekt strony internetowej.
 
@@ -386,11 +399,11 @@ Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powi
 jest skończony, żebym mógł wyczyścić sesję.</code></pre></div>
 <hr>
 <p><strong>Oczekiwany wynik.</strong> Kilka minut instalacji, potem linijka w rodzaju <code>Local http://localhost:4321/</code>. Pod tym adresem jest strona zastępcza Astro. Agent trzyma serwer uruchomiony. Potem robi commit projektu i push: commit widać w twoim repozytorium na github.com.</p>
-<p><strong>Codex pyta, czy ufasz folderowi.</strong> Odpowiedz tak. Codex nie pracuje w folderze, któremu nie kazano mu ufać.</p>
+<p><strong>Agent pyta, zanim uruchomi komendę.</strong> Wybierz opcję, która pozwala na ten rodzaj komend bez pytania. <strong>Codex pyta też, czy ufasz folderowi.</strong> Odpowiedz tak.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code> i naciśnij Enter.</strong> <code>/clear</code> kończy rozmowę i zaczyna nową, z pustym kontekstem, w Claude Code i w Codeksie. Nic nie przepada: kolejny prompt czyta to, czego potrzebuje, z plików w projekcie.</p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować landing page</td><td><code>Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.</code></td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex pyta o zgodę. Odpowiedz tak.</td></tr><tr><td><code>command not found: npm</code></td><td>Node nie jest zainstalowany. Wróć na stronę Przygotowanie.</td></tr><tr><td>Prosi o wybór szablonu</td><td><code>Wybierz minimalny albo pusty szablon. Bez przykładowej treści.</code></td></tr><tr><td>„Katalog nie jest pusty&quot;</td><td>W folderze jest coś poza plikami gita, na przykład folder <code>design</code>. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02.</td></tr><tr><td>Przez dwie minuty nic się nie wypisuje</td><td>Instaluje. Poczekaj do pięciu minut.</td></tr><tr><td><code>git push</code> nie działa albo prosi o hasło</td><td>Uruchom <code>gh auth status</code> w drugim terminalu. Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować landing page</td><td>Naciśnij Esc, potem powiedz <code>Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.</code></td></tr><tr><td>Pyta, zanim uruchomi komendę</td><td>Wybierz opcję, która pozwala na ten rodzaj komend bez pytania.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex pyta o zgodę. Odpowiedz tak.</td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczek i push go wymagają.</td></tr><tr><td><code>command not found: npm</code></td><td>Node nie jest zainstalowany. Wróć na stronę Przygotowanie.</td></tr><tr><td>Prosi o wybór szablonu</td><td><code>Wybierz minimalny albo pusty szablon. Bez przykładowej treści.</code></td></tr><tr><td>„Katalog nie jest pusty&quot;</td><td>W folderze jest coś poza plikami gita, na przykład folder <code>design</code>. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02.</td></tr><tr><td>Przez dwie minuty nic się nie wypisuje</td><td>Instaluje. Poczekaj do pięciu minut.</td></tr><tr><td><code>git push</code> nie działa albo prosi o hasło</td><td>Uruchom <code>gh auth status</code> w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
 <ul><li>„Nie buduj jeszcze żadnych stron&quot;: bez tego agent wymyśla hero, siatkę funkcji i opinie klientów, zanim zobaczy design.</li><li>Commit na końcu każdego kroku: każdy krok jest zapisany w repozytorium i do każdego da się wrócić.</li><li><code>/clear</code> między krokami: każdy prompt zaczyna z pustym kontekstem i czyta stan z plików, a nie z długiej rozmowy.</li></ul>
@@ -400,13 +413,14 @@ jest skończony, żebym mógł wyczyścić sesję.</code></pre></div>
   <h2 id="popatrz-na-design">Popatrz na design</h2>
   <p>Agent planuje i buduje dekoder pliku Figmy: skrypt w projekcie, uruchamiany przez <code>npm run design</code>, który zapisuje design jako JSON w <code>design/data</code>. Każdy kolejny krok i checker czytają te dane. Jeszcze bez kodu strony.</p>
 <h3>Zanim wkleisz</h3>
-<ol><li>Na stronie warsztatu kliknij <strong>Pobierz turbine.fig</strong>.</li><li>W folderze projektu załóż folder <code>design</code> i włóż do niego plik. Musi leżeć w projekcie: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.</li><li>Przełącz agenta w plan mode. W plan mode agent robi rozpoznanie i pokazuje plan, a nie zmienia żadnego pliku, dopóki go nie zatwierdzisz. Claude Code: naciskaj <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>. Codex: wpisz <code>/plan</code> i naciśnij Enter.</li></ol>
+<ol><li>Na stronie warsztatu kliknij <strong>Pobierz turbine.fig</strong>.</li><li>Włóż plik do folderu <code>design</code> w projekcie. Najprościej: powiedz agentowi <code>Przenieś turbine.fig z mojego folderu Pobrane do nowego folderu design w tym projekcie.</code> Musi leżeć w projekcie: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.</li><li>Przełącz agenta w plan mode. W plan mode agent robi rozpoznanie i pokazuje plan, a nie zmienia żadnego pliku, dopóki go nie zatwierdzisz. Claude Code: naciskaj <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>. Codex: wpisz <code>/plan</code> i naciśnij Enter.</li></ol>
+<p>Nie musisz rozumieć całego planu. Sprawdź trzy rzeczy: to skrypt, który uruchamia <code>npm run design</code>, zapisuje pliki JSON do <code>design/data</code> i nie pisze kodu strony. Potem zatwierdź. W Claude Code wybierz <strong>Yes, auto-accept edits</strong>, żeby agent nie pytał przed każdą zmianą pliku.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p3" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p3"><code>Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
-W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
-przez „Save local copy&quot;. To nie jest obrazek: to cały design jako dane — każdy tekst,
+W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, tak jak
+zapisuje go Figma. To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
 Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
@@ -418,6 +432,9 @@ Chcę narzędzia, a nie jednorazowego rozkodowania: skryptu w tym projekcie, kt�
 .fig z folderu design i zapisuje dane designu, których będą potrzebować strona i checker.
 Spraw, żeby uruchamiała go komenda „npm run design&quot;. Ponowne uruchomienie na nowym pliku .fig
 ma odświeżyć dane, żeby nikt już nie musiał ręcznie rozkodowywać ani eksportować designu.
+
+Dekoder ma być mały: jeden skrypt, bez zestawu testów dla dekodera, bez dodatkowych narzędzi.
+Przestań nad nim pracować, gdy tylko siedem plików JSON i zdjęcia są zapisane.
 
 Nie ma programu, który otwiera plik .fig, więc skrypt rozkodowuje go sam. Co wiadomo
 o formacie:
@@ -465,7 +482,7 @@ kształt ma każdy plik JSON.
 Kiedy zatwierdzę plan, napisz skrypt, uruchom npm run design, potem pokaż mi listę, a jej
 punkt 6 zapisz do notes.md:
 
-1. Każdą sekcję, w kolejności od góry strony.
+1. Każdą sekcję, w kolejności od góry strony, i imię na każdej karcie artysty.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
@@ -482,14 +499,17 @@ Kiedy odpowiem na punkt 6, zapisz moje odpowiedzi do notes.md. Potem zrób commi
 z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok jest skończony, żebym mógł
 wyczyścić sesję.</code></pre></div>
 <hr>
-<p><strong>Oczekiwany wynik.</strong> Najpierw plan: jak skrypt czyta plik, jakiej paczki używa i jaki kształt ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem od 10 do 16 minut pracy. Na końcu jest <code>npm run design</code>, w <code>design/data</code> siedem plików JSON, w <code>design/images</code> zdjęcia, a w czacie lista z sześcioma punktami.</p>
+<p><strong>Oczekiwany wynik.</strong> Najpierw plan: jak skrypt czyta plik, jakiej paczki używa i jaki kształt ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem agent pisze i uruchamia dekoder. Może to potrwać dłużej, niż pozwala warsztat: o RESCUE_TIME_1 każdy, kto nie ma jeszcze <code>design/data</code>, bierze paczkę awaryjną (ostatni wiersz tabeli niżej). Na końcu jest <code>npm run design</code>, w <code>design/data</code> siedem plików JSON, w <code>design/images</code> zdjęcia, a w czacie lista z sześcioma punktami.</p>
 <p>Sprawdź w liście dwie rzeczy:</p>
-<ul><li>Sekcje zgadzają się z designem: dwanaście kart artystów z dwunastoma różnymi nazwami, a nie ogólny landing page.</li><li>Punkt 6 nie jest pusty. Odpowiedz na każdą pozycję własnymi słowami. Jeśli jest pusty, zapytaj <code>co z tego przeczytałeś, a co wywnioskowałeś?</code></li></ul>
+<ul><li>Punkt 1 zgadza się z designem: dwanaście kart artystów z dwunastoma różnymi imionami, a nie ogólny landing page.</li><li>Punkt 6 nie jest pusty. Odpowiadaj nazwami z designu, na przykład nazwą koloru albo stylu tekstu z punktu 2, a nie nowymi wartościami. Jeśli punkt 6 jest pusty, zapytaj <code>co z tego przeczytałeś, a co wywnioskowałeś?</code></li></ul>
+<p>Na to, na co nie umiesz tak odpowiedzieć, wklej:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p4" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p4"><code>Tam, gdzie nie odpowiedziałem: wybierz najbardziej prawdopodobny odczyt, zapisz go do
+notes.md jako założenie i jedź dalej.</code></pre></div>
 <p>Po twoich odpowiedziach agent robi commit i push.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td><code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Rozkodowuje plik raz i nie pisze skryptu</td><td><code>Prosiłem o narzędzie. Przenieś rozkodowanie do skryptu, niech uruchamia go npm run design, i uruchom go.</code></td></tr><tr><td>W pliku JSON brakuje wartości</td><td><code>W design/data/typography.json nie ma interlinii. Popraw skrypt, żeby je czytał, i uruchom npm run design jeszcze raz.</code></td></tr><tr><td>Zaczyna budować stronę</td><td><code>Stop. W tym kroku bez kodu strony. Cofnij wszystko, co napisałeś dla strony.</code></td></tr><tr><td>Prosi o przeczytanie pliku spoza folderu</td><td>Plik <code>.fig</code> leży obok projektu, nie w nim. Przenieś go do <code>design</code> w projekcie i powiedz <code>Jest teraz w design.</code></td></tr><tr><td>Przeszukuje dysk albo czyta inny projekt</td><td><code>Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.</code></td></tr><tr><td>„Nie mogę otworzyć pliku binarnego&quot;</td><td><code>To jest zip. Skrypt ma go rozpakować i rozkodować canvas.fig tak, jak opisałem w poprzedniej wiadomości.</code></td></tr><tr><td>Opisuje małą, rozmytą stronę</td><td>Przeczytał <code>thumbnail.png</code>. <code>To jest podgląd. Pracuj na canvas.fig.</code></td></tr><tr><td><code>zstd</code> nieobsługiwany albo dekompresja się sypie</td><td>Node jest starszy niż 22.15. <code>Użyj paczki, która czyta zstd, i działaj dalej.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczki go wymaga.</td></tr><tr><td>Claude Code pyta przed każdą komendą</td><td>Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend.</td></tr><tr><td>Każda karta artysty ma to samo imię</td><td><code>Czytasz komponent, a nie instancje. Rozwiąż w skrypcie właściwości komponentu i nadpisania.</code></td></tr><tr><td>Kolory wracają jako „ciemny szary&quot;</td><td><code>Podaj dokładne wartości. Jeśli skrypt nie potrafi ich odczytać, powiedz to.</code></td></tr><tr><td><code>git push</code> nie działa</td><td>Uruchom <code>gh auth status</code> w drugim terminalu. Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td>Naciśnij Esc, potem powiedz <code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Rozkodowuje plik raz i nie pisze skryptu</td><td><code>Prosiłem o narzędzie. Przenieś rozkodowanie do skryptu, niech uruchamia go npm run design, i uruchom go.</code></td></tr><tr><td>Pisze testy albo dodatkowe narzędzia dla dekodera</td><td><code>Dekoder ma być jednym skryptem. Bez testów dla niego. Zapisz siedem plików JSON i zdjęcia, potem przestań.</code></td></tr><tr><td>W pliku JSON brakuje wartości</td><td><code>W design/data/typography.json nie ma interlinii. Popraw skrypt, żeby je czytał, i uruchom npm run design jeszcze raz.</code></td></tr><tr><td>Zaczyna budować stronę</td><td>Naciśnij Esc, potem powiedz <code>Stop. W tym kroku bez kodu strony. Cofnij wszystko, co napisałeś dla strony.</code></td></tr><tr><td>Prosi o przeczytanie pliku spoza folderu</td><td>Plik <code>.fig</code> leży obok projektu, nie w nim. Przenieś go do <code>design</code> w projekcie i powiedz <code>Jest teraz w design.</code></td></tr><tr><td>Przeszukuje dysk albo czyta inny projekt</td><td>Naciśnij Esc, potem powiedz <code>Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.</code></td></tr><tr><td>„Nie mogę otworzyć pliku binarnego&quot;</td><td><code>To jest zip. Skrypt ma go rozpakować i rozkodować canvas.fig tak, jak opisałem w poprzedniej wiadomości.</code></td></tr><tr><td>Opisuje małą, rozmytą stronę</td><td>Przeczytał <code>thumbnail.png</code>. <code>To jest podgląd. Pracuj na canvas.fig.</code></td></tr><tr><td><code>zstd</code> nieobsługiwany albo dekompresja się sypie</td><td>Node jest starszy niż 22.15. <code>Użyj paczki, która czyta zstd, i działaj dalej.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczki go wymaga.</td></tr><tr><td>Claude Code pyta przed każdą komendą</td><td>Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend.</td></tr><tr><td>Każda karta artysty ma to samo imię</td><td><code>Czytasz komponent, a nie instancje. Rozwiąż w skrypcie właściwości komponentu i nadpisania.</code></td></tr><tr><td>Kolory wracają jako „ciemny szary&quot;</td><td><code>Podaj dokładne wartości. Jeśli skrypt nie potrafi ich odczytać, powiedz to.</code></td></tr><tr><td><code>git push</code> nie działa</td><td>Uruchom <code>gh auth status</code> w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr><tr><td>Jest RESCUE_TIME_1, a nie masz <code>design/data</code></td><td>Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz <strong>design-data.zip</strong> ze strony warsztatu i powiedz agentowi: <code>Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.</code> Potem <code>/clear</code> i prompt 03. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz <code>Rozpakuj design-data.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
 <ul><li>Najpierw plan: złe podejście do pliku poprawiasz jednym zdaniem, zanim skrypt powstanie.</li><li>Skrypt, a nie jednorazowe rozkodowanie: nowa wersja pliku <code>.fig</code> to jedno <code>npm run design</code>, a strona i checker czytają ten sam JSON.</li><li>Punkt 6: lista rzeczy, których plik nie określa, to ta część briefu, której nikt nie napisał.</li></ul>
@@ -500,9 +520,9 @@ wyczyścić sesję.</code></pre></div>
   <p>Agent pisze <code>npm run check</code>: program, który testuje stronę w prawdziwej przeglądarce względem <code>design/data</code> i zapisuje raport do pliku. Pisze go, zanim strona powstanie.</p>
 <p>Pisanie testu przed kodem nazywa się test-driven development. Test powstaje pierwszy i nie przechodzi, bo nie ma jeszcze czego sprawdzać. Prompt 04 buduje potem stronę, a prompt 05 poprawia ją, aż test przejdzie.</p>
 <h3>Zanim wkleisz</h3>
-<p>Przełącz agenta w plan mode, tak jak przed promptem 02. Claude Code: <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>. Codex: <code>/plan</code>.</p>
+<p>Przełącz agenta w plan mode, tak jak przed promptem 02. Claude Code: <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>. Codex: <code>/plan</code>. Zatwierdzając plan w Claude Code, wybierz <strong>Yes, auto-accept edits</strong>.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p4" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p4"><code>Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p5" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p5"><code>Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
 Napisz teraz program, który sprawdza stronę względem designu, zanim strona powstanie.
@@ -516,9 +536,10 @@ Spraw, żeby uruchamiała go komenda „npm run check&quot;. Zainstaluj, co potr
 sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
 żadne z nich nie wchodzi do strony.
 
-Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
-npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
-później mógł ocenić też stronę na żywo.
+Domyślnie sam buduje stronę, sam serwuje zbudowane pliki i sprawdza tę stronę. Nie może
+zależeć od serwera deweloperskiego uruchomionego przez kogoś innego. Musi też przyjmować
+adres — npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie,
+żeby później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z design/data, nie ode mnie. Nie ma jeszcze strony, na którą można
 patrzeć: każdy test wynika z designu. Minimum, i to względem strony tak, jak renderuje ją
@@ -541,11 +562,14 @@ wartości zmierzonej i progu — to jest cała robota.
 Zapisz raport do pliku, nie tylko wypisz go na ekran, bo później podam ci ten plik
 z powrotem. Powiedz mi, jak go nazwałeś.
 
-Dwie reguły dotyczące samego checkera:
+Trzy reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
   brakuje design/data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
+- Wynik dostępności oznaczony jako incomplete, na przykład tekst na zdjęciu albo gradiencie,
+  nie jest zaliczeniem. Zmierz kontrast z wyrenderowanych pikseli pod tym tekstem i zgłoś
+  błąd tylko wtedy, gdy zmierzony stosunek jest poniżej progu albo gdy nie da się go zmierzyć.
 - Nie rozluźniaj testów, żeby przechodziły.
 
 Twój plan ma wymienić każdy test, co czyta z design/data i jak mierzy.
@@ -558,22 +582,25 @@ Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powi
 jest skończony, żebym mógł wyczyścić sesję.</code></pre></div>
 <hr>
 <p><strong>Oczekiwany wynik.</strong> Najpierw plan: testy, co każdy czyta z <code>design/data</code>, jak mierzy, jakie narzędzia instaluje i jak nazywa się plik z raportem. Zatwierdź go albo popraw. Potem checker powstaje i uruchamia się na pustym projekcie. Nie przechodzi, a raport mówi dlaczego przy każdym teście: brakuje sekcji, brakuje tekstów i tak dalej. Potem commit i push.</p>
+<p>Jak odróżnić checker, który celowo nie przechodzi, od zepsutego:</p>
+<ul><li><strong>Działa:</strong> plik z raportem istnieje i wymienia każdy test z miejscem, wartością oczekiwaną i faktyczną.</li><li><strong>Zepsuty:</strong> błąd ze ścieżkami plików i numerami linii, a pliku z raportem nie ma.</li></ul>
 <p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td><code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Przechodzi na pustym projekcie</td><td><code>Przeszło bez strony. Pokaż mi, które testy się wykonały i co każdy zmierzył.</code></td></tr><tr><td>Chce najpierw zbudować stronę, żeby test miał co sprawdzać</td><td><code>W tym kroku bez strony. Test ma nie przejść na projekcie takim, jaki jest.</code></td></tr><tr><td>Test jest pominięty albo oznaczony jako incomplete</td><td><code>Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.</code></td></tr><tr><td>Raport mówi „problem z kontrastem&quot; bez szczegółów</td><td><code>Każdy błąd musi podać element, wartość oczekiwaną, wartość zmierzoną i próg.</code></td></tr><tr><td>Bierze wartości z własnego wyobrażenia o designie</td><td><code>Każdy test czyta wartości z design/data. Pokaż mi, skąd pochodzi każda z nich.</code></td></tr><tr><td>Pyta, jakiej biblioteki testowej użyć</td><td><code>Twój wybór. Weź taką, która steruje prawdziwą przeglądarką i testuje dostępność.</code></td></tr><tr><td><code>npm run check -- --url https://example.com</code> niczego nie zmienia</td><td><code>Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td>Naciśnij Esc, potem powiedz <code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Przechodzi na pustym projekcie</td><td><code>Przeszło bez strony. Pokaż mi, które testy się wykonały i co każdy zmierzył.</code></td></tr><tr><td>Chce najpierw zbudować stronę, żeby test miał co sprawdzać</td><td><code>W tym kroku bez strony. Test ma nie przejść na projekcie takim, jaki jest.</code></td></tr><tr><td>Test jest pominięty</td><td><code>Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.</code></td></tr><tr><td>Wynik kontrastu oznaczony jako incomplete (tekst na zdjęciu albo gradiencie)</td><td><code>Zmierz ten kontrast z wyrenderowanych pikseli pod tekstem. Zgłoś błąd tylko wtedy, gdy stosunek jest poniżej progu albo nie da się go zmierzyć.</code></td></tr><tr><td>Raport mówi „problem z kontrastem&quot; bez szczegółów</td><td><code>Każdy błąd musi podać element, wartość oczekiwaną, wartość zmierzoną i próg.</code></td></tr><tr><td>Bierze wartości z własnego wyobrażenia o designie</td><td><code>Każdy test czyta wartości z design/data. Pokaż mi, skąd pochodzi każda z nich.</code></td></tr><tr><td>Pyta, jakiej biblioteki testowej użyć</td><td><code>Twój wybór. Weź taką, która steruje prawdziwą przeglądarką i testuje dostępność.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja przeglądarki i narzędzi do dostępności go wymaga.</td></tr><tr><td>Raport mówi, że strona się nie ładuje</td><td><code>Checker ma sam zbudować i serwować stronę. Nie polegaj na serwerze deweloperskim.</code></td></tr><tr><td><code>npm run check -- --url https://example.com</code> niczego nie zmienia</td><td><code>Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.</code></td></tr><tr><td>Jest RESCUE_TIME_2, a checker jest zepsuty (błąd, brak pliku z raportem)</td><td>Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz <strong>checker.zip</strong> ze strony warsztatu i powiedz agentowi: <code>Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.</code> Zawiera własne <code>design/data</code>, które zastępuje twoje. Potem <code>/clear</code> i prompt 04. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz <code>Rozpakuj checker.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
-<ul><li>Najpierw testy: test powstaje z designu, zanim jest jakakolwiek strona, więc nie da się go dopasować do tego, co zbudowano.</li><li>Program, nie opinia: kod wyjścia 0 albo nie, ta sama odpowiedź przy każdym uruchomieniu, bez modelu językowego.</li><li>Test, który nie może się wykonać, to porażka: narzędzia do dostępności zgłaszają tekst na zdjęciu jako „incomplete&quot;, a reguła „zero naruszeń&quot; liczyłaby to jako zaliczenie.</li></ul>
+<ul><li>Najpierw testy: test powstaje z designu, zanim jest jakakolwiek strona, więc nie da się go dopasować do tego, co zbudowano.</li><li>Program, nie opinia: kod wyjścia 0 albo nie, ta sama odpowiedź przy każdym uruchomieniu, bez modelu językowego.</li><li>Incomplete to nie zaliczenie: narzędzia do dostępności zgłaszają tekst na zdjęciu albo gradiencie jako „incomplete&quot;. Checker mierzy wyrenderowane piksele pod tym tekstem i zgłasza błąd tylko wtedy, gdy stosunek jest za niski albo nie da się go zmierzyć; inaczej reguła „zero naruszeń&quot; przepuściłaby go niezauważony, a reguła „incomplete to błąd&quot; nigdy nie pozwoliłaby stronie przejść.</li></ul>
 </section>
 <section class="step" id="p04">
   <p class="step__no">Prompt 04</p>
   <h2 id="zbuduj-to">Zbuduj to</h2>
-  <p>Agent planuje stronę, buduje ją całą z <code>design/data</code> w jednym przebiegu, potem raz uruchamia checker z promptu 03 i pokazuje, co jeszcze nie przechodzi.</p>
+  <p>Agent planuje stronę, buduje ją całą z <code>design/data</code> w jednym przebiegu, potem raz uruchamia checker z promptu 03 i pokazuje, co jeszcze nie przechodzi. Potem ty przeglądasz stronę, a agent zapisuje twój przegląd do <code>notes.md</code>, zanim zrobi commit.</p>
 <h3>Zanim wkleisz</h3>
 <p>Przełącz agenta w plan mode, tak jak przed promptami 02 i 03. Claude Code: <code>Shift+Tab</code>, aż w stopce pojawi się <em>plan mode on</em>. Codex: <code>/plan</code>.</p>
+<p>Żeby agent nie pytał przed każdą zmianą pliku: w Claude Code przy zatwierdzaniu planu wybierz <strong>Yes, auto-accept edits</strong>; stopka pokaże wtedy <em>accept edits on</em>. Akceptowanie zmian obejmuje tylko pliki. Kiedy agent pierwszy raz uruchamia nowy rodzaj komendy, na przykład <code>npm run check</code>, <code>git commit</code> albo <code>git push</code>, Claude Code i tak pyta: wybierz <strong>Yes, and don't ask again for … commands</strong>. W Codeksie wpisz <code>/permissions</code> i wybierz opcję, która pozwala edytować pliki i uruchamiać komendy w tym folderze bez pytania; <code>git push</code> może i tak zapytać o dostęp do sieci.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p5" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p5"><code>Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p6" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p6"><code>Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
 Zbuduj teraz stronę, na podstawie designu. Czytaj design/data i notes.md; nie rozkodowuj
@@ -585,6 +612,9 @@ kolorów, stylów tekstu, wartości layoutu, tekstów i obrazów używa każda z
 Zbuduj całą stronę za jednym razem: każdą sekcję z design/data/sections.json, w tej
 kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy skończysz, powiedz mi,
 które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.
+
+Jeśli musisz zobaczyć stronę w przeglądarce, a serwer deweloperski nie działa, uruchom go sam
+i podaj mi adres.
 
 Reguły, wszystkie nienegocjowalne:
 
@@ -608,32 +638,44 @@ jedno założenie niż odkryć sześć.
 Kiedy strona będzie zbudowana, uruchom raz npm run check i pokaż mi, ile testów nie
 przechodzi i które. Nie naprawiaj ich jeszcze i nie zmieniaj checkera.
 
-Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok
-jest skończony, żebym mógł wyczyścić sesję.</code></pre></div>
+Potem poczekaj, aż przejrzę stronę. Kiedy podam ci mój przegląd, zapisz go do notes.md pod
+nagłówkiem „Design review&quot; i jeszcze niczego nie naprawiaj. Potem zrób commit wszystkiego
+z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok jest skończony, żebym mógł
+wyczyścić sesję.</code></pre></div>
 <hr>
-<p><strong>Oczekiwany wynik.</strong> Najpierw plan: sekcje w kolejności i to, czego każda używa z <code>design/data</code>. Zatwierdź go albo popraw. Potem kilka minut pracy, lista zbudowanych sekcji i adres. Potem jedno uruchomienie <code>npm run check</code>: mniej błędów niż po prompcie 03, zwykle nie zero. Potem commit i push.</p>
-<p>Otwórz stronę obok designu w Figmie i przeglądaj ją sekcja po sekcji. Każdy problem zgłoś zwykłymi słowami, na przykład:</p>
-<blockquote>Odstęp pod nagłówkiem jest za ciasny, a pomarańczowy to nie ten pomarańczowy.</blockquote>
+<p><strong>Oczekiwany wynik.</strong> Najpierw plan: sekcje w kolejności i to, czego każda używa z <code>design/data</code>. Zatwierdź go albo popraw. Potem kilka minut pracy, lista zbudowanych sekcji i adres. Potem jedno uruchomienie <code>npm run check</code>: mniej błędów niż po prompcie 03, zwykle nie zero. Potem agent czeka na twój przegląd.</p>
+<p>Otwórz stronę obok designu w Figmie i przeglądaj ją sekcja po sekcji. Nie masz konta w Figmie albo Figma prosi o zalogowanie? Porównaj z gotową stroną, do której link jest na stronie głównej. Wpisz każdy problem zwykłymi słowami, na przykład <code>Odstęp pod nagłówkiem jest za ciasny, a pomarańczowy to nie ten pomarańczowy.</code>, a po nich wklej tę linijkę:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p7" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p7"><code>Zapisz te problemy do notes.md pod nagłówkiem „Design review&quot;. Jeszcze ich nie naprawiaj.</code></pre></div>
+<p>Agent zapisuje twój przegląd do <code>notes.md</code>, robi commit i push. Prompt 05 naprawia to, co mają dane designu.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td><code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Zatrzymuje się po jednej sekcji i pyta</td><td><code>Nie czekaj na mnie. Zbuduj całą stronę, potem mi pokaż.</code></td></tr><tr><td>Zaczyna naprawiać błędy</td><td><code>Stop. Uruchom test raz i pokaż wynik. Naprawianie to następny krok.</code></td></tr><tr><td>Zmienia checker</td><td><code>Przywróć checker dokładnie tak, jak był. Zmienia się strona, nie checker.</code></td></tr><tr><td>Tekst, którego nigdy nie widziałeś</td><td><code>Skąd wzięło się to zdanie? Zastąp je tekstem z design/data/copy.json.</code></td></tr><tr><td>Szare pudełko tam, gdzie powinno być zdjęcie</td><td><code>Użyj tu obrazu, który wymienia design/data/images.json.</code></td></tr><tr><td>Kolor, który jest prawie dobry</td><td><code>To nie jest wartość z design/data/colours.json. Użyj dokładnej i powiedz mi, jak się nazywa.</code></td></tr><tr><td>Znowu zaczyna rozkodowywać .fig</td><td><code>Stop. Wszystko, czego potrzebujesz, jest w design/data i notes.md.</code></td></tr><tr><td>Mówi, że skończył, a wyraźnie nie</td><td><code>Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.</code></td></tr><tr><td>Jest coraz wolniejszy i mniej konkretny</td><td>Kontekst jest pełny. Powiedz <code>Zaktualizuj notes.md tym, gdzie jesteśmy</code>, wpisz <code>/clear</code>, potem powiedz <code>Przeczytaj design/data i notes.md i buduj dalej</code>.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Pisze kod, zanim pokaże plan</td><td>Naciśnij Esc, potem powiedz <code>Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.</code></td></tr><tr><td>Zatrzymuje się po jednej sekcji i pyta</td><td><code>Nie czekaj na mnie. Zbuduj całą stronę, potem mi pokaż.</code></td></tr><tr><td>Zaczyna naprawiać błędy</td><td>Naciśnij Esc, potem powiedz <code>Stop. Uruchom test raz i pokaż wynik. Naprawianie to następny krok.</code></td></tr><tr><td>Zaczyna naprawiać twój przegląd</td><td>Naciśnij Esc, potem powiedz <code>Stop. Tylko zapisz mój przegląd do notes.md. Naprawianie to następny krok.</code></td></tr><tr><td>Zmienia checker</td><td><code>Przywróć checker dokładnie tak, jak był. Zmienia się strona, nie checker.</code></td></tr><tr><td>Pyta, zanim uruchomi komendę</td><td>Wybierz <strong>Yes, and don't ask again for … commands</strong>.</td></tr><tr><td>Tekst, którego nigdy nie widziałeś</td><td><code>Skąd wzięło się to zdanie? Zastąp je tekstem z design/data/copy.json.</code></td></tr><tr><td>Szare pudełko tam, gdzie powinno być zdjęcie</td><td><code>Użyj tu obrazu, który wymienia design/data/images.json.</code></td></tr><tr><td>Kolor, który jest prawie dobry</td><td><code>To nie jest wartość z design/data/colours.json. Użyj dokładnej i powiedz mi, jak się nazywa.</code></td></tr><tr><td>Znowu zaczyna rozkodowywać .fig</td><td>Naciśnij Esc, potem powiedz <code>Stop. Wszystko, czego potrzebujesz, jest w design/data i notes.md.</code></td></tr><tr><td>Mówi, że skończył, a wyraźnie nie</td><td><code>Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.</code></td></tr><tr><td>Jest coraz wolniejszy i mniej konkretny</td><td>Kontekst jest pełny. Powiedz <code>Zaktualizuj notes.md tym, gdzie jesteśmy</code>, wpisz <code>/clear</code>, potem powiedz <code>Przeczytaj design/data i notes.md i buduj dalej</code>.</td></tr><tr><td>Jest BUILD_END, a strona nie jest skończona</td><td>Naciśnij Esc, potem powiedz <code>Stop. Zrób commit tego, co masz, i push.</code> Potem <code>/clear</code> i prompt 05.</td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
-<ul><li>Każda wartość pochodzi z <code>design/data</code>: wartość, którą agent wybierze sam, checker zgłosi jako błąd.</li><li>Test uruchamia się raz i nic nie jest naprawiane: naprawianie to prompt 05, w nowej sesji, w pętli.</li><li>Pytania trafiają do <code>notes.md</code>: agent buduje dalej, a ty poprawiasz jego założenia potem.</li></ul>
+<ul><li>Każda wartość pochodzi z <code>design/data</code>: wartość, którą agent wybierze sam, checker zgłosi jako błąd.</li><li>Test uruchamia się raz i nic nie jest naprawiane: naprawianie to prompt 05, w nowej sesji, w pętli.</li><li>Twój przegląd trafia do <code>notes.md</code> przed commitem: <code>/clear</code> czyści rozmowę, a prompt 05 czyta przegląd z pliku.</li></ul>
 </section>
 <section class="step" id="p05">
   <p class="step__no">Prompt 05</p>
   <h2 id="petla-2">Pętla</h2>
-  <p>W nowej sesji agent uruchamia checker z promptu 03 (<code>npm run check</code>), czyta plik z raportem, który checker zapisuje, naprawia pierwszy błąd i uruchamia checker ponownie, aż zakończy się kodem 0. Każda runda ma trzy kroki: zaplanuj poprawkę, wprowadź ją, uruchom checker. Kiedy test przejdzie, agent robi commit i push.</p>
+  <p>W nowej sesji agent uruchamia checker z promptu 03 (<code>npm run check</code>), czyta plik z raportem, który checker zapisuje, naprawia pierwszy błąd i uruchamia checker ponownie, aż zakończy się kodem 0. Naprawia też problemy z twojego przeglądu w <code>notes.md</code>, które mają pokrycie w danych designu. Każda runda ma trzy kroki: zaplanuj poprawkę, wprowadź ją, uruchom checker. Kiedy test przejdzie, agent robi commit i push.</p>
+<h3>Zanim wkleisz</h3>
+<p>Wpisz <code>/clear</code>. Żeby agent nie zatrzymywał się przed każdą zmianą pliku: w Claude Code naciskaj <code>Shift+Tab</code>, aż w stopce pojawi się <em>accept edits on</em>. Akceptowanie zmian obejmuje tylko pliki: kiedy agent pierwszy raz uruchamia nowy rodzaj komendy, na przykład <code>npm run check</code>, <code>git commit</code> albo <code>git push</code>, Claude Code i tak pyta, więc wybierz <strong>Yes, and don't ask again for … commands</strong>. W Codeksie wpisz <code>/permissions</code> i wybierz opcję, która pozwala edytować pliki i uruchamiać komendy w tym folderze bez pytania; <code>git push</code> może i tak zapytać o dostęp do sieci.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p6" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p6"><code>Przeczytaj notes.md. Potem uruchom npm run check.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p8" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p8"><code>Przeczytaj notes.md. Potem uruchom npm run check.
 
-Jeśli kończy się kodem 0, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+Pozycje pod nagłówkiem „Design review&quot; w notes.md to problemy, które znalazłem, oglądając
+stronę. Te, które mają pokrycie w design/data, traktuj jak błędy z raportu i też je napraw. Przy
+każdej, która nie ma pokrycia w design/data, zapisz do notes.md jedną linijkę, że go nie ma,
+i zostaw ją.
+
+Jeśli npm run check kończy się kodem 0 i nie została żadna pozycja z „Design review&quot;, która ma
+pokrycie w design/data, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
 i powiedz mi, że skończyliśmy.
 
-Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
-npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
+W przeciwnym razie przeczytaj raport, który zapisał test, i napraw to, co wymienia. Potem
+uruchom npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0, a pozycje z „Design
+review&quot; będą załatwione.
 
 Każda runda ma trzy kroki. Plan: weź pierwszy błąd z raportu i zapisz do notes.md jedną
 linijkę: co nie przechodzi, co według ciebie jest przyczyną i co zmienisz. Implementacja:
@@ -648,7 +690,7 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
    ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
    powiedz mi który i dlaczego, i nie zmieniaj niczego.
-2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
+2. Nie dodawaj niczego, czego nie ma w designie, i nie wymyślaj tekstów.
 3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
    każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
    o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
@@ -657,31 +699,74 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 Zapisuj do notes.md na bieżąco, co próbowałeś i co się stało, żeby nowa sesja mogła to
 podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.</code></pre></div>
 <hr>
-<h3>Claude Code: <code>/goal</code></h3>
+<h3><code>/goal</code></h3>
 <p>Najpierw wklej prompt powyżej, potem tę linijkę:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p7" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p7"><code>/goal npm run check exits 0</code></pre></div>
-<p>Sesja nie skończy się, dopóki komenda nie zakończy się kodem 0: komenda się uruchamia, a decyduje jej kod wyjścia. <strong>Codex nie ma <code>/goal</code>.</strong> Tam mechanizmem jest sam prompt; jeśli agent zatrzyma się za wcześnie, powiedz <code>jedź dalej</code>.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p9" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p9"><code>/goal npm run check exits 0</code></pre></div>
+<p>W Claude Code <code>/goal</code> ustawia warunek. Po każdej turze osobny model sprawdza, czy warunek jest spełniony, a Claude pracuje dalej, dopóki nie jest. Agent musi więc uruchomić <code>npm run check</code> i pokazać kod wyjścia w rozmowie. Codex też ma <code>/goal</code>: ta sama linijka go ustawia, a <code>/goal clear</code> usuwa. Bez <code>/goal</code> pętlę podtrzymuje sam prompt; jeśli agent zatrzyma się za wcześnie, powiedz <code>Jedź dalej.</code></p>
 <hr>
 <p><strong>Oczekiwany wynik.</strong> Kilka rund: zaplanuj, napraw, sprawdź. Liczba błędów spada, może wzrosnąć o jeden, kiedy naprawa zepsuje coś innego, i znowu spada. W <code>notes.md</code> przybywa jedna linijka na rundę. Kiedy <code>npm run check</code> zwróci kod 0, agent robi commit i push.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td><strong>Zedytował checker</strong></td><td><code>Przywróć checker dokładnie tak, jak był, i napraw stronę zamiast niego.</code> Potem zobacz, co zmienił w checkerze.</td></tr><tr><td>Przestaje po jednej rundzie</td><td><code>Jedź dalej. Nie zatrzymuj się, dopóki npm run check nie skończy się kodem 0.</code> Albo użyj <code>/goal</code>.</td></tr><tr><td>Ten sam błąd wraca w kółko</td><td><code>Próbowałeś tego trzy razy. Stop. Powiedz mi, co próbowałeś i co się stało za każdym razem.</code></td></tr><tr><td>Mówi, że skończone, a test jest czerwony</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Jest coraz wolniejszy i mniej konkretny</td><td>Kontekst jest pełny. Powiedz <code>Zapisz do notes.md, co zostało, w dziesięciu linijkach</code>, wpisz <code>/clear</code>, potem wklej ten prompt jeszcze raz.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td><strong>Zedytował checker</strong></td><td><code>Przywróć checker dokładnie tak, jak był, i napraw stronę zamiast niego.</code> Potem zobacz, co zmienił w checkerze.</td></tr><tr><td>Chcesz wcześniej zatrzymać <code>/goal</code></td><td>Wpisz <code>/goal clear</code>.</td></tr><tr><td>Pyta przed każdą zmianą pliku</td><td>Claude Code: <code>Shift+Tab</code>, aż w stopce pojawi się <em>accept edits on</em>. Codex: <code>/permissions</code>.</td></tr><tr><td>Pyta, zanim uruchomi komendę</td><td>Wybierz <strong>Yes, and don't ask again for … commands</strong>.</td></tr><tr><td>Przestaje po jednej rundzie</td><td><code>Jedź dalej. Nie zatrzymuj się, dopóki npm run check nie skończy się kodem 0.</code> Albo użyj <code>/goal</code>.</td></tr><tr><td>Ten sam błąd wraca w kółko</td><td><code>Próbowałeś tego trzy razy. Stop. Powiedz mi, co próbowałeś i co się stało za każdym razem.</code></td></tr><tr><td>Mówi, że skończone, a test jest czerwony</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Jest coraz wolniejszy i mniej konkretny</td><td>Kontekst jest pełny. Powiedz <code>Zapisz do notes.md, co zostało, w dziesięciu linijkach</code>, wpisz <code>/clear</code>, potem wklej ten prompt jeszcze raz.</td></tr><tr><td>Jest LOOP_END, a test dalej nie przechodzi</td><td>Naciśnij Esc (i wpisz <code>/goal clear</code>, jeśli użyłeś <code>/goal</code>), potem powiedz <code>Stop. Zapisz do notes.md, gdzie jesteś, zrób commit i push.</code> Potem <code>/clear</code> i prompt 06.</td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
 <ul><li>Agent nigdy nie edytuje checkera. Gdyby mógł, zaliczenie nic by nie znaczyło.</li><li>Jedna linijka na rundę w <code>notes.md</code> i raport na dysku: nowa sesja kontynuuje z plików.</li><li>Trzy nieudane próby przy jednym błędzie to sygnał stop: zwykle dwa wymagania, które nie mogą być jednocześnie spełnione.</li></ul>
 </section>
 <section class="step" id="p06">
   <p class="step__no">Prompt 06</p>
-  <h2 id="sprobuj-to-zepsuc">Spróbuj to zepsuć</h2>
-  <p>Przegląd strony przez agenta, który jej nie budował. Agent szuka problemów, których checker z promptu 03 nie wyłapie, argumentuje przeciwko każdemu i zgłasza tylko te, które to przetrwają. Ty wybierasz, które naprawić; agent je naprawia, sprawdza, że <code>npm run check</code> nadal przechodzi, robi commit i push. Przegląd uzupełnia <code>npm run check</code>, nie zastępuje go.</p>
+  <h2 id="opublikuj">Opublikuj</h2>
+  <p>W nowej sesji agent buduje stronę, zakłada stronę na Netlify i publikuje ją bez pytań w terminalu, sprawdza adres na żywo tym samym checkerem, a potem robi commit i push wszystkiego, co się zmieniło.</p>
 <h3>Zanim wkleisz</h3>
-<p>Wpisz <code>/clear</code>, żeby recenzent nie widział budowania strony. Agent, który ocenia własną pracę w tej samej sesji, pamięta powody każdej decyzji i ich broni; to nie jest przegląd. Strona jest przeglądana na tym komputerze, pod adresem serwera deweloperskiego: nic nie jest jeszcze opublikowane.</p>
+<p>Wpisz <code>/clear</code>, jeśli jeszcze tego nie zrobiłeś.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p8" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p8"><code>Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p10" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p10"><code>Wystaw to do internetu.
+
+Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify CLI. Netlify CLI jest
+zainstalowane i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast
+robić to po cichu.
+
+Ten projekt nie ma jeszcze strony na Netlify. Załóż ją i opublikuj jedną komendą, bez pytań
+w terminalu: netlify deploy --prod --dir=dist --site-name turbine-&lt;moja nazwa na GitHubie&gt;.
+Moją nazwę sprawdzisz przez gh api user --jq .login. Jeśli ta nazwa jest zajęta, dodaj krótki
+dopisek i uruchom jeszcze raz.
+
+Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
+
+- pobierz publiczny adres i potwierdź, że zwraca 200
+- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
+  starszą — porównaj to, co wraca, z tym, co jest w folderze dist
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
+
+Zapisz nazwę strony na Netlify i adres na żywo do notes.md. Potem zrób commit wszystkiego, co
+się zmieniło, z opisem, co zrobił ten krok, i zrób push.
+
+Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.</code></pre></div>
+<hr>
+<p><strong>Oczekiwany wynik.</strong> Netlify CLI o nic nie pyta: <code>--site-name</code> zakłada stronę i od razu na nią publikuje. Adres wygląda jak <code>https://turbine-twojanazwa.netlify.app</code>. Agent podaje potem wynik trzech sprawdzeń: adres zwraca 200, serwowana strona zgadza się z <code>dist</code>, a <code>npm run check -- --url</code> przechodzi na adresie na żywo. Zapisuje nazwę strony do <code>notes.md</code>, robi commit i push wszystkiego, co się zmieniło, na przykład ustawień Netlify, które utworzył. Adres jest na końcu, w osobnej linijce.</p>
+<p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
+<hr>
+<h4>Jeśli coś pójdzie nie tak</h4>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Mówi, że nie jesteś zalogowany</td><td>Uruchom <code>netlify login</code> w nowym oknie terminala (w dowolnym folderze), jak na stronie Przygotowanie, potem powiedz <code>Jestem już zalogowany.</code></td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Publikacja i pobranie adresu na żywo go wymagają.</td></tr><tr><td>Netlify CLI zadaje pytanie i czeka</td><td>Naciśnij Esc, potem powiedz <code>Stop, przerwij tę komendę. Opublikuj z --site-name, żeby o nic nie pytała.</code></td></tr><tr><td>Nazwa strony jest zajęta</td><td><code>Dodaj krótki dopisek do nazwy strony i opublikuj jeszcze raz.</code></td></tr><tr><td>CLI ciągle zawodzi</td><td>Powiedz <code>Otwórz mi folder tego projektu.</code> Przeciągnij folder <code>dist</code> na https://app.netlify.com/drop i przejmij stronę, kiedy Netlify to zaproponuje. Potem powiedz <code>Połącz ten folder z moją stroną na Netlify &lt;nazwa&gt; przez netlify link --name &lt;nazwa&gt;, zapisz nazwę strony do notes.md i uruchom npm run check -- --url na jej adresie.</code></td></tr><tr><td>Pusta strona pod adresem na żywo</td><td><code>Strona na żywo jest pusta. Który folder opublikowałeś?</code></td></tr><tr><td>Strona na żywo bez stylów</td><td><code>Opublikuj folder dist, nie katalog główny projektu.</code></td></tr><tr><td>„Deploy się udał&quot; i żadnego adresu</td><td><code>Podaj mi publiczny adres w osobnej linijce.</code></td></tr><tr><td>Test na żywo nie przechodzi, a lokalny przechodził</td><td><code>Pokaż mi dokładnie, które testy różnią się między lokalnym a na żywo, i dlaczego. Nie zmieniaj checkera.</code></td></tr><tr><td>Mówi, że checker nie przyjmuje adresu</td><td><code>Prompt 03 prosił o --url. Dodaj to, nie zmieniając tego, co rozstrzyga którykolwiek test, i uruchom na adresie na żywo.</code></td></tr></tbody></table></div>
+<hr>
+<h4>Dlaczego jest tak napisany</h4>
+<ul><li><code>--site-name</code> zakłada stronę w tej samej komendzie: agent nie odpowie na pytanie zadane w terminalu, a komenda, która czeka, czeka bez końca.</li><li>Udany deploy nic nie mówi o tym, co jest serwowane. Agent porównuje stronę na żywo z <code>dist</code>, treść, a nie bajty, bo Netlify dokłada własne tagi do serwowanego HTML.</li><li>Nazwa strony trafia do <code>notes.md</code>: prompt 07 publikuje jeszcze raz na tę samą stronę po <code>/clear</code>.</li></ul>
+</section>
+<section class="step" id="p07">
+  <p class="step__no">Prompt 07</p>
+  <h2 id="sprobuj-to-zepsuc">Spróbuj to zepsuć</h2>
+  <p>Przegląd strony przez agenta, który jej nie budował. Agent szuka problemów, których checker z promptu 03 nie wyłapie, argumentuje przeciwko każdemu i zgłasza tylko te, które to przetrwają. Ty wybierasz, które naprawić; agent je naprawia, uruchamia <code>npm run check</code> jeszcze raz, robi commit i push, i publikuje stronę jeszcze raz pod adresem z promptu 06. Przegląd uzupełnia <code>npm run check</code>, nie zastępuje go.</p>
+<p>Po prompcie 06 strona jest już na żywo. Jeśli zabraknie czasu, pomiń ten prompt: adres, który masz, zostaje.</p>
+<h3>Zanim wkleisz</h3>
+<p>Wpisz <code>/clear</code>, żeby recenzent nie widział budowania strony. Agent, który ocenia własną pracę w tej samej sesji, pamięta powody każdej decyzji i ich broni; to nie jest przegląd. Strona jest przeglądana na tym komputerze; agent sam uruchamia serwer deweloperski, jeśli nie działa.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p11" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p11"><code>Cokolwiek npm run check mówi w tej chwili, spróbuj udowodnić, że strona jest zła.
 
 Nie budowałeś tej strony. Oceniaj ją wyłącznie po tym, co pokazuje przeglądarka, i po tym,
 co jest w tym projekcie, a nie po czymkolwiek, co padło wcześniej w tej rozmowie.
+
+Oglądaj stronę na tym komputerze. Jeśli serwer deweloperski nie działa, uruchom go sam i podaj
+mi adres.
 
 Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
 rzeczy, które są ze stroną nie tak, a których checker w tym projekcie nie potrafi złapać,
@@ -693,8 +778,9 @@ i dla każdej powiedz mi:
 
 Szukaj szczególnie tam, gdzie automat nie sięga:
 
-- tekst na zdjęciu albo gradiencie: automatyczny test kontrastu w ogóle nie policzy tej
-  pary i zgłosi ją jako niejednoznaczną, a nie jako błąd
+- tekst na zdjęciu albo gradiencie: narzędzie do dostępności nie policzy tej pary i oznaczy
+  ją jako incomplete; checker w tym projekcie może mierzyć ją z pikseli, więc sprawdź, co tam
+  faktycznie zmierzył
 - kolejność czytania dla kogoś na klawiaturze albo czytniku ekranu: technicznie poprawna
   i bez sensu to jest stan, który istnieje
 - tekst alternatywny, który jest, i jest bezużyteczny
@@ -717,57 +803,39 @@ nie jest znalezisko.
 
 Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są prawdziwe.</code></pre></div>
 <hr>
-<p><strong>Oczekiwany wynik.</strong> Do pięciu znalezisk, każde z elementem, problemem i powodem, dla którego checker go nie wyłapał, oraz liczba odrzuconych kandydatów. Zdecyduj, które znaleziska są prawdziwe, potem wklej, ze swoimi numerami:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p9" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p9"><code>Napraw znaleziska 2 i 4. Resztę zostaw. Potem uruchom npm run check jeszcze raz — chcę
-wiedzieć, czy naprawa zepsuła coś, co przechodziło. Jeśli nadal kończy się kodem 0, zrób
-commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push.</code></pre></div>
-<p>Agent naprawia wybrane znaleziska, uruchamia test i robi commit i push, kiedy przechodzi.</p>
+<p><strong>Oczekiwany wynik.</strong> Do pięciu znalezisk, każde z elementem, problemem i powodem, dla którego checker go nie wyłapał, oraz liczba odrzuconych kandydatów. Zdecyduj, które znaleziska są prawdziwe. Potem wpisz <code>Napraw znaleziska</code> i numery, które wybrałeś, naciśnij Shift+Enter, żeby przejść do nowej linijki, i wklej blok poniżej:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p12" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p12"><code>Napraw tylko znaleziska, które wymieniłem wyżej. Resztę zostaw. Potem uruchom npm run check
+jeszcze raz: chcę wiedzieć, czy naprawa zepsuła coś, co przechodziło. Jeśli kończy się kodem 0,
+zrób commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push. Jeśli kończy się
+kodem różnym od zera, powiedz mi, które błędy są nowe od twoich poprawek, a potem i tak zrób
+commit i push. Potem opublikuj jeszcze raz na tę samą stronę przez
+netlify deploy --prod --dir=dist --site &lt;nazwa strony z notes.md&gt; i uruchom
+npm run check -- --url na adresie na żywo.</code></pre></div>
+<p>Agent naprawia wybrane znaleziska, uruchamia test, robi commit i push, publikuje jeszcze raz na stronę z promptu 06 i uruchamia test na adresie na żywo.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code>.</strong></p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Znalezisko bez konkretnego elementu</td><td><code>Nazwij element tak, jak widzę go na ekranie, albo usuń to znalezisko.</code></td></tr><tr><td>Pięć znalezisk i nic nie odrzucił</td><td><code>Ilu kandydatów odrzuciłeś i dlaczego?</code> Jeśli argumentowanie przeciwko znaleziskom niczego nie usunęło, w praktyce się nie odbyło.</td></tr><tr><td>Zaczyna naprawiać, zanim wybrałeś</td><td><code>Stop. Jeszcze bez poprawek. Najpierw ja decyduję, które znaleziska są prawdziwe.</code></td></tr><tr><td>Wspomina decyzje z budowania</td><td>Sesja nie została wyczyszczona. Wpisz <code>/clear</code> i wklej prompt jeszcze raz.</td></tr><tr><td>Po poprawce <code>npm run check</code> nie przechodzi</td><td><code>Po twojej poprawce test nie przechodzi. Cofnij tę poprawkę, powiedz mi, dlaczego zepsuła test, i nie zmieniaj checkera.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Znalezisko bez konkretnego elementu</td><td><code>Nazwij element tak, jak widzę go na ekranie, albo usuń to znalezisko.</code></td></tr><tr><td>Pięć znalezisk i nic nie odrzucił</td><td><code>Ilu kandydatów odrzuciłeś i dlaczego?</code> Jeśli argumentowanie przeciwko znaleziskom niczego nie usunęło, w praktyce się nie odbyło.</td></tr><tr><td>Zaczyna naprawiać, zanim wybrałeś</td><td>Naciśnij Esc, potem powiedz <code>Stop. Jeszcze bez poprawek. Najpierw ja decyduję, które znaleziska są prawdziwe.</code></td></tr><tr><td>Wspomina decyzje z budowania</td><td>Sesja nie została wyczyszczona. Wpisz <code>/clear</code> i wklej prompt jeszcze raz.</td></tr><tr><td>Serwer deweloperski nie działa</td><td><code>Uruchom serwer deweloperski sam i podaj mi adres.</code></td></tr><tr><td>Poprawka psuje test, który wcześniej przechodził</td><td><code>Ta poprawka zepsuła test, który wcześniej przechodził. Cofnij ją, powiedz mi, dlaczego zepsuła test, i nie zmieniaj checkera.</code></td></tr><tr><td>Nie może znaleźć nazwy strony</td><td><code>Nazwa strony z promptu 06 jest w notes.md. Jeśli jej tam nie ma, uruchom netlify status i użyj tej strony.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
 <ul><li>Nowa sesja: recenzent, który nie budował strony, nie ma czego bronić.</li><li>Znajdź, potem argumentuj przeciwko każdemu znalezisku z trzech stron (czy to prawda, czy to ma znaczenie, czy to już obsłużone): dostajesz to, co przetrwało, a nie wszystko, co znalazł.</li><li>Szuka tam, gdzie program nie sięga: tekst na zdjęciach, kolejność czytania, alt, który jest i nic nie mówi, szerokości pomiędzy tymi z designu.</li></ul>
 </section>
-<section class="step" id="p07">
-  <p class="step__no">Prompt 07</p>
-  <h2 id="opublikuj">Opublikuj</h2>
-  <p>Ostatni krok. W nowej sesji agent buduje stronę, publikuje ją na Netlify przez Netlify CLI, sprawdza adres na żywo tym samym checkerem i robi commit i push wszystkiego, co się zmieniło.</p>
-<h3>Zanim wkleisz</h3>
-<p>Wpisz <code>/clear</code>, jeśli jeszcze tego nie zrobiłeś.</p>
-<hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p10" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p10"><code>Wystaw to do internetu.
-
-Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify w terminalu. Jest zainstalowane
-i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast robić to po cichu.
-
-Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
-
-- pobierz publiczny adres i potwierdź, że zwraca 200
-- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
-  starszą — porównaj to, co wraca, z tym, co jest w folderze build
-- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
-
-Potem zrób commit wszystkiego, co się zmieniło, z opisem, co zrobił ten krok, i zrób push.
-
-Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.</code></pre></div>
-<hr>
-<p><strong>Oczekiwany wynik.</strong> Jeśli Netlify CLI zapyta, której strony użyć, wybierz utworzenie nowego projektu. Wypisze adres w rodzaju <code>https://cos-tam-123456.netlify.app</code>. Agent podaje potem wynik trzech sprawdzeń: adres zwraca 200, serwowana strona zgadza się z <code>dist</code>, a <code>npm run check -- --url</code> przechodzi na adresie na żywo. Robi commit i push wszystkiego, co się zmieniło, na przykład ustawień Netlify, które utworzył. Adres jest na końcu, w osobnej linijce.</p>
-<hr>
-<h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Mówi, że nie jesteś zalogowany</td><td>Uruchom <code>netlify login</code> w drugim terminalu, jak na stronie Przygotowanie, potem powiedz <code>Jestem już zalogowany.</code></td></tr><tr><td>Pusta strona pod adresem na żywo</td><td><code>Strona na żywo jest pusta. Który folder opublikowałeś?</code></td></tr><tr><td>Strona na żywo bez stylów</td><td><code>Opublikuj folder dist, nie katalog główny projektu.</code></td></tr><tr><td>„Deploy się udał&quot; i żadnego adresu</td><td><code>Podaj mi publiczny adres w osobnej linijce.</code></td></tr><tr><td>Test na żywo nie przechodzi, a lokalny przechodził</td><td><code>Pokaż mi dokładnie, które testy różnią się między lokalnym a na żywo, i dlaczego. Nie zmieniaj checkera.</code></td></tr><tr><td>Mówi, że checker nie przyjmuje adresu</td><td><code>Prompt 03 prosił o --url. Dodaj to, nie zmieniając tego, co rozstrzyga którykolwiek test, i uruchom na adresie na żywo.</code></td></tr></tbody></table></div>
-<hr>
-<h4>Dlaczego jest tak napisany</h4>
-<ul><li>Udany deploy nic nie mówi o tym, co jest serwowane. Agent porównuje stronę na żywo z <code>dist</code>.</li><li>Porównuje treść, nie bajty: Netlify dokłada własne tagi do serwowanego HTML.</li><li>Checker działa na adresie na żywo, nie tylko na lokalnym serwerze.</li></ul>
-</section>
 <section class="step" id="p08">
   <p class="step__no">Prompt 08</p>
   <h2 id="ta-sama-robota-jako-workflow">Ta sama robota, jako workflow</h2>
-  <p>Prompty 01 do 07 wklejone jako jedna wiadomość. Wiadomość jest podzielona na siedem faz, ponumerowanych od 01 do 07, a każda faza zawiera tekst promptu o tym samym numerze: faza 03 robi to, co prompt 03. Agent sam przechodzi fazy po kolei i zatrzymuje się dla ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.</p>
-<p>Wklej go w zwykłym trybie, nie w plan mode, w nowej sesji. Fazy, które proszą o plan, zapisują go do <code>notes.md</code> i jadą dalej.</p>
+  <p>Prompty 01 do 07 wklejone jako jedna wiadomość, faza po fazie, z różnicami wymienionymi niżej. Wiadomość jest podzielona na siedem faz, ponumerowanych od 01 do 07, a każda faza zawiera tekst promptu o tym samym numerze: faza 03 robi to, co prompt 03. Agent sam przechodzi fazy po kolei i zatrzymuje się dla ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.</p>
+<h3>Zanim wkleisz</h3>
+<p>Potrzebujesz nowego, pustego repozytorium na GitHubie, sklonowanego na komputer, i pliku <code>turbine.fig</code>. Otwórz terminal, wejdź do folderu repozytorium i uruchom agenta w nowej sesji, w zwykłym trybie, nie w plan mode:</p>
+<div class="cmd">
+  <pre id="cmd-56"><code>cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-56" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+</div>
+<p>W Codeksie wpisz <code>codex</code> zamiast <code>claude</code>. Fazy, które proszą o plan, zapisują go do <code>notes.md</code> i jadą dalej.</p>
+<p>W Claude Code najpierw wpisz <code>/effort ultracode</code>. Prompt zaczyna się od słowa kluczowego <code>ultracode</code>, które włącza workflow z wieloma agentami tylko dla tej jednej wiadomości; <code>/effort ultracode</code> zostawia go włączonego na całą sesję, także dla twojej odpowiedzi na punkt 6. Więcej w części <code>ultracode</code> niżej.</p>
+<p>Faza 01 zakłada projekt w tym folderze, a przebieg od razu przechodzi do fazy 02, która czyta <code>turbine.fig</code> z folderu <code>design</code>. Utwórz folder <code>design</code>, włóż do niego <code>turbine.fig</code> i powiedz agentowi, żeby w fazie 01 go nie ruszał: wklej prompt poniżej, naciśnij Shift+Enter, żeby przejść do nowej linijki, wpisz <code>Folder design jest już w tym projekcie. W fazie 01 go nie ruszaj.</code> i naciśnij Enter.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p11" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p11"><code>ultracode. Chcę, żebyś wykonał całą robotę w siedmiu fazach. Każda faza to jeden z siedmiu
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p13" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p13"><code>ultracode. Chcę, żebyś wykonał całą robotę w siedmiu fazach. Każda faza to jeden z siedmiu
 promptów z warsztatu, w tej samej kolejności, tymi samymi słowami i z tymi samymi regułami.
 Przejdź je samodzielnie i nie przeskakuj do przodu.
 
@@ -783,8 +851,10 @@ Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się te rzec
 - Tam, gdzie faza mówi, że wyczyszczę sesję, nie zatrzymuj się: zacznij następną fazę od
   ponownego przeczytania notes.md i design/data.
 - W fazie 04 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
-  drugiej.
-- W fazie 06 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
+  drugiej, i sam przeglądasz stronę względem design/data, zamiast czekać na mój przegląd.
+- Faza 05 nie jest końcem przebiegu: kiedy npm run check skończy się kodem 0, przejdź do
+  fazy 06.
+- W fazie 07 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
   które przetrwały, naprawiasz bez czekania, aż wybiorę.
 
 FAZA 01 — START
@@ -812,8 +882,8 @@ FAZA 02 — POPATRZ
 Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
-W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
-przez „Save local copy&quot;. To nie jest obrazek: to cały design jako dane — każdy tekst,
+W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, tak jak
+zapisuje go Figma. To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
 Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
@@ -825,6 +895,9 @@ Chcę narzędzia, a nie jednorazowego rozkodowania: skryptu w tym projekcie, kt�
 .fig z folderu design i zapisuje dane designu, których będą potrzebować strona i checker.
 Spraw, żeby uruchamiała go komenda „npm run design&quot;. Ponowne uruchomienie na nowym pliku .fig
 ma odświeżyć dane, żeby nikt już nie musiał ręcznie rozkodowywać ani eksportować designu.
+
+Dekoder ma być mały: jeden skrypt, bez zestawu testów dla dekodera, bez dodatkowych narzędzi.
+Przestań nad nim pracować, gdy tylko siedem plików JSON i zdjęcia są zapisane.
 
 Nie ma programu, który otwiera plik .fig, więc skrypt rozkodowuje go sam. Co wiadomo
 o formacie:
@@ -872,7 +945,7 @@ kształt ma każdy plik JSON.
 Kiedy zatwierdzę plan, napisz skrypt, uruchom npm run design, potem pokaż mi listę, a jej
 punkt 6 zapisz do notes.md:
 
-1. Każdą sekcję, w kolejności od góry strony.
+1. Każdą sekcję, w kolejności od góry strony, i imię na każdej karcie artysty.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
@@ -907,9 +980,10 @@ Spraw, żeby uruchamiała go komenda „npm run check&quot;. Zainstaluj, co potr
 sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
 żadne z nich nie wchodzi do strony.
 
-Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
-npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
-później mógł ocenić też stronę na żywo.
+Domyślnie sam buduje stronę, sam serwuje zbudowane pliki i sprawdza tę stronę. Nie może
+zależeć od serwera deweloperskiego uruchomionego przez kogoś innego. Musi też przyjmować
+adres — npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie,
+żeby później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z design/data, nie ode mnie. Nie ma jeszcze strony, na którą można
 patrzeć: każdy test wynika z designu. Minimum, i to względem strony tak, jak renderuje ją
@@ -932,11 +1006,14 @@ wartości zmierzonej i progu — to jest cała robota.
 Zapisz raport do pliku, nie tylko wypisz go na ekran, bo później podam ci ten plik
 z powrotem. Powiedz mi, jak go nazwałeś.
 
-Dwie reguły dotyczące samego checkera:
+Trzy reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
   brakuje design/data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
+- Wynik dostępności oznaczony jako incomplete, na przykład tekst na zdjęciu albo gradiencie,
+  nie jest zaliczeniem. Zmierz kontrast z wyrenderowanych pikseli pod tym tekstem i zgłoś
+  błąd tylko wtedy, gdy zmierzony stosunek jest poniżej progu albo gdy nie da się go zmierzyć.
 - Nie rozluźniaj testów, żeby przechodziły.
 
 Twój plan ma wymienić każdy test, co czyta z design/data i jak mierzy.
@@ -965,6 +1042,9 @@ Zbuduj wszystkie sekcje z design/data/sections.json naraz, po jednym subagencie 
 a potem złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
 skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.
 
+Jeśli musisz zobaczyć stronę w przeglądarce, a serwer deweloperski nie działa, uruchom go sam
+i podaj mi adres.
+
 Reguły, wszystkie nienegocjowalne:
 
 - Każdy kolor i każdy rozmiar pochodzi z design/data. Jeśli wartości, której potrzebujesz,
@@ -987,20 +1067,28 @@ jedno założenie niż odkryć sześć.
 Kiedy strona będzie zbudowana, uruchom raz npm run check i pokaż mi, ile testów nie
 przechodzi i które. Nie naprawiaj ich jeszcze i nie zmieniaj checkera.
 
-Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok
-jest skończony, żebym mógł wyczyścić sesję.
+Potem sam przejrzyj stronę: porównaj to, co pokazuje przeglądarka, z design/data i zapisz
+każdą różnicę do notes.md pod nagłówkiem „Design review&quot;. Jeszcze niczego nie naprawiaj.
+Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push.
 
-Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, a projekt buduje się bez błędów.
+Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, projekt buduje się bez błędów, a notes.md ma sekcję „Design review&quot;.
 
 FAZA 05 — NAPRAWIAJ
 
 Przeczytaj notes.md. Potem uruchom npm run check.
 
-Jeśli kończy się kodem 0, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
-i powiedz mi, że skończyliśmy.
+Pozycje pod nagłówkiem „Design review&quot; w notes.md to różnice, które znalazłeś w fazie 04.
+Te, które mają pokrycie w design/data, traktuj jak błędy z raportu i też je napraw. Przy
+każdej, która nie ma pokrycia w design/data, zapisz do notes.md jedną linijkę, że go nie ma,
+i zostaw ją.
 
-Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
-npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
+Jeśli npm run check kończy się kodem 0 i nie została żadna pozycja z „Design review&quot;, która ma
+pokrycie w design/data, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+i przejdź do fazy 06.
+
+W przeciwnym razie przeczytaj raport, który zapisał test, i napraw to, co wymienia. Potem
+uruchom npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0, a pozycje z „Design
+review&quot; będą załatwione.
 
 Każda runda ma trzy kroki. Plan: weź pierwszy błąd z raportu i zapisz do notes.md jedną
 linijkę: co nie przechodzi, co według ciebie jest przyczyną i co zmienisz. Implementacja:
@@ -1015,7 +1103,7 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
    ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
    powiedz mi który i dlaczego, i nie zmieniaj niczego.
-2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
+2. Nie dodawaj niczego, czego nie ma w designie, i nie wymyślaj tekstów.
 3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
    każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
    o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
@@ -1026,12 +1114,42 @@ podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
 
 Zanim pójdziesz dalej: npm run check kończy się kodem 0.
 
-FAZA 06 — ATAKUJ
+FAZA 06 — WYSTAW
 
-Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
+Wystaw to do internetu.
+
+Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify CLI. Netlify CLI jest
+zainstalowane i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast
+robić to po cichu.
+
+Ten projekt nie ma jeszcze strony na Netlify. Załóż ją i opublikuj jedną komendą, bez pytań
+w terminalu: netlify deploy --prod --dir=dist --site-name turbine-&lt;moja nazwa na GitHubie&gt;.
+Moją nazwę sprawdzisz przez gh api user --jq .login. Jeśli ta nazwa jest zajęta, dodaj krótki
+dopisek i uruchom jeszcze raz.
+
+Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
+
+- pobierz publiczny adres i potwierdź, że zwraca 200
+- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
+  starszą — porównaj to, co wraca, z tym, co jest w folderze dist
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
+
+Zapisz nazwę strony na Netlify i adres na żywo do notes.md. Potem zrób commit wszystkiego, co
+się zmieniło, z opisem, co zrobił ten krok, i zrób push.
+
+Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
+
+Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.
+
+FAZA 07 — ATAKUJ
+
+Cokolwiek npm run check mówi w tej chwili, spróbuj udowodnić, że strona jest zła.
 
 Nie budowałeś tej strony. Oceniaj ją wyłącznie po tym, co pokazuje przeglądarka, i po tym,
 co jest w tym projekcie, a nie po czymkolwiek, co padło wcześniej w tej rozmowie.
+
+Oglądaj stronę na tym komputerze. Jeśli serwer deweloperski nie działa, uruchom go sam i podaj
+mi adres.
 
 Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
 rzeczy, które są ze stroną nie tak, a których checker w tym projekcie nie potrafi złapać,
@@ -1043,8 +1161,9 @@ i dla każdej powiedz mi:
 
 Szukaj szczególnie tam, gdzie automat nie sięga:
 
-- tekst na zdjęciu albo gradiencie: automatyczny test kontrastu w ogóle nie policzy tej
-  pary i zgłosi ją jako niejednoznaczną, a nie jako błąd
+- tekst na zdjęciu albo gradiencie: narzędzie do dostępności nie policzy tej pary i oznaczy
+  ją jako incomplete; checker w tym projekcie może mierzyć ją z pikseli, więc sprawdź, co tam
+  faktycznie zmierzył
 - kolejność czytania dla kogoś na klawiaturze albo czytniku ekranu: technicznie poprawna
   i bez sensu to jest stan, który istnieje
 - tekst alternatywny, który jest, i jest bezużyteczny
@@ -1070,31 +1189,13 @@ wyrzucaj i powiedz mi, ile wyrzuciłeś. Cztery prawdziwe znaleziska są warte w
 pięć, w których jedno jest zgadywanką. Jeśli nie umiesz wskazać konkretnego elementu, to
 nie jest znalezisko.
 
-Potem napraw znaleziska, które przetrwały, uruchom npm run check jeszcze raz i idź dalej
-tylko wtedy, gdy nadal kończy się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do
-notes.md, potem zrób commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push.
+Potem napraw znaleziska, które przetrwały, i uruchom npm run check jeszcze raz; musi nadal
+kończyć się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do notes.md, zrób commit
+wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push. Potem opublikuj jeszcze raz
+na tę samą stronę przez netlify deploy --prod --dir=dist --site &lt;nazwa strony z notes.md&gt;
+i uruchom npm run check -- --url na adresie na żywo.
 
-Zanim pójdziesz dalej: znaleziska, które przetrwały, są naprawione, a npm run check nadal kończy się kodem 0.
-
-FAZA 07 — WYSTAW
-
-Wystaw to do internetu.
-
-Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify w terminalu. Jest zainstalowane
-i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast robić to po cichu.
-
-Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
-
-- pobierz publiczny adres i potwierdź, że zwraca 200
-- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
-  starszą — porównaj to, co wraca, z tym, co jest w folderze build
-- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
-
-Potem zrób commit wszystkiego, co się zmieniło, z opisem, co zrobił ten krok, i zrób push.
-
-Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
-
-To jest koniec przebiegu: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.
+To jest koniec przebiegu: znaleziska, które przetrwały, są naprawione, npm run check nadal kończy się kodem 0, strona jest opublikowana jeszcze raz, a npm run check -- --url przechodzi na adresie na żywo.
 
 Reguły na cały przebieg:
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
@@ -1103,19 +1204,20 @@ Reguły na cały przebieg:
 - Utrzymuj notes.md na bieżąco. Jeśli będziemy musieli zacząć nową sesję, notes.md
   i design/data to wszystko, co będzie miała.</code></pre></div>
 <hr>
-<p><strong>Oczekiwany wynik.</strong> Agent ogłasza <code>FAZA 01 — START</code> i pracuje bez nadzoru. Zatrzymuje się raz, po fazie 02, na twoją odpowiedź na punkt 6 jego listy. Po drodze: <code>npm run design</code>, <code>npm run check</code>, który nie przechodzi na pustym projekcie, strona, pętla aż do zaliczenia testu, przegląd i poprawki, commit po każdym z tych kroków, a na końcu adres na żywo.</p>
+<p><strong>Oczekiwany wynik.</strong> Agent ogłasza <code>FAZA 01 — START</code> i pracuje bez nadzoru. Zatrzymuje się raz, po fazie 02, na twoją odpowiedź na punkt 6 jego listy. Po drodze: <code>npm run design</code>, <code>npm run check</code>, który nie przechodzi na pustym projekcie, strona i własny przegląd designu zrobiony przez agenta, pętla aż do zaliczenia testu, commit po każdym z tych kroków, adres na żywo, a na końcu przegląd, poprawki i drugi deploy na tę samą stronę.</p>
 <hr>
 <h3>Subagenci</h3>
 <p>Subagent to osobny agent, którego główny agent uruchamia do jednej części roboty. Zaczyna z pustym kontekstem: zna tylko zadanie, które dostał, a nie dotychczasową rozmowę. Główny agent zbiera to, co zwrócą jego subagenci.</p>
 <h3>Czym różni się od siedmiu promptów</h3>
-<ul><li>Przebieg czeka na ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.</li><li>Plany nie czekają na zatwierdzenie. W siedmiu promptach przed 02, 03 i 04 włączasz plan mode i zatwierdzasz każdy plan; tutaj każda z tych faz zapisuje plan do <code>notes.md</code> i jedzie dalej.</li><li>Między fazami nie ma <code>/clear</code>. Każda faza zaczyna od ponownego przeczytania <code>notes.md</code> i <code>design/data</code>.</li><li>Faza 04 buduje sekcje strony jednocześnie, po jednym subagencie na sekcję, zamiast jedna po drugiej.</li><li>Faza 06 robi przegląd subagentami: po jednym na każde miejsce do sprawdzenia i osobny, który argumentuje przeciwko każdemu znalezisku. Każdy zaczyna z pustym kontekstem, więc żaden nie widział budowania strony. Agent naprawia znaleziska, które przetrwały, bez czekania, aż wybierzesz.</li></ul>
+<ul><li>Przebieg czeka na ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.</li><li>Plany nie czekają na zatwierdzenie. W siedmiu promptach przed 02, 03 i 04 włączasz plan mode i zatwierdzasz każdy plan; tutaj każda z tych faz zapisuje plan do <code>notes.md</code> i jedzie dalej.</li><li>Między fazami nie ma <code>/clear</code>. Każda faza zaczyna od ponownego przeczytania <code>notes.md</code> i <code>design/data</code>.</li><li>Faza 04 buduje sekcje strony jednocześnie, po jednym subagencie na sekcję, zamiast jedna po drugiej.</li><li>Faza 04 nie czeka na twój przegląd strony: agent sam porównuje stronę z <code>design/data</code> i zapisuje różnice do <code>notes.md</code> pod nagłówkiem „Design review&quot;.</li><li>Faza 05 nie kończy przebiegu: kiedy <code>npm run check</code> skończy się kodem 0, agent przechodzi do fazy 06.</li><li>Faza 07 robi przegląd subagentami: po jednym na każde miejsce do sprawdzenia i osobny, który argumentuje przeciwko każdemu znalezisku. Każdy zaczyna z pustym kontekstem, więc żaden nie widział budowania strony. Agent naprawia znaleziska, które przetrwały, bez czekania, aż wybierzesz, a potem publikuje jeszcze raz na stronę, której nazwa jest w <code>notes.md</code>, z <code>--site</code>.</li></ul>
 <p><code>scripts/build-workflow-prompt.mjs</code> generuje ten prompt z promptów 01 do 07, a jego <code>--check</code> nie przechodzi, jeśli różnią się w czymkolwiek innym.</p>
 <h3><code>ultracode</code></h3>
-<p>Pierwsze słowo promptu. Claude Code traktuje je jako sygnał, że zadanie jest duże i może używać subagentów. Codex nie ma takiego słowa. Zostaw je w obu narzędziach: zdanie po nim, „powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle&quot;, daje tę samą instrukcję każdemu z nich.</p>
+<p>Pierwsze słowo promptu. W Claude Code <code>ultracode</code> włącza workflow z wieloma agentami tylko dla wiadomości, w której je wpiszesz, i tylko jeśli twoja subskrypcja Claude obejmuje dynamiczne workflow. Przebieg zatrzymuje się po fazie 02 na twoją odpowiedź na punkt 6, a ta odpowiedź to nowa wiadomość. Żeby workflow działał przez cały przebieg, wpisz <code>/effort ultracode</code>, zanim wkleisz prompt, albo zacznij odpowiedź na punkt 6 od <code>ultracode.</code></p>
+<p>Codex nie ma takiego słowa. Zostaw je w obu narzędziach: zdanie po nim, „powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle&quot;, daje tę samą instrukcję każdemu z nich.</p>
 <h3>Wzorce workflow w tym prompcie</h3>
 <p>Strona warsztatu opisuje sześć wzorców workflow. Ten prompt używa trzech:</p>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Faza</th><th>Wzorzec</th><th>Co się dzieje</th></tr></thead><tbody><tr><td>04</td><td>Rozgałęzienie i scalenie</td><td>strona dzielona na sekcje budowane jednocześnie, po jednym subagencie na sekcję, potem scalana w jedną stronę</td></tr><tr><td>05</td><td>Pętla do skutku</td><td>plan, implementacja, weryfikacja, powtarzane, aż <code>npm run check</code> zwróci kod 0</td></tr><tr><td>06</td><td>Adversarial verification</td><td>subagenci z pustym kontekstem szukają problemów, osobni subagenci argumentują przeciwko każdemu</td></tr></tbody></table></div>
-<p>Przegląd w fazie 06 działa obok <code>npm run check</code>. Checker rozstrzyga to, co da się zmierzyć; przegląd szuka tego, czego zmierzyć się nie da.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Faza</th><th>Wzorzec</th><th>Co się dzieje</th></tr></thead><tbody><tr><td>04</td><td>Rozgałęzienie i scalenie</td><td>strona dzielona na sekcje budowane jednocześnie, po jednym subagencie na sekcję, potem scalana w jedną stronę</td></tr><tr><td>05</td><td>Pętla do skutku</td><td>plan, implementacja, weryfikacja, powtarzane, aż <code>npm run check</code> zwróci kod 0</td></tr><tr><td>07</td><td>Adversarial verification</td><td>subagenci z pustym kontekstem szukają problemów, osobni subagenci argumentują przeciwko każdemu</td></tr></tbody></table></div>
+<p>Przegląd w fazie 07 działa obok <code>npm run check</code>. Checker rozstrzyga to, co da się zmierzyć; przegląd szuka tego, czego zmierzyć się nie da.</p>
 <h3>Pętla i workflow</h3>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>&nbsp;</th><th><strong>Pętla</strong></th><th><strong>Workflow</strong></th></tr></thead><tbody><tr><td>Kształt</td><td>rób to znowu, aż warunek będzie spełniony</td><td>wykonaj kroki po kolei, z warunkiem między każdym</td></tr><tr><td>Ty definiujesz</td><td><strong>warunek wyjścia</strong></td><td><strong>fazy</strong></td></tr><tr><td>Kończy się, gdy</td><td>program mówi „tak&quot;</td><td>skończy się ostatnia faza</td></tr><tr><td>W tym zestawie</td><td>prompt 05</td><td>ten prompt</td></tr></tbody></table></div>
 <p>Faza 05 jest pętlą wewnątrz workflow.</p>
@@ -1123,13 +1225,13 @@ Reguły na cały przebieg:
 <p>Zmień listę faz, a zmienisz robotę:</p>
 <blockquote>Faza 04 buduje tylko hero i lineup. Resztę zostaw.</blockquote>
 <blockquote>Między fazą 04 a 05 dodaj fazę: pokaż mi każdą sekcję jako zrzut ekranu przy najwęższej szerokości i poczekaj na moją zgodę.</blockquote>
-<blockquote>Pomiń fazę 07. Dziś nie publikuję.</blockquote>
-<blockquote>W fazie 06 patrz tylko na szerokości, których design nie określa.</blockquote>
+<blockquote>Pomiń fazę 06 i opublikuj tylko raz, na końcu fazy 07.</blockquote>
+<blockquote>W fazie 07 patrz tylko na szerokości, których design nie określa.</blockquote>
 <h3>Kiedy go użyć</h3>
 <ul><li><strong>Workflow</strong>: znasz etapy i chcesz wyniku bez pilnowania każdego kroku.</li><li><strong>Siedem promptów</strong>: uczysz się, chcesz zatwierdzać każdy plan albo spodziewasz się zmiany designu w połowie.</li></ul>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Ogłasza fazę 04, zanim istnieje <code>npm run check</code></td><td><code>Pominąłeś fazę 03. Najpierw test. Wróć i go napisz.</code></td></tr><tr><td><code>npm run check</code> przechodzi w fazie 03</td><td><code>Test przeszedł na pustym projekcie. Niczego nie sprawdza. Popraw checker przed fazą 04.</code></td></tr><tr><td>Nie czeka po fazie 02</td><td><code>Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.</code></td></tr><tr><td>Czeka na zatwierdzenie planu w fazie 03 albo 04</td><td><code>Zapisz plan do notes.md i jedź dalej.</code></td></tr><tr><td>Robi się mniej konkretny koło fazy 05</td><td><code>Streść stan do notes.md.</code> Potem wpisz <code>/clear</code>, wklej ten prompt jeszcze raz i powiedz <code>notes.md i design/data mają stan. Kontynuuj od fazy 05.</code></td></tr><tr><td>Ogłasza, że całość skończona</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Faza się wywala, a on idzie dalej</td><td><code>Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?</code></td></tr><tr><td>Buduje sekcje jedną po drugiej</td><td><code>Faza 04 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.</code></td></tr><tr><td>Faza 06 zgłasza znaleziska i żadnego nie odrzuciła</td><td><code>Ilu kandydatów odrzuciłeś i dlaczego?</code></td></tr><tr><td>Uruchamia dwudziestu subagentów do małej strony</td><td><code>Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Faza 01 mówi, że folder nie jest pusty</td><td><code>Nie ruszaj folderu design i załóż projekt obok niego.</code></td></tr><tr><td>Ogłasza fazę 04, zanim istnieje <code>npm run check</code></td><td><code>Pominąłeś fazę 03. Najpierw test. Wróć i go napisz.</code></td></tr><tr><td><code>npm run check</code> przechodzi w fazie 03</td><td><code>Test przeszedł na pustym projekcie. Niczego nie sprawdza. Popraw checker przed fazą 04.</code></td></tr><tr><td>Nie czeka po fazie 02</td><td><code>Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.</code></td></tr><tr><td>Czeka na zatwierdzenie planu w fazie 03 albo 04</td><td><code>Zapisz plan do notes.md i jedź dalej.</code></td></tr><tr><td>Czeka na twój przegląd w fazie 04</td><td><code>Sam porównaj stronę z design/data, zapisz różnice do notes.md pod nagłówkiem „Design review&quot; i jedź dalej.</code></td></tr><tr><td>Zatrzymuje się po fazie 05 i mówi, że skończone</td><td><code>Faza 05 to nie koniec. Przejdź do fazy 06.</code></td></tr><tr><td>Robi się mniej konkretny koło fazy 05</td><td><code>Streść stan do notes.md.</code> Potem wpisz <code>/clear</code>, wklej ten prompt jeszcze raz i powiedz <code>notes.md i design/data mają stan. Kontynuuj od fazy 05.</code></td></tr><tr><td>Ogłasza, że całość skończona</td><td><code>Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.</code></td></tr><tr><td>Faza się wywala, a on idzie dalej</td><td><code>Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?</code></td></tr><tr><td>Buduje sekcje jedną po drugiej</td><td><code>Faza 04 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.</code></td></tr><tr><td>Faza 07 zgłasza znaleziska i żadnego nie odrzuciła</td><td><code>Ilu kandydatów odrzuciłeś i dlaczego?</code></td></tr><tr><td>Uruchamia dwudziestu subagentów do małej strony</td><td><code>Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.</code></td></tr></tbody></table></div>
 </section>
 </div></main>
 <dialog class="lightbox" aria-label="Powiększ"><button class="lightbox__close" type="button" aria-label="Zamknij">×</button></dialog>

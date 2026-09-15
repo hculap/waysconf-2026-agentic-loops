@@ -52,6 +52,7 @@ następną uruchamiasz dopiero wtedy, gdy wróci znak zachęty.
 | Git i GitHub CLI (`gh`) | przechowują projekt w repozytorium na GitHubie |
 | Claude Code albo Codex | agent, który pisze kod |
 | Netlify CLI | publikuje stronę |
+| Chromium dla Playwright | pozwala checkerowi otworzyć stronę w prawdziwej przeglądarce |
 
 ::install::
 

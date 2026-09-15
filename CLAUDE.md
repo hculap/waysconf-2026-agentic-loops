@@ -9,9 +9,12 @@ workspace. It is not what a workshop participant does.
 
 ## What a participant does, so you do not confuse the two
 
-A participant never opens this repository. They get the Figma file, a design pack, and
-`prompts/` — eight messages that take an empty folder to a deployed site. The agent they
-run writes its own project, its own page and its own checker. Nothing here is cloned.
+A participant never opens this repository. They clone an empty GitHub repository of their
+own, download the Figma file as `turbine.fig`, and paste `prompts/`: eight messages that take
+that empty repository to a deployed site. The agent they run writes its own project, its own
+decoder for the `.fig`, its own checker (prompt 03) and its own page. Nothing here is cloned.
+If a step runs out of time, a rescue pack from the workshop page lets them carry on:
+`design-data.zip` instead of prompt 02, `checker.zip` instead of prompt 03.
 
 If you are changing anything under `prompts/`, remember it will be read by a designer who
 has never used a terminal, and that the participant site is generated from it by
@@ -22,7 +25,7 @@ has never used a terminal, and that the participant site is generated from it by
 Start with plan mode (`Shift+Tab` until the footer says *plan mode on*) for anything that
 touches more than one file. Explore, read `docs/CANON.md` and `brief/`, and present a plan
 before editing. A plan read by a human before any code exists is the cheapest correction in
-the whole loop — which is also the point of prompt 02.
+the whole loop, which is also why prompts 02, 03 and 04 start with a plan.
 
 ## The loop, here
 
@@ -33,12 +36,13 @@ thing applies to the reference site:
 /goal npm run check exits 0
 ```
 
-The session will not end until that command actually exits 0. Not until you believe it
-would — it runs.
+`/goal` sets a condition. After each turn a separate model checks whether the condition is
+met, and Claude keeps working until it is. That model judges from the conversation, so run
+`npm run check` and show its exit code; saying it would pass is not the same thing.
 
 `checks/` is the verifier for the reference implementation in `src/`. It has ten gates and
 sixty-one criteria in `brief/ACCEPTANCE.md`, and it is **not** what participants use: they
-write their own in prompt 04, which is the entire point of that prompt.
+write their own in prompt 03, before the page exists, which is the entire point of that prompt.
 
 **Never edit anything under `checks/` to make a gate pass.** If you believe a gate is
 wrong, stop and say so. Changing the verifier to agree with the generator is the exact
@@ -65,5 +69,5 @@ reverts your change.
 ## MCP servers
 
 `docs/CONNECTING-FIGMA.md` has the verified `claude mcp add` commands for Figma, Playwright
-and Netlify, and says plainly what happens without a paid Figma seat. The design pack is
-the other route and is not a second-class one.
+and Netlify, for work in this repository. Participants use no MCP server: their agent reads
+`turbine.fig` directly.

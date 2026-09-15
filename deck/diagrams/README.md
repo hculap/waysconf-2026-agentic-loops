@@ -127,9 +127,9 @@ pass or fail; it opens items for a person to triage.
 **The idea:** the two shapes, and that a workflow branches.
 
 Left, the loop of `01` drawn vertically with its exit condition. Right, the seven phases of prompt 08 in the
-workshop order, tests first and deploy last (START, LOOK, ARM, BUILD, REPAIR, ATTACK, SHIP), with the bar
+workshop order, tests first (START, LOOK, ARM, BUILD, REPAIR, SHIP, ATTACK), with the bar
 between each and the phases that branch: 02 waits for an answer, 04 fans out to one agent per section and
-merges, 05 is the loop, 06 sends the page to fresh-context reviewers and every finding to a refuter.
+merges, 05 is the loop, 07 sends the page to fresh-context reviewers and every finding to a refuter.
 
 ---
 

@@ -1,12 +1,34 @@
 # 08 — Ta sama robota, jako workflow
 
-Prompty 01 do 07 wklejone jako jedna wiadomość. Wiadomość jest podzielona na siedem faz,
-ponumerowanych od 01 do 07, a każda faza zawiera tekst promptu o tym samym numerze: faza 03
-robi to, co prompt 03. Agent sam przechodzi fazy po kolei i zatrzymuje się dla ciebie tylko po
-fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.
+Prompty 01 do 07 wklejone jako jedna wiadomość, faza po fazie, z różnicami wymienionymi niżej.
+Wiadomość jest podzielona na siedem faz, ponumerowanych od 01 do 07, a każda faza zawiera tekst
+promptu o tym samym numerze: faza 03 robi to, co prompt 03. Agent sam przechodzi fazy po kolei
+i zatrzymuje się dla ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.
 
-Wklej go w zwykłym trybie, nie w plan mode, w nowej sesji. Fazy, które proszą o plan, zapisują
-go do `notes.md` i jadą dalej.
+## Zanim wkleisz
+
+Potrzebujesz nowego, pustego repozytorium na GitHubie, sklonowanego na komputer, i pliku
+`turbine.fig`. Otwórz terminal, wejdź do folderu repozytorium i uruchom agenta w nowej sesji,
+w zwykłym trybie, nie w plan mode:
+
+```bash
+cd turbine
+claude
+```
+
+W Codeksie wpisz `codex` zamiast `claude`. Fazy, które proszą o plan, zapisują go do
+`notes.md` i jadą dalej.
+
+W Claude Code najpierw wpisz `/effort ultracode`. Prompt zaczyna się od słowa kluczowego
+`ultracode`, które włącza workflow z wieloma agentami tylko dla tej jednej wiadomości;
+`/effort ultracode` zostawia go włączonego na całą sesję, także dla twojej odpowiedzi na
+punkt 6. Więcej w części `ultracode` niżej.
+
+Faza 01 zakłada projekt w tym folderze, a przebieg od razu przechodzi do fazy 02, która czyta
+`turbine.fig` z folderu `design`. Utwórz folder `design`, włóż do niego `turbine.fig` i powiedz
+agentowi, żeby w fazie 01 go nie ruszał: wklej prompt poniżej, naciśnij Shift+Enter, żeby
+przejść do nowej linijki, wpisz `Folder design jest już w tym projekcie. W fazie 01 go nie
+ruszaj.` i naciśnij Enter.
 
 ---
 
@@ -27,8 +49,10 @@ Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się te rzec
 - Tam, gdzie faza mówi, że wyczyszczę sesję, nie zatrzymuj się: zacznij następną fazę od
   ponownego przeczytania notes.md i design/data.
 - W fazie 04 budujesz sekcje równolegle, po jednym subagencie na każdą, zamiast jedna po
-  drugiej.
-- W fazie 06 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
+  drugiej, i sam przeglądasz stronę względem design/data, zamiast czekać na mój przegląd.
+- Faza 05 nie jest końcem przebiegu: kiedy npm run check skończy się kodem 0, przejdź do
+  fazy 06.
+- W fazie 07 przegląd robią subagenci, którzy zaczynają ze świeżym kontekstem, a znaleziska,
   które przetrwały, naprawiasz bez czekania, aż wybiorę.
 
 FAZA 01 — START
@@ -56,8 +80,8 @@ FAZA 02 — POPATRZ
 Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
-W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
-przez „Save local copy". To nie jest obrazek: to cały design jako dane — każdy tekst,
+W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, tak jak
+zapisuje go Figma. To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
 Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
@@ -69,6 +93,9 @@ Chcę narzędzia, a nie jednorazowego rozkodowania: skryptu w tym projekcie, kt�
 .fig z folderu design i zapisuje dane designu, których będą potrzebować strona i checker.
 Spraw, żeby uruchamiała go komenda „npm run design". Ponowne uruchomienie na nowym pliku .fig
 ma odświeżyć dane, żeby nikt już nie musiał ręcznie rozkodowywać ani eksportować designu.
+
+Dekoder ma być mały: jeden skrypt, bez zestawu testów dla dekodera, bez dodatkowych narzędzi.
+Przestań nad nim pracować, gdy tylko siedem plików JSON i zdjęcia są zapisane.
 
 Nie ma programu, który otwiera plik .fig, więc skrypt rozkodowuje go sam. Co wiadomo
 o formacie:
@@ -116,7 +143,7 @@ kształt ma każdy plik JSON.
 Kiedy zatwierdzę plan, napisz skrypt, uruchom npm run design, potem pokaż mi listę, a jej
 punkt 6 zapisz do notes.md:
 
-1. Każdą sekcję, w kolejności od góry strony.
+1. Każdą sekcję, w kolejności od góry strony, i imię na każdej karcie artysty.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
@@ -151,9 +178,10 @@ Spraw, żeby uruchamiała go komenda „npm run check". Zainstaluj, co potrzebne
 sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
 żadne z nich nie wchodzi do strony.
 
-Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
-npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
-później mógł ocenić też stronę na żywo.
+Domyślnie sam buduje stronę, sam serwuje zbudowane pliki i sprawdza tę stronę. Nie może
+zależeć od serwera deweloperskiego uruchomionego przez kogoś innego. Musi też przyjmować
+adres — npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie,
+żeby później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z design/data, nie ode mnie. Nie ma jeszcze strony, na którą można
 patrzeć: każdy test wynika z designu. Minimum, i to względem strony tak, jak renderuje ją
@@ -176,11 +204,14 @@ wartości zmierzonej i progu — to jest cała robota.
 Zapisz raport do pliku, nie tylko wypisz go na ekran, bo później podam ci ten plik
 z powrotem. Powiedz mi, jak go nazwałeś.
 
-Dwie reguły dotyczące samego checkera:
+Trzy reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
   brakuje design/data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
+- Wynik dostępności oznaczony jako incomplete, na przykład tekst na zdjęciu albo gradiencie,
+  nie jest zaliczeniem. Zmierz kontrast z wyrenderowanych pikseli pod tym tekstem i zgłoś
+  błąd tylko wtedy, gdy zmierzony stosunek jest poniżej progu albo gdy nie da się go zmierzyć.
 - Nie rozluźniaj testów, żeby przechodziły.
 
 Twój plan ma wymienić każdy test, co czyta z design/data i jak mierzy.
@@ -209,6 +240,9 @@ Zbuduj wszystkie sekcje z design/data/sections.json naraz, po jednym subagencie 
 a potem złóż je w tej kolejności. Nie zatrzymuj się między sekcjami, żeby mnie pytać. Kiedy
 skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj adres do otwarcia.
 
+Jeśli musisz zobaczyć stronę w przeglądarce, a serwer deweloperski nie działa, uruchom go sam
+i podaj mi adres.
+
 Reguły, wszystkie nienegocjowalne:
 
 - Każdy kolor i każdy rozmiar pochodzi z design/data. Jeśli wartości, której potrzebujesz,
@@ -231,20 +265,28 @@ jedno założenie niż odkryć sześć.
 Kiedy strona będzie zbudowana, uruchom raz npm run check i pokaż mi, ile testów nie
 przechodzi i które. Nie naprawiaj ich jeszcze i nie zmieniaj checkera.
 
-Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok
-jest skończony, żebym mógł wyczyścić sesję.
+Potem sam przejrzyj stronę: porównaj to, co pokazuje przeglądarka, z design/data i zapisz
+każdą różnicę do notes.md pod nagłówkiem „Design review". Jeszcze niczego nie naprawiaj.
+Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push.
 
-Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, a projekt buduje się bez błędów.
+Zanim pójdziesz dalej: każda sekcja z design/data/sections.json jest zbudowana, projekt buduje się bez błędów, a notes.md ma sekcję „Design review".
 
 FAZA 05 — NAPRAWIAJ
 
 Przeczytaj notes.md. Potem uruchom npm run check.
 
-Jeśli kończy się kodem 0, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
-i powiedz mi, że skończyliśmy.
+Pozycje pod nagłówkiem „Design review" w notes.md to różnice, które znalazłeś w fazie 04.
+Te, które mają pokrycie w design/data, traktuj jak błędy z raportu i też je napraw. Przy
+każdej, która nie ma pokrycia w design/data, zapisz do notes.md jedną linijkę, że go nie ma,
+i zostaw ją.
 
-Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
-npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
+Jeśli npm run check kończy się kodem 0 i nie została żadna pozycja z „Design review", która ma
+pokrycie w design/data, zrób commit wszystkiego z opisem, że test przechodzi, zrób push
+i przejdź do fazy 06.
+
+W przeciwnym razie przeczytaj raport, który zapisał test, i napraw to, co wymienia. Potem
+uruchom npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0, a pozycje z „Design
+review" będą załatwione.
 
 Każda runda ma trzy kroki. Plan: weź pierwszy błąd z raportu i zapisz do notes.md jedną
 linijkę: co nie przechodzi, co według ciebie jest przyczyną i co zmienisz. Implementacja:
@@ -259,7 +301,7 @@ Trzy reguły, a pierwsza znaczy więcej niż dwie pozostałe:
 1. NIGDY nie zmieniaj checkera, żeby test przeszedł. Ani progu, ani pominiętej asercji,
    ani wyłączonej reguły. Jeśli naprawdę uważasz, że jakiś test jest zły, ZATRZYMAJ SIĘ,
    powiedz mi który i dlaczego, i nie zmieniaj niczego.
-2. Nie dodawaj niczego nowego do strony i nie wymyślaj tekstów.
+2. Nie dodawaj niczego, czego nie ma w designie, i nie wymyślaj tekstów.
 3. Jeśli ten sam błąd przeżyje trzy próby, zatrzymaj się i powiedz mi, co próbowałeś za
    każdym razem i co się stało. Trzy nieudane naprawy zwykle znaczą, że design prosi
    o dwie rzeczy, które nie mogą być jednocześnie prawdziwe, i czwarta próba tego nie
@@ -270,12 +312,42 @@ podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
 
 Zanim pójdziesz dalej: npm run check kończy się kodem 0.
 
-FAZA 06 — ATAKUJ
+FAZA 06 — WYSTAW
 
-Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
+Wystaw to do internetu.
+
+Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify CLI. Netlify CLI jest
+zainstalowane i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast
+robić to po cichu.
+
+Ten projekt nie ma jeszcze strony na Netlify. Załóż ją i opublikuj jedną komendą, bez pytań
+w terminalu: netlify deploy --prod --dir=dist --site-name turbine-<moja nazwa na GitHubie>.
+Moją nazwę sprawdzisz przez gh api user --jq .login. Jeśli ta nazwa jest zajęta, dodaj krótki
+dopisek i uruchom jeszcze raz.
+
+Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
+
+- pobierz publiczny adres i potwierdź, że zwraca 200
+- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
+  starszą — porównaj to, co wraca, z tym, co jest w folderze dist
+- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
+
+Zapisz nazwę strony na Netlify i adres na żywo do notes.md. Potem zrób commit wszystkiego, co
+się zmieniło, z opisem, co zrobił ten krok, i zrób push.
+
+Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
+
+Zanim pójdziesz dalej: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.
+
+FAZA 07 — ATAKUJ
+
+Cokolwiek npm run check mówi w tej chwili, spróbuj udowodnić, że strona jest zła.
 
 Nie budowałeś tej strony. Oceniaj ją wyłącznie po tym, co pokazuje przeglądarka, i po tym,
 co jest w tym projekcie, a nie po czymkolwiek, co padło wcześniej w tej rozmowie.
+
+Oglądaj stronę na tym komputerze. Jeśli serwer deweloperski nie działa, uruchom go sam i podaj
+mi adres.
 
 Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
 rzeczy, które są ze stroną nie tak, a których checker w tym projekcie nie potrafi złapać,
@@ -287,8 +359,9 @@ i dla każdej powiedz mi:
 
 Szukaj szczególnie tam, gdzie automat nie sięga:
 
-- tekst na zdjęciu albo gradiencie: automatyczny test kontrastu w ogóle nie policzy tej
-  pary i zgłosi ją jako niejednoznaczną, a nie jako błąd
+- tekst na zdjęciu albo gradiencie: narzędzie do dostępności nie policzy tej pary i oznaczy
+  ją jako incomplete; checker w tym projekcie może mierzyć ją z pikseli, więc sprawdź, co tam
+  faktycznie zmierzył
 - kolejność czytania dla kogoś na klawiaturze albo czytniku ekranu: technicznie poprawna
   i bez sensu to jest stan, który istnieje
 - tekst alternatywny, który jest, i jest bezużyteczny
@@ -314,31 +387,13 @@ wyrzucaj i powiedz mi, ile wyrzuciłeś. Cztery prawdziwe znaleziska są warte w
 pięć, w których jedno jest zgadywanką. Jeśli nie umiesz wskazać konkretnego elementu, to
 nie jest znalezisko.
 
-Potem napraw znaleziska, które przetrwały, uruchom npm run check jeszcze raz i idź dalej
-tylko wtedy, gdy nadal kończy się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do
-notes.md, potem zrób commit wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push.
+Potem napraw znaleziska, które przetrwały, i uruchom npm run check jeszcze raz; musi nadal
+kończyć się kodem 0. Zapisz znaleziska i to, co naprawiłeś, do notes.md, zrób commit
+wszystkiego z opisem, które znaleziska naprawiłeś, i zrób push. Potem opublikuj jeszcze raz
+na tę samą stronę przez netlify deploy --prod --dir=dist --site <nazwa strony z notes.md>
+i uruchom npm run check -- --url na adresie na żywo.
 
-Zanim pójdziesz dalej: znaleziska, które przetrwały, są naprawione, a npm run check nadal kończy się kodem 0.
-
-FAZA 07 — WYSTAW
-
-Wystaw to do internetu.
-
-Zbuduj stronę, a potem opublikuj ją na Netlify przez Netlify w terminalu. Jest zainstalowane
-i jestem zalogowany; jeśli powie, że nie jestem, powiedz mi, co zrobić, zamiast robić to po cichu.
-
-Kiedy będzie na żywo, nie mów mi po prostu, że się udało. Sprawdź:
-
-- pobierz publiczny adres i potwierdź, że zwraca 200
-- potwierdź, że strona, którą serwuje, jest tą, którą przed chwilą zbudowałeś, a nie
-  starszą — porównaj to, co wraca, z tym, co jest w folderze build
-- uruchom npm run check -- --url na adresie na żywo i pokaż mi wynik
-
-Potem zrób commit wszystkiego, co się zmieniło, z opisem, co zrobił ten krok, i zrób push.
-
-Potem podaj mi adres w osobnej linijce, żebym mógł go skopiować.
-
-To jest koniec przebiegu: adres na żywo zwraca 200, serwuje stronę, którą zbudowałeś, a npm run check -- --url przechodzi na nim.
+To jest koniec przebiegu: znaleziska, które przetrwały, są naprawione, npm run check nadal kończy się kodem 0, strona jest opublikowana jeszcze raz, a npm run check -- --url przechodzi na adresie na żywo.
 
 Reguły na cały przebieg:
 - Ogłaszaj każdą fazę, kiedy w nią wchodzisz, i mów, ilu subagentów używasz i dlaczego.
@@ -352,8 +407,9 @@ Reguły na cały przebieg:
 
 **Oczekiwany wynik.** Agent ogłasza `FAZA 01 — START` i pracuje bez nadzoru. Zatrzymuje się
 raz, po fazie 02, na twoją odpowiedź na punkt 6 jego listy. Po drodze: `npm run design`,
-`npm run check`, który nie przechodzi na pustym projekcie, strona, pętla aż do zaliczenia
-testu, przegląd i poprawki, commit po każdym z tych kroków, a na końcu adres na żywo.
+`npm run check`, który nie przechodzi na pustym projekcie, strona i własny przegląd designu
+zrobiony przez agenta, pętla aż do zaliczenia testu, commit po każdym z tych kroków, adres na
+żywo, a na końcu przegląd, poprawki i drugi deploy na tę samą stronę.
 
 ---
 
@@ -369,17 +425,24 @@ agent zbiera to, co zwrócą jego subagenci.
 - Plany nie czekają na zatwierdzenie. W siedmiu promptach przed 02, 03 i 04 włączasz plan mode i zatwierdzasz każdy plan; tutaj każda z tych faz zapisuje plan do `notes.md` i jedzie dalej.
 - Między fazami nie ma `/clear`. Każda faza zaczyna od ponownego przeczytania `notes.md` i `design/data`.
 - Faza 04 buduje sekcje strony jednocześnie, po jednym subagencie na sekcję, zamiast jedna po drugiej.
-- Faza 06 robi przegląd subagentami: po jednym na każde miejsce do sprawdzenia i osobny, który argumentuje przeciwko każdemu znalezisku. Każdy zaczyna z pustym kontekstem, więc żaden nie widział budowania strony. Agent naprawia znaleziska, które przetrwały, bez czekania, aż wybierzesz.
+- Faza 04 nie czeka na twój przegląd strony: agent sam porównuje stronę z `design/data` i zapisuje różnice do `notes.md` pod nagłówkiem „Design review".
+- Faza 05 nie kończy przebiegu: kiedy `npm run check` skończy się kodem 0, agent przechodzi do fazy 06.
+- Faza 07 robi przegląd subagentami: po jednym na każde miejsce do sprawdzenia i osobny, który argumentuje przeciwko każdemu znalezisku. Każdy zaczyna z pustym kontekstem, więc żaden nie widział budowania strony. Agent naprawia znaleziska, które przetrwały, bez czekania, aż wybierzesz, a potem publikuje jeszcze raz na stronę, której nazwa jest w `notes.md`, z `--site`.
 
 `scripts/build-workflow-prompt.mjs` generuje ten prompt z promptów 01 do 07, a jego `--check`
 nie przechodzi, jeśli różnią się w czymkolwiek innym.
 
 ## `ultracode`
 
-Pierwsze słowo promptu. Claude Code traktuje je jako sygnał, że zadanie jest duże i może
-używać subagentów. Codex nie ma takiego słowa. Zostaw je w obu narzędziach: zdanie po nim,
-„powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle", daje tę samą
-instrukcję każdemu z nich.
+Pierwsze słowo promptu. W Claude Code `ultracode` włącza workflow z wieloma agentami tylko dla
+wiadomości, w której je wpiszesz, i tylko jeśli twoja subskrypcja Claude obejmuje dynamiczne
+workflow. Przebieg zatrzymuje się po fazie 02 na twoją odpowiedź na punkt 6, a ta odpowiedź to
+nowa wiadomość. Żeby workflow działał przez cały przebieg, wpisz `/effort ultracode`, zanim
+wkleisz prompt, albo zacznij odpowiedź na punkt 6 od `ultracode.`
+
+Codex nie ma takiego słowa. Zostaw je w obu narzędziach: zdanie po nim, „powołuj tyle
+subagentów, ile wymaga robota, i uruchamiaj je równolegle", daje tę samą instrukcję każdemu
+z nich.
 
 ## Wzorce workflow w tym prompcie
 
@@ -389,9 +452,9 @@ Strona warsztatu opisuje sześć wzorców workflow. Ten prompt używa trzech:
 |---|---|---|
 | 04 | Rozgałęzienie i scalenie | strona dzielona na sekcje budowane jednocześnie, po jednym subagencie na sekcję, potem scalana w jedną stronę |
 | 05 | Pętla do skutku | plan, implementacja, weryfikacja, powtarzane, aż `npm run check` zwróci kod 0 |
-| 06 | Adversarial verification | subagenci z pustym kontekstem szukają problemów, osobni subagenci argumentują przeciwko każdemu |
+| 07 | Adversarial verification | subagenci z pustym kontekstem szukają problemów, osobni subagenci argumentują przeciwko każdemu |
 
-Przegląd w fazie 06 działa obok `npm run check`. Checker rozstrzyga to, co da się zmierzyć;
+Przegląd w fazie 07 działa obok `npm run check`. Checker rozstrzyga to, co da się zmierzyć;
 przegląd szuka tego, czego zmierzyć się nie da.
 
 ## Pętla i workflow
@@ -414,9 +477,9 @@ Zmień listę faz, a zmienisz robotę:
 > Między fazą 04 a 05 dodaj fazę: pokaż mi każdą sekcję jako zrzut ekranu przy najwęższej
 > szerokości i poczekaj na moją zgodę.
 
-> Pomiń fazę 07. Dziś nie publikuję.
+> Pomiń fazę 06 i opublikuj tylko raz, na końcu fazy 07.
 
-> W fazie 06 patrz tylko na szerokości, których design nie określa.
+> W fazie 07 patrz tylko na szerokości, których design nie określa.
 
 ## Kiedy go użyć
 
@@ -429,13 +492,16 @@ Zmień listę faz, a zmienisz robotę:
 
 | Co widzisz | Powiedz to |
 |---|---|
+| Faza 01 mówi, że folder nie jest pusty | `Nie ruszaj folderu design i załóż projekt obok niego.` |
 | Ogłasza fazę 04, zanim istnieje `npm run check` | `Pominąłeś fazę 03. Najpierw test. Wróć i go napisz.` |
 | `npm run check` przechodzi w fazie 03 | `Test przeszedł na pustym projekcie. Niczego nie sprawdza. Popraw checker przed fazą 04.` |
 | Nie czeka po fazie 02 | `Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.` |
 | Czeka na zatwierdzenie planu w fazie 03 albo 04 | `Zapisz plan do notes.md i jedź dalej.` |
+| Czeka na twój przegląd w fazie 04 | `Sam porównaj stronę z design/data, zapisz różnice do notes.md pod nagłówkiem „Design review" i jedź dalej.` |
+| Zatrzymuje się po fazie 05 i mówi, że skończone | `Faza 05 to nie koniec. Przejdź do fazy 06.` |
 | Robi się mniej konkretny koło fazy 05 | `Streść stan do notes.md.` Potem wpisz `/clear`, wklej ten prompt jeszcze raz i powiedz `notes.md i design/data mają stan. Kontynuuj od fazy 05.` |
 | Ogłasza, że całość skończona | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
 | Faza się wywala, a on idzie dalej | `Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?` |
 | Buduje sekcje jedną po drugiej | `Faza 04 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.` |
-| Faza 06 zgłasza znaleziska i żadnego nie odrzuciła | `Ilu kandydatów odrzuciłeś i dlaczego?` |
+| Faza 07 zgłasza znaleziska i żadnego nie odrzuciła | `Ilu kandydatów odrzuciłeś i dlaczego?` |
 | Uruchamia dwudziestu subagentów do małej strony | `Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.` |

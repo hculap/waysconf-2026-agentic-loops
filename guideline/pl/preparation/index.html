@@ -280,9 +280,9 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="card">
     <p class="card__n">04</p>
     <h3>Figma</h3>
-    <p>Darmowy plan. Zapisujesz projekt z Figmy jako plik i przekazujesz go agentowi.</p>
+    <p>Opcjonalnie. Pozwala oglądać projekt w Figmie, kiedy agent pracuje. Sam plik projektu pobierasz ze strony warsztatu.</p>
     <p><a class="btn" href="https://www.figma.com/signup">Załóż konto</a></p>
-    <p class="card__t">darmowy plan</p>
+    <p class="card__t">opcjonalnie · darmowy plan</p>
   </div>
 </div>
 <hr>
@@ -344,13 +344,13 @@ footer p{font-size:14px;color:var(--fg-3)}
 </div>
 <hr>
 <h2 id="zainstaluj-narzedzia">Zainstaluj narzędzia</h2>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Narzędzie</th><th>Do czego służy</th></tr></thead><tbody><tr><td>Node</td><td>uruchamia stronę na twoim komputerze</td></tr><tr><td>Git i GitHub CLI (<code>gh</code>)</td><td>przechowują projekt w repozytorium na GitHubie</td></tr><tr><td>Claude Code albo Codex</td><td>agent, który pisze kod</td></tr><tr><td>Netlify CLI</td><td>publikuje stronę</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Narzędzie</th><th>Do czego służy</th></tr></thead><tbody><tr><td>Node</td><td>uruchamia stronę na twoim komputerze</td></tr><tr><td>Git i GitHub CLI (<code>gh</code>)</td><td>przechowują projekt w repozytorium na GitHubie</td></tr><tr><td>Claude Code albo Codex</td><td>agent, który pisze kod</td></tr><tr><td>Netlify CLI</td><td>publikuje stronę</td></tr><tr><td>Chromium dla Playwright</td><td>pozwala checkerowi otworzyć stronę w prawdziwej przeglądarce</td></tr></tbody></table></div>
 
 <div data-os="mac">
   <h3>Node, Git i GitHub CLI na macOS</h3>
   <div class="cmd">
-  <pre id="cmd-26"><code>brew install node gh</code></pre>
-  <button class="copy copy--sm" data-for="cmd-26" aria-label="Skopiuj: brew install node gh">Kopiuj</button>
+  <pre id="cmd-29"><code>brew install node gh</code></pre>
+  <button class="copy copy--sm" data-for="cmd-29" aria-label="Skopiuj: brew install node gh">Kopiuj</button>
 </div>
   <p>Wymaga Homebrew. Jeśli go nie masz, najpierw uruchom komendę instalacyjną ze strony <a href="https://brew.sh">brew.sh</a>. Zapyta o hasło do Maca, a wpisywane znaki nie będą widoczne. Homebrew instaluje też Gita. Na koniec zamknij terminal i otwórz nowy.</p>
 </div>
@@ -358,20 +358,20 @@ footer p{font-size:14px;color:var(--fg-3)}
 <div data-os="windows">
   <h3>Node, Git i GitHub CLI na Windows</h3>
   <div class="cmd">
-  <pre id="cmd-27"><code>winget install --id OpenJS.NodeJS.LTS</code></pre>
-  <button class="copy copy--sm" data-for="cmd-27" aria-label="Skopiuj: winget install --id OpenJS.NodeJS.LTS">Kopiuj</button>
+  <pre id="cmd-30"><code>winget install --id OpenJS.NodeJS.LTS</code></pre>
+  <button class="copy copy--sm" data-for="cmd-30" aria-label="Skopiuj: winget install --id OpenJS.NodeJS.LTS">Kopiuj</button>
 </div>
   <div class="cmd">
-  <pre id="cmd-28"><code>winget install --id Git.Git</code></pre>
-  <button class="copy copy--sm" data-for="cmd-28" aria-label="Skopiuj: winget install --id Git.Git">Kopiuj</button>
+  <pre id="cmd-31"><code>winget install --id Git.Git</code></pre>
+  <button class="copy copy--sm" data-for="cmd-31" aria-label="Skopiuj: winget install --id Git.Git">Kopiuj</button>
 </div>
   <div class="cmd">
-  <pre id="cmd-29"><code>winget install --id GitHub.cli</code></pre>
-  <button class="copy copy--sm" data-for="cmd-29" aria-label="Skopiuj: winget install --id GitHub.cli">Kopiuj</button>
+  <pre id="cmd-32"><code>winget install --id GitHub.cli</code></pre>
+  <button class="copy copy--sm" data-for="cmd-32" aria-label="Skopiuj: winget install --id GitHub.cli">Kopiuj</button>
 </div>
   <div class="cmd">
-  <pre id="cmd-30"><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
-  <button class="copy copy--sm" data-for="cmd-30" aria-label="Skopiuj: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Kopiuj</button>
+  <pre id="cmd-33"><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
+  <button class="copy copy--sm" data-for="cmd-33" aria-label="Skopiuj: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Kopiuj</button>
 </div>
   <p>Uruchamiaj komendy po jednej. Ostatnia pozwala PowerShellowi uruchamiać npm i agenta. Bez niej pojawi się błąd <em>running scripts is disabled on this system</em>. Jeśli padnie pytanie, wpisz <code>Y</code> i naciśnij Enter. Na koniec zamknij PowerShell i otwórz nowy.</p>
 </div>
@@ -379,18 +379,18 @@ footer p{font-size:14px;color:var(--fg-3)}
 <div data-os="linux">
   <h3>Node, Git i GitHub CLI na Linuksie</h3>
   <div class="cmd">
-  <pre id="cmd-31"><code>sudo apt install -y curl git gh</code></pre>
-  <button class="copy copy--sm" data-for="cmd-31" aria-label="Skopiuj: sudo apt install -y curl git gh">Kopiuj</button>
+  <pre id="cmd-34"><code>sudo apt install -y curl git gh</code></pre>
+  <button class="copy copy--sm" data-for="cmd-34" aria-label="Skopiuj: sudo apt install -y curl git gh">Kopiuj</button>
 </div>
   <div class="cmd">
-  <pre id="cmd-32"><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash</code></pre>
-  <button class="copy copy--sm" data-for="cmd-32" aria-label="Skopiuj: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash">Kopiuj</button>
+  <pre id="cmd-35"><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash</code></pre>
+  <button class="copy copy--sm" data-for="cmd-35" aria-label="Skopiuj: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash">Kopiuj</button>
 </div>
   <div class="cmd">
-  <pre id="cmd-33"><code>nvm install --lts</code></pre>
-  <button class="copy copy--sm" data-for="cmd-33" aria-label="Skopiuj: nvm install --lts">Kopiuj</button>
+  <pre id="cmd-36"><code>nvm install --lts</code></pre>
+  <button class="copy copy--sm" data-for="cmd-36" aria-label="Skopiuj: nvm install --lts">Kopiuj</button>
 </div>
-  <p>Pierwsza komenda zapyta o hasło, a wpisywane znaki nie będą widoczne. Przed trzecią komendą zamknij terminal i otwórz nowy. Node instalujemy przez nvm, bo paczki z dystrybucji bywają starsze niż wymagana wersja 20.11. Dzięki temu instalacja przez npm nie wymaga też <code>sudo</code>. Inne dystrybucje: zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek (<a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>).</p>
+  <p>Pierwsza komenda zapyta o hasło, a wpisywane znaki nie będą widoczne. Przed trzecią komendą zamknij terminal i otwórz nowy. Node instalujemy przez nvm, bo paczki z dystrybucji bywają starsze niż wymagana wersja 22.15. Dzięki temu instalacja przez npm nie wymaga też <code>sudo</code>. Inne dystrybucje: zainstaluj <code>curl</code>, <code>git</code> i <code>gh</code> swoim menedżerem paczek (<a href="https://github.com/cli/cli#installation">instrukcja dla gh</a>).</p>
 </div>
 
 <h3>Agent do kodu (jeden z dwóch)</h3>
@@ -400,15 +400,15 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="picktwo__col">
     <p class="picktwo__t">Claude Pro lub Max</p>
     <div class="cmd">
-  <pre id="cmd-34"><code>npm install -g @anthropic-ai/claude-code</code></pre>
-  <button class="copy copy--sm" data-for="cmd-34" aria-label="Skopiuj: npm install -g @anthropic-ai/claude-code">Kopiuj</button>
+  <pre id="cmd-37"><code>npm install -g @anthropic-ai/claude-code</code></pre>
+  <button class="copy copy--sm" data-for="cmd-37" aria-label="Skopiuj: npm install -g @anthropic-ai/claude-code">Kopiuj</button>
 </div>
   </div>
   <div class="picktwo__col">
     <p class="picktwo__t">ChatGPT Plus</p>
     <div class="cmd">
-  <pre id="cmd-35"><code>npm install -g @openai/codex</code></pre>
-  <button class="copy copy--sm" data-for="cmd-35" aria-label="Skopiuj: npm install -g @openai/codex">Kopiuj</button>
+  <pre id="cmd-38"><code>npm install -g @openai/codex</code></pre>
+  <button class="copy copy--sm" data-for="cmd-38" aria-label="Skopiuj: npm install -g @openai/codex">Kopiuj</button>
 </div>
   </div>
 </div>
@@ -416,8 +416,15 @@ footer p{font-size:14px;color:var(--fg-3)}
 <h3>Netlify CLI</h3>
 <p>Publikuje stronę na końcu warsztatu.</p>
 <div class="cmd">
-  <pre id="cmd-36"><code>npm install -g netlify-cli</code></pre>
-  <button class="copy copy--sm" data-for="cmd-36" aria-label="Skopiuj: npm install -g netlify-cli">Kopiuj</button>
+  <pre id="cmd-39"><code>npm install -g netlify-cli</code></pre>
+  <button class="copy copy--sm" data-for="cmd-39" aria-label="Skopiuj: npm install -g netlify-cli">Kopiuj</button>
+</div>
+
+<h3>Przeglądarka dla checkera</h3>
+<p>Checker, który zbudujesz na warsztacie, otwiera stronę w Chromium przez Playwright. Pobranie go teraz oszczędza około 150 MB na konferencyjnym wifi. Na Linuksie, jeśli zgłosi brak bibliotek, uruchom zamiast tego <code>npx playwright install --with-deps chromium</code>; zapyta o hasło.</p>
+<div class="cmd">
+  <pre id="cmd-40"><code>npx playwright install chromium</code></pre>
+  <button class="copy copy--sm" data-for="cmd-40" aria-label="Skopiuj: npx playwright install chromium">Kopiuj</button>
 </div>
 
 <p class="cmd__note">Jeśli komenda zaraz po instalacji zwraca <code>command not found</code>, zamknij terminal i otwórz nowy.</p>
@@ -428,13 +435,13 @@ footer p{font-size:14px;color:var(--fg-3)}
 
 <h3>GitHub</h3>
 <div class="cmd">
-  <pre id="cmd-37"><code>gh auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-37" aria-label="Skopiuj: gh auth login">Kopiuj</button>
+  <pre id="cmd-41"><code>gh auth login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-41" aria-label="Skopiuj: gh auth login">Kopiuj</button>
 </div>
 <p>Odpowiadaj strzałkami i klawiszem <kbd>Enter</kbd>: <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (logowanie Gita) → <strong>Login with a web browser</strong>. Skopiuj jednorazowy kod i naciśnij <kbd>Enter</kbd>. W przeglądarce wklej kod i kliknij <strong>Authorize</strong>.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-38"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-38" aria-label="Skopiuj: gh auth status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-42"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-42" aria-label="Skopiuj: gh auth status">Kopiuj</button></div>
 </div>
 
 <h3>Agent do kodu</h3>
@@ -442,55 +449,55 @@ footer p{font-size:14px;color:var(--fg-3)}
   <div class="picktwo__col">
     <p class="picktwo__t">Claude Pro lub Max</p>
     <div class="cmd">
-  <pre id="cmd-39"><code>claude auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-39" aria-label="Skopiuj: claude auth login">Kopiuj</button>
+  <pre id="cmd-43"><code>claude auth login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-43" aria-label="Skopiuj: claude auth login">Kopiuj</button>
 </div>
 <p>Zaloguj się na claude.ai w przeglądarce i kliknij <strong>Authorize</strong>. Jeśli terminal poprosi o kod, skopiuj go z przeglądarki i wklej.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-40"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-40" aria-label="Skopiuj: claude auth status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-44"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-44" aria-label="Skopiuj: claude auth status">Kopiuj</button></div>
 </div>
   </div>
   <div class="picktwo__col">
     <p class="picktwo__t">ChatGPT Plus</p>
     <div class="cmd">
-  <pre id="cmd-41"><code>codex login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-41" aria-label="Skopiuj: codex login">Kopiuj</button>
+  <pre id="cmd-45"><code>codex login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-45" aria-label="Skopiuj: codex login">Kopiuj</button>
 </div>
 <p>Zaloguj się do ChatGPT w przeglądarce i zezwól na dostęp. Terminal potwierdzi zakończenie logowania.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-42"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-42" aria-label="Skopiuj: codex login status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-46"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-46" aria-label="Skopiuj: codex login status">Kopiuj</button></div>
 </div>
   </div>
 </div>
 
 <h3>Netlify</h3>
 <div class="cmd">
-  <pre id="cmd-43"><code>netlify login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-43" aria-label="Skopiuj: netlify login">Kopiuj</button>
+  <pre id="cmd-47"><code>netlify login</code></pre>
+  <button class="copy copy--sm" data-for="cmd-47" aria-label="Skopiuj: netlify login">Kopiuj</button>
 </div>
 <p>Kliknij <strong>Authorize</strong> w przeglądarce i wróć do terminala.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-44"><code>netlify status</code></pre><span>twój adres e-mail</span><button class="copy copy--sm" data-for="cmd-44" aria-label="Skopiuj: netlify status">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-48"><code>netlify status</code></pre><span>twój adres e-mail</span><button class="copy copy--sm" data-for="cmd-48" aria-label="Skopiuj: netlify status">Kopiuj</button></div>
 </div>
 <hr>
 <h2 id="zaloz-repozytorium">Załóż repozytorium</h2>
 
 <p>Ta komenda zakłada na twoim koncie GitHub prywatne repozytorium <code>turbine</code>. Klonuje je też do folderu <code>turbine</code> w bieżącym katalogu.</p>
 <div class="cmd">
-  <pre id="cmd-45"><code>gh repo create turbine --private --clone</code></pre>
-  <button class="copy copy--sm" data-for="cmd-45" aria-label="Skopiuj: gh repo create turbine --private --clone">Kopiuj</button>
+  <pre id="cmd-49"><code>gh repo create turbine --private --clone</code></pre>
+  <button class="copy copy--sm" data-for="cmd-49" aria-label="Skopiuj: gh repo create turbine --private --clone">Kopiuj</button>
 </div>
 <div class="cmd">
-  <pre id="cmd-46"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-46" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+  <pre id="cmd-50"><code>cd turbine</code></pre>
+  <button class="copy copy--sm" data-for="cmd-50" aria-label="Skopiuj: cd turbine">Kopiuj</button>
 </div>
 <p>Warsztat zaczyna się w tym folderze: <code>cd turbine</code>, potem uruchom agenta. Nie dodawaj do niego plików.</p>
 <p class="cmd__note">Sprawdź:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-47"><code>git remote -v</code></pre><span>github.com/twoja-nazwa/turbine</span><button class="copy copy--sm" data-for="cmd-47" aria-label="Skopiuj: git remote -v">Kopiuj</button></div>
+  <div class="check__row"><pre id="cmd-51"><code>git remote -v</code></pre><span>github.com/twoja-nazwa/turbine</span><button class="copy copy--sm" data-for="cmd-51" aria-label="Skopiuj: git remote -v">Kopiuj</button></div>
 </div>
 <p class="cmd__note">Jeśli masz już repozytorium o nazwie turbine, wybierz inną nazwę. Używaj jej wszędzie tam, gdzie ta strona pisze turbine.</p>
 <hr>
@@ -499,8 +506,8 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>Agent sprawdza wszystko z poprzednich kroków i wypisuje, czego brakuje. Niczego nie zmienia.</p>
 <ol class="steps">
   <li>Przejdź do folderu projektu:<div class="cmd">
-  <pre id="cmd-48"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-48" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+  <pre id="cmd-52"><code>cd turbine</code></pre>
+  <button class="copy copy--sm" data-for="cmd-52" aria-label="Skopiuj: cd turbine">Kopiuj</button>
 </div></li>
   <li>Uruchom agenta: <code>claude</code> albo <code>codex</code>. Jeśli zapyta, czy ufasz temu folderowi, odpowiedz tak.</li>
   <li>Wklej prompt poniżej i naciśnij <kbd>Enter</kbd>.</li>
@@ -514,7 +521,7 @@ i niczego nie zmieniaj: tylko sprawdzaj i uruchamiaj takie komendy, jakich do te
 Sprawdź każdy punkt i podaj wynik w tabeli z trzema kolumnami: co sprawdziłeś, co znalazłeś,
 OK albo NIE OK.
 
-1. Node jest zainstalowany, w wersji 20.11 lub nowszej, i npm działa.
+1. Node jest zainstalowany, w wersji 22.15 lub nowszej, i npm działa.
 2. Git jest zainstalowany i ma ustawione imię oraz adres e-mail.
 3. GitHub CLI (gh) jest zainstalowane i zalogowane.
 4. Netlify CLI jest zainstalowane i zalogowane.
@@ -523,6 +530,8 @@ OK albo NIE OK.
 6. Ten folder jest repozytorium git z remote na GitHubie, a to repozytorium istnieje na
    koncie, na które zalogowane jest gh.
 7. W tym folderze nie ma nic poza plikami samego gita.
+8. Przeglądarka Chromium dla Playwright jest już pobrana (sprawdź w katalogu przeglądarek
+   Playwright; nie pobieraj jej sam).
 
 Dla każdego punktu NIE OK podaj poprawkę w jednym lub dwóch prostych zdaniach, z dokładną
 komendą, jeśli taka jest. Zakończ jedną linijką: GOTOWE albo NIEGOTOWE i liczba punktów
@@ -536,20 +545,20 @@ do poprawienia.</code></pre></div>
   <li>Na github.com kliknij <strong>+</strong> → <strong>New repository</strong>. Nazwa: <code>turbine</code>. Widoczność: <strong>Private</strong>. Zaznacz <strong>Add a README file</strong>, bo dla pustego repozytorium nie da się utworzyć Codespace. Kliknij <strong>Create repository</strong>.</li>
   <li>Na stronie repozytorium kliknij <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. Terminal to panel na dole, otwarty w folderze repozytorium.</li>
   <li>Usuń README, żeby folder był pusty:<div class="cmd">
-  <pre id="cmd-49"><code>rm README.md</code></pre>
-  <button class="copy copy--sm" data-for="cmd-49" aria-label="Skopiuj: rm README.md">Kopiuj</button>
+  <pre id="cmd-53"><code>rm README.md</code></pre>
+  <button class="copy copy--sm" data-for="cmd-53" aria-label="Skopiuj: rm README.md">Kopiuj</button>
 </div></li>
-  <li>Zainstaluj agenta i Netlify CLI komendami z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>. Node, Git i GitHub CLI są już zainstalowane.</li>
+  <li>Zainstaluj agenta i Netlify CLI komendami z sekcji <a href="#zainstaluj-narzedzia">Zainstaluj narzędzia</a>. Przeglądarkę zainstaluj przez <code>npx playwright install --with-deps chromium</code>. Node, Git i GitHub CLI są już zainstalowane.</li>
   <li>Zaloguj się do agenta i do Netlify zgodnie z sekcją <a href="#zaloguj-sie">Zaloguj się</a>. Zamiast otwierać przeglądarkę, terminal wypisze link. Przytrzymaj <kbd>Ctrl</kbd> albo <kbd>Cmd</kbd> i kliknij go. W Codeksie użyj logowania kodem urządzenia:<div class="cmd">
-  <pre id="cmd-50"><code>codex login --device-auth</code></pre>
-  <button class="copy copy--sm" data-for="cmd-50" aria-label="Skopiuj: codex login --device-auth">Kopiuj</button>
+  <pre id="cmd-54"><code>codex login --device-auth</code></pre>
+  <button class="copy copy--sm" data-for="cmd-54" aria-label="Skopiuj: codex login --device-auth">Kopiuj</button>
 </div><p class="cmd__note">Jeśli Codex zgłosi, że logowanie kodem urządzenia jest wyłączone, włącz je w ChatGPT → Settings → Security i uruchom komendę ponownie.</p></li>
   <li>Wykonaj krok <a href="#sprawdz-konfiguracje">Sprawdź konfigurację</a> w terminalu Codespace. Pomiń <code>cd turbine</code>, bo terminal jest już w folderze projektu.</li>
 </ol>
 <p>Darmowy plan GitHuba obejmuje 120 rdzeniogodzin Codespaces miesięcznie. Warsztat zużywa około 3. W dniu warsztatu otwórz ten sam Codespace z <a href="https://github.com/codespaces">github.com/codespaces</a>.</p>
 <hr>
 <h2 id="pytania">Pytania</h2>
-<div class="faq"><details><summary>Czy muszę umieć programować?</summary><p>Nie. Opisujesz problemy zwykłym językiem, a kod pisze agent.</p></details><details><summary>Czy wystarczy darmowy plan AI?</summary><p>Nie. Darmowe plany Claude i ChatGPT nie obejmują Claude Code ani Codeksa. Wystarczy najtańszy płatny plan jednego z nich.</p></details><details><summary>Po co repozytorium na GitHubie?</summary><p>Przechowuje projekt. Po warsztacie zostaje ci kod.</p></details><details><summary>Czy potrzebuję płatnej Figmy?</summary><p>Nie. Plik projektu zapiszesz z darmowego planu.</p></details><details><summary>Sprawdzenie zwraca NIE OK i nie wiem dlaczego.</summary><p>Poproś agenta, żeby wyjaśnił ten punkt krok po kroku. Jeśli problem zostanie, przyjdź 15 minut przed startem warsztatu.</p></details><details><summary>Czy w trakcie warsztatu potrzebny jest internet?</summary><p>Tak. Na sali jest wifi. Agent instaluje paczki, dekoduje plik Figmy i publikuje stronę.</p></details><details><summary>Nie mogę instalować programów na laptopie.</summary><p>Użyj Codespace. Opis jest w sekcji o pracy bez instalacji.</p></details><details><summary>Czy to działa na Windows?</summary><p>Tak. Używaj PowerShella, nie Wiersza polecenia.</p></details><details><summary>Co zostaje mi po warsztacie?</summary><p>Opublikowana strona, repozytorium z kodem i prompty.</p></details></div>
+<div class="faq"><details><summary>Czy muszę umieć programować?</summary><p>Nie. Opisujesz problemy zwykłym językiem, a kod pisze agent.</p></details><details><summary>Czy wystarczy darmowy plan AI?</summary><p>Nie. Darmowe plany Claude i ChatGPT nie obejmują Claude Code ani Codeksa. Wystarczy najtańszy płatny plan jednego z nich.</p></details><details><summary>Po co repozytorium na GitHubie?</summary><p>Przechowuje projekt. Po warsztacie zostaje ci kod.</p></details><details><summary>Czy potrzebuję konta w Figmie?</summary><p>Nie. Plik projektu pobierasz ze strony warsztatu. Darmowe konto w Figmie pozwala tylko oglądać projekt w Figmie.</p></details><details><summary>Sprawdzenie zwraca NIE OK i nie wiem dlaczego.</summary><p>Poproś agenta, żeby wyjaśnił ten punkt krok po kroku. Jeśli problem zostanie, przyjdź 15 minut przed startem warsztatu.</p></details><details><summary>Czy w trakcie warsztatu potrzebny jest internet?</summary><p>Tak. Na sali jest wifi. Agent instaluje paczki, dekoduje plik Figmy i publikuje stronę.</p></details><details><summary>Nie mogę instalować programów na laptopie.</summary><p>Użyj Codespace. Opis jest w sekcji o pracy bez instalacji.</p></details><details><summary>Czy to działa na Windows?</summary><p>Tak. Używaj PowerShella, nie Wiersza polecenia.</p></details><details><summary>Co zostaje mi po warsztacie?</summary><p>Opublikowana strona, repozytorium z kodem i prompty.</p></details></div>
 <hr>
 <h2 id="w-dniu-warsztatu">W dniu warsztatu</h2>
 <ul><li>Weź laptop i ładowarkę.</li><li>Jeśli sprawdzenie nie zakończyło się wynikiem GOTOWE, przyjdź 15 minut przed startem.</li></ul>

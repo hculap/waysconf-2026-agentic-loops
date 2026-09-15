@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-labelledby="t07 d07">
   <title id="t07">Two shapes: a loop and a workflow</title>
-  <desc id="d07">On the left, THE LOOP: PLAN, a hypothesis from the report, leads to IMPLEMENT, generate or fix, which leads to VERIFY, npm run check. Exit 0 leads to DONE; exit 1 sends the report back to PLAN. You define the exit condition; prompt 05, or /goal in Claude Code. On the right, THE WORKFLOW of prompt 08: seven phases in order, START, LOOK, ARM, BUILD, REPAIR, ATTACK, SHIP, each joined to the next by a bar naming what must be true first. LOOK builds a decoder and writes the design data, and waits for your answer; ARM writes the check before the page exists, so it fails; BUILD fans out to one agent per section and merges them in order; REPAIR runs the loop on the left; ATTACK sends the page to several reviewers with a fresh context, and every finding to a refuter. The two nest: phase 05 of the workflow is the loop.</desc>
+  <desc id="d07">On the left, THE LOOP: PLAN, a hypothesis from the report, leads to IMPLEMENT, generate or fix, which leads to VERIFY, npm run check. Exit 0 leads to DONE; exit 1 sends the report back to PLAN. You define the exit condition; prompt 05, or /goal in Claude Code. On the right, THE WORKFLOW of prompt 08: seven phases in order, START, LOOK, ARM, BUILD, REPAIR, SHIP, ATTACK, each joined to the next by a bar naming what must be true first. LOOK builds a decoder and writes the design data, and waits for your answer; ARM writes the check before the page exists, so it fails; BUILD fans out to one agent per section and merges them in order; REPAIR runs the loop on the left; ATTACK sends the page to several reviewers with a fresh context, and every finding to a refuter. The two nest: phase 05 of the workflow is the loop.</desc>
   <defs>
     <marker id="m-n" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker>
     <marker id="m-s" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#34D399"/></marker>
@@ -68,16 +68,16 @@
   <text x="938" y="650" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">the loop, until exit 0</text>
   <path d="M880 662 V686" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
   <text x="894" y="682" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">check exits 0</text>
-  <rect x="820" y="692" width="330" height="62" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <rect x="820" y="692" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
   <text x="838" y="730" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 06</text>
-  <text x="938" y="722" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">ATTACK</text>
-  <text x="938" y="744" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">adversarial review</text>
+  <text x="938" y="722" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">SHIP</text>
+  <text x="938" y="744" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">deploy, check the live URL</text>
   <path d="M880 756 V780" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
-  <text x="894" y="776" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">findings fixed, still 0</text>
-  <rect x="820" y="786" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="894" y="776" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">live check passes</text>
+  <rect x="820" y="786" width="330" height="62" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
   <text x="838" y="824" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 07</text>
-  <text x="938" y="816" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">SHIP</text>
-  <text x="938" y="838" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">deploy, check the live URL</text>
+  <text x="938" y="816" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">ATTACK</text>
+  <text x="938" y="838" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">review, fix, deploy again</text>
   <path d="M1154 347 H1200" fill="none" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#m-a)"/>
   <rect x="1206" y="325" width="250" height="44" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 5"/>
   <text x="1331" y="353" font-size="16" font-weight="400" fill="#F59E0B" text-anchor="middle">waits for your answer</text>
@@ -96,20 +96,20 @@
   <path d="M1232 621 A 24 24 0 1 0 1218 649" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#m-g)"/>
   <text x="1254" y="627" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">plan, implement, verify</text>
   <text x="1254" y="649" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">the loop on the left</text>
-  <path d="M1154 723 L1248 693" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <circle cx="1260" cy="693" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
-  <path d="M1271 693 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <polygon points="1322,682 1333,693 1322,704 1311,693" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
-  <path d="M1154 723 L1248 723" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <circle cx="1260" cy="723" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
-  <path d="M1271 723 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <polygon points="1322,712 1333,723 1322,734 1311,723" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
-  <path d="M1154 723 L1248 753" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <circle cx="1260" cy="753" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
-  <path d="M1271 753 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
-  <polygon points="1322,742 1333,753 1322,764 1311,753" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
-  <text x="1350" y="719" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">reviewers, fresh context,</text>
-  <text x="1350" y="741" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">each finding refuted</text>
+  <path d="M1154 817 L1248 787" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="787" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 787 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,776 1333,787 1322,798 1311,787" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <path d="M1154 817 L1248 817" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="817" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 817 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,806 1333,817 1322,828 1311,817" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <path d="M1154 817 L1248 847" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="847" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 847 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,836 1333,847 1322,858 1311,847" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <text x="1350" y="813" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">reviewers, fresh context,</text>
+  <text x="1350" y="835" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">each finding refuted</text>
   <rect x="820" y="850" width="700" height="0" rx="8" fill="#161616" stroke="none" stroke-width="0"/>
   <text x="820" y="888" font-size="18" font-weight="400" fill="#FFFFFF" text-anchor="start">You define the phases, what branches inside them, and the bar between.</text>
   <text x="820" y="916" font-size="16" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">prompt 08</text>

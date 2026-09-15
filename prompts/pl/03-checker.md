@@ -10,7 +10,8 @@ poprawia ją, aż test przejdzie.
 ## Zanim wkleisz
 
 Przełącz agenta w plan mode, tak jak przed promptem 02. Claude Code: `Shift+Tab`, aż w stopce
-pojawi się *plan mode on*. Codex: `/plan`.
+pojawi się *plan mode on*. Codex: `/plan`. Zatwierdzając plan w Claude Code, wybierz **Yes,
+auto-accept edits**.
 
 ---
 
@@ -29,9 +30,10 @@ Spraw, żeby uruchamiała go komenda „npm run check". Zainstaluj, co potrzebne
 sterować prawdziwą przeglądarką i testować dostępność. To są narzędzia do sprawdzania;
 żadne z nich nie wchodzi do strony.
 
-Domyślnie sprawdza stronę uruchomioną na tym komputerze. Musi też przyjmować adres —
-npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie, żeby
-później mógł ocenić też stronę na żywo.
+Domyślnie sam buduje stronę, sam serwuje zbudowane pliki i sprawdza tę stronę. Nie może
+zależeć od serwera deweloperskiego uruchomionego przez kogoś innego. Musi też przyjmować
+adres — npm run check -- --url https://… — i uruchamiać te same testy na tamtej stronie,
+żeby później mógł ocenić też stronę na żywo.
 
 Co sprawdzać, wyprowadź z design/data, nie ode mnie. Nie ma jeszcze strony, na którą można
 patrzeć: każdy test wynika z designu. Minimum, i to względem strony tak, jak renderuje ją
@@ -54,11 +56,14 @@ wartości zmierzonej i progu — to jest cała robota.
 Zapisz raport do pliku, nie tylko wypisz go na ekran, bo później podam ci ten plik
 z powrotem. Powiedz mi, jak go nazwałeś.
 
-Dwie reguły dotyczące samego checkera:
+Trzy reguły dotyczące samego checkera:
 
 - Jeśli test nie może się wykonać — przeglądarka nie wstaje, strona się nie wczytuje,
   brakuje design/data — to jest PORAŻKA, nigdy zaliczenie i nigdy ciche pominięcie.
   Test, który się nie odbył, nie może wyglądać jak test, który przeszedł.
+- Wynik dostępności oznaczony jako incomplete, na przykład tekst na zdjęciu albo gradiencie,
+  nie jest zaliczeniem. Zmierz kontrast z wyrenderowanych pikseli pod tym tekstem i zgłoś
+  błąd tylko wtedy, gdy zmierzony stosunek jest poniżej progu albo gdy nie da się go zmierzyć.
 - Nie rozluźniaj testów, żeby przechodziły.
 
 Twój plan ma wymienić każdy test, co czyta z design/data i jak mierzy.
@@ -78,6 +83,11 @@ narzędzia instaluje i jak nazywa się plik z raportem. Zatwierdź go albo popra
 powstaje i uruchamia się na pustym projekcie. Nie przechodzi, a raport mówi dlaczego przy
 każdym teście: brakuje sekcji, brakuje tekstów i tak dalej. Potem commit i push.
 
+Jak odróżnić checker, który celowo nie przechodzi, od zepsutego:
+
+- **Działa:** plik z raportem istnieje i wymienia każdy test z miejscem, wartością oczekiwaną i faktyczną.
+- **Zepsuty:** błąd ze ścieżkami plików i numerami linii, a pliku z raportem nie ma.
+
 **Po tym prompcie wpisz `/clear`.**
 
 ---
@@ -86,14 +96,18 @@ każdym teście: brakuje sekcji, brakuje tekstów i tak dalej. Potem commit i pu
 
 | Co widzisz | Powiedz to |
 |---|---|
-| Pisze kod, zanim pokaże plan | `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
+| Pisze kod, zanim pokaże plan | Naciśnij Esc, potem powiedz `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
 | Przechodzi na pustym projekcie | `Przeszło bez strony. Pokaż mi, które testy się wykonały i co każdy zmierzył.` |
 | Chce najpierw zbudować stronę, żeby test miał co sprawdzać | `W tym kroku bez strony. Test ma nie przejść na projekcie takim, jaki jest.` |
-| Test jest pominięty albo oznaczony jako incomplete | `Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.` |
+| Test jest pominięty | `Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.` |
+| Wynik kontrastu oznaczony jako incomplete (tekst na zdjęciu albo gradiencie) | `Zmierz ten kontrast z wyrenderowanych pikseli pod tekstem. Zgłoś błąd tylko wtedy, gdy stosunek jest poniżej progu albo nie da się go zmierzyć.` |
 | Raport mówi „problem z kontrastem" bez szczegółów | `Każdy błąd musi podać element, wartość oczekiwaną, wartość zmierzoną i próg.` |
 | Bierze wartości z własnego wyobrażenia o designie | `Każdy test czyta wartości z design/data. Pokaż mi, skąd pochodzi każda z nich.` |
 | Pyta, jakiej biblioteki testowej użyć | `Twój wybór. Weź taką, która steruje prawdziwą przeglądarką i testuje dostępność.` |
+| Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja przeglądarki i narzędzi do dostępności go wymaga. |
+| Raport mówi, że strona się nie ładuje | `Checker ma sam zbudować i serwować stronę. Nie polegaj na serwerze deweloperskim.` |
 | `npm run check -- --url https://example.com` niczego nie zmienia | `Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.` |
+| Jest RESCUE_TIME_2, a checker jest zepsuty (błąd, brak pliku z raportem) | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **checker.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Zawiera własne `design/data`, które zastępuje twoje. Potem `/clear` i prompt 04. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj checker.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
 
 ---
 
@@ -101,4 +115,4 @@ każdym teście: brakuje sekcji, brakuje tekstów i tak dalej. Potem commit i pu
 
 - Najpierw testy: test powstaje z designu, zanim jest jakakolwiek strona, więc nie da się go dopasować do tego, co zbudowano.
 - Program, nie opinia: kod wyjścia 0 albo nie, ta sama odpowiedź przy każdym uruchomieniu, bez modelu językowego.
-- Test, który nie może się wykonać, to porażka: narzędzia do dostępności zgłaszają tekst na zdjęciu jako „incomplete", a reguła „zero naruszeń" liczyłaby to jako zaliczenie.
+- Incomplete to nie zaliczenie: narzędzia do dostępności zgłaszają tekst na zdjęciu albo gradiencie jako „incomplete". Checker mierzy wyrenderowane piksele pod tym tekstem i zgłasza błąd tylko wtedy, gdy stosunek jest za niski albo nie da się go zmierzyć; inaczej reguła „zero naruszeń" przepuściłaby go niezauważony, a reguła „incomplete to błąd" nigdy nie pozwoliłaby stronie przejść.

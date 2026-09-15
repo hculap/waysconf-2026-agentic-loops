@@ -48,8 +48,8 @@ Szymon Paluch · CTO, Susteen<br>
 </p>
 
 <!--
-Timing card is in deck/notes/TIMING.md. Total 90 minutes, three hands-on sprints,
-eight-minute buffer.
+Timing card is in deck/notes/TIMING.md. Total 90 minutes, three hands-on sprints. There is no
+buffer: the cut list in the timing card is the buffer.
 
 Before you start: the finished site should already be open in a browser tab, and
 waysconf.szymonpaluch.com should be on the room's screen as people come in.
@@ -179,11 +179,52 @@ class: section
 
 <!--
 Hard stop at 0:15. Anyone not working by then goes to Codespaces, no discussion — the
-click path is on the Before tab.
+click path is on the Preparation page.
 Ask for hands first: "who has a terminal open right now?" Send the rest to the browser
 path immediately rather than one at a time.
 
 The moment an agent is up, prompt 01 goes in. It takes about two minutes.
+-->
+
+---
+
+# The terminal, in one slide
+
+<div class="cols mt-6">
+<div>
+
+```bash
+pwd                 # where am I
+ls                  # what is here
+cd turbine          # go in there
+claude              # or: codex
+```
+
+<p class="mt-6">
+<b>Esc</b> stops the agent. <b>Ctrl+C</b> twice closes it: <code>claude --continue</code> brings it back.
+</p>
+
+</div>
+<div>
+
+It is a text field that runs programs.
+
+It gives you no feedback while it works, which reads as "broken" and is almost always
+"busy".
+
+When a command finishes you get the prompt back. When you do not get the prompt back,
+it is still going.
+
+<p class="mt-4" style="color: var(--sp-fg-3)">
+Full version: the Preparation page, for your operating system
+</p>
+
+</div>
+</div>
+
+<!--
+The "no feedback means busy" line is the one that saves you the most support
+questions. Say it twice.
 -->
 
 ---
@@ -236,50 +277,10 @@ Everyone downloads the same turbine.fig from the page; nobody needs a Figma acco
 part. The Figma link is for looking at the design, not for getting it out.
 -->
 
----
-
-# The terminal, in one slide
-
-<div class="cols mt-6">
-<div>
-
-```bash
-pwd                 # where am I
-ls                  # what is here
-cd turbine          # go in there
-claude              # or: codex
-```
-
-<p class="mt-6">
-<b>Ctrl+C</b> stops whatever is running.
-</p>
-
-</div>
-<div>
-
-It is a text field that runs programs.
-
-It gives you no feedback while it works, which reads as "broken" and is almost always
-"busy".
-
-When a command finishes you get the prompt back. When you do not get the prompt back,
-it is still going.
-
-<p class="mt-4" style="color: var(--sp-fg-3)">
-Full version: the Before tab, for your operating system
-</p>
-
-</div>
-</div>
-
-<!--
-The "no feedback means busy" line is the one that saves you the most support
-questions. Say it twice.
--->
 
 ---
 
-# Every step runs the same way
+# Every prompt runs the same way
 
 <div class="mt-6">
 
@@ -301,6 +302,33 @@ Say this once, clearly, before prompt 02. It is the same four moves three times:
 the checker, the page. Clearing after each step is what keeps every step in a fresh context;
 the commit is what makes every step undoable. Codex: /plan switches to Plan mode, /clear
 starts a new chat. Claude Code: Shift+Tab cycles to plan mode, /clear empties the context.
+-->
+
+---
+
+# Read the plan before it writes the code
+
+<div class="mt-8 text-xl">
+
+Plan mode is the cheapest correction in the entire loop. A wrong assumption costs one
+sentence to fix here, and twenty minutes of generated code to fix later.
+
+</div>
+
+```bash
+# Claude Code: Shift+Tab until the footer says "plan mode on"
+# Codex:       /plan
+```
+
+<div class="mt-8">
+
+Then read it. Actually read it. The plan is where you find out it misunderstood the brief.
+
+</div>
+
+<!--
+Show a real plan on screen. Point at one line you would have changed. That single
+gesture teaches more than the slide.
 -->
 
 ---
@@ -491,7 +519,7 @@ It fails. The report lists everything the page does not have yet.
 
 ### Green
 
-The page is built against that report, then fixed until the check passes.
+The page is built from the design data, then fixed against that report until the check passes.
 
 <div class="mt-4"><span class="verdict pass">prompts 04 and 05</span></div>
 
@@ -553,7 +581,8 @@ Run the last two <b>side by side</b>. One report. It ships when the report is em
 <!--
 The objection is usually "but the model is very good at reviewing now". Agreed, and that is
 the third row. What does not work is the first row: the agent that did the work, in the
-context where it decided everything, grading itself. In the workshop, prompt 06 is the third
+context where it decided everything, grading itself. In the room the page is deployed first so
+everyone has an address, and the review's fixes are deployed again. In the workshop, prompt 07 is the third
 row, pasted in a new session.
 -->
 
@@ -577,18 +606,18 @@ Top tier: fresh-context agents attack the page; it runs alongside the program, a
 
 <div class="mt-4">
 
-| Gate | What it decides | Criteria |
-|---|---|---|
-| Build | It compiles, no type errors, one page out | AC-01…05 |
-| Runtime | No console errors, no failed requests | AC-03…04 |
-| Structure | Sections, headings, landmarks, skip link, ids | AC-06…14 |
-| Accessibility | axe clean at three widths, focus, keyboard, motion | AC-15…25 |
-| Design tokens | Every colour and size came from the design | AC-26…33 |
-| Visual fidelity | Pixels match the design, within a stated budget | AC-34…37 |
-| Content | The real copy, all twelve artists, no placeholders | AC-38…47 |
-| Links | Nothing points at nothing | AC-48…51 |
-| Lighthouse | Performance, a11y, best practices, SEO, and five budgets | AC-52…56 |
-| **Text over images** | **The contrast axe refuses to judge** | **AC-61** |
+| Gate | What it decides |
+|---|---|
+| Build | It compiles, no type errors, one page out |
+| Runtime | No console errors, no failed requests |
+| Structure | Sections, headings, landmarks, skip link, ids |
+| Accessibility | axe clean at three widths, focus, keyboard, motion |
+| Design tokens | Every colour and size came from the design |
+| Visual fidelity | Pixels match the design, within a stated budget |
+| Content | The real copy, all twelve artists, no placeholders |
+| Links | Nothing points at nothing |
+| Lighthouse | Performance, a11y, best practices, SEO, and five budgets |
+| **Text over images** | **The contrast axe refuses to judge** |
 
 </div>
 
@@ -633,7 +662,7 @@ color.bg.base         #0A0B0D
 ```
 
 <div class="mt-4">
-<span class="verdict pass">8.9 : 1</span>
+<span class="verdict pass">8.83 : 1</span>
 </div>
 
 <p class="mt-4">Ask any model for "a muted grey for supporting copy" and watch which one it reaches for.</p>
@@ -656,6 +685,64 @@ Rehearse this until it takes under three minutes.
 There is no recording of this demo yet. Make one before the talk — deck/notes/TIMING.md,
 "Before you start". Without it, a dead wifi means skipping the demo and showing the
 report file instead, which still makes the point.
+-->
+
+---
+
+# The gate was green. The hero was illegible.
+
+<div class="mt-6 text-lg">
+
+Zero axe violations. Three breakpoints. Six page states. Twice, deterministically.
+Lighthouse accessibility **100**.
+
+</div>
+
+<div class="cols mt-6">
+<div>
+
+Then I measured the hero by hand — screenshot the page with every glyph made transparent,
+sample the brightest patch behind each line, compute the real ratio.
+
+| Text | Measured |
+|---|---|
+| "Fourth edition" | <span class="verdict fail">2.94:1</span> |
+| "Ambient, techno and modular…" | <span class="verdict fail">3.02:1</span> |
+| "The Powerhouse, Hall E" | <span class="verdict fail">4.25:1</span> |
+| "Friday 12 – Sunday 14 June" | <span class="verdict fail">4.41:1</span> |
+
+</div>
+<div>
+
+### Why axe said nothing
+
+It does not evaluate text over a background image. It does not fail it — it marks the pair
+**incomplete**, and in a zero-violations gate that is indistinguishable from correct.
+
+Reading the CSS would not have found it either. The background there is a photograph, two
+scrims and a gradient composited together. No computed style says what colour that is.
+
+<p class="mt-4" style="color: var(--sp-accent-2)">
+That is why prompt 03 says: measure text over images from the pixels, and fail if you cannot.
+</p>
+
+</div>
+</div>
+
+<!--
+This is the strongest slide in the deck and the one to slow down on.
+
+The gate was not lying. It was answering a narrower question than the word PASS suggests,
+and nobody had written down which question. That is the entire argument, found inside this
+repository's own verifier, on the most prominent element of the page.
+
+If someone asks how it was found: the repo's own asset checker flagged that 4.47% of tiles
+in the lower half of the hero photograph were too bright for white text. That is a check on
+the *image*. Whether it mattered on the *page* took a separate measurement.
+
+The fix took two attempts. The first darkened the whole frame and erased the photograph —
+worth mentioning, because "make the gate green" and "make the page good" pulled in opposite
+directions for about ten minutes.
 -->
 
 ---
@@ -698,7 +785,7 @@ The agent may never edit the verifier.
 
 <div class="mt-8 text-xl">
 
-It is in prompt 05, in capitals, and it comes first:
+It is rule 1 of prompt 05, in capitals:
 
 </div>
 
@@ -713,8 +800,8 @@ It is in prompt 05, in capitals, and it comes first:
 </div>
 
 <!--
-Somebody always asks whether the agent tries. Answer with the evidence slide two
-along, not with an opinion.
+Somebody always asks whether the agent tries. Answer with evidence/INCIDENTS.md #8: the baseline
+tool refused to let an agent move the target it was being measured against.
 -->
 
 ---
@@ -805,32 +892,6 @@ class: section
 
 # Build the page
 
----
-
-# Read the plan before it writes the code
-
-<div class="mt-8 text-xl">
-
-Plan mode is the cheapest correction in the entire loop. A wrong assumption costs one
-sentence to fix here, and twenty minutes of generated code to fix later.
-
-</div>
-
-```bash
-# Claude Code: Shift+Tab until the footer says "plan mode on"
-# Codex:       /plan
-```
-
-<div class="mt-8">
-
-Then read it. Actually read it. The plan is where you find out it misunderstood the brief.
-
-</div>
-
-<!--
-Show a real plan on screen. Point at one line you would have changed. That single
-gesture teaches more than the slide.
--->
 
 ---
 
@@ -861,8 +922,7 @@ Stop where you are. Leave whatever is unfinished. I want to move on.
 </blockquote>
 
 <p class="mt-4" style="color: var(--sp-fg-2)">
-Every prompt stands alone. A half-built page with a working checker teaches more than
-a finished page with none.
+Prompts 02 to 05 build on each other. Behind at the rescue time? Take the pack from the page and go on.
 </p>
 
 </div>
@@ -896,7 +956,7 @@ is where the fifteen minutes comes from.
 
 <div class="mt-4 text-xl">
 <code>/clear</code>, then paste <b>prompt 05</b>. Then leave it alone — I will talk over it, and when it
-stops we will look at what it did.
+stops it commits. If it is still red at the end of this block: Esc, then /clear and prompt 06.
 </div>
 
 <div class="mt-6">
@@ -909,10 +969,12 @@ run it again. Repeat until it exits 0.
 NEVER change the checker to make a check pass.
 ```
 
+<p class="text-sm" style="color: var(--sp-fg-3)">Shortened. Paste the full prompt 05 from the page.</p>
+
 </div>
 
 <div class="mt-6 text-xl">
-On Claude Code you can make it structural instead of trusted:
+Both agents also have a goal command:
 </div>
 
 ```text
@@ -920,8 +982,8 @@ On Claude Code you can make it structural instead of trusted:
 ```
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-The session cannot end until that command actually exits 0. Codex has no equivalent —
-there, the paragraph is the mechanism.
+After every turn a separate check judges whether the goal is met, and the agent keeps going until
+it is. The exit code still decides, because the agent has to run the check to show it. Stop early: <code>/goal clear</code>.
 </p>
 
 <!--
@@ -977,7 +1039,7 @@ A loop: you define the exit condition. A workflow: you define the phases and the
 between them. Both are things you SAY. That is why changing one is a sentence rather
 than an edit, a test run and a redeploy.
 
-Point at phase 05 and say: a loop lives inside a workflow. Then at 03 and 07: a phase can run
+Point at phase 05 and say: a loop lives inside a workflow. Then at 04 and 07: a phase can run
 several agents at once. That is the next slide.
 -->
 
@@ -991,7 +1053,7 @@ several agents at once. That is the next slide.
 
 <!--
 Prompt 08 uses three: fan out and synthesize in phase 04, loop until done in phase 05,
-adversarial verification in phase 06. The other three are for later: classify and act routes
+adversarial verification in phase 07. The other three are for later: classify and act routes
 different kinds of task, generate and filter gives options, tournament picks between complete
 attempts. Each one, with when to use it, is on the workshop page.
 -->
@@ -1022,7 +1084,7 @@ Reads the report — the current failures.
 
 Reads `notes.md` — what was already tried, and what it cost.
 
-Reads the brief.
+Reads design/data.
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
 Notes on disk beat memory in context.
@@ -1049,7 +1111,8 @@ it did not work. Prompts 05 and 08 both tell the agent to keep it.
 The shape, not the API: many finders each with a different lens, then for each
 finding a small panel whose instruction is to destroy it, then only the survivors.
 
-This repository was built this way. Say that — it is more convincing than the diagram.
+This repository's review was built this way: three refuters per finding and a majority. Prompt 08
+is lighter: one refuting subagent per finding. Say both — the diagram is the full version.
 -->
 
 ---
@@ -1078,8 +1141,8 @@ job is to argue against it from those three angles.
 </div>
 
 <div class="mt-6 text-lg">
-That is <b>prompt 08</b>: prompts 01–07 as one message, phase for phase, word for word.
-Take it home. Today, <b>prompt 06</b> in a new session is the one-agent version, before you deploy.
+That is <b>prompt 08</b>: prompts 01–07 as one message, phase for phase, with the differences it lists.
+Take it home. Today, <b>prompt 07</b> in a new session, after the deploy, is the one-agent version.
 </div>
 
 <!--
@@ -1094,7 +1157,7 @@ equivalent; the word is harmless there, and the sentence after it does the work 
 Say the 1:1 out loud: phase 03 of prompt 08 is prompt 03. Everything they did by hand today
 is in it, in the same words. The differences are named in 08: plans go into notes.md instead of
 waiting for approval, there is no /clear between phases, phase 04 builds sections in parallel,
-and phase 06 runs its reviewers as subagents with a fresh context. A script writes 08 from 01–07, so the two cannot drift apart.
+and phase 07 runs its reviewers as subagents with a fresh context. A script writes 08 from 01–07, so the two cannot drift apart.
 -->
 
 ---
@@ -1104,28 +1167,22 @@ class: section
 
 <div class="kicker">1:10 — 1:22 · sprint 3</div>
 
-# Review, then ship
+# Ship, then break it
 
 ---
 
-# Break it, then deploy it
+# Deploy it, then try to break it
 
 <div class="mt-6 text-xl">
 
-<code>/clear</code>, then **prompt 06**. An agent that never saw the build tries to break the page. Pick the findings that are real; it fixes them, and the check still passes.
+<code>/clear</code>, then **prompt 06**. It builds, creates your Netlify site without asking questions, deploys, and checks that the page the
+server returns is the page that passed. Take the URL it prints.
 
 </div>
 
 <div class="mt-6 text-xl">
 
-<code>/clear</code>, then **prompt 07**, the last step. It builds, deploys to Netlify, and checks that the page the
-server returns is the page that passed.
-
-</div>
-
-<div class="mt-6 text-xl">
-
-It asks you to pick or create a site. Take the URL it prints.
+<code>/clear</code>, then **prompt 07**. An agent that never saw the build tries to break the page on your machine. Pick the findings that are real; it fixes them, the check still passes, and it deploys again.
 
 </div>
 
@@ -1141,69 +1198,11 @@ Put your URL on the board. We are going to look at all of them.
 Have the shared board open on the projector. Thirty URLs appearing one at a time
 is the best ending this session has, and it costs nothing to arrange.
 
-If Netlify CLI auth is fighting someone, dragging the build folder onto netlify.com works
-with no CLI at all.
+Short on time: skip prompt 07. The URL is already on the board.
 
-Short on time: skip prompt 06 and deploy. The URL on the board matters more.
+If the Netlify CLI keeps failing for someone: drag the dist folder onto app.netlify.com/drop.
 -->
 
----
-
-# The gate was green. The hero was illegible.
-
-<div class="mt-6 text-lg">
-
-Zero axe violations. Three breakpoints. Six page states. Twice, deterministically.
-Lighthouse accessibility **100**.
-
-</div>
-
-<div class="cols mt-6">
-<div>
-
-Then I measured the hero by hand — screenshot the page with every glyph made transparent,
-sample the brightest patch behind each line, compute the real ratio.
-
-| Text | Measured |
-|---|---|
-| "Fourth edition" | <span class="verdict fail">2.94:1</span> |
-| "Ambient, techno and modular…" | <span class="verdict fail">3.02:1</span> |
-| "The Powerhouse, Hall E" | <span class="verdict fail">4.25:1</span> |
-| "Friday 12 – Sunday 14 June" | <span class="verdict fail">4.41:1</span> |
-
-</div>
-<div>
-
-### Why axe said nothing
-
-It does not evaluate text over a background image. It does not fail it — it marks the pair
-**incomplete**, and in a zero-violations gate that is indistinguishable from correct.
-
-Reading the CSS would not have found it either. The background there is a photograph, two
-scrims and a gradient composited together. No computed style says what colour that is.
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-So it became AC-61, and there are sixty-one criteria now instead of sixty.
-</p>
-
-</div>
-</div>
-
-<!--
-This is the strongest slide in the deck and the one to slow down on.
-
-The gate was not lying. It was answering a narrower question than the word PASS suggests,
-and nobody had written down which question. That is the entire argument, found inside this
-repository's own verifier, on the most prominent element of the page.
-
-If someone asks how it was found: the repo's own asset checker flagged that 4.47% of tiles
-in the lower half of the hero photograph were too bright for white text. That is a check on
-the *image*. Whether it mattered on the *page* took a separate measurement.
-
-The fix took two attempts. The first darkened the whole frame and erased the photograph —
-worth mentioning, because "make the gate green" and "make the page good" pulled in opposite
-directions for about ten minutes.
--->
 
 ---
 layout: section
@@ -1225,7 +1224,7 @@ class: section
 | The a11y gate is green | Automated rules reach maybe 30–40% of real WCAG failures |
 | The pixel diff passes | It saw no change. It has no idea whether a change would be better |
 | Adversarial review found nothing | A review finds what it looks for. It runs beside the program, never instead of it |
-| All sixty-one criteria pass | Nothing here has an opinion about whether the design is good |
+| `npm run check` exits 0 | Nothing here has an opinion about whether the design is good |
 
 </div>
 

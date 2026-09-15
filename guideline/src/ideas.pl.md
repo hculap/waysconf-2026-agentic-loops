@@ -10,11 +10,20 @@
 | 15:25 | Checker, najpierw testy | Plan mode, prompt 03: agent pisze `npm run check` z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport. |
 | 15:40 | Budowa | Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. Przeglądasz stronę sekcja po sekcji. |
 | 15:55 | Pętla | Prompt 05: agent poprawia stronę, aż test przejdzie. |
-| 16:05 | Review | `/clear`, prompt 06: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, a test dalej przechodzi. |
-| 16:12 | Publikacja | `/clear`, prompt 07: strona trafia na produkcję, a test uruchamia się na adresie na żywo. |
+| 16:05 | Publikacja | `/clear`, prompt 06: strona trafia na produkcję, a test uruchamia się na adresie na żywo. |
+| 16:12 | Review | `/clear`, prompt 07: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, test dalej przechodzi, a strona jest publikowana ponownie. |
 | 16:20 | Ograniczenia i pytania | Słuchasz, pytasz. |
 
-Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi przerwać i wklej następny. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.
+Prompty od 02 do 05 zależą od siebie: checker potrzebuje danych projektu, a strona checkera. Jeśli krok nie skończy się na czas, użyj paczki awaryjnej poniżej i idź dalej. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.
+
+## Paczki awaryjne
+
+Dwie paczki z pełnego przebiegu tych promptów. Każda zastępuje jeden krok.
+
+| Jeśli o | Nie masz | Pobierz | Potem |
+|---|---|---|---|
+| RESCUE_TIME_1 | `design/data` z promptu 02 | [design-data.zip](../../design-data.zip) | Napisz agentowi `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 03. |
+| RESCUE_TIME_2 | działającego `npm run check` z promptu 03 | [checker.zip](../../checker.zip) | Napisz agentowi `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 04. |
 
 ---
 
@@ -23,8 +32,10 @@ Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi 
 Prompty 02, 03 i 04 budują coś konkretnego: dekoder, checker, stronę. Każdy przebiega tak samo:
 
 1. **Plan mode.** Zanim wkleisz prompt, przełącz agenta w tryb planowania: w Claude Code naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*; w Codeksie wpisz `/plan`. Agent robi rozpoznanie i pokazuje plan. Nie może zmieniać plików, dopóki go nie zatwierdzisz.
-2. **Implementacja.** Przeczytaj plan, popraw go zwykłymi słowami, zatwierdź. Agent buduje.
-3. **Commit.** Na końcu kroku agent robi commit z opisem tego, co zrobił ten krok, i wypycha go do twojego repozytorium na GitHubie. Każdy krok da się cofnąć.
+2. **Implementacja.** Przeczytaj plan, popraw go zwykłymi słowami, zatwierdź. W Claude Code wybierz *Yes, auto-accept edits*: agent zmienia wtedy pliki bez pytania. Kiedy pierwszy raz uruchamia nowy rodzaj komendy (`npm run check`, `git push`), wybierz *Yes, and don't ask again*. Przed promptem 05, który nie ma planu, naciśnij `Shift+Tab`, aż w stopce pojawi się *accept edits on* (Codex: `/permissions`).
+3. **Commit.** Na końcu kroku agent robi commit z opisem tego, co zrobił ten krok, i wypycha go do twojego repozytorium na GitHubie. Żeby cofnąć krok, napisz agentowi `Wróć do commita z kroku 03` (albo z innego kroku).
+Żeby zatrzymać agenta w trakcie pracy, naciśnij `Esc`. `Ctrl+C` dwa razy zamyka agenta; uruchom go ponownie przez `claude --continue` albo `codex resume --last`.
+
 4. **Czyszczenie.** Wpisz `/clear` (ta sama komenda w Claude Code i w Codeksie). Następny prompt zaczyna z pustym kontekstem i czyta to, czego potrzebuje, z plików: dane projektu, raport i `notes.md`.
 
 ---
@@ -54,7 +65,7 @@ Test napisany po stronie zwykle opisuje stronę, która już jest. Test napisany
 
 - **Plan.** Agent mówi, co zmieni i dlaczego. Od drugiej rundy plan zaczyna się od raportu.
 - **Implementacja.** Agent pisze kod. Za pierwszym razem generuje stronę, potem poprawia to, co wskazuje raport.
-- **Weryfikacja.** Test z promptu 03, `npm run check`, sprawdza stronę w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.
+- **Weryfikacja.** Test z promptu 03, `npm run check`, sam buduje i serwuje stronę, a potem sprawdza ją w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.
 
 Pętla kończy się, gdy test zwraca 0. Wtedy praca trafia do commita, a strona na produkcję.
 
@@ -72,7 +83,7 @@ Agent może sprawdzać pracę pod dwoma warunkami: nie wykonywał jej w tym samy
 | Program: `npm run check` | Do wszystkiego, co ma dokładną odpowiedź: sekcje, kolory, teksty, kontrast, przewijanie w poziomie. |
 | Agenci ze świeżym kontekstem, którzy mają atakować (adversarial review) | Do tego, czego program nie zmierzy: kolejność czytania, bezużyteczny tekst alternatywny, tekst na zdjęciach, teksty niepasujące do marki. |
 
-Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie review to prompt 06, wklejany w nowej sesji przed publikacją.
+Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie strona najpierw trafia na produkcję, żeby każdy miał adres. Review to prompt 07 w nowej sesji, a jego poprawki są publikowane ponownie.
 
 ---
 
@@ -81,7 +92,7 @@ Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają 
 ::diagram:03-verification-tiers::
 
 1. **Testy deterministyczne.** Build, błędy w konsoli, sekcje, kolory, teksty, kontrast, przewijanie w poziomie. Za każdym razem ten sam wynik.
-2. **Porównanie mierzone.** Zrzuty ekranu porównane z projektem. Wykrywa zmianę, ale jej nie ocenia.
+2. **Porównanie mierzone.** Zrzuty ekranu porównane z projektem. Wykrywa zmianę, ale jej nie ocenia. Rysunek pokazuje checker gotowej strony; checker, który piszesz w prompcie 03, obejmuje poziom 1.
 3. **Adversarial review.** Agenci ze świeżym kontekstem szukają tego, czego poziomy 1 i 2 nie zmierzą. Każda uwaga musi wskazać konkretny element i przetrwać próbę obalenia.
 
 ---
@@ -91,12 +102,11 @@ Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają 
 Test zapisuje każdy błąd do pliku. Przykład:
 
 ```md
-**3. [check 07] kolor na stronie nie pochodzi z projektu**
+**3. [check 4] tekst poniżej minimalnego kontrastu**
 
 - Gdzie: linijka pod nazwą w każdej karcie sekcji lineup
-- Oczekiwane: kolor projektu "text / secondary"
-- Faktyczne: kolor projektu "text / muted", 4.07:1 do tła strony;
-             tekst podstawowy wymaga 4.5:1
+- Oczekiwane: kolor projektu "text / secondary", co najmniej 4.5:1 do tła
+- Faktyczne: kolor projektu "text / muted", 4.07:1
 - Wskazówka: muted jest przeznaczony tylko na tekst prawny i stopkę
 ```
 
@@ -136,7 +146,7 @@ Workflow może zawierać pętlę: faza 05 promptu 08 to pętla z promptu 05.
 
 ### Wzorce workflow
 
-Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 04), pętla do skutku (faza 05) i adversarial verification (faza 06).
+Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 04), pętla do skutku (faza 05) i adversarial verification (faza 07).
 
 #### 1. Klasyfikuj i działaj
 
@@ -160,7 +170,7 @@ Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech:
 
 **Jak działa:** jeden agent daje wynik, kilku agentów ze świeżym kontekstem próbuje go podważyć, a ich uwagi wracają do pierwszego agenta.
 
-**Kiedy użyć:** do wszystkiego, czego nie sprawdzi program. Przykład: prompt 06 i faza 06 promptu 08.
+**Kiedy użyć:** do wszystkiego, czego nie sprawdzi program. Przykład: prompt 07 i faza 07 promptu 08.
 
 #### 4. Generuj i filtruj
 
@@ -190,10 +200,7 @@ Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech:
 
 ## Publikacja i sprawdzenie strony na żywo
 
-```bash
-npm run build
-netlify deploy --prod --dir=dist
-```
+Prompt 06 uruchamia te komendy za ciebie; nie wpisuj ich sam. Pierwszy deploy zakłada stronę: `netlify deploy --prod --dir=dist --site-name turbine-<twoja nazwa na GitHubie>`. Kolejne trafiają na tę samą stronę.
 
 Po publikacji porównaj serwowaną stronę z plikami w `dist` i uruchom `npm run check -- --url <adres>` na adresie na żywo. Zaliczony test lokalny nie dowodzi, że strona na żywo jest ta sama: stary build, zły folder albo kod dodany przez hosting mogą ją zmienić. Prompt 06 robi oba kroki.
 
@@ -202,7 +209,7 @@ Po publikacji porównaj serwowaną stronę z plikami w `dist` i uruchom `npm run
 ## Ograniczenia automatycznych testów
 
 - Automatyczne reguły dostępności obejmują około 30 do 40% WCAG. Zaliczenie oznacza brak znanych błędów, a nie dostępną stronę.
-- axe nie ocenia tekstu na zdjęciach ani gradientach. Oznacza takie pary jako *incomplete*, a test z regułą „zero naruszeń” traktuje incomplete jak zaliczenie. Twój checker musi liczyć incomplete jako błąd.
+- axe nie ocenia tekstu na zdjęciach ani gradientach. Oznacza takie pary jako *incomplete*, a test z regułą „zero naruszeń” traktuje incomplete jak zaliczenie. Twój checker musi zmierzyć takie pary z wyrenderowanych pikseli i nie przejść, jeśli nie da się ich zmierzyć.
 - Porównanie zrzutów ekranu wykrywa zmianę. Nie mówi, czy zmiana jest lepsza.
 - Żaden z tych testów nie ocenia, czy sam projekt jest dobry.
 

@@ -10,11 +10,20 @@
 | 15:25 | Checker, tests first | Plan mode, prompt 03: the agent writes `npm run check` from the design data before any page exists. The check fails. Demo: a failing check and its report. |
 | 15:40 | Build | Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section. |
 | 15:55 | Loop | Prompt 05: the agent fixes the page until the check passes. |
-| 16:05 | Review | `/clear`, prompt 06: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them and the check still passes. |
-| 16:12 | Deploy | `/clear`, prompt 07: the page goes live and the check runs against the live address. |
+| 16:05 | Deploy | `/clear`, prompt 06: the page goes live and the check runs against the live address. |
+| 16:12 | Review | `/clear`, prompt 07: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them, the check still passes, and the page is deployed again. |
 | 16:20 | Limits and questions | Listen, ask. |
 
-Each prompt works on its own. If one fails, tell the agent to stop and paste the next one. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.
+Prompts 02 to 05 build on each other: the checker needs the design data, the page needs the checker. If a step does not finish in time, use the rescue pack below and go on. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.
+
+## Rescue packs
+
+Two downloads made from a complete run of these prompts. Each replaces one step.
+
+| If at | You do not have | Download | Then |
+|---|---|---|---|
+| RESCUE_TIME_1 | `design/data` from prompt 02 | [design-data.zip](../design-data.zip) | Tell the agent `Unzip design-data.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 03. |
+| RESCUE_TIME_2 | a working `npm run check` from prompt 03 | [checker.zip](../checker.zip) | Tell the agent `Unzip checker.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 04. |
 
 ---
 
@@ -23,8 +32,10 @@ Each prompt works on its own. If one fails, tell the agent to stop and paste the
 Prompts 02, 03 and 04 each build something real: the decoder, the checker, the page. Each one runs the same way:
 
 1. **Plan mode.** Before you paste the prompt, switch the agent to plan mode: in Claude Code press `Shift+Tab` until the footer shows *plan mode on*; in Codex type `/plan`. The agent researches and shows a plan. It cannot change files until you approve.
-2. **Implement.** Read the plan, correct it in plain words, approve it. The agent builds.
-3. **Commit.** At the end of the step the agent commits its work with a message saying what the step did, and pushes it to your GitHub repository. Every step can be undone.
+2. **Implement.** Read the plan, correct it in plain words, approve it. In Claude Code choose *Yes, auto-accept edits*: the agent then changes files without asking. The first time it runs a new kind of command (`npm run check`, `git push`), choose *Yes, and don't ask again*. Before prompt 05, which has no plan, press `Shift+Tab` until the footer shows *accept edits on* (Codex: `/permissions`).
+3. **Commit.** At the end of the step the agent commits its work with a message saying what the step did, and pushes it to your GitHub repository. To undo a step, tell the agent `Go back to the commit from step 03` (or whichever step).
+To stop the agent in the middle of a task, press `Esc`. `Ctrl+C` twice closes the agent; start it again with `claude --continue` or `codex resume --last`.
+
 4. **Clear.** Type `/clear` (the same command in Claude Code and in Codex). The next prompt starts with an empty context and reads what it needs from files: the design data, the report and `notes.md`.
 
 ---
@@ -54,7 +65,7 @@ A check written after the page tends to describe the page that exists. A check w
 
 - **Plan.** The agent states what it will change and why. From the second round on, the plan starts from the report.
 - **Implement.** The agent writes code. The first time it generates the page; after that it fixes what the report names.
-- **Verify.** The check from prompt 03, `npm run check`, tests the page in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.
+- **Verify.** The check from prompt 03, `npm run check`, builds the site, serves it itself, tests it in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.
 
 The loop ends when the check exits 0. Then the work is committed and the page is deployed.
 
@@ -72,7 +83,7 @@ An agent can check work on two conditions: it did not do the work in the same co
 | A program: `npm run check` | Everything with an exact answer: sections, colours, copy, contrast, overflow. |
 | Agents with a fresh context, told to attack (adversarial review) | What a program cannot measure: reading order, useless alt text, text over photos, copy that does not match the brand. |
 
-Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop, the review is prompt 06, pasted in a new session before the deploy.
+Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop the page is deployed first, so everyone has an address. The review is prompt 07, in a new session, and its fixes are deployed again.
 
 ---
 
@@ -81,7 +92,7 @@ Run the program and the review side by side. Failures and confirmed findings go 
 ::diagram:03-verification-tiers::
 
 1. **Deterministic checks.** Build, console errors, sections, colours, copy, contrast, overflow. Same result on every run.
-2. **Measured comparison.** Screenshots compared with the design. Detects a change, does not judge it.
+2. **Measured comparison.** Screenshots compared with the design. Detects a change, does not judge it. The drawing shows the checker behind the finished site; the checker you write in prompt 03 covers level 1.
 3. **Adversarial review.** Agents with a fresh context look for what levels 1 and 2 cannot measure. Every finding must name an element and survive an attempt to refute it.
 
 ---
@@ -91,12 +102,11 @@ Run the program and the review side by side. Failures and confirmed findings go 
 The check writes every failure to a file. Example:
 
 ```md
-**3. [check 07] a colour on the page is not in the design**
+**3. [check 4] text is below the contrast minimum**
 
 - Where: the supporting line inside each card in the lineup section
-- Expected: the design's "text / secondary"
-- Actual: the design's "text / muted", 4.07:1 against the page background;
-          body text needs 4.5:1
+- Expected: the design's "text / secondary", at least 4.5:1 against the background
+- Actual: the design's "text / muted", 4.07:1
 - Hint: muted is defined for legal and footer text only
 ```
 
@@ -136,7 +146,7 @@ A workflow can contain a loop: phase 05 of prompt 08 is the loop from prompt 05.
 
 ### Workflow patterns
 
-Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 04), loop until done (phase 05) and adversarial verification (phase 06).
+Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 04), loop until done (phase 05) and adversarial verification (phase 07).
 
 #### 1. Classify and act
 
@@ -160,7 +170,7 @@ Six ways to arrange several agents inside a workflow. Prompt 08 uses three of th
 
 **How it works:** one agent produces a result, several agents with a fresh context try to break it, and their findings go back to the first agent.
 
-**When to use it:** anything a program cannot check. Example: prompt 06, and phase 06 of prompt 08.
+**When to use it:** anything a program cannot check. Example: prompt 07, and phase 07 of prompt 08.
 
 #### 4. Generate and filter
 
@@ -190,10 +200,7 @@ Six ways to arrange several agents inside a workflow. Prompt 08 uses three of th
 
 ## Deploy and check the live page
 
-```bash
-npm run build
-netlify deploy --prod --dir=dist
-```
+Prompt 06 runs these for you; do not type them yourself. The first deploy creates the site: `netlify deploy --prod --dir=dist --site-name turbine-<your GitHub name>`. Later deploys go to the same site.
 
 After deploying, compare the served page with the files in `dist`, and run `npm run check -- --url <address>` against the live address. A passing local check does not prove the live page is the same: a stale build, the wrong folder or markup added by the host can change it. Prompt 06 does both steps.
 
@@ -202,7 +209,7 @@ After deploying, compare the served page with the files in `dist`, and run `npm 
 ## Limits of automated checks
 
 - Automated accessibility rules cover about 30 to 40% of WCAG. A pass means no known defect, not an accessible page.
-- axe does not evaluate text over images or gradients. It marks those pairs *incomplete*, and a check whose rule is "zero violations" treats incomplete as a pass. Your checker must count incomplete as a failure.
+- axe does not evaluate text over images or gradients. It marks those pairs *incomplete*, and a check whose rule is "zero violations" treats incomplete as a pass. Your checker must measure those pairs from the rendered pixels, and fail if it cannot measure them.
 - A screenshot comparison detects a change. It does not say whether the change is better.
 - No check here evaluates whether the design itself is good.
 

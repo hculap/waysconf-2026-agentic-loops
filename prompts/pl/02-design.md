@@ -7,8 +7,10 @@ czytają te dane. Jeszcze bez kodu strony.
 ## Zanim wkleisz
 
 1. Na stronie warsztatu kliknij **Pobierz turbine.fig**.
-2. W folderze projektu załóż folder `design` i włóż do niego plik. Musi leżeć w projekcie: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.
+2. Włóż plik do folderu `design` w projekcie. Najprościej: powiedz agentowi `Przenieś turbine.fig z mojego folderu Pobrane do nowego folderu design w tym projekcie.` Musi leżeć w projekcie: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.
 3. Przełącz agenta w plan mode. W plan mode agent robi rozpoznanie i pokazuje plan, a nie zmienia żadnego pliku, dopóki go nie zatwierdzisz. Claude Code: naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*. Codex: wpisz `/plan` i naciśnij Enter.
+
+Nie musisz rozumieć całego planu. Sprawdź trzy rzeczy: to skrypt, który uruchamia `npm run design`, zapisuje pliki JSON do `design/data` i nie pisze kodu strony. Potem zatwierdź. W Claude Code wybierz **Yes, auto-accept edits**, żeby agent nie pytał przed każdą zmianą pliku.
 
 ---
 
@@ -16,8 +18,8 @@ czytają te dane. Jeszcze bez kodu strony.
 Najpierw plan. Zbadaj, czego potrzebujesz, potem pokaż mi plan i poczekaj na moją zgodę. Nie
 twórz ani nie zmieniaj żadnego pliku, dopóki go nie zatwierdzę.
 
-W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, zapisany
-przez „Save local copy". To nie jest obrazek: to cały design jako dane — każdy tekst,
+W tym projekcie jest folder design, a w nim plik .fig. To jest sam plik Figmy, tak jak
+zapisuje go Figma. To nie jest obrazek: to cały design jako dane — każdy tekst,
 kolor, zmienna, komponent i zdjęcie.
 
 Pracuj na tym jednym pliku i na niczym więcej. Nie szukaj na tym komputerze designu,
@@ -29,6 +31,9 @@ Chcę narzędzia, a nie jednorazowego rozkodowania: skryptu w tym projekcie, kt�
 .fig z folderu design i zapisuje dane designu, których będą potrzebować strona i checker.
 Spraw, żeby uruchamiała go komenda „npm run design". Ponowne uruchomienie na nowym pliku .fig
 ma odświeżyć dane, żeby nikt już nie musiał ręcznie rozkodowywać ani eksportować designu.
+
+Dekoder ma być mały: jeden skrypt, bez zestawu testów dla dekodera, bez dodatkowych narzędzi.
+Przestań nad nim pracować, gdy tylko siedem plików JSON i zdjęcia są zapisane.
 
 Nie ma programu, który otwiera plik .fig, więc skrypt rozkodowuje go sam. Co wiadomo
 o formacie:
@@ -76,7 +81,7 @@ kształt ma każdy plik JSON.
 Kiedy zatwierdzę plan, napisz skrypt, uruchom npm run design, potem pokaż mi listę, a jej
 punkt 6 zapisz do notes.md:
 
-1. Każdą sekcję, w kolejności od góry strony.
+1. Każdą sekcję, w kolejności od góry strony, i imię na każdej karcie artysty.
 2. Każdy kolor, po nazwie z designu, z dokładną wartością.
 3. Każdy rozmiar tekstu i gdzie który jest użyty.
 4. Każdą szerokość, którą design obejmuje.
@@ -97,14 +102,23 @@ wyczyścić sesję.
 ---
 
 **Oczekiwany wynik.** Najpierw plan: jak skrypt czyta plik, jakiej paczki używa i jaki kształt
-ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem od 10 do 16
-minut pracy. Na końcu jest `npm run design`, w `design/data` siedem plików JSON, w
-`design/images` zdjęcia, a w czacie lista z sześcioma punktami.
+ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem agent pisze
+i uruchamia dekoder. Może to potrwać dłużej, niż pozwala warsztat: o RESCUE_TIME_1 każdy,
+kto nie ma jeszcze `design/data`, bierze paczkę awaryjną (ostatni wiersz tabeli niżej). Na końcu
+jest `npm run design`, w `design/data` siedem plików JSON, w `design/images` zdjęcia, a w czacie
+lista z sześcioma punktami.
 
 Sprawdź w liście dwie rzeczy:
 
-- Sekcje zgadzają się z designem: dwanaście kart artystów z dwunastoma różnymi nazwami, a nie ogólny landing page.
-- Punkt 6 nie jest pusty. Odpowiedz na każdą pozycję własnymi słowami. Jeśli jest pusty, zapytaj `co z tego przeczytałeś, a co wywnioskowałeś?`
+- Punkt 1 zgadza się z designem: dwanaście kart artystów z dwunastoma różnymi imionami, a nie ogólny landing page.
+- Punkt 6 nie jest pusty. Odpowiadaj nazwami z designu, na przykład nazwą koloru albo stylu tekstu z punktu 2, a nie nowymi wartościami. Jeśli punkt 6 jest pusty, zapytaj `co z tego przeczytałeś, a co wywnioskowałeś?`
+
+Na to, na co nie umiesz tak odpowiedzieć, wklej:
+
+```text
+Tam, gdzie nie odpowiedziałem: wybierz najbardziej prawdopodobny odczyt, zapisz go do
+notes.md jako założenie i jedź dalej.
+```
 
 Po twoich odpowiedziach agent robi commit i push.
 
@@ -116,12 +130,13 @@ Po twoich odpowiedziach agent robi commit i push.
 
 | Co widzisz | Powiedz to |
 |---|---|
-| Pisze kod, zanim pokaże plan | `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
+| Pisze kod, zanim pokaże plan | Naciśnij Esc, potem powiedz `Stop. Najpierw pokaż mi plan i poczekaj na moją zgodę.` |
 | Rozkodowuje plik raz i nie pisze skryptu | `Prosiłem o narzędzie. Przenieś rozkodowanie do skryptu, niech uruchamia go npm run design, i uruchom go.` |
+| Pisze testy albo dodatkowe narzędzia dla dekodera | `Dekoder ma być jednym skryptem. Bez testów dla niego. Zapisz siedem plików JSON i zdjęcia, potem przestań.` |
 | W pliku JSON brakuje wartości | `W design/data/typography.json nie ma interlinii. Popraw skrypt, żeby je czytał, i uruchom npm run design jeszcze raz.` |
-| Zaczyna budować stronę | `Stop. W tym kroku bez kodu strony. Cofnij wszystko, co napisałeś dla strony.` |
+| Zaczyna budować stronę | Naciśnij Esc, potem powiedz `Stop. W tym kroku bez kodu strony. Cofnij wszystko, co napisałeś dla strony.` |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
-| Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
+| Przeszukuje dysk albo czyta inny projekt | Naciśnij Esc, potem powiedz `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
 | „Nie mogę otworzyć pliku binarnego" | `To jest zip. Skrypt ma go rozpakować i rozkodować canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |
 | Opisuje małą, rozmytą stronę | Przeczytał `thumbnail.png`. `To jest podgląd. Pracuj na canvas.fig.` |
 | `zstd` nieobsługiwany albo dekompresja się sypie | Node jest starszy niż 22.15. `Użyj paczki, która czyta zstd, i działaj dalej.` |
@@ -129,7 +144,8 @@ Po twoich odpowiedziach agent robi commit i push.
 | Claude Code pyta przed każdą komendą | Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend. |
 | Każda karta artysty ma to samo imię | `Czytasz komponent, a nie instancje. Rozwiąż w skrypcie właściwości komponentu i nadpisania.` |
 | Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli skrypt nie potrafi ich odczytać, powiedz to.` |
-| `git push` nie działa | Uruchom `gh auth status` w drugim terminalu. Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
+| `git push` nie działa | Uruchom `gh auth status` w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
+| Jest RESCUE_TIME_1, a nie masz `design/data` | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **design-data.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Potem `/clear` i prompt 03. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj design-data.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
 
 ---
 

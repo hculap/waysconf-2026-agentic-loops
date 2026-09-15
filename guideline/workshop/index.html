@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Workshop · WaysConf 2026 masterclass</title>
-<meta name="description" content="Workshop materials: the design file, the plan, the ideas and the eight prompts.">
+<meta name="description" content="Workshop materials: the design file, the plan, the ideas, the rescue packs and the prompts.">
 <meta name="theme-color" content="#0A0A0A">
 <meta name="robots" content="noindex">
 <link rel="alternate" hreflang="en" href="../workshop/">
@@ -230,6 +230,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <p class="toc__t">On this page</p>
   <ol>
     <li><a href="#workshop-plan">Workshop plan</a></li>
+    <li><a href="#rescue-packs">Rescue packs</a></li>
     <li><a href="#how-every-step-runs">How every step runs</a></li>
     <li><a href="#design-data-not-a-picture">Design data, not a picture</a></li>
     <li><a href="#tests-first">Tests first</a></li>
@@ -243,20 +244,20 @@ footer p{font-size:14px;color:var(--fg-3)}
     <li><a href="#limits-of-automated-checks">Limits of automated checks</a></li>
     <li><a href="#common-failures">Common failures</a></li>
     <li><a href="#after-the-workshop">After the workshop</a></li>
-    <li><a href="#the-eight-prompts">The eight prompts</a></li>
+    <li><a href="#the-prompts">The prompts</a></li>
     <li><a href="#start">Start</a></li>
     <li><a href="#look-at-the-design">Look at the design</a></li>
     <li><a href="#write-the-checker-first">Write the checker first</a></li>
     <li><a href="#build-it">Build it</a></li>
     <li><a href="#the-loop-2">The loop</a></li>
-    <li><a href="#try-to-break-it">Try to break it</a></li>
     <li><a href="#ship-it">Ship it</a></li>
+    <li><a href="#try-to-break-it">Try to break it</a></li>
     <li><a href="#the-same-job-as-a-workflow">The same job, as a workflow</a></li>
   </ol>
 </nav>
 <main id="main" tabindex="-1"><div class="wrap">
 <h1>Workshop</h1>
-<p class="lede">The workshop is eight prompts: messages you paste to your coding agent, in order. They are at the bottom of this page, each with a Copy button. Above them: the design file, the plan of the workshop, and the ideas the prompts are built on.</p>
+<p class="lede">The workshop is seven prompts: messages you paste to your coding agent, in order, plus an eighth to take home. They are at the bottom of this page, each with a Copy button. Above them: the design file, the plan of the workshop, and the ideas the prompts are built on.</p>
 <div class="need">
   <a href="https://www.figma.com/design/OeDnL6CcJ0zFlWSEO8YfWD/Turbine?node-id=1-3" target="_blank" rel="noopener"><b>View the design</b><span>Opens the TURBINE file in Figma. Use it to look at the design while your agent works.</span><em>Open in Figma</em></a>
   <a href="../turbine.fig" download><b>Download turbine.fig</b><span>The same design as one file (4.7&nbsp;MB). This is the file your agent reads.</span><em>Download</em></a>
@@ -265,12 +266,17 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p class="need__alt">After prompt 01 has created the project, make a folder named <code>design</code> inside the project folder and put <code>turbine.fig</code> in it. Not next to the project: Claude Code asks for permission before reading files outside the project folder.</p>
 <hr>
 <h2 id="workshop-plan">Workshop plan</h2>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Time</th><th>Part</th><th>What you do</th></tr></thead><tbody><tr><td>14:55</td><td>Introduction</td><td>Listen.</td></tr><tr><td>15:03</td><td>Setup</td><td>Open a terminal in the <code>turbine</code> folder, start the agent, paste prompt 01.</td></tr><tr><td>15:10</td><td>Design</td><td>Put <code>turbine.fig</code> in <code>design/</code>. Plan mode, prompt 02: the agent plans and builds a decoder, <code>npm run design</code>, that writes the design data as JSON. Answer its open questions.</td></tr><tr><td>15:25</td><td>Checker, tests first</td><td>Plan mode, prompt 03: the agent writes <code>npm run check</code> from the design data before any page exists. The check fails. Demo: a failing check and its report.</td></tr><tr><td>15:40</td><td>Build</td><td>Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section.</td></tr><tr><td>15:55</td><td>Loop</td><td>Prompt 05: the agent fixes the page until the check passes.</td></tr><tr><td>16:05</td><td>Review</td><td><code>/clear</code>, prompt 06: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them and the check still passes.</td></tr><tr><td>16:12</td><td>Deploy</td><td><code>/clear</code>, prompt 07: the page goes live and the check runs against the live address.</td></tr><tr><td>16:20</td><td>Limits and questions</td><td>Listen, ask.</td></tr></tbody></table></div>
-<p>Each prompt works on its own. If one fails, tell the agent to stop and paste the next one. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Time</th><th>Part</th><th>What you do</th></tr></thead><tbody><tr><td>14:55</td><td>Introduction</td><td>Listen.</td></tr><tr><td>15:03</td><td>Setup</td><td>Open a terminal in the <code>turbine</code> folder, start the agent, paste prompt 01.</td></tr><tr><td>15:10</td><td>Design</td><td>Put <code>turbine.fig</code> in <code>design/</code>. Plan mode, prompt 02: the agent plans and builds a decoder, <code>npm run design</code>, that writes the design data as JSON. Answer its open questions.</td></tr><tr><td>15:25</td><td>Checker, tests first</td><td>Plan mode, prompt 03: the agent writes <code>npm run check</code> from the design data before any page exists. The check fails. Demo: a failing check and its report.</td></tr><tr><td>15:40</td><td>Build</td><td>Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section.</td></tr><tr><td>15:55</td><td>Loop</td><td>Prompt 05: the agent fixes the page until the check passes.</td></tr><tr><td>16:05</td><td>Deploy</td><td><code>/clear</code>, prompt 06: the page goes live and the check runs against the live address.</td></tr><tr><td>16:12</td><td>Review</td><td><code>/clear</code>, prompt 07: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them, the check still passes, and the page is deployed again.</td></tr><tr><td>16:20</td><td>Limits and questions</td><td>Listen, ask.</td></tr></tbody></table></div>
+<p>Prompts 02 to 05 build on each other: the checker needs the design data, the page needs the checker. If a step does not finish in time, use the rescue pack below and go on. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.</p>
+<h2 id="rescue-packs">Rescue packs</h2>
+<p>Two downloads made from a complete run of these prompts. Each replaces one step.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>If at</th><th>You do not have</th><th>Download</th><th>Then</th></tr></thead><tbody><tr><td>RESCUE_TIME_1</td><td><code>design/data</code> from prompt 02</td><td><a href="../design-data.zip">design-data.zip</a></td><td>Tell the agent <code>Unzip design-data.zip from my Downloads folder into this project, run npm install, and commit it.</code> Then <code>/clear</code> and prompt 03.</td></tr><tr><td>RESCUE_TIME_2</td><td>a working <code>npm run check</code> from prompt 03</td><td><a href="../checker.zip">checker.zip</a></td><td>Tell the agent <code>Unzip checker.zip from my Downloads folder into this project, run npm install, and commit it.</code> Then <code>/clear</code> and prompt 04.</td></tr></tbody></table></div>
 <hr>
 <h2 id="how-every-step-runs">How every step runs</h2>
 <p>Prompts 02, 03 and 04 each build something real: the decoder, the checker, the page. Each one runs the same way:</p>
-<ol><li><strong>Plan mode.</strong> Before you paste the prompt, switch the agent to plan mode: in Claude Code press <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>; in Codex type <code>/plan</code>. The agent researches and shows a plan. It cannot change files until you approve.</li><li><strong>Implement.</strong> Read the plan, correct it in plain words, approve it. The agent builds.</li><li><strong>Commit.</strong> At the end of the step the agent commits its work with a message saying what the step did, and pushes it to your GitHub repository. Every step can be undone.</li><li><strong>Clear.</strong> Type <code>/clear</code> (the same command in Claude Code and in Codex). The next prompt starts with an empty context and reads what it needs from files: the design data, the report and <code>notes.md</code>.</li></ol>
+<ol><li><strong>Plan mode.</strong> Before you paste the prompt, switch the agent to plan mode: in Claude Code press <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>; in Codex type <code>/plan</code>. The agent researches and shows a plan. It cannot change files until you approve.</li><li><strong>Implement.</strong> Read the plan, correct it in plain words, approve it. In Claude Code choose <em>Yes, auto-accept edits</em>: the agent then changes files without asking. The first time it runs a new kind of command (<code>npm run check</code>, <code>git push</code>), choose <em>Yes, and don't ask again</em>. Before prompt 05, which has no plan, press <code>Shift+Tab</code> until the footer shows <em>accept edits on</em> (Codex: <code>/permissions</code>).</li><li><strong>Commit.</strong> At the end of the step the agent commits its work with a message saying what the step did, and pushes it to your GitHub repository. To undo a step, tell the agent <code>Go back to the commit from step 03</code> (or whichever step).</li></ol>
+<p>To stop the agent in the middle of a task, press <code>Esc</code>. <code>Ctrl+C</code> twice closes the agent; start it again with <code>claude --continue</code> or <code>codex resume --last</code>.</p>
+<ol><li><strong>Clear.</strong> Type <code>/clear</code> (the same command in Claude Code and in Codex). The next prompt starts with an empty context and reads what it needs from files: the design data, the report and <code>notes.md</code>.</li></ol>
 <hr>
 <h2 id="design-data-not-a-picture">Design data, not a picture</h2>
 <p>Prompt 02 does not decode the <code>.fig</code> once and throw the work away. The agent writes a small tool, <code>npm run design</code>, that reads the file and saves what the page and the checker need as JSON in <code>design/data/</code>: sections, colours, typography, layout, components, copy and images. Every later step reads those files. When the design changes, run <code>npm run design</code> again.</p>
@@ -283,27 +289,26 @@ footer p{font-size:14px;color:var(--fg-3)}
 <hr>
 <h2 id="the-loop">The loop</h2>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/01-the-loop.svg" aria-label="Enlarge: The loop: plan, implement, verify, repeated until the check passes, then deploy"><img src="../diagrams/01-the-loop.svg" alt="The loop: plan, implement, verify, repeated until the check passes, then deploy" loading="lazy" width="1600" height="900"></a></figure>
-<ul><li><strong>Plan.</strong> The agent states what it will change and why. From the second round on, the plan starts from the report.</li><li><strong>Implement.</strong> The agent writes code. The first time it generates the page; after that it fixes what the report names.</li><li><strong>Verify.</strong> The check from prompt 03, <code>npm run check</code>, tests the page in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.</li></ul>
+<ul><li><strong>Plan.</strong> The agent states what it will change and why. From the second round on, the plan starts from the report.</li><li><strong>Implement.</strong> The agent writes code. The first time it generates the page; after that it fixes what the report names.</li><li><strong>Verify.</strong> The check from prompt 03, <code>npm run check</code>, builds the site, serves it itself, tests it in a real browser and exits with 0 (pass) or 1 (fail). On a fail it writes a report.</li></ul>
 <p>The loop ends when the check exits 0. Then the work is committed and the page is deployed.</p>
 <hr>
 <h2 id="who-checks-the-work">Who checks the work</h2>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/02-fake-loop-vs-real-loop.svg" aria-label="Enlarge: Fake loop: the same agent grades its own work. Real loop: a program and a fresh-context adversarial review check the page in parallel"><img src="../diagrams/02-fake-loop-vs-real-loop.svg" alt="Fake loop: the same agent grades its own work. Real loop: a program and a fresh-context adversarial review check the page in parallel" loading="lazy" width="1600" height="960"></a></figure>
 <p>An agent can check work on two conditions: it did not do the work in the same context, and it is told to find problems, not to confirm the result.</p>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>Who checks</th><th>What it is good for</th></tr></thead><tbody><tr><td>The same agent, in the same context</td><td>Nothing. It repeats the reasoning that produced the work.</td></tr><tr><td>A program: <code>npm run check</code></td><td>Everything with an exact answer: sections, colours, copy, contrast, overflow.</td></tr><tr><td>Agents with a fresh context, told to attack (adversarial review)</td><td>What a program cannot measure: reading order, useless alt text, text over photos, copy that does not match the brand.</td></tr></tbody></table></div>
-<p>Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop, the review is prompt 06, pasted in a new session before the deploy.</p>
+<p>Run the program and the review side by side. Failures and confirmed findings go into one report, and the page ships when that report is empty. In the workshop the page is deployed first, so everyone has an address. The review is prompt 07, in a new session, and its fixes are deployed again.</p>
 <hr>
 <h2 id="levels-of-checking">Levels of checking</h2>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/03-verification-tiers.svg" aria-label="Enlarge: Three levels of checking: deterministic checks, measured comparison, adversarial review"><img src="../diagrams/03-verification-tiers.svg" alt="Three levels of checking: deterministic checks, measured comparison, adversarial review" loading="lazy" width="1600" height="980"></a></figure>
-<ol><li><strong>Deterministic checks.</strong> Build, console errors, sections, colours, copy, contrast, overflow. Same result on every run.</li><li><strong>Measured comparison.</strong> Screenshots compared with the design. Detects a change, does not judge it.</li><li><strong>Adversarial review.</strong> Agents with a fresh context look for what levels 1 and 2 cannot measure. Every finding must name an element and survive an attempt to refute it.</li></ol>
+<ol><li><strong>Deterministic checks.</strong> Build, console errors, sections, colours, copy, contrast, overflow. Same result on every run.</li><li><strong>Measured comparison.</strong> Screenshots compared with the design. Detects a change, does not judge it. The drawing shows the checker behind the finished site; the checker you write in prompt 03 covers level 1.</li><li><strong>Adversarial review.</strong> Agents with a fresh context look for what levels 1 and 2 cannot measure. Every finding must name an element and survive an attempt to refute it.</li></ol>
 <hr>
 <h2 id="the-failure-report">The failure report</h2>
 <p>The check writes every failure to a file. Example:</p>
-<pre class="plain"><code>**3. [check 07] a colour on the page is not in the design**
+<pre class="plain"><code>**3. [check 4] text is below the contrast minimum**
 
 - Where: the supporting line inside each card in the lineup section
-- Expected: the design's &quot;text / secondary&quot;
-- Actual: the design's &quot;text / muted&quot;, 4.07:1 against the page background;
-          body text needs 4.5:1
+- Expected: the design's &quot;text / secondary&quot;, at least 4.5:1 against the background
+- Actual: the design's &quot;text / muted&quot;, 4.07:1
 - Hint: muted is defined for legal and footer text only</code></pre>
 <p>Each failure has four fields: what failed, where, what the design expects, what the page has. In the next round the agent reads this file, not its memory of the previous round.</p>
 <p>The agent must never edit the checker. If it can change the check, a pass means nothing.</p>
@@ -320,7 +325,7 @@ what did not, and why.</code></pre></div>
 <ul><li><strong>Loop:</strong> plan, implement and verify, repeated until a condition holds. You define the exit condition. Prompt 05; in Claude Code also <code>/goal npm run check exits 0</code>.</li><li><strong>Workflow:</strong> phases in a fixed order, with a condition that must hold before the next phase starts. A phase can run several agents at the same time. You define the phases. Prompt 08.</li></ul>
 <p>A workflow can contain a loop: phase 05 of prompt 08 is the loop from prompt 05.</p>
 <h3>Workflow patterns</h3>
-<p>Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 04), loop until done (phase 05) and adversarial verification (phase 06).</p>
+<p>Six ways to arrange several agents inside a workflow. Prompt 08 uses three of them: fan out and synthesize (phase 04), loop until done (phase 05) and adversarial verification (phase 07).</p>
 <h4>1. Classify and act</h4>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/08-pattern-1-classify-and-act.svg" aria-label="Enlarge: Classify and act: a classifier sends the task to one of three agents"><img src="../diagrams/08-pattern-1-classify-and-act.svg" alt="Classify and act: a classifier sends the task to one of three agents" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>How it works:</strong> one agent reads the task and sends it to exactly one specialised agent.</p>
@@ -332,7 +337,7 @@ what did not, and why.</code></pre></div>
 <h4>3. Adversarial verification</h4>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/08-pattern-3-adversarial-verification.svg" aria-label="Enlarge: Adversarial verification: one worker, three fresh-context verifiers trying to break the result"><img src="../diagrams/08-pattern-3-adversarial-verification.svg" alt="Adversarial verification: one worker, three fresh-context verifiers trying to break the result" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>How it works:</strong> one agent produces a result, several agents with a fresh context try to break it, and their findings go back to the first agent.</p>
-<p><strong>When to use it:</strong> anything a program cannot check. Example: prompt 06, and phase 06 of prompt 08.</p>
+<p><strong>When to use it:</strong> anything a program cannot check. Example: prompt 07, and phase 07 of prompt 08.</p>
 <h4>4. Generate and filter</h4>
 <figure class="fig"><a class="fig__zoom" href="../diagrams/08-pattern-4-generate-and-filter.svg" aria-label="Enlarge: Generate and filter: many candidates, a rubric keeps the best"><img src="../diagrams/08-pattern-4-generate-and-filter.svg" alt="Generate and filter: many candidates, a rubric keeps the best" loading="lazy" width="600" height="440"></a></figure>
 <p><strong>How it works:</strong> several agents produce many candidates, and a filter with a rubric removes duplicates and weak candidates.</p>
@@ -347,12 +352,11 @@ what did not, and why.</code></pre></div>
 <p><strong>When to use it:</strong> repairing until a check passes, or reviewing until a round finds nothing new. Example: prompt 05.</p>
 <hr>
 <h2 id="deploy-and-check-the-live-page">Deploy and check the live page</h2>
-<pre class="plain"><code>npm run build
-netlify deploy --prod --dir=dist</code></pre>
+<p>Prompt 06 runs these for you; do not type them yourself. The first deploy creates the site: <code>netlify deploy --prod --dir=dist --site-name turbine-&lt;your GitHub name&gt;</code>. Later deploys go to the same site.</p>
 <p>After deploying, compare the served page with the files in <code>dist</code>, and run <code>npm run check -- --url &lt;address&gt;</code> against the live address. A passing local check does not prove the live page is the same: a stale build, the wrong folder or markup added by the host can change it. Prompt 06 does both steps.</p>
 <hr>
 <h2 id="limits-of-automated-checks">Limits of automated checks</h2>
-<ul><li>Automated accessibility rules cover about 30 to 40% of WCAG. A pass means no known defect, not an accessible page.</li><li>axe does not evaluate text over images or gradients. It marks those pairs <em>incomplete</em>, and a check whose rule is &quot;zero violations&quot; treats incomplete as a pass. Your checker must count incomplete as a failure.</li><li>A screenshot comparison detects a change. It does not say whether the change is better.</li><li>No check here evaluates whether the design itself is good.</li></ul>
+<ul><li>Automated accessibility rules cover about 30 to 40% of WCAG. A pass means no known defect, not an accessible page.</li><li>axe does not evaluate text over images or gradients. It marks those pairs <em>incomplete</em>, and a check whose rule is &quot;zero violations&quot; treats incomplete as a pass. Your checker must measure those pairs from the rendered pixels, and fail if it cannot measure them.</li><li>A screenshot comparison detects a change. It does not say whether the change is better.</li><li>No check here evaluates whether the design itself is good.</li></ul>
 <hr>
 <h2 id="common-failures">Common failures</h2>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>Symptom</th><th>Cause</th><th>Fix</th></tr></thead><tbody><tr><td>The check turns green and nothing was fixed</td><td>The agent edited the check</td><td>Restore the check, then read the diff</td></tr><tr><td>Two wrong states, alternating</td><td>Two requirements that cannot both be true</td><td>Stop the loop. The contradiction is in the design or the brief</td></tr><tr><td>It keeps working after the task is done</td><td>Nothing runs the check first</td><td>Run the check before every fix</td></tr><tr><td>It gets slower and vaguer</td><td>The context is full</td><td>Write the state to <code>notes.md</code>, start a new session</td></tr><tr><td>&quot;It works now&quot; and it does not</td><td>The agent reports instead of measuring</td><td>Trust only the exit code of <code>npm run check</code></td></tr><tr><td>Nothing happens for a long time</td><td>A step waits for input with no time limit</td><td>Give every step a time limit</td></tr></tbody></table></div>
@@ -361,13 +365,22 @@ netlify deploy --prod --dir=dist</code></pre>
 <p>Start with one check, not a whole page:</p>
 <ol><li>Choose a check your team does by hand.</li><li>Turn it into a program that exits with 0 or 1.</li><li>Write its output to a file an agent can read.</li><li>Only then put an agent in front of it.</li></ol>
 <hr>
-<h2 id="the-eight-prompts">The eight prompts</h2>
-<p>Paste them in order, one at a time. Each prompt works on its own: if one fails, tell the agent to stop and paste the next.</p>
+<h2 id="the-prompts">The prompts</h2>
+<p>Paste them in order, one at a time, and type /clear after each. Prompts 02 to 05 build on each other; if one does not finish in time, use its rescue pack from the table above.</p>
 <p>Paste each prompt whole. The rules inside a prompt matter as much as the request.</p>
 <section class="step" id="p01">
   <p class="step__no">Prompt 01</p>
   <h2 id="start">Start</h2>
   <p>Creates an Astro and Tailwind project in the repository folder, starts the development server, and commits the project to your GitHub repository. No pages and no content yet.</p>
+<h3>Before you paste</h3>
+<p>Open a terminal, go into your project folder and start your agent:</p>
+<div class="cmd">
+  <pre id="cmd-27"><code>cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-27" aria-label="Copy: cd turbine">Copy</button>
+</div>
+<p>With Codex, type <code>codex</code> instead of <code>claude</code>. If <code>cd turbine</code> says there is no such folder, type <code>ls</code> and look for <code>turbine</code> in the list.</p>
+<p><strong>Esc stops the agent mid-task.</strong> Ctrl+C twice closes it; start it again with <code>claude --continue</code> or <code>codex resume --last</code>.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p2"><code>Set up a new website project in this folder.
 
@@ -386,11 +399,11 @@ Then commit everything with a message that says what this step did, and push. Te
 step is done, so I can clear the session.</code></pre></div>
 <hr>
 <p><strong>Expected result.</strong> A few minutes of installing, then a line like <code>Local http://localhost:4321/</code>. That address shows Astro's placeholder page. The agent keeps the server running. Then it commits the project and pushes it: the commit is visible in your repository on github.com.</p>
-<p><strong>Codex asks whether it trusts the folder.</strong> Answer yes. Codex does not work in a folder it has not been told to trust.</p>
+<p><strong>The agent asks before it runs a command.</strong> Choose the option that allows this kind of command without asking again. <strong>Codex also asks whether it trusts the folder.</strong> Answer yes.</p>
 <p><strong>After this prompt: type <code>/clear</code> and press Enter.</strong> <code>/clear</code> ends the conversation and starts a new one with an empty context, in Claude Code and in Codex. Nothing is lost: the next prompt reads what it needs from the files in the project.</p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building a landing page</td><td><code>Stop. Undo the pages you created. I want an empty project until I give you the design.</code></td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex is asking for permission. Answer yes.</td></tr><tr><td><code>command not found: npm</code></td><td>Node is not installed. Go back to the Preparation page.</td></tr><tr><td>It asks you to choose a template</td><td><code>Pick the minimal or empty template. No example content.</code></td></tr><tr><td>&quot;The directory is not empty&quot;</td><td>Something other than git's files is in the folder, for example the <code>design</code> folder. Move it out, run this prompt, put it back before prompt 02.</td></tr><tr><td>No output for two minutes</td><td>It is installing. Wait up to five minutes.</td></tr><tr><td><code>git push</code> fails or asks for a password</td><td>Run <code>gh auth status</code> in another terminal. If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building a landing page</td><td>Press Esc, then say <code>Stop. Undo the pages you created. I want an empty project until I give you the design.</code></td></tr><tr><td>It asks before a command</td><td>Choose the option that allows this kind of command without asking again.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex is asking for permission. Answer yes.</td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing packages and pushing need it.</td></tr><tr><td><code>command not found: npm</code></td><td>Node is not installed. Go back to the Preparation page.</td></tr><tr><td>It asks you to choose a template</td><td><code>Pick the minimal or empty template. No example content.</code></td></tr><tr><td>&quot;The directory is not empty&quot;</td><td>Something other than git's files is in the folder, for example the <code>design</code> folder. Move it out, run this prompt, put it back before prompt 02.</td></tr><tr><td>No output for two minutes</td><td>It is installing. Wait up to five minutes.</td></tr><tr><td><code>git push</code> fails or asks for a password</td><td>Run <code>gh auth status</code> in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
 <ul><li>&quot;Do not build any pages yet&quot;: without it, the agent invents a hero, a feature grid and testimonials before it has seen the design.</li><li>A commit at the end of every step: each step is saved in the repository, and any later step can be undone back to it.</li><li><code>/clear</code> between steps: every prompt starts with an empty context and reads the state from files, not from a long conversation.</li></ul>
@@ -400,13 +413,14 @@ step is done, so I can clear the session.</code></pre></div>
   <h2 id="look-at-the-design">Look at the design</h2>
   <p>The agent plans and builds a decoder for the Figma file: a script in the project, run with <code>npm run design</code>, that writes the design as JSON into <code>design/data</code>. Every later step, and the checker, reads that data. No page code yet.</p>
 <h3>Before you paste</h3>
-<ol><li>On the workshop page, click <strong>Download turbine.fig</strong>.</li><li>Inside the project folder, create a folder named <code>design</code> and put the file in it. It must be inside the project: Claude Code asks for permission before it reads files outside the project folder.</li><li>Switch to plan mode. In plan mode the agent researches and shows a plan, and changes no file until you approve it. Claude Code: press <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>. Codex: type <code>/plan</code> and press Enter.</li></ol>
+<ol><li>On the workshop page, click <strong>Download turbine.fig</strong>.</li><li>Put the file in a folder named <code>design</code> inside the project. Easiest: tell the agent <code>Move turbine.fig from my Downloads folder into a new folder called design in this project.</code> It must be inside the project: Claude Code asks for permission before it reads files outside the project folder.</li><li>Switch to plan mode. In plan mode the agent researches and shows a plan, and changes no file until you approve it. Claude Code: press <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>. Codex: type <code>/plan</code> and press Enter.</li></ol>
+<p>You are not expected to understand the whole plan. Check three things: it is a script that <code>npm run design</code> runs, it writes JSON files into <code>design/data</code>, it writes no page code. Then approve. In Claude Code, choose <strong>Yes, auto-accept edits</strong>, so the agent does not ask before every file change.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p3" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p3"><code>Plan first. Research what you need, then show me a plan and wait for my approval. Do not
 create or change any file until I approve it.
 
 Inside this project there is a folder called design with a .fig file in it. That is the
-Figma file itself, saved with &quot;Save local copy&quot;. It is not a picture: it is the whole
+Figma file itself, as Figma saves it. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
 Work from that one file and nothing else. Do not search this computer for the design, a
@@ -418,6 +432,9 @@ What I want is a tool, not a one-off decode: a script in this project that reads
 design and writes the design data that the page and the checker will need. Make
 &quot;npm run design&quot; run it. Running it again on a new .fig must refresh the data, so that nobody
 has to decode or export the design by hand again.
+
+Keep the decoder small: one script, no test suite for the decoder, no extra tooling. Stop
+working on it as soon as the seven JSON files and the images are written.
 
 There is no program that opens a .fig, so the script decodes it itself. What is known about
 the format:
@@ -465,7 +482,7 @@ shape of each JSON file.
 After I approve the plan, write the script, run npm run design, then show me a list and
 write point 6 of it into notes.md:
 
-1. Every section, in the order they appear down the page.
+1. Every section, in the order they appear down the page, and the name on every artist card.
 2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
@@ -482,14 +499,17 @@ When I have answered point 6, write my answers into notes.md. Then commit everyt
 message that says what this step did, and push. Tell me the step is done, so I can clear the
 session.</code></pre></div>
 <hr>
-<p><strong>Expected result.</strong> First, a plan: how the script reads the file, which package it uses and the shape of each JSON file. Read it, then correct it in plain words or approve it. Then 10 to 16 minutes of work. At the end <code>npm run design</code> exists, <code>design/data</code> holds seven JSON files, <code>design/images</code> holds the photos, and the chat shows a six-point list.</p>
+<p><strong>Expected result.</strong> First, a plan: how the script reads the file, which package it uses and the shape of each JSON file. Read it, then correct it in plain words or approve it. Then the agent writes and runs the decoder. This can take longer than the workshop allows: at RESCUE_TIME_1, anyone who does not have <code>design/data</code> yet takes the rescue pack (the last row of the table below). At the end <code>npm run design</code> exists, <code>design/data</code> holds seven JSON files, <code>design/images</code> holds the photos, and the chat shows a six-point list.</p>
 <p>Check two things in the list:</p>
-<ul><li>The sections match the design: twelve artist cards with twelve different names, not a generic landing page.</li><li>Point 6 is not empty. Answer each item in your own words. If it is empty, ask <code>which of those did you read, and which did you infer?</code></li></ul>
+<ul><li>Point 1 matches the design: twelve artist cards with twelve different names, not a generic landing page.</li><li>Point 6 is not empty. Answer with names from the design, for example a colour or text style name from point 2, not with new values. If point 6 is empty, ask <code>which of those did you read, and which did you infer?</code></li></ul>
+<p>For anything you cannot answer that way, paste:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p4"><code>For anything I have not answered: pick the likeliest reading, write it into notes.md as an
+assumption, and carry on.</code></pre></div>
 <p>After your answers the agent commits and pushes.</p>
 <p><strong>After this prompt: type <code>/clear</code>.</strong></p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td><code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It decodes the file once and writes no script</td><td><code>I asked for a tool. Put the decoding in a script, make npm run design run it, and run it.</code></td></tr><tr><td>A JSON file is missing values</td><td><code>design/data/typography.json has no line heights. Fix the script so it reads them, and run npm run design again.</code></td></tr><tr><td>It starts building the page</td><td><code>Stop. No page code in this step. Undo anything you wrote for the page.</code></td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. The script must unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Node is older than 22.15. <code>Use a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing a package needs it.</td></tr><tr><td>Claude Code asks before every command</td><td>Answer yes and pick the option that stops asking for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides in the script.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If the script cannot read exact values, say so.</code></td></tr><tr><td><code>git push</code> fails</td><td>Run <code>gh auth status</code> in another terminal. If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td>Press Esc, then say <code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It decodes the file once and writes no script</td><td><code>I asked for a tool. Put the decoding in a script, make npm run design run it, and run it.</code></td></tr><tr><td>It writes tests or extra tooling for the decoder</td><td><code>Keep the decoder to one script. No tests for it. Write the seven JSON files and the images, then stop.</code></td></tr><tr><td>A JSON file is missing values</td><td><code>design/data/typography.json has no line heights. Fix the script so it reads them, and run npm run design again.</code></td></tr><tr><td>It starts building the page</td><td>Press Esc, then say <code>Stop. No page code in this step. Undo anything you wrote for the page.</code></td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td>Press Esc, then say <code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. The script must unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Node is older than 22.15. <code>Use a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing a package needs it.</td></tr><tr><td>Claude Code asks before every command</td><td>Answer yes and pick the option that stops asking for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides in the script.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If the script cannot read exact values, say so.</code></td></tr><tr><td><code>git push</code> fails</td><td>Run <code>gh auth status</code> in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr><tr><td>It is RESCUE_TIME_1 and you do not have <code>design/data</code></td><td>Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download <strong>design-data.zip</strong> from the workshop page and tell the agent: <code>Unzip design-data.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.</code> Then <code>/clear</code> and prompt 03. In a Codespace, drag the zip from your computer into the file list on the left, then say <code>Unzip design-data.zip in this project, follow RESCUE.md inside it, and commit.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
 <ul><li>Plan first: a wrong approach to the file costs one sentence to correct before the script exists.</li><li>A script, not a one-off decode: a new version of the <code>.fig</code> is one <code>npm run design</code> away, and the page and the checker read the same JSON.</li><li>Point 6: the list of things the file does not specify is the part of the brief nobody wrote.</li></ul>
@@ -500,9 +520,9 @@ session.</code></pre></div>
   <p>The agent writes <code>npm run check</code>: a program that tests the page in a real browser against <code>design/data</code> and writes a report file. It writes it before the page exists.</p>
 <p>Writing the test before the code is called test-driven development. The check comes first and fails, because there is nothing to check yet. Prompt 04 then builds the page, and prompt 05 fixes it until the check passes.</p>
 <h3>Before you paste</h3>
-<p>Switch to plan mode, as before prompt 02. Claude Code: <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>. Codex: <code>/plan</code>.</p>
+<p>Switch to plan mode, as before prompt 02. Claude Code: <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>. Codex: <code>/plan</code>. When you approve the plan in Claude Code, choose <strong>Yes, auto-accept edits</strong>.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p4" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p4"><code>Plan first. Research what you need, then show me a plan and wait for my approval. Do not
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p5"><code>Plan first. Research what you need, then show me a plan and wait for my approval. Do not
 create or change any file until I approve it.
 
 Now write a program that checks the page against the design, before the page exists.
@@ -515,7 +535,8 @@ gives the same answer twice on the same page.
 Make &quot;npm run check&quot; run it. Install whatever you need to drive a real browser and to
 test accessibility. These are tools for checking; none of them goes into the page.
 
-By default it checks the site running on this machine. It must also take an address —
+By default it builds the site and serves the built files itself, and checks that page. It
+must not depend on a development server someone else started. It must also take an address —
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
@@ -540,11 +561,14 @@ threshold is the whole job.
 Write the report to a file as well as printing it, because later I am going to hand that
 file straight back to you. Tell me what you called it.
 
-Two rules about the checker itself:
+Three rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
   design/data is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
+- An accessibility result marked incomplete, such as text over a photo or a gradient, is
+  not a pass. Measure the contrast from the rendered pixels behind that text, and fail only
+  if the measured ratio is below the threshold, or if it cannot be measured.
 - Do not make the checks lenient so that they pass.
 
 Your plan must list each check, what it reads from design/data, and how it measures.
@@ -557,22 +581,25 @@ Then commit everything with a message that says what this step did, and push. Te
 step is done, so I can clear the session.</code></pre></div>
 <hr>
 <p><strong>Expected result.</strong> First, a plan: the checks, what each reads from <code>design/data</code>, how it measures, which tools it installs and the name of the report file. Approve it or correct it. Then the checker is written and run against the empty project. It fails, and the report says why for each check: sections missing, copy missing, and so on. Then a commit, pushed.</p>
+<p>How to tell a checker that fails on purpose from a broken one:</p>
+<ul><li><strong>Working:</strong> a report file exists and lists each check with where, expected and actual.</li><li><strong>Broken:</strong> an error with file paths and line numbers, and no report file.</li></ul>
 <p><strong>After this prompt: type <code>/clear</code>.</strong></p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td><code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It passes on the empty project</td><td><code>It passed with no page. Show me which checks ran and what each one measured.</code></td></tr><tr><td>It wants to build a page first, so the check has something to test</td><td><code>No page in this step. The check must fail on the project as it is.</code></td></tr><tr><td>A check is skipped or marked incomplete</td><td><code>A check that cannot run is a failure. Make it fail and say why it could not run.</code></td></tr><tr><td>The report says &quot;contrast issue&quot; with no details</td><td><code>Every failure needs the element, the expected value, the measured value and the threshold.</code></td></tr><tr><td>It takes values from its own idea of the design</td><td><code>Every check reads its values from design/data. Show me where each one comes from.</code></td></tr><tr><td>It asks which testing library to use</td><td><code>Your choice. Pick one that drives a real browser and tests accessibility.</code></td></tr><tr><td><code>npm run check -- --url https://example.com</code> does nothing different</td><td><code>The checker must accept --url and run the same checks against that address.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td>Press Esc, then say <code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It passes on the empty project</td><td><code>It passed with no page. Show me which checks ran and what each one measured.</code></td></tr><tr><td>It wants to build a page first, so the check has something to test</td><td><code>No page in this step. The check must fail on the project as it is.</code></td></tr><tr><td>A check is skipped</td><td><code>A check that cannot run is a failure. Make it fail and say why it could not run.</code></td></tr><tr><td>A contrast result is marked incomplete (text over a photo or gradient)</td><td><code>Measure that contrast from the rendered pixels behind the text. Fail only if the ratio is below the threshold or it cannot be measured.</code></td></tr><tr><td>The report says &quot;contrast issue&quot; with no details</td><td><code>Every failure needs the element, the expected value, the measured value and the threshold.</code></td></tr><tr><td>It takes values from its own idea of the design</td><td><code>Every check reads its values from design/data. Show me where each one comes from.</code></td></tr><tr><td>It asks which testing library to use</td><td><code>Your choice. Pick one that drives a real browser and tests accessibility.</code></td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing the browser and the accessibility tools needs it.</td></tr><tr><td>The report says the page will not load</td><td><code>The checker must build the site and serve it itself. Do not rely on a development server.</code></td></tr><tr><td><code>npm run check -- --url https://example.com</code> does nothing different</td><td><code>The checker must accept --url and run the same checks against that address.</code></td></tr><tr><td>It is RESCUE_TIME_2 and the checker is broken (an error, no report file)</td><td>Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download <strong>checker.zip</strong> from the workshop page and tell the agent: <code>Unzip checker.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.</code> It contains its own <code>design/data</code>, which replaces yours. Then <code>/clear</code> and prompt 04. In a Codespace, drag the zip from your computer into the file list on the left, then say <code>Unzip checker.zip in this project, follow RESCUE.md inside it, and commit.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
-<ul><li>Tests first: the check is written from the design before any page exists, so it cannot be shaped to fit what was built.</li><li>A program, not an opinion: exit code 0 or not, the same answer on every run, no language model involved.</li><li>A check that cannot run is a failure: accessibility tools report text over images as &quot;incomplete&quot;, and a rule of &quot;zero violations&quot; would otherwise count that as a pass.</li></ul>
+<ul><li>Tests first: the check is written from the design before any page exists, so it cannot be shaped to fit what was built.</li><li>A program, not an opinion: exit code 0 or not, the same answer on every run, no language model involved.</li><li>An incomplete result is not a pass: accessibility tools report text over a photo or gradient as &quot;incomplete&quot;. The checker measures the rendered pixels behind that text, and fails only when the ratio is too low or cannot be measured; otherwise a rule of &quot;zero violations&quot; would pass it unseen, or a rule of &quot;incomplete fails&quot; would never let the page pass.</li></ul>
 </section>
 <section class="step" id="p04">
   <p class="step__no">Prompt 04</p>
   <h2 id="build-it">Build it</h2>
-  <p>The agent plans the page, builds all of it from <code>design/data</code> in one run, then runs the checker from prompt 03 once and shows what still fails.</p>
+  <p>The agent plans the page, builds all of it from <code>design/data</code> in one run, then runs the checker from prompt 03 once and shows what still fails. Then you review the page and the agent writes your review into <code>notes.md</code> before it commits.</p>
 <h3>Before you paste</h3>
 <p>Switch to plan mode, as before prompts 02 and 03. Claude Code: <code>Shift+Tab</code> until the footer shows <em>plan mode on</em>. Codex: <code>/plan</code>.</p>
+<p>So that the agent does not ask before every file change: in Claude Code, choose <strong>Yes, auto-accept edits</strong> when you approve the plan; the footer then shows <em>accept edits on</em>. Accept edits covers file changes only. The first time the agent runs a new kind of command, such as <code>npm run check</code>, <code>git commit</code> or <code>git push</code>, Claude Code still asks: choose <strong>Yes, and don't ask again for … commands</strong>. In Codex, type <code>/permissions</code> and choose the option that lets it edit files and run commands in this folder without asking; <code>git push</code> may still ask for the network.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p5" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p5"><code>Plan first. Research what you need, then show me a plan and wait for my approval. Do not
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p6"><code>Plan first. Research what you need, then show me a plan and wait for my approval. Do not
 create or change any file until I approve it.
 
 Build the page now, from the design. Read design/data and notes.md; do not decode the .fig
@@ -584,6 +611,9 @@ colours, text styles, layout values, copy and images each one uses.
 Build the whole page in one go: every section in design/data/sections.json, in that order. Do
 not stop between sections to ask me. When it is done, tell me which sections you built, one
 line each, and the address to open.
+
+If you need to see the page in a browser and the development server is not running, start it
+yourself and give me the address.
 
 Rules, all of them non-negotiable:
 
@@ -607,32 +637,40 @@ one assumption than discover six.
 When the page is built, run npm run check once and show me how many checks fail and which.
 Do not fix them yet, and do not change the checker.
 
-Then commit everything with a message that says what this step did, and push. Tell me the
-step is done, so I can clear the session.</code></pre></div>
+Then wait while I review the page. When I tell you my review, write it into notes.md under
+&quot;Design review&quot;, and do not fix anything yet. Then commit everything with a message that says
+what this step did, and push. Tell me the step is done, so I can clear the session.</code></pre></div>
 <hr>
-<p><strong>Expected result.</strong> First, a plan: the sections in order and what each uses from <code>design/data</code>. Approve it or correct it. Then a few minutes of work, the list of sections it built and the address. Then one run of <code>npm run check</code>: fewer failures than after prompt 03, usually not zero. Then a commit, pushed.</p>
-<p>Open the page beside the design in Figma and review it one section at a time. Report each problem in plain words, for example:</p>
-<blockquote>The gap under the heading is too tight, and the orange is the wrong orange.</blockquote>
+<p><strong>Expected result.</strong> First, a plan: the sections in order and what each uses from <code>design/data</code>. Approve it or correct it. Then a few minutes of work, the list of sections it built and the address. Then one run of <code>npm run check</code>: fewer failures than after prompt 03, usually not zero. Then the agent waits for your review.</p>
+<p>Open the page beside the design in Figma and review it one section at a time. No Figma account, or it asks you to sign in? Compare with the finished site linked from the home page. Type each problem in plain words, for example <code>The gap under the heading is too tight, and the orange is the wrong orange.</code>, then paste this line after them:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p7"><code>Write these problems into notes.md under &quot;Design review&quot;. Do not fix them yet.</code></pre></div>
+<p>The agent writes your review into <code>notes.md</code>, commits and pushes. Prompt 05 fixes what the design data supports.</p>
 <p><strong>After this prompt: type <code>/clear</code>.</strong></p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td><code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It stops after one section and asks</td><td><code>Do not wait for me. Build the whole page, then show me.</code></td></tr><tr><td>It starts fixing the failures</td><td><code>Stop. Run the check once and show me the result. Fixing is the next step.</code></td></tr><tr><td>It changes the checker</td><td><code>Put the checker back exactly as it was. The page changes, the checker does not.</code></td></tr><tr><td>Text you have never seen before</td><td><code>Where did that sentence come from? Replace it with the text in design/data/copy.json.</code></td></tr><tr><td>A grey box where a photo should be</td><td><code>Use the image design/data/images.json lists for that.</code></td></tr><tr><td>A colour that is nearly right</td><td><code>That is not the value in design/data/colours.json. Use the exact one and tell me its name.</code></td></tr><tr><td>It starts decoding the .fig again</td><td><code>Stop. Everything you need is in design/data and notes.md.</code></td></tr><tr><td>It says it is done and it clearly is not</td><td><code>Which sections have you built, and which are still missing? List both.</code></td></tr><tr><td>It gets slower and vaguer</td><td>The context is full. Say <code>Update notes.md with where we are</code>, type <code>/clear</code>, then say <code>Read design/data and notes.md and continue building</code>.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It writes code before showing a plan</td><td>Press Esc, then say <code>Stop. Show me the plan first and wait for my approval.</code></td></tr><tr><td>It stops after one section and asks</td><td><code>Do not wait for me. Build the whole page, then show me.</code></td></tr><tr><td>It starts fixing the failures</td><td>Press Esc, then say <code>Stop. Run the check once and show me the result. Fixing is the next step.</code></td></tr><tr><td>It starts fixing your review</td><td>Press Esc, then say <code>Stop. Only write my review into notes.md. Fixing is the next step.</code></td></tr><tr><td>It changes the checker</td><td><code>Put the checker back exactly as it was. The page changes, the checker does not.</code></td></tr><tr><td>It asks before a command</td><td>Choose <strong>Yes, and don't ask again for … commands</strong>.</td></tr><tr><td>Text you have never seen before</td><td><code>Where did that sentence come from? Replace it with the text in design/data/copy.json.</code></td></tr><tr><td>A grey box where a photo should be</td><td><code>Use the image design/data/images.json lists for that.</code></td></tr><tr><td>A colour that is nearly right</td><td><code>That is not the value in design/data/colours.json. Use the exact one and tell me its name.</code></td></tr><tr><td>It starts decoding the .fig again</td><td>Press Esc, then say <code>Stop. Everything you need is in design/data and notes.md.</code></td></tr><tr><td>It says it is done and it clearly is not</td><td><code>Which sections have you built, and which are still missing? List both.</code></td></tr><tr><td>It gets slower and vaguer</td><td>The context is full. Say <code>Update notes.md with where we are</code>, type <code>/clear</code>, then say <code>Read design/data and notes.md and continue building</code>.</td></tr><tr><td>It is BUILD_END and the page is not finished</td><td>Press Esc, then say <code>Stop. Commit what you have and push.</code> Then <code>/clear</code> and prompt 05.</td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
-<ul><li>Every value comes from <code>design/data</code>: a value the agent picks itself is one the checker reports.</li><li>The check runs once and nothing is fixed: fixing is prompt 05, in a new session, in a loop.</li><li>Questions go into <code>notes.md</code>: the agent keeps building, and you correct its assumptions afterwards.</li></ul>
+<ul><li>Every value comes from <code>design/data</code>: a value the agent picks itself is one the checker reports.</li><li>The check runs once and nothing is fixed: fixing is prompt 05, in a new session, in a loop.</li><li>Your review goes into <code>notes.md</code> before the commit: <code>/clear</code> empties the conversation, and prompt 05 reads the review from the file.</li></ul>
 </section>
 <section class="step" id="p05">
   <p class="step__no">Prompt 05</p>
   <h2 id="the-loop-2">The loop</h2>
-  <p>In a new session, the agent runs the checker from prompt 03 (<code>npm run check</code>), reads the report file it writes, fixes the first failure and runs the checker again, until it exits 0. Each round has three steps: plan the fix, make it, run the checker. When the check passes, the agent commits and pushes.</p>
+  <p>In a new session, the agent runs the checker from prompt 03 (<code>npm run check</code>), reads the report file it writes, fixes the first failure and runs the checker again, until it exits 0. It also fixes the problems from your review in <code>notes.md</code> that the design data supports. Each round has three steps: plan the fix, make it, run the checker. When the check passes, the agent commits and pushes.</p>
+<h3>Before you paste</h3>
+<p>Type <code>/clear</code>. So that the agent does not stop before every file change: in Claude Code, press <code>Shift+Tab</code> until the footer shows <em>accept edits on</em>. Accept edits covers file changes only: the first time the agent runs a new kind of command, such as <code>npm run check</code>, <code>git commit</code> or <code>git push</code>, Claude Code still asks, so choose <strong>Yes, and don't ask again for … commands</strong>. In Codex, type <code>/permissions</code> and choose the option that lets it edit files and run commands in this folder without asking; <code>git push</code> may still ask for the network.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p6" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p6"><code>Read notes.md. Then run npm run check.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p8"><code>Read notes.md. Then run npm run check.
 
-If it exits 0, commit everything with a message that says the check passes, push, and tell
-me we are finished.
+The items under &quot;Design review&quot; in notes.md are problems I found by looking at the page.
+Treat the ones that design/data supports like failures in the report and fix them too. For
+each one design/data does not support, write one line into notes.md saying so, and leave it.
 
-If it does not, read the report it wrote and fix what it names. Then run npm run check again.
-Repeat until it exits 0.
+If npm run check exits 0 and no Design review item that design/data supports is left, commit
+everything with a message that says the check passes, push, and tell me we are finished.
+
+Otherwise, read the report the check wrote and fix what it names. Then run npm run check
+again. Repeat until it exits 0 and the Design review items are done.
 
 Each round has three steps. Plan: take the first failure in the report and write one line
 into notes.md: the failure, what you think causes it, and what you will change. Implement:
@@ -648,7 +686,7 @@ Three rules, and the first one matters more than the other two:
 1. NEVER change the checker to make a check pass. Not a threshold, not a skipped assertion,
    not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
    one and why, and change nothing.
-2. Do not add anything new to the page, and do not invent text.
+2. Do not add anything the design does not have, and do not invent text.
 3. If the same failure survives three attempts, stop and tell me what you tried each time
    and what happened. Three failed repairs usually means the design is asking for two
    things that cannot both be true, and no fourth attempt will resolve that.
@@ -656,31 +694,73 @@ Three rules, and the first one matters more than the other two:
 Write what you tried and what happened into notes.md as you go, so that a fresh session
 could pick this up. Keep going on your own. Do not ask me to confirm each round.</code></pre></div>
 <hr>
-<h3>Claude Code: <code>/goal</code></h3>
+<h3><code>/goal</code></h3>
 <p>Paste the prompt above first, then this line:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p7" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p7"><code>/goal npm run check exits 0</code></pre></div>
-<p>The session does not end until the command exits 0: the command runs, and its exit code decides. <strong>Codex has no <code>/goal</code>.</strong> There the prompt is the mechanism; if the agent stops early, say <code>keep going</code>.</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p9"><code>/goal npm run check exits 0</code></pre></div>
+<p>In Claude Code, <code>/goal</code> sets a condition. After each turn a separate model checks whether the condition is met, and Claude keeps working until it is. The agent therefore has to run <code>npm run check</code> and show the exit code in the conversation. Codex has <code>/goal</code> too: the same line sets it, and <code>/goal clear</code> removes it. Without <code>/goal</code> the prompt alone keeps the loop going; if the agent stops early, say <code>Keep going.</code></p>
 <hr>
 <p><strong>Expected result.</strong> Several rounds of plan, fix, check. The number of failures goes down, can rise by one when a fix breaks something else, and goes down again. <code>notes.md</code> gets one line per round. When <code>npm run check</code> exits 0, the agent commits and pushes.</p>
 <p><strong>After this prompt: type <code>/clear</code>.</strong></p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td><strong>It edited the checker</strong></td><td><code>Put the checker back exactly as it was, and fix the page instead.</code> Then look at what it changed in the checker.</td></tr><tr><td>It stops after one round</td><td><code>Keep going. Do not stop until npm run check exits 0.</code> Or use <code>/goal</code>.</td></tr><tr><td>The same failure keeps coming back</td><td><code>You have tried that three times. Stop. Tell me what you tried and what happened each time.</code></td></tr><tr><td>It says it is done but the check is red</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>It gets slower and vaguer</td><td>The context is full. Say <code>Write what is left into notes.md in ten lines</code>, type <code>/clear</code>, then paste this prompt again.</td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td><strong>It edited the checker</strong></td><td><code>Put the checker back exactly as it was, and fix the page instead.</code> Then look at what it changed in the checker.</td></tr><tr><td>You need to stop <code>/goal</code> early</td><td>Type <code>/goal clear</code>.</td></tr><tr><td>It asks before every file change</td><td>Claude Code: <code>Shift+Tab</code> until the footer shows <em>accept edits on</em>. Codex: <code>/permissions</code>.</td></tr><tr><td>It asks before a command</td><td>Choose <strong>Yes, and don't ask again for … commands</strong>.</td></tr><tr><td>It stops after one round</td><td><code>Keep going. Do not stop until npm run check exits 0.</code> Or use <code>/goal</code>.</td></tr><tr><td>The same failure keeps coming back</td><td><code>You have tried that three times. Stop. Tell me what you tried and what happened each time.</code></td></tr><tr><td>It says it is done but the check is red</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>It gets slower and vaguer</td><td>The context is full. Say <code>Write what is left into notes.md in ten lines</code>, type <code>/clear</code>, then paste this prompt again.</td></tr><tr><td>It is LOOP_END and the check still fails</td><td>Press Esc (and type <code>/goal clear</code> if you used <code>/goal</code>), then say <code>Stop. Write where you are into notes.md, commit and push.</code> Then <code>/clear</code> and prompt 06.</td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
 <ul><li>The agent may never edit the checker. If it could, a pass would mean nothing.</li><li>One line per round in <code>notes.md</code>, and the report on disk: a new session continues from the files.</li><li>Three failed attempts at one failure means stop: usually two requirements that cannot both be true.</li></ul>
 </section>
 <section class="step" id="p06">
   <p class="step__no">Prompt 06</p>
-  <h2 id="try-to-break-it">Try to break it</h2>
-  <p>A review of the page by an agent that did not build it. The agent looks for problems the checker from prompt 03 cannot catch, argues against each one, and reports only those that survive. You choose which to fix; the agent fixes them, checks that <code>npm run check</code> still passes, commits and pushes. The review adds to <code>npm run check</code>; it does not replace it.</p>
+  <h2 id="ship-it">Ship it</h2>
+  <p>In a new session, the agent builds the site, creates a Netlify site and deploys to it without interactive questions, checks the live address with the same checker, and commits and pushes anything that changed.</p>
 <h3>Before you paste</h3>
-<p>Type <code>/clear</code>, so the reviewer has not seen the page being built. An agent asked to grade its own work in the same session remembers its reasons for every decision and defends them; that is not a review. The page is reviewed on this machine, at the address of the development server: nothing is deployed yet.</p>
+<p>Type <code>/clear</code>, if you have not already.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p8" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p8"><code>The checks pass. Now try to prove the page is still wrong.
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p10"><code>Put this on the internet.
+
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
+
+This project has no Netlify site yet. Create it and deploy in one command, without
+interactive questions: netlify deploy --prod --dir=dist --site-name turbine-&lt;my GitHub
+username&gt;. Find my username with gh api user --jq .login. If that name is taken, add a
+short suffix and run it again.
+
+When it is live, do not just tell me it worked. Check:
+
+- fetch the public URL and confirm it returns 200
+- confirm the page it serves is the page you just built, not an older one — compare what
+  comes back against what is in the dist folder
+- run npm run check -- --url against the live URL, and show me the result
+
+Write the site name and the live address into notes.md. Then commit anything that changed
+with a message that says what this step did, and push.
+
+Then give me the URL on its own line so I can copy it.</code></pre></div>
+<hr>
+<p><strong>Expected result.</strong> No questions from the Netlify CLI: <code>--site-name</code> creates the site and deploys to it. The address looks like <code>https://turbine-yourname.netlify.app</code>. The agent then reports three checks: the address returns 200, the served page matches <code>dist</code>, and <code>npm run check -- --url</code> passes against the live address. It writes the site name into <code>notes.md</code>, and commits and pushes anything that changed, for example the Netlify settings it created. The address comes last, on its own line.</p>
+<p><strong>After this prompt: type <code>/clear</code>.</strong></p>
+<hr>
+<h4>If something goes wrong</h4>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It says you are not logged in</td><td>Run <code>netlify login</code> in a new terminal window (any folder), as on the Preparation page, then say <code>I am logged in now.</code></td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Deploying and fetching the live address need it.</td></tr><tr><td>The Netlify CLI asks a question and waits</td><td>Press Esc, then say <code>Stop that command. Deploy with --site-name so it does not ask anything.</code></td></tr><tr><td>The site name is taken</td><td><code>Add a short suffix to the site name and deploy again.</code></td></tr><tr><td>The CLI keeps failing</td><td>Say <code>Open this project folder for me.</code> Drag the <code>dist</code> folder onto https://app.netlify.com/drop and claim the site when Netlify offers it. Then say <code>Link this folder to my Netlify site &lt;name&gt; with netlify link --name &lt;name&gt;, write the site name into notes.md, and run npm run check -- --url against its address.</code></td></tr><tr><td>A blank page at the live address</td><td><code>The live page is blank. Which folder did you deploy?</code></td></tr><tr><td>No styles on the live page</td><td><code>Deploy the dist folder, not the project root.</code></td></tr><tr><td>&quot;Deployed successfully&quot; and no address</td><td><code>Give me the public address on its own line.</code></td></tr><tr><td>The live check fails where the local one passed</td><td><code>Show me exactly which checks differ between local and live, and why. Do not change the checker.</code></td></tr><tr><td>It says the checker cannot take an address</td><td><code>Prompt 03 asked for --url. Add it without changing what any check decides, then run it against the live address.</code></td></tr></tbody></table></div>
+<hr>
+<h4>Why it is written this way</h4>
+<ul><li><code>--site-name</code> creates the site in the same command: an agent cannot answer an interactive question in the terminal, and a waiting command waits for ever.</li><li>A successful deploy says nothing about what is served. The agent compares the live page with <code>dist</code>, content and not bytes, because Netlify adds its own tags to the HTML.</li><li>The site name goes into <code>notes.md</code>: prompt 07 deploys again to the same site after <code>/clear</code>.</li></ul>
+</section>
+<section class="step" id="p07">
+  <p class="step__no">Prompt 07</p>
+  <h2 id="try-to-break-it">Try to break it</h2>
+  <p>A review of the page by an agent that did not build it. The agent looks for problems the checker from prompt 03 cannot catch, argues against each one, and reports only those that survive. You choose which to fix; the agent fixes them, runs <code>npm run check</code> again, commits, pushes and deploys again to the site from prompt 06. The review adds to <code>npm run check</code>; it does not replace it.</p>
+<p>The page is already live after prompt 06. If time runs out, skip this prompt: the address you have stays.</p>
+<h3>Before you paste</h3>
+<p>Type <code>/clear</code>, so the reviewer has not seen the page being built. An agent asked to grade its own work in the same session remembers its reasons for every decision and defends them; that is not a review. The page is reviewed on this machine; the agent starts the development server if it is not running.</p>
+<hr>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p11"><code>Whatever npm run check says right now, try to prove the page is wrong.
 
 You did not build this page. Judge it only by what a browser shows and what is in this
 project, not by anything said earlier in this conversation.
+
+Look at the page on this machine. If the development server is not running, start it yourself
+and give me the address.
 
 Your job now is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that the checker in this project cannot catch, and for each one
@@ -692,8 +772,9 @@ tell me:
 
 Look specifically where an automated check has no reach:
 
-- text over a photograph or a gradient: an automated contrast check cannot compute that
-  pair at all, and reports it as inconclusive rather than as a failure
+- text over a photograph or a gradient: an accessibility tool cannot compute that pair and
+  marks it incomplete; the checker in this project may measure it from the pixels, so look
+  at what it actually measured there
 - reading order for someone using a keyboard or a screen reader: technically valid and
   incoherent is a thing that exists
 - alt text that is present, and useless
@@ -714,57 +795,38 @@ them. If you cannot point at a specific element, it is not a finding.
 
 Do not fix anything yet. I want to decide which of these are real first.</code></pre></div>
 <hr>
-<p><strong>Expected result.</strong> Up to five findings, each with the element, the problem and why the checker missed it, plus the number of candidates the agent discarded. Decide which findings are real, then paste, with your own numbers:</p>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p9" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p9"><code>Fix findings 2 and 4. Leave the rest. Then run npm run check again — I want to know if
-fixing them broke anything that was passing. If it still exits 0, commit everything with a
-message that says which findings were fixed, and push.</code></pre></div>
-<p>The agent fixes the chosen findings, runs the check, and commits and pushes when it passes.</p>
+<p><strong>Expected result.</strong> Up to five findings, each with the element, the problem and why the checker missed it, plus the number of candidates the agent discarded. Decide which findings are real. Then type <code>Fix findings</code> and the numbers you chose, press Shift+Enter for a new line, and paste the block below:</p>
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p12" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p12"><code>Fix only the findings I listed above. Leave the rest. Then run npm run check again: I want
+to know if fixing them broke anything that was passing. If it exits 0, commit everything
+with a message that says which findings were fixed, and push. If it exits non-zero, tell me
+which failures are new since your fixes, then commit and push anyway. Then deploy again to
+the same site with netlify deploy --prod --dir=dist --site &lt;the site name in notes.md&gt;, and
+run npm run check -- --url against the live address.</code></pre></div>
+<p>The agent fixes the chosen findings, runs the check, commits and pushes, deploys again to the site from prompt 06 and runs the check against the live address.</p>
 <p><strong>After this prompt: type <code>/clear</code>.</strong></p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>A finding with no specific element</td><td><code>Name the element as I would see it on screen, or drop the finding.</code></td></tr><tr><td>Five findings and nothing discarded</td><td><code>How many candidates did you discard, and why?</code> If arguing against the findings removed none, it did not really happen.</td></tr><tr><td>It starts fixing before you chose</td><td><code>Stop. No fixes yet. I decide which findings are real first.</code></td></tr><tr><td>It mentions decisions made while building</td><td>The session was not cleared. Type <code>/clear</code> and paste the prompt again.</td></tr><tr><td>A fix makes <code>npm run check</code> fail</td><td><code>The check failed after your fix. Undo that fix, tell me why it broke the check, and do not change the checker.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>A finding with no specific element</td><td><code>Name the element as I would see it on screen, or drop the finding.</code></td></tr><tr><td>Five findings and nothing discarded</td><td><code>How many candidates did you discard, and why?</code> If arguing against the findings removed none, it did not really happen.</td></tr><tr><td>It starts fixing before you chose</td><td>Press Esc, then say <code>Stop. No fixes yet. I decide which findings are real first.</code></td></tr><tr><td>It mentions decisions made while building</td><td>The session was not cleared. Type <code>/clear</code> and paste the prompt again.</td></tr><tr><td>The development server is not running</td><td><code>Start the development server yourself and give me the address.</code></td></tr><tr><td>A fix makes a check fail that passed before</td><td><code>That fix broke a check that passed before. Undo that fix, tell me why it broke the check, and do not change the checker.</code></td></tr><tr><td>It cannot find the site name</td><td><code>The site name from prompt 06 is in notes.md. If it is not there, run netlify status and use that site.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
 <ul><li>A new session: a reviewer that did not build the page has nothing to defend.</li><li>Find, then argue against each finding from three angles (is it true, does it matter, is it handled): you get what survives, not everything that was found.</li><li>It looks where a program cannot: text over photos, reading order, alt text that is present and useless, widths between the ones the design specifies.</li></ul>
 </section>
-<section class="step" id="p07">
-  <p class="step__no">Prompt 07</p>
-  <h2 id="ship-it">Ship it</h2>
-  <p>The last step. In a new session, the agent builds the site, deploys it to Netlify with the Netlify CLI, checks the live address with the same checker, and commits and pushes anything that changed.</p>
-<h3>Before you paste</h3>
-<p>Type <code>/clear</code>, if you have not already.</p>
-<hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p10" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p10"><code>Put this on the internet.
-
-Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
-I am signed in; if it says I am not, tell me what to do rather than doing it silently.
-
-When it is live, do not just tell me it worked. Check:
-
-- fetch the public URL and confirm it returns 200
-- confirm the page it serves is the page you just built, not an older one — compare what
-  comes back against what is in the dist folder
-- run npm run check -- --url against the live URL, and show me the result
-
-Then commit anything that changed with a message that says what this step did, and push.
-
-Then give me the URL on its own line so I can copy it.</code></pre></div>
-<hr>
-<p><strong>Expected result.</strong> If the Netlify CLI asks which site to use, choose to create a new project. It prints an address like <code>https://something-123456.netlify.app</code>. The agent then reports three checks: the address returns 200, the served page matches <code>dist</code>, and <code>npm run check -- --url</code> passes against the live address. It commits and pushes anything that changed, for example the Netlify settings it created. The address comes last, on its own line.</p>
-<hr>
-<h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It says you are not logged in</td><td>Run <code>netlify login</code> in another terminal, as on the Preparation page, then say <code>I am logged in now.</code></td></tr><tr><td>A blank page at the live address</td><td><code>The live page is blank. Which folder did you deploy?</code></td></tr><tr><td>No styles on the live page</td><td><code>Deploy the dist folder, not the project root.</code></td></tr><tr><td>&quot;Deployed successfully&quot; and no address</td><td><code>Give me the public address on its own line.</code></td></tr><tr><td>The live check fails where the local one passed</td><td><code>Show me exactly which checks differ between local and live, and why. Do not change the checker.</code></td></tr><tr><td>It says the checker cannot take an address</td><td><code>Prompt 03 asked for --url. Add it without changing what any check decides, then run it against the live address.</code></td></tr></tbody></table></div>
-<hr>
-<h4>Why it is written this way</h4>
-<ul><li>A successful deploy says nothing about what is served. The agent compares the live page with <code>dist</code>.</li><li>Compare content, not bytes: Netlify adds its own tags to the HTML it serves.</li><li>The checker runs against the live address, not only against the local server.</li></ul>
-</section>
 <section class="step" id="p08">
   <p class="step__no">Prompt 08</p>
   <h2 id="the-same-job-as-a-workflow">The same job, as a workflow</h2>
-  <p>Prompts 01 to 07 pasted as one message. The message is split into seven phases, numbered 01 to 07, and each phase contains the text of the prompt with the same number: phase 03 does what prompt 03 does. The agent works through the phases in order on its own, and stops for you only after phase 02 and wherever a rule says to stop and ask.</p>
-<p>Paste it in normal mode, not plan mode, in a new session. The phases that ask for a plan write it into <code>notes.md</code> and continue.</p>
+  <p>Prompts 01 to 07 pasted as one message, phase for phase, with the differences listed below. The message is split into seven phases, numbered 01 to 07, and each phase contains the text of the prompt with the same number: phase 03 does what prompt 03 does. The agent works through the phases in order on its own, and stops for you only after phase 02 and wherever a rule says to stop and ask.</p>
+<h3>Before you paste</h3>
+<p>You need a new, empty GitHub repository cloned on your computer, and <code>turbine.fig</code>. Open a terminal, go into the repository folder and start your agent in a new session, in normal mode, not plan mode:</p>
+<div class="cmd">
+  <pre id="cmd-28"><code>cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-28" aria-label="Copy: cd turbine">Copy</button>
+</div>
+<p>With Codex, type <code>codex</code> instead of <code>claude</code>. The phases that ask for a plan write it into <code>notes.md</code> and continue.</p>
+<p>In Claude Code, type <code>/effort ultracode</code> first. The prompt starts with the keyword <code>ultracode</code>, which turns on a multi-agent workflow for that one message only; <code>/effort ultracode</code> keeps it on for the whole session, including your answer to point 6. More under <code>ultracode</code> below.</p>
+<p>Phase 01 creates the project in this folder, and the run goes straight on to phase 02, which reads <code>turbine.fig</code> from a folder called <code>design</code>. Create the <code>design</code> folder, put <code>turbine.fig</code> into it, and tell the agent to leave it alone in phase 01: paste the prompt below, press Shift+Enter for a new line, type <code>The design folder is already in this project. Leave it alone in phase 01.</code> and press Enter.</p>
 <hr>
-<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p11" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p11"><code>ultracode. I want you to do a whole job in seven phases. Each phase is one of the seven
+<div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p13" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p13"><code>ultracode. I want you to do a whole job in seven phases. Each phase is one of the seven
 workshop prompts, in the same order, with the same words and the same rules. Work through
 them on your own and do not skip ahead.
 
@@ -780,8 +842,10 @@ Because this is one run rather than seven messages, these things change:
 - Where a phase says I will clear the session, do not stop: start the next phase by reading
   notes.md and design/data again.
 - In phase 04 you build the sections in parallel, one subagent each, instead of one after
-  another.
-- In phase 06 the review is done by subagents that start with a fresh context, and you fix
+  another, and you review the page against design/data yourself instead of waiting for my
+  review.
+- Phase 05 is not the end of the run: when npm run check exits 0, continue to phase 06.
+- In phase 07 the review is done by subagents that start with a fresh context, and you fix
   the findings that survive without waiting for me to choose.
 
 PHASE 01 — START
@@ -810,7 +874,7 @@ Plan first. Research what you need, then show me a plan and wait for my approval
 create or change any file until I approve it.
 
 Inside this project there is a folder called design with a .fig file in it. That is the
-Figma file itself, saved with &quot;Save local copy&quot;. It is not a picture: it is the whole
+Figma file itself, as Figma saves it. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
 Work from that one file and nothing else. Do not search this computer for the design, a
@@ -822,6 +886,9 @@ What I want is a tool, not a one-off decode: a script in this project that reads
 design and writes the design data that the page and the checker will need. Make
 &quot;npm run design&quot; run it. Running it again on a new .fig must refresh the data, so that nobody
 has to decode or export the design by hand again.
+
+Keep the decoder small: one script, no test suite for the decoder, no extra tooling. Stop
+working on it as soon as the seven JSON files and the images are written.
 
 There is no program that opens a .fig, so the script decodes it itself. What is known about
 the format:
@@ -869,7 +936,7 @@ shape of each JSON file.
 After I approve the plan, write the script, run npm run design, then show me a list and
 write point 6 of it into notes.md:
 
-1. Every section, in the order they appear down the page.
+1. Every section, in the order they appear down the page, and the name on every artist card.
 2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
@@ -903,7 +970,8 @@ gives the same answer twice on the same page.
 Make &quot;npm run check&quot; run it. Install whatever you need to drive a real browser and to
 test accessibility. These are tools for checking; none of them goes into the page.
 
-By default it checks the site running on this machine. It must also take an address —
+By default it builds the site and serves the built files itself, and checks that page. It
+must not depend on a development server someone else started. It must also take an address —
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
@@ -928,11 +996,14 @@ threshold is the whole job.
 Write the report to a file as well as printing it, because later I am going to hand that
 file straight back to you. Tell me what you called it.
 
-Two rules about the checker itself:
+Three rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
   design/data is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
+- An accessibility result marked incomplete, such as text over a photo or a gradient, is
+  not a pass. Measure the contrast from the rendered pixels behind that text, and fail only
+  if the measured ratio is below the threshold, or if it cannot be measured.
 - Do not make the checks lenient so that they pass.
 
 Your plan must list each check, what it reads from design/data, and how it measures.
@@ -961,6 +1032,9 @@ Build every section in design/data/sections.json at the same time, one subagent 
 then put them together in that order. Do not stop between sections to ask me. When it is done,
 tell me which sections you built, one line each, and the address to open.
 
+If you need to see the page in a browser and the development server is not running, start it
+yourself and give me the address.
+
 Rules, all of them non-negotiable:
 
 - Every colour and every size comes from design/data. If a value you need is not there,
@@ -983,20 +1057,25 @@ one assumption than discover six.
 When the page is built, run npm run check once and show me how many checks fail and which.
 Do not fix them yet, and do not change the checker.
 
-Then commit everything with a message that says what this step did, and push. Tell me the
-step is done, so I can clear the session.
+Then review the page yourself: compare what the browser shows with design/data, and write
+every difference into notes.md under &quot;Design review&quot;. Do not fix anything yet. Then commit
+everything with a message that says what this step did, and push.
 
-Before moving on: every section in design/data/sections.json is built, and the project builds with no errors.
+Before moving on: every section in design/data/sections.json is built, the project builds with no errors, and notes.md has a &quot;Design review&quot; section.
 
 PHASE 05 — REPAIR
 
 Read notes.md. Then run npm run check.
 
-If it exits 0, commit everything with a message that says the check passes, push, and tell
-me we are finished.
+The items under &quot;Design review&quot; in notes.md are the differences you found in phase 04.
+Treat the ones that design/data supports like failures in the report and fix them too. For
+each one design/data does not support, write one line into notes.md saying so, and leave it.
 
-If it does not, read the report it wrote and fix what it names. Then run npm run check again.
-Repeat until it exits 0.
+If npm run check exits 0 and no Design review item that design/data supports is left, commit
+everything with a message that says the check passes, push, and continue to phase 06.
+
+Otherwise, read the report the check wrote and fix what it names. Then run npm run check
+again. Repeat until it exits 0 and the Design review items are done.
 
 Each round has three steps. Plan: take the first failure in the report and write one line
 into notes.md: the failure, what you think causes it, and what you will change. Implement:
@@ -1012,7 +1091,7 @@ Three rules, and the first one matters more than the other two:
 1. NEVER change the checker to make a check pass. Not a threshold, not a skipped assertion,
    not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
    one and why, and change nothing.
-2. Do not add anything new to the page, and do not invent text.
+2. Do not add anything the design does not have, and do not invent text.
 3. If the same failure survives three attempts, stop and tell me what you tried each time
    and what happened. Three failed repairs usually means the design is asking for two
    things that cannot both be true, and no fourth attempt will resolve that.
@@ -1022,12 +1101,41 @@ could pick this up. Keep going on your own. Do not ask me to confirm each round.
 
 Before moving on: npm run check exits 0.
 
-PHASE 06 — ATTACK
+PHASE 06 — SHIP
 
-The checks pass. Now try to prove the page is still wrong.
+Put this on the internet.
+
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
+
+This project has no Netlify site yet. Create it and deploy in one command, without
+interactive questions: netlify deploy --prod --dir=dist --site-name turbine-&lt;my GitHub
+username&gt;. Find my username with gh api user --jq .login. If that name is taken, add a
+short suffix and run it again.
+
+When it is live, do not just tell me it worked. Check:
+
+- fetch the public URL and confirm it returns 200
+- confirm the page it serves is the page you just built, not an older one — compare what
+  comes back against what is in the dist folder
+- run npm run check -- --url against the live URL, and show me the result
+
+Write the site name and the live address into notes.md. Then commit anything that changed
+with a message that says what this step did, and push.
+
+Then give me the URL on its own line so I can copy it.
+
+Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
+
+PHASE 07 — ATTACK
+
+Whatever npm run check says right now, try to prove the page is wrong.
 
 You did not build this page. Judge it only by what a browser shows and what is in this
 project, not by anything said earlier in this conversation.
+
+Look at the page on this machine. If the development server is not running, start it yourself
+and give me the address.
 
 Your job now is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that the checker in this project cannot catch, and for each one
@@ -1039,8 +1147,9 @@ tell me:
 
 Look specifically where an automated check has no reach:
 
-- text over a photograph or a gradient: an automated contrast check cannot compute that
-  pair at all, and reports it as inconclusive rather than as a failure
+- text over a photograph or a gradient: an accessibility tool cannot compute that pair and
+  marks it incomplete; the checker in this project may measure it from the pixels, so look
+  at what it actually measured there
 - reading order for someone using a keyboard or a screen reader: technically valid and
   incoherent is a thing that exists
 - alt text that is present, and useless
@@ -1064,31 +1173,13 @@ Report only the findings that survive all three. Default to discarding when you 
 unsure, and tell me how many you threw away. Four real findings beat five with a guess in
 them. If you cannot point at a specific element, it is not a finding.
 
-Then fix the findings that survived, run npm run check again, and move on only if it still
-exits 0. Write the findings and what you fixed into notes.md, then commit everything with a
-message that says which findings were fixed, and push.
+Then fix the findings that survived and run npm run check again; it must still exit 0.
+Write the findings and what you fixed into notes.md, commit everything with a message that
+says which findings were fixed, and push. Then deploy again to the same site with
+netlify deploy --prod --dir=dist --site &lt;the site name in notes.md&gt;, and run
+npm run check -- --url against the live address.
 
-Before moving on: the findings that survived are fixed, and npm run check still exits 0.
-
-PHASE 07 — SHIP
-
-Put this on the internet.
-
-Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
-I am signed in; if it says I am not, tell me what to do rather than doing it silently.
-
-When it is live, do not just tell me it worked. Check:
-
-- fetch the public URL and confirm it returns 200
-- confirm the page it serves is the page you just built, not an older one — compare what
-  comes back against what is in the dist folder
-- run npm run check -- --url against the live URL, and show me the result
-
-Then commit anything that changed with a message that says what this step did, and push.
-
-Then give me the URL on its own line so I can copy it.
-
-That is the end of the run: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
+That is the end of the run: the findings that survived are fixed, npm run check still exits 0, the page is deployed again, and npm run check -- --url passes against the live address.
 
 Rules for the whole run:
 - Announce each phase as you enter it, and say how many subagents you are using and why.
@@ -1097,19 +1188,20 @@ Rules for the whole run:
 - Keep notes.md current as you go. If we have to start a fresh session, notes.md and
   design/data are all it will have.</code></pre></div>
 <hr>
-<p><strong>Expected result.</strong> The agent announces <code>PHASE 01 — START</code> and works without supervision. It stops once, after phase 02, for your answer to point 6 of its list. Along the way: <code>npm run design</code>, <code>npm run check</code> failing on the empty project, the page, the loop until the check passes, the review and its fixes, a commit after each of those, and at the end a live address.</p>
+<p><strong>Expected result.</strong> The agent announces <code>PHASE 01 — START</code> and works without supervision. It stops once, after phase 02, for your answer to point 6 of its list. Along the way: <code>npm run design</code>, <code>npm run check</code> failing on the empty project, the page and the agent's own design review, the loop until the check passes, a commit after each of those, a live address, and at the end the review, its fixes and a second deploy to the same site.</p>
 <hr>
 <h3>Subagents</h3>
 <p>A subagent is a separate agent that the main agent starts for one part of the work. It begins with an empty context: it knows only the task it was given, not the conversation so far. The main agent collects what its subagents return.</p>
 <h3>What differs from the seven prompts</h3>
-<ul><li>The run waits for you only after phase 02 and where a rule says to stop and ask.</li><li>Plans are not shown for approval. In the seven prompts you switch to plan mode before 02, 03 and 04 and approve each plan; here each of those phases writes its plan into <code>notes.md</code> and continues.</li><li>There is no <code>/clear</code> between phases. Each phase starts by reading <code>notes.md</code> and <code>design/data</code> again.</li><li>Phase 04 builds the sections of the page at the same time, one subagent per section, instead of one after another.</li><li>Phase 06 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Each starts with an empty context, so none of them saw the page being built. The agent fixes the findings that survive without waiting for you to choose.</li></ul>
+<ul><li>The run waits for you only after phase 02 and where a rule says to stop and ask.</li><li>Plans are not shown for approval. In the seven prompts you switch to plan mode before 02, 03 and 04 and approve each plan; here each of those phases writes its plan into <code>notes.md</code> and continues.</li><li>There is no <code>/clear</code> between phases. Each phase starts by reading <code>notes.md</code> and <code>design/data</code> again.</li><li>Phase 04 builds the sections of the page at the same time, one subagent per section, instead of one after another.</li><li>Phase 04 does not wait for your review of the page: the agent compares the page with <code>design/data</code> itself and writes the differences into <code>notes.md</code> under &quot;Design review&quot;.</li><li>Phase 05 does not end the run: when <code>npm run check</code> exits 0, the agent continues to phase 06.</li><li>Phase 07 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Each starts with an empty context, so none of them saw the page being built. The agent fixes the findings that survive without waiting for you to choose, then deploys again to the site named in <code>notes.md</code>, with <code>--site</code>.</li></ul>
 <p><code>scripts/build-workflow-prompt.mjs</code> generates this prompt from prompts 01 to 07, and its <code>--check</code> fails if they differ in anything else.</p>
 <h3><code>ultracode</code></h3>
-<p>The first word of the prompt. Claude Code treats it as a signal that the task is large and may use subagents. Codex has no such keyword. Keep the word on both tools: the sentence after it, &quot;spawn as many subagents as the work needs and run them in parallel&quot;, gives the same instruction to either.</p>
+<p>The first word of the prompt. In Claude Code, <code>ultracode</code> opts only the message it is typed in into a multi-agent workflow, and only if your Claude subscription includes dynamic workflows. The run stops after phase 02 for your answer to point 6, and that answer is a new message. To keep the workflow for the whole run, type <code>/effort ultracode</code> before you paste, or start your answer to point 6 with <code>ultracode.</code></p>
+<p>Codex has no such keyword. Keep the word on both tools: the sentence after it, &quot;spawn as many subagents as the work needs and run them in parallel&quot;, gives the same instruction to either.</p>
 <h3>Workflow patterns in this prompt</h3>
 <p>The workshop page describes six workflow patterns. This prompt uses three:</p>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Phase</th><th>Pattern</th><th>What happens</th></tr></thead><tbody><tr><td>04</td><td>Fan out and synthesize</td><td>the page is split into sections built at the same time, one subagent per section, then merged into one page</td></tr><tr><td>05</td><td>Loop until done</td><td>plan, implement, verify, repeated until <code>npm run check</code> exits 0</td></tr><tr><td>06</td><td>Adversarial verification</td><td>subagents with an empty context look for problems, separate subagents argue against each one</td></tr></tbody></table></div>
-<p>The review in phase 06 runs alongside <code>npm run check</code>. The checker decides what can be measured; the review looks for what cannot.</p>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Phase</th><th>Pattern</th><th>What happens</th></tr></thead><tbody><tr><td>04</td><td>Fan out and synthesize</td><td>the page is split into sections built at the same time, one subagent per section, then merged into one page</td></tr><tr><td>05</td><td>Loop until done</td><td>plan, implement, verify, repeated until <code>npm run check</code> exits 0</td></tr><tr><td>07</td><td>Adversarial verification</td><td>subagents with an empty context look for problems, separate subagents argue against each one</td></tr></tbody></table></div>
+<p>The review in phase 07 runs alongside <code>npm run check</code>. The checker decides what can be measured; the review looks for what cannot.</p>
 <h3>Loop and workflow</h3>
 <div class="scroll-x" tabindex="0"><table><thead><tr><th>&nbsp;</th><th><strong>Loop</strong></th><th><strong>Workflow</strong></th></tr></thead><tbody><tr><td>Shape</td><td>do this again until a condition holds</td><td>do these steps in order, with a condition between each</td></tr><tr><td>You define</td><td>the <strong>exit condition</strong></td><td>the <strong>phases</strong></td></tr><tr><td>Ends when</td><td>a program says yes</td><td>the last phase finishes</td></tr><tr><td>In this pack</td><td>prompt 05</td><td>this prompt</td></tr></tbody></table></div>
 <p>Phase 05 is a loop inside the workflow.</p>
@@ -1117,13 +1209,13 @@ Rules for the whole run:
 <p>Change the phase list and you change the job:</p>
 <blockquote>Phase 04 builds only the hero and the lineup. Leave the rest.</blockquote>
 <blockquote>Between phases 04 and 05, add a phase: show me each section as a screenshot at the narrowest width and wait for my approval.</blockquote>
-<blockquote>Skip phase 07. I am not deploying today.</blockquote>
-<blockquote>In phase 06, look only at widths the design does not specify.</blockquote>
+<blockquote>Skip phase 06 and deploy only once, at the end of phase 07.</blockquote>
+<blockquote>In phase 07, look only at widths the design does not specify.</blockquote>
 <h3>When to use it</h3>
 <ul><li><strong>The workflow</strong>: you know the stages and want a result without supervising each step.</li><li><strong>The seven prompts</strong>: you are learning, want to approve each plan, or expect to change the design halfway.</li></ul>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It announces phase 04 before <code>npm run check</code> exists</td><td><code>You skipped phase 03. The check comes first. Go back and write it.</code></td></tr><tr><td><code>npm run check</code> passes in phase 03</td><td><code>The check passed on an empty project. It is not checking anything. Fix the checker before phase 04.</code></td></tr><tr><td>It does not wait after phase 02</td><td><code>Phase 02 said wait for my answer to point 6. Stop and show me notes.md.</code></td></tr><tr><td>It waits for plan approval in phase 03 or 04</td><td><code>Write the plan into notes.md and carry on.</code></td></tr><tr><td>It gets vaguer around phase 05</td><td><code>Summarise the state into notes.md.</code> Then type <code>/clear</code>, paste this prompt again, and say <code>notes.md and design/data have the state. Continue from phase 05.</code></td></tr><tr><td>It declares the whole thing done</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>A phase fails and it continues anyway</td><td><code>You were told to stop on a failed phase. What failed, and why did you continue?</code></td></tr><tr><td>It builds the sections one at a time</td><td><code>Phase 04 is independent sections. Build them in parallel, one subagent each.</code></td></tr><tr><td>Phase 06 reports findings and discarded none</td><td><code>How many candidates did you discard, and why?</code></td></tr><tr><td>It starts twenty subagents for a small page</td><td><code>Use as many as the work needs. Tell me the number and your reason before you start.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>Phase 01 says the directory is not empty</td><td><code>Leave the design folder alone and set up the project around it.</code></td></tr><tr><td>It announces phase 04 before <code>npm run check</code> exists</td><td><code>You skipped phase 03. The check comes first. Go back and write it.</code></td></tr><tr><td><code>npm run check</code> passes in phase 03</td><td><code>The check passed on an empty project. It is not checking anything. Fix the checker before phase 04.</code></td></tr><tr><td>It does not wait after phase 02</td><td><code>Phase 02 said wait for my answer to point 6. Stop and show me notes.md.</code></td></tr><tr><td>It waits for plan approval in phase 03 or 04</td><td><code>Write the plan into notes.md and carry on.</code></td></tr><tr><td>It waits for your review in phase 04</td><td><code>Compare the page with design/data yourself, write the differences into notes.md under &quot;Design review&quot;, and carry on.</code></td></tr><tr><td>It stops after phase 05 and says it is finished</td><td><code>Phase 05 is not the end. Continue to phase 06.</code></td></tr><tr><td>It gets vaguer around phase 05</td><td><code>Summarise the state into notes.md.</code> Then type <code>/clear</code>, paste this prompt again, and say <code>notes.md and design/data have the state. Continue from phase 05.</code></td></tr><tr><td>It declares the whole thing done</td><td><code>Run npm run check and paste the last five lines, unedited.</code></td></tr><tr><td>A phase fails and it continues anyway</td><td><code>You were told to stop on a failed phase. What failed, and why did you continue?</code></td></tr><tr><td>It builds the sections one at a time</td><td><code>Phase 04 is independent sections. Build them in parallel, one subagent each.</code></td></tr><tr><td>Phase 07 reports findings and discarded none</td><td><code>How many candidates did you discard, and why?</code></td></tr><tr><td>It starts twenty subagents for a small page</td><td><code>Use as many as the work needs. Tell me the number and your reason before you start.</code></td></tr></tbody></table></div>
 </section>
 </div></main>
 <dialog class="lightbox" aria-label="Enlarge"><button class="lightbox__close" type="button" aria-label="Close">×</button></dialog>

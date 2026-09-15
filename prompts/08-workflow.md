@@ -1,12 +1,34 @@
 # 08 — The same job, as a workflow
 
-Prompts 01 to 07 pasted as one message. The message is split into seven phases, numbered 01
-to 07, and each phase contains the text of the prompt with the same number: phase 03 does what
-prompt 03 does. The agent works through the phases in order on its own, and stops for you only
-after phase 02 and wherever a rule says to stop and ask.
+Prompts 01 to 07 pasted as one message, phase for phase, with the differences listed below.
+The message is split into seven phases, numbered 01 to 07, and each phase contains the text of
+the prompt with the same number: phase 03 does what prompt 03 does. The agent works through the
+phases in order on its own, and stops for you only after phase 02 and wherever a rule says to
+stop and ask.
 
-Paste it in normal mode, not plan mode, in a new session. The phases that ask for a plan write
-it into `notes.md` and continue.
+## Before you paste
+
+You need a new, empty GitHub repository cloned on your computer, and `turbine.fig`. Open a
+terminal, go into the repository folder and start your agent in a new session, in normal mode,
+not plan mode:
+
+```bash
+cd turbine
+claude
+```
+
+With Codex, type `codex` instead of `claude`. The phases that ask for a plan write it into
+`notes.md` and continue.
+
+In Claude Code, type `/effort ultracode` first. The prompt starts with the keyword `ultracode`,
+which turns on a multi-agent workflow for that one message only; `/effort ultracode` keeps it on
+for the whole session, including your answer to point 6. More under `ultracode` below.
+
+Phase 01 creates the project in this folder, and the run goes straight on to phase 02, which
+reads `turbine.fig` from a folder called `design`. Create the `design` folder, put `turbine.fig`
+into it, and tell the agent to leave it alone in phase 01: paste the prompt below, press
+Shift+Enter for a new line, type `The design folder is already in this project. Leave it alone
+in phase 01.` and press Enter.
 
 ---
 
@@ -27,8 +49,10 @@ Because this is one run rather than seven messages, these things change:
 - Where a phase says I will clear the session, do not stop: start the next phase by reading
   notes.md and design/data again.
 - In phase 04 you build the sections in parallel, one subagent each, instead of one after
-  another.
-- In phase 06 the review is done by subagents that start with a fresh context, and you fix
+  another, and you review the page against design/data yourself instead of waiting for my
+  review.
+- Phase 05 is not the end of the run: when npm run check exits 0, continue to phase 06.
+- In phase 07 the review is done by subagents that start with a fresh context, and you fix
   the findings that survive without waiting for me to choose.
 
 PHASE 01 — START
@@ -57,7 +81,7 @@ Plan first. Research what you need, then show me a plan and wait for my approval
 create or change any file until I approve it.
 
 Inside this project there is a folder called design with a .fig file in it. That is the
-Figma file itself, saved with "Save local copy". It is not a picture: it is the whole
+Figma file itself, as Figma saves it. It is not a picture: it is the whole
 design as data — every text, colour, variable, component and photo.
 
 Work from that one file and nothing else. Do not search this computer for the design, a
@@ -69,6 +93,9 @@ What I want is a tool, not a one-off decode: a script in this project that reads
 design and writes the design data that the page and the checker will need. Make
 "npm run design" run it. Running it again on a new .fig must refresh the data, so that nobody
 has to decode or export the design by hand again.
+
+Keep the decoder small: one script, no test suite for the decoder, no extra tooling. Stop
+working on it as soon as the seven JSON files and the images are written.
 
 There is no program that opens a .fig, so the script decodes it itself. What is known about
 the format:
@@ -116,7 +143,7 @@ shape of each JSON file.
 After I approve the plan, write the script, run npm run design, then show me a list and
 write point 6 of it into notes.md:
 
-1. Every section, in the order they appear down the page.
+1. Every section, in the order they appear down the page, and the name on every artist card.
 2. Every colour, by its name from the design, with its exact value.
 3. Every text size, and which one is used where.
 4. Every width the design covers.
@@ -150,7 +177,8 @@ gives the same answer twice on the same page.
 Make "npm run check" run it. Install whatever you need to drive a real browser and to
 test accessibility. These are tools for checking; none of them goes into the page.
 
-By default it checks the site running on this machine. It must also take an address —
+By default it builds the site and serves the built files itself, and checks that page. It
+must not depend on a development server someone else started. It must also take an address —
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
@@ -175,11 +203,14 @@ threshold is the whole job.
 Write the report to a file as well as printing it, because later I am going to hand that
 file straight back to you. Tell me what you called it.
 
-Two rules about the checker itself:
+Three rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
   design/data is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
+- An accessibility result marked incomplete, such as text over a photo or a gradient, is
+  not a pass. Measure the contrast from the rendered pixels behind that text, and fail only
+  if the measured ratio is below the threshold, or if it cannot be measured.
 - Do not make the checks lenient so that they pass.
 
 Your plan must list each check, what it reads from design/data, and how it measures.
@@ -208,6 +239,9 @@ Build every section in design/data/sections.json at the same time, one subagent 
 then put them together in that order. Do not stop between sections to ask me. When it is done,
 tell me which sections you built, one line each, and the address to open.
 
+If you need to see the page in a browser and the development server is not running, start it
+yourself and give me the address.
+
 Rules, all of them non-negotiable:
 
 - Every colour and every size comes from design/data. If a value you need is not there,
@@ -230,20 +264,25 @@ one assumption than discover six.
 When the page is built, run npm run check once and show me how many checks fail and which.
 Do not fix them yet, and do not change the checker.
 
-Then commit everything with a message that says what this step did, and push. Tell me the
-step is done, so I can clear the session.
+Then review the page yourself: compare what the browser shows with design/data, and write
+every difference into notes.md under "Design review". Do not fix anything yet. Then commit
+everything with a message that says what this step did, and push.
 
-Before moving on: every section in design/data/sections.json is built, and the project builds with no errors.
+Before moving on: every section in design/data/sections.json is built, the project builds with no errors, and notes.md has a "Design review" section.
 
 PHASE 05 — REPAIR
 
 Read notes.md. Then run npm run check.
 
-If it exits 0, commit everything with a message that says the check passes, push, and tell
-me we are finished.
+The items under "Design review" in notes.md are the differences you found in phase 04.
+Treat the ones that design/data supports like failures in the report and fix them too. For
+each one design/data does not support, write one line into notes.md saying so, and leave it.
 
-If it does not, read the report it wrote and fix what it names. Then run npm run check again.
-Repeat until it exits 0.
+If npm run check exits 0 and no Design review item that design/data supports is left, commit
+everything with a message that says the check passes, push, and continue to phase 06.
+
+Otherwise, read the report the check wrote and fix what it names. Then run npm run check
+again. Repeat until it exits 0 and the Design review items are done.
 
 Each round has three steps. Plan: take the first failure in the report and write one line
 into notes.md: the failure, what you think causes it, and what you will change. Implement:
@@ -259,7 +298,7 @@ Three rules, and the first one matters more than the other two:
 1. NEVER change the checker to make a check pass. Not a threshold, not a skipped assertion,
    not a rule switched off. If you genuinely believe a check is wrong, STOP, tell me which
    one and why, and change nothing.
-2. Do not add anything new to the page, and do not invent text.
+2. Do not add anything the design does not have, and do not invent text.
 3. If the same failure survives three attempts, stop and tell me what you tried each time
    and what happened. Three failed repairs usually means the design is asking for two
    things that cannot both be true, and no fourth attempt will resolve that.
@@ -269,12 +308,41 @@ could pick this up. Keep going on your own. Do not ask me to confirm each round.
 
 Before moving on: npm run check exits 0.
 
-PHASE 06 — ATTACK
+PHASE 06 — SHIP
 
-The checks pass. Now try to prove the page is still wrong.
+Put this on the internet.
+
+Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
+I am signed in; if it says I am not, tell me what to do rather than doing it silently.
+
+This project has no Netlify site yet. Create it and deploy in one command, without
+interactive questions: netlify deploy --prod --dir=dist --site-name turbine-<my GitHub
+username>. Find my username with gh api user --jq .login. If that name is taken, add a
+short suffix and run it again.
+
+When it is live, do not just tell me it worked. Check:
+
+- fetch the public URL and confirm it returns 200
+- confirm the page it serves is the page you just built, not an older one — compare what
+  comes back against what is in the dist folder
+- run npm run check -- --url against the live URL, and show me the result
+
+Write the site name and the live address into notes.md. Then commit anything that changed
+with a message that says what this step did, and push.
+
+Then give me the URL on its own line so I can copy it.
+
+Before moving on: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
+
+PHASE 07 — ATTACK
+
+Whatever npm run check says right now, try to prove the page is wrong.
 
 You did not build this page. Judge it only by what a browser shows and what is in this
 project, not by anything said earlier in this conversation.
+
+Look at the page on this machine. If the development server is not running, start it yourself
+and give me the address.
 
 Your job now is to attack, not to defend and not to fix. Find five things that
 are wrong with this page that the checker in this project cannot catch, and for each one
@@ -286,8 +354,9 @@ tell me:
 
 Look specifically where an automated check has no reach:
 
-- text over a photograph or a gradient: an automated contrast check cannot compute that
-  pair at all, and reports it as inconclusive rather than as a failure
+- text over a photograph or a gradient: an accessibility tool cannot compute that pair and
+  marks it incomplete; the checker in this project may measure it from the pixels, so look
+  at what it actually measured there
 - reading order for someone using a keyboard or a screen reader: technically valid and
   incoherent is a thing that exists
 - alt text that is present, and useless
@@ -311,31 +380,13 @@ Report only the findings that survive all three. Default to discarding when you 
 unsure, and tell me how many you threw away. Four real findings beat five with a guess in
 them. If you cannot point at a specific element, it is not a finding.
 
-Then fix the findings that survived, run npm run check again, and move on only if it still
-exits 0. Write the findings and what you fixed into notes.md, then commit everything with a
-message that says which findings were fixed, and push.
+Then fix the findings that survived and run npm run check again; it must still exit 0.
+Write the findings and what you fixed into notes.md, commit everything with a message that
+says which findings were fixed, and push. Then deploy again to the same site with
+netlify deploy --prod --dir=dist --site <the site name in notes.md>, and run
+npm run check -- --url against the live address.
 
-Before moving on: the findings that survived are fixed, and npm run check still exits 0.
-
-PHASE 07 — SHIP
-
-Put this on the internet.
-
-Build the site, then deploy it to Netlify with the Netlify command line. It is installed and
-I am signed in; if it says I am not, tell me what to do rather than doing it silently.
-
-When it is live, do not just tell me it worked. Check:
-
-- fetch the public URL and confirm it returns 200
-- confirm the page it serves is the page you just built, not an older one — compare what
-  comes back against what is in the dist folder
-- run npm run check -- --url against the live URL, and show me the result
-
-Then commit anything that changed with a message that says what this step did, and push.
-
-Then give me the URL on its own line so I can copy it.
-
-That is the end of the run: the live URL returns 200, serves the page you built, and npm run check -- --url passes against it.
+That is the end of the run: the findings that survived are fixed, npm run check still exits 0, the page is deployed again, and npm run check -- --url passes against the live address.
 
 Rules for the whole run:
 - Announce each phase as you enter it, and say how many subagents you are using and why.
@@ -349,9 +400,9 @@ Rules for the whole run:
 
 **Expected result.** The agent announces `PHASE 01 — START` and works without supervision.
 It stops once, after phase 02, for your answer to point 6 of its list. Along the way:
-`npm run design`, `npm run check` failing on the empty project, the page, the loop until
-the check passes, the review and its fixes, a commit after each of those, and at the end a
-live address.
+`npm run design`, `npm run check` failing on the empty project, the page and the agent's own
+design review, the loop until the check passes, a commit after each of those, a live address,
+and at the end the review, its fixes and a second deploy to the same site.
 
 ---
 
@@ -367,17 +418,23 @@ far. The main agent collects what its subagents return.
 - Plans are not shown for approval. In the seven prompts you switch to plan mode before 02, 03 and 04 and approve each plan; here each of those phases writes its plan into `notes.md` and continues.
 - There is no `/clear` between phases. Each phase starts by reading `notes.md` and `design/data` again.
 - Phase 04 builds the sections of the page at the same time, one subagent per section, instead of one after another.
-- Phase 06 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Each starts with an empty context, so none of them saw the page being built. The agent fixes the findings that survive without waiting for you to choose.
+- Phase 04 does not wait for your review of the page: the agent compares the page with `design/data` itself and writes the differences into `notes.md` under "Design review".
+- Phase 05 does not end the run: when `npm run check` exits 0, the agent continues to phase 06.
+- Phase 07 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Each starts with an empty context, so none of them saw the page being built. The agent fixes the findings that survive without waiting for you to choose, then deploys again to the site named in `notes.md`, with `--site`.
 
 `scripts/build-workflow-prompt.mjs` generates this prompt from prompts 01 to 07, and its
 `--check` fails if they differ in anything else.
 
 ## `ultracode`
 
-The first word of the prompt. Claude Code treats it as a signal that the task is large and
-may use subagents. Codex has no such keyword. Keep the word on both tools: the sentence after
-it, "spawn as many subagents as the work needs and run them in parallel", gives the same
-instruction to either.
+The first word of the prompt. In Claude Code, `ultracode` opts only the message it is typed in
+into a multi-agent workflow, and only if your Claude subscription includes dynamic workflows.
+The run stops after phase 02 for your answer to point 6, and that answer is a new message. To
+keep the workflow for the whole run, type `/effort ultracode` before you paste, or start your
+answer to point 6 with `ultracode.`
+
+Codex has no such keyword. Keep the word on both tools: the sentence after it, "spawn as many
+subagents as the work needs and run them in parallel", gives the same instruction to either.
 
 ## Workflow patterns in this prompt
 
@@ -387,9 +444,9 @@ The workshop page describes six workflow patterns. This prompt uses three:
 |---|---|---|
 | 04 | Fan out and synthesize | the page is split into sections built at the same time, one subagent per section, then merged into one page |
 | 05 | Loop until done | plan, implement, verify, repeated until `npm run check` exits 0 |
-| 06 | Adversarial verification | subagents with an empty context look for problems, separate subagents argue against each one |
+| 07 | Adversarial verification | subagents with an empty context look for problems, separate subagents argue against each one |
 
-The review in phase 06 runs alongside `npm run check`. The checker decides what can be
+The review in phase 07 runs alongside `npm run check`. The checker decides what can be
 measured; the review looks for what cannot.
 
 ## Loop and workflow
@@ -412,9 +469,9 @@ Change the phase list and you change the job:
 > Between phases 04 and 05, add a phase: show me each section as a screenshot at the
 > narrowest width and wait for my approval.
 
-> Skip phase 07. I am not deploying today.
+> Skip phase 06 and deploy only once, at the end of phase 07.
 
-> In phase 06, look only at widths the design does not specify.
+> In phase 07, look only at widths the design does not specify.
 
 ## When to use it
 
@@ -427,13 +484,16 @@ Change the phase list and you change the job:
 
 | What you see | Say this |
 |---|---|
+| Phase 01 says the directory is not empty | `Leave the design folder alone and set up the project around it.` |
 | It announces phase 04 before `npm run check` exists | `You skipped phase 03. The check comes first. Go back and write it.` |
 | `npm run check` passes in phase 03 | `The check passed on an empty project. It is not checking anything. Fix the checker before phase 04.` |
 | It does not wait after phase 02 | `Phase 02 said wait for my answer to point 6. Stop and show me notes.md.` |
 | It waits for plan approval in phase 03 or 04 | `Write the plan into notes.md and carry on.` |
+| It waits for your review in phase 04 | `Compare the page with design/data yourself, write the differences into notes.md under "Design review", and carry on.` |
+| It stops after phase 05 and says it is finished | `Phase 05 is not the end. Continue to phase 06.` |
 | It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then type `/clear`, paste this prompt again, and say `notes.md and design/data have the state. Continue from phase 05.` |
 | It declares the whole thing done | `Run npm run check and paste the last five lines, unedited.` |
 | A phase fails and it continues anyway | `You were told to stop on a failed phase. What failed, and why did you continue?` |
 | It builds the sections one at a time | `Phase 04 is independent sections. Build them in parallel, one subagent each.` |
-| Phase 06 reports findings and discarded none | `How many candidates did you discard, and why?` |
+| Phase 07 reports findings and discarded none | `How many candidates did you discard, and why?` |
 | It starts twenty subagents for a small page | `Use as many as the work needs. Tell me the number and your reason before you start.` |

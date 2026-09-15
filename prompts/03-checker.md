@@ -10,7 +10,8 @@ fixes it until the check passes.
 ## Before you paste
 
 Switch to plan mode, as before prompt 02. Claude Code: `Shift+Tab` until the footer shows
-*plan mode on*. Codex: `/plan`.
+*plan mode on*. Codex: `/plan`. When you approve the plan in Claude Code, choose **Yes,
+auto-accept edits**.
 
 ---
 
@@ -28,7 +29,8 @@ gives the same answer twice on the same page.
 Make "npm run check" run it. Install whatever you need to drive a real browser and to
 test accessibility. These are tools for checking; none of them goes into the page.
 
-By default it checks the site running on this machine. It must also take an address —
+By default it builds the site and serves the built files itself, and checks that page. It
+must not depend on a development server someone else started. It must also take an address —
 npm run check -- --url https://… — and run the same checks against that page instead, so
 that later it can judge the live site too.
 
@@ -53,11 +55,14 @@ threshold is the whole job.
 Write the report to a file as well as printing it, because later I am going to hand that
 file straight back to you. Tell me what you called it.
 
-Two rules about the checker itself:
+Three rules about the checker itself:
 
 - If a check cannot run — the browser will not start, the page will not load,
   design/data is missing — that is a FAILURE, never a pass and never a silent skip. A
   check that did not happen must not look like a check that succeeded.
+- An accessibility result marked incomplete, such as text over a photo or a gradient, is
+  not a pass. Measure the contrast from the rendered pixels behind that text, and fail only
+  if the measured ratio is below the threshold, or if it cannot be measured.
 - Do not make the checks lenient so that they pass.
 
 Your plan must list each check, what it reads from design/data, and how it measures.
@@ -77,6 +82,11 @@ measures, which tools it installs and the name of the report file. Approve it or
 Then the checker is written and run against the empty project. It fails, and the report says
 why for each check: sections missing, copy missing, and so on. Then a commit, pushed.
 
+How to tell a checker that fails on purpose from a broken one:
+
+- **Working:** a report file exists and lists each check with where, expected and actual.
+- **Broken:** an error with file paths and line numbers, and no report file.
+
 **After this prompt: type `/clear`.**
 
 ---
@@ -85,14 +95,18 @@ why for each check: sections missing, copy missing, and so on. Then a commit, pu
 
 | What you see | Say this |
 |---|---|
-| It writes code before showing a plan | `Stop. Show me the plan first and wait for my approval.` |
+| It writes code before showing a plan | Press Esc, then say `Stop. Show me the plan first and wait for my approval.` |
 | It passes on the empty project | `It passed with no page. Show me which checks ran and what each one measured.` |
 | It wants to build a page first, so the check has something to test | `No page in this step. The check must fail on the project as it is.` |
-| A check is skipped or marked incomplete | `A check that cannot run is a failure. Make it fail and say why it could not run.` |
+| A check is skipped | `A check that cannot run is a failure. Make it fail and say why it could not run.` |
+| A contrast result is marked incomplete (text over a photo or gradient) | `Measure that contrast from the rendered pixels behind the text. Fail only if the ratio is below the threshold or it cannot be measured.` |
 | The report says "contrast issue" with no details | `Every failure needs the element, the expected value, the measured value and the threshold.` |
 | It takes values from its own idea of the design | `Every check reads its values from design/data. Show me where each one comes from.` |
 | It asks which testing library to use | `Your choice. Pick one that drives a real browser and tests accessibility.` |
+| Codex asks to use the network | Answer yes. Installing the browser and the accessibility tools needs it. |
+| The report says the page will not load | `The checker must build the site and serve it itself. Do not rely on a development server.` |
 | `npm run check -- --url https://example.com` does nothing different | `The checker must accept --url and run the same checks against that address.` |
+| It is RESCUE_TIME_2 and the checker is broken (an error, no report file) | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **checker.zip** from the workshop page and tell the agent: `Unzip checker.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` It contains its own `design/data`, which replaces yours. Then `/clear` and prompt 04. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip checker.zip in this project, follow RESCUE.md inside it, and commit.` |
 
 ---
 
@@ -100,4 +114,4 @@ why for each check: sections missing, copy missing, and so on. Then a commit, pu
 
 - Tests first: the check is written from the design before any page exists, so it cannot be shaped to fit what was built.
 - A program, not an opinion: exit code 0 or not, the same answer on every run, no language model involved.
-- A check that cannot run is a failure: accessibility tools report text over images as "incomplete", and a rule of "zero violations" would otherwise count that as a pass.
+- An incomplete result is not a pass: accessibility tools report text over a photo or gradient as "incomplete". The checker measures the rendered pixels behind that text, and fails only when the ratio is too low or cannot be measured; otherwise a rule of "zero violations" would pass it unseen, or a rule of "incomplete fails" would never let the page pass.

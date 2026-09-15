@@ -3,6 +3,21 @@
 Zakłada w folderze repozytorium projekt Astro z Tailwindem, uruchamia serwer deweloperski
 i zapisuje projekt w twoim repozytorium na GitHubie. Bez stron i bez treści.
 
+## Zanim wkleisz
+
+Otwórz terminal, wejdź do folderu projektu i uruchom agenta:
+
+```bash
+cd turbine
+claude
+```
+
+W Codeksie wpisz `codex` zamiast `claude`. Jeśli `cd turbine` mówi, że nie ma takiego folderu,
+wpisz `ls` i poszukaj `turbine` na liście.
+
+**Esc zatrzymuje agenta w trakcie pracy.** Ctrl+C dwa razy go zamyka; uruchomisz go ponownie
+przez `claude --continue` albo `codex resume --last`.
+
 ---
 
 ```text
@@ -30,8 +45,8 @@ jest skończony, żebym mógł wyczyścić sesję.
 serwer uruchomiony. Potem robi commit projektu i push: commit widać w twoim repozytorium na
 github.com.
 
-**Codex pyta, czy ufasz folderowi.** Odpowiedz tak. Codex nie pracuje w folderze, któremu
-nie kazano mu ufać.
+**Agent pyta, zanim uruchomi komendę.** Wybierz opcję, która pozwala na ten rodzaj komend bez
+pytania. **Codex pyta też, czy ufasz folderowi.** Odpowiedz tak.
 
 **Po tym prompcie wpisz `/clear` i naciśnij Enter.** `/clear` kończy rozmowę i zaczyna nową,
 z pustym kontekstem, w Claude Code i w Codeksie. Nic nie przepada: kolejny prompt czyta to,
@@ -43,13 +58,15 @@ czego potrzebuje, z plików w projekcie.
 
 | Co widzisz | Powiedz to |
 |---|---|
-| Zaczyna budować landing page | `Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.` |
+| Zaczyna budować landing page | Naciśnij Esc, potem powiedz `Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.` |
+| Pyta, zanim uruchomi komendę | Wybierz opcję, która pozwala na ten rodzaj komend bez pytania. |
 | `Not inside a trusted directory` | Codex pyta o zgodę. Odpowiedz tak. |
+| Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja paczek i push go wymagają. |
 | `command not found: npm` | Node nie jest zainstalowany. Wróć na stronę Przygotowanie. |
 | Prosi o wybór szablonu | `Wybierz minimalny albo pusty szablon. Bez przykładowej treści.` |
 | „Katalog nie jest pusty" | W folderze jest coś poza plikami gita, na przykład folder `design`. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02. |
 | Przez dwie minuty nic się nie wypisuje | Instaluje. Poczekaj do pięciu minut. |
-| `git push` nie działa albo prosi o hasło | Uruchom `gh auth status` w drugim terminalu. Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
+| `git push` nie działa albo prosi o hasło | Uruchom `gh auth status` w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
 
 ---
 
