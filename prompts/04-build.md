@@ -102,7 +102,7 @@ design data supports.
 | It starts decoding the .fig again | Press Esc, then say `Stop. Everything you need is in design/data and notes.md.` |
 | It says it is done and it clearly is not | `Which sections have you built, and which are still missing? List both.` |
 | It gets slower and vaguer | The context is full. Say `Update notes.md with where we are`, type `/clear`, then say `Read design/data and notes.md and continue building`. |
-| It is BUILD_END and the page is not finished | Press Esc, then say `Stop. Commit what you have and push.` Then `/clear` and prompt 05. |
+| It is 16:08 and the page is not finished | Press Esc, then say `Stop. Commit what you have and push.` Then `/clear` and prompt 05. |
 
 ---
 

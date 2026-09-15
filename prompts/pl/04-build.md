@@ -103,7 +103,7 @@ dane designu.
 | Znowu zaczyna rozkodowywać .fig | Naciśnij Esc, potem powiedz `Stop. Wszystko, czego potrzebujesz, jest w design/data i notes.md.` |
 | Mówi, że skończył, a wyraźnie nie | `Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.` |
 | Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. Powiedz `Zaktualizuj notes.md tym, gdzie jesteśmy`, wpisz `/clear`, potem powiedz `Przeczytaj design/data i notes.md i buduj dalej`. |
-| Jest BUILD_END, a strona nie jest skończona | Naciśnij Esc, potem powiedz `Stop. Zrób commit tego, co masz, i push.` Potem `/clear` i prompt 05. |
+| Jest 16:08, a strona nie jest skończona | Naciśnij Esc, potem powiedz `Stop. Zrób commit tego, co masz, i push.` Potem `/clear` i prompt 05. |
 
 ---
 

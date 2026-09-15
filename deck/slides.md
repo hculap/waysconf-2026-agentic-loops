@@ -375,9 +375,9 @@ It writes no page. It stops with a list and its open questions (point 6). Answer
 </div>
 
 <!--
-This is the longest thing any agent does all afternoon: sixteen minutes in the Claude Code
-trial. Starting it now is what makes the checker block fit — it decodes while you talk about handing
-over the file, and the findings are waiting when the checker block starts.
+This is the longest thing any agent does all afternoon: twenty-three minutes in the trial, and
+that was Opus with the plan approved instantly. Start it now, talk over it, and call the rescue
+pack at 15:30 whether or not anyone asks — most of the room will still be decoding.
 
 Claude Code in its default mode asks before each command. Tell the room to pick the option
 that stops asking for that kind of command, or they will spend the time clicking yes.
@@ -537,7 +537,8 @@ page first, its checker will quietly agree with whatever it built.
 -->
 
 <!--
-495 seconds in the Codex trial. It runs through the next slides and the live demo.
+Twenty minutes in the trial: six planning, fourteen writing. It runs through the next slides and
+the live demo, and the rescue pack lands at 15:50 for everyone it did not finish for.
 
 Prompt 04 builds against this check and prompt 05 loops on it: npm run check is created here.
 Do not skip it to save time — cut the demo before you cut this.
@@ -810,42 +811,79 @@ tool refused to let an agent move the target it was being measured against.
 
 <div class="mt-4">
 
-These prompts, an **empty folder** outside every repository, nothing else.
+**One agent. These prompts. An empty folder** outside every repository, nothing else. Last night.
 
 </div>
 
 <div class="mt-4">
 
-| Prompt | Agent | Result |
+| Prompt | Agent time | What came out of it |
 |---|---|---|
-| 01 — a project exists | Codex | **107 s** |
-| 02 — reads the `.fig` | Claude Code | **16 min** — 12/12 names, every colour, all widths |
-| 03 — a hero from the design | Codex | **41 s** |
-| 04 — **writes its own checker** | Codex | **495 s** — 264 lines, tests unasked |
-| 05 — the loop runs | Codex | **46 s** |
+| 01 — a project exists | **3 min** | Astro, dev server, first commit pushed |
+| 02 — reads the `.fig` | **23 min** | `npm run design` → seven JSON files, every colour and width |
+| 03 — **the checker, before the page** | **20 min** | eight checks, red against an empty project |
+| 04 — the page | **24 min** | ten sections in design order; two checks still red |
+| 05 — the loop | **4 min** | cleared thirteen accessibility failures, then **stopped and asked** |
+| 06 — it goes live | **5 min** | a URL, and the same check run against that URL |
 
 </div>
 
 <p class="mt-4" style="color: var(--sp-accent-2)">
-Unasked, 04 treated axe's <em>incomplete</em> results as failures — from one sentence:
-<b>&ldquo;a check that cannot run is a failure, never a skip&rdquo;</b>.
+Seventy-nine minutes of agent time. Your ninety minutes are not that.
+<b>That is what the rescue packs are for</b>, and why they are on the clock, not on demand.
 </p>
 
 <!--
-Numbers come from evidence/prompt-trial.md (Codex: 01, 03, 04, 05) and
-evidence/fig-trial-claude-2026-09-14.md (Claude Code: 02). Refill the table from those
-files, not from memory — the whole point of the slide is that it is measured.
+Numbers: one complete run of prompts 01–07, Claude Code, clean machine, 15 September
+(scripts/trial-workshop.mjs). Agent time only — plans approved as fast as a script can type.
+Re-measure before you quote them again; do not read them off memory.
 
 Say the caveats out loud, because they are what make the numbers credible:
-- two agents, one prompt each; nobody has run the whole sequence end to end on one agent
-- the Claude run bypassed permission prompts; a participant will be asked before each
-  command, and prompt 02 is sixty commands
-- 02's fell into the component-text trap first — nine cards read "KASIMIR VOLT" — then
-  noticed and fixed it itself
+- one agent, one run. Codex could not be measured: its usage limit ran to 19 September
+- it ran on Opus. A Pro account gets Sonnet, so treat these as a floor, not a promise
+- a real person reads the plan before approving it, which the script did not
 
-The 04 line is the one that matters. Nobody asked for the incomplete-results decision; it
-fell out of one sentence. That is the argument for writing the standard into the prompt
-rather than trusting the agent to hold it.
+The line that matters is 05. Four minutes, and it stopped. Tell that story next.
+-->
+
+---
+
+# Minute four of the loop, it stopped
+
+<div class="mt-6 text-lg">
+
+The checker wanted copy that the design has on **switched-off layers**. Two ways to make it green:
+
+</div>
+
+<div class="mt-4">
+
+| The cheat | What it would mean |
+|---|---|
+| `sr-only` text | A screen reader hears that the cheapest ticket is *"Most popular"*. It is not |
+| `hidden` elements | Markup no user and no assistive tech ever reaches, added so a counter reads 3 |
+
+</div>
+
+<p class="mt-6 text-xl" style="color: var(--sp-accent-2)">
+It took neither. It wrote the reasoning into <code>notes.md</code>, named the check it believed was wrong, and asked.
+</p>
+
+<p class="mt-4" style="color: var(--sp-fg-3)">
+It had already fixed thirteen real failures in the same four minutes. This is the one it would not fix.
+</p>
+
+<!--
+This is the whole talk in one incident, and it happened by itself the night before.
+
+Read the rule it was obeying out loud — it is one line in prompt 03, and it is in their prompt
+too: never change the checker to make a failure go away; if you think the check is wrong, stop
+and say so.
+
+If somebody's agent does this in the room, the answer is: the layer is off, so the text is not
+on the page. Change the check to ignore switched-off layers, and write in notes.md that you did
+and why. Changing a check you have argued with in the open is not cheating. Editing it quietly
+to turn a light green is.
 -->
 
 ---

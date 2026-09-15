@@ -161,6 +161,7 @@ async function step(n, body) {
     await body(blocks, record)
   } catch (error) {
     record.error = String(error)
+    if (/usage limit/.test(record.error)) { await save(); throw error }
   }
   record.agentMs = record.turns.reduce((a, t) => a + t.ms, 0)
   record.wallMs = now() - t0
@@ -170,6 +171,8 @@ async function step(n, body) {
 }
 
 const addTurn = (record, name, r) => {
+  // A usage limit is not a result. Stop the run rather than record empty steps as measurements.
+  if (/hit your (weekly |daily |usage )?limit|usage limit/i.test(r.result)) throw new Error(`usage limit reached during ${record.step} ${name}: ${r.result.trim().slice(0, 120)}`)
   record.turns.push({ name, ms: r.ms, code: r.code, timedOut: r.timedOut, cost: r.cost, agentTurns: r.turns, models: r.models, result: r.result.slice(-1500) })
   return r
 }

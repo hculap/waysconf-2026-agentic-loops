@@ -28,7 +28,7 @@ const argUrl = process.argv.includes('--url') && process.argv[process.argv.index
 const PAGES = [
   ['/deck/1', 'the first slide'],
   ['/deck/6', 'a slide with a diagram (the loop)'],
-  ['/deck/45', 'the last slide, by its history route'],
+  ['/deck/46', 'the last slide, by its history route'],
   ['/site/', 'the festival site'],
 ]
 

@@ -104,7 +104,7 @@ session.
 **Expected result.** First, a plan: how the script reads the file, which package it uses and
 the shape of each JSON file. Read it, then correct it in plain words or approve it. Then the
 agent writes and runs the decoder. This can take longer than the workshop allows: at
-RESCUE_TIME_1, anyone who does not have `design/data` yet takes the rescue pack (the last
+15:30, anyone who does not have `design/data` yet takes the rescue pack (the last
 row of the table below). At the end `npm run design` exists, `design/data` holds seven JSON
 files, `design/images` holds the photos, and the chat shows a six-point list.
 
@@ -145,7 +145,7 @@ After your answers the agent commits and pushes.
 | Every artist card has the same name | `You are reading the component, not the instances. Resolve the component properties and overrides in the script.` |
 | Colours come back as "a dark grey" | `Give me exact values. If the script cannot read exact values, say so.` |
 | `git push` fails | Run `gh auth status` in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say `Push again.` |
-| It is RESCUE_TIME_1 and you do not have `design/data` | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **design-data.zip** from the workshop page and tell the agent: `Unzip design-data.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` Then `/clear` and prompt 03. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip design-data.zip in this project, follow RESCUE.md inside it, and commit.` |
+| It is 15:30 and you do not have `design/data` | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **design-data.zip** from the workshop page and tell the agent: `Unzip design-data.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` Then `/clear` and prompt 03. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip design-data.zip in this project, follow RESCUE.md inside it, and commit.` |
 
 ---
 

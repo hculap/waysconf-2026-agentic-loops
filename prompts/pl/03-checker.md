@@ -107,7 +107,7 @@ Jak odróżnić checker, który celowo nie przechodzi, od zepsutego:
 | Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja przeglądarki i narzędzi do dostępności go wymaga. |
 | Raport mówi, że strona się nie ładuje | `Checker ma sam zbudować i serwować stronę. Nie polegaj na serwerze deweloperskim.` |
 | `npm run check -- --url https://example.com` niczego nie zmienia | `Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.` |
-| Jest RESCUE_TIME_2, a checker jest zepsuty (błąd, brak pliku z raportem) | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **checker.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Zawiera własne `design/data`, które zastępuje twoje. Potem `/clear` i prompt 04. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj checker.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
+| Jest 15:50, a checker jest zepsuty (błąd, brak pliku z raportem) | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **checker.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Zawiera własne `design/data`, które zastępuje twoje. Potem `/clear` i prompt 04. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj checker.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
 
 ---
 

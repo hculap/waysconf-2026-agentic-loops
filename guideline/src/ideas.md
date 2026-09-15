@@ -6,15 +6,18 @@
 |---|---|---|
 | 14:55 | Introduction | Listen. |
 | 15:03 | Setup | Open a terminal in the `turbine` folder, start the agent, paste prompt 01. |
-| 15:10 | Design | Put `turbine.fig` in `design/`. Plan mode, prompt 02: the agent plans and builds a decoder, `npm run design`, that writes the design data as JSON. Answer its open questions. |
-| 15:25 | Checker, tests first | Plan mode, prompt 03: the agent writes `npm run check` from the design data before any page exists. The check fails. Demo: a failing check and its report. |
-| 15:40 | Build | Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section. |
-| 15:55 | Loop | Prompt 05: the agent fixes the page until the check passes. |
-| 16:05 | Deploy | `/clear`, prompt 06: the page goes live and the check runs against the live address. |
-| 16:12 | Review | `/clear`, prompt 07: an agent with a fresh context tries to break the page. You pick the real findings; it fixes them, the check still passes, and the page is deployed again. |
-| 16:20 | Limits and questions | Listen, ask. |
+| 15:08 | Design | Put `turbine.fig` in `design/`. Plan mode, prompt 02: the agent plans and builds a decoder, `npm run design`, that writes the design data as JSON. Answer its open questions. |
+| **15:30** | **Rescue 1** | Whatever the agent is doing, press `Esc`. If `design/data` is not there, take `design-data.zip` below. Then `/clear`. |
+| 15:33 | Checker, tests first | Plan mode, prompt 03: the agent writes `npm run check` from the design data before any page exists. The check fails. Demo: a failing check and its report. |
+| **15:50** | **Rescue 2** | `Esc` again. If `npm run check` does not run, take `checker.zip` below. Then `/clear`. |
+| 15:53 | Build | Plan mode, prompt 04: the agent builds the whole page and runs the check once. Review the page section by section while it works. |
+| 16:08 | Loop | `Esc`, commit whatever exists, `/clear`, prompt 05: the agent fixes the page until the check passes. |
+| 16:16 | Deploy | `Esc`, `/clear`, prompt 06: the page goes live and the check runs against the live address. |
+| 16:22 | Limits and questions | Listen, ask. |
 
-Prompts 02 to 05 build on each other: the checker needs the design data, the page needs the checker. If a step does not finish in time, use the rescue pack below and go on. Prompt 08 is prompts 01 to 07 as one message, for use after the workshop.
+The two rescue times are on the clock, not on demand. In a full measured run of these prompts one agent needed 23 minutes for prompt 02 and 20 for prompt 03 — longer than the room has. The packs are how everyone reaches a live address anyway, and taking one costs you nothing: it is exactly what that step produces.
+
+Prompts 02 to 05 build on each other: the checker needs the design data, the page needs the checker. Prompt 07 — an agent with a fresh context attacking the page — and prompt 08, all of it as one message, are for after the workshop.
 
 ## Rescue packs
 
@@ -22,8 +25,8 @@ Two downloads made from a complete run of these prompts. Each replaces one step.
 
 | If at | You do not have | Download | Then |
 |---|---|---|---|
-| RESCUE_TIME_1 | `design/data` from prompt 02 | [design-data.zip](../design-data.zip) | Tell the agent `Unzip design-data.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 03. |
-| RESCUE_TIME_2 | a working `npm run check` from prompt 03 | [checker.zip](../checker.zip) | Tell the agent `Unzip checker.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 04. |
+| 15:30 | `design/data` from prompt 02 | [design-data.zip](../design-data.zip) | Tell the agent `Unzip design-data.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 03. |
+| 15:50 | a working `npm run check` from prompt 03 | [checker.zip](../checker.zip) | Tell the agent `Unzip checker.zip from my Downloads folder into this project, run npm install, and commit it.` Then `/clear` and prompt 04. |
 
 ---
 

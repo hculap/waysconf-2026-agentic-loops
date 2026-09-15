@@ -2,16 +2,23 @@
 
 One page. Print it. Keep it on the lectern.
 
-**90 minutes. 14:55 → 16:25.** The buffer is eight minutes and it lives at the end.
-If you are behind, the cut list is at the bottom — use it early, not at 16:20.
+**90 minutes. 14:55 → 16:25.** Every number below the line comes from one complete run of
+prompts 01 to 07 with Claude Code on a clean machine (`node scripts/trial-workshop.mjs`,
+15 September 2026, agent time only, plans approved as fast as a script can type).
 
-The trick that makes ninety minutes fit: **three prompts run while you talk.** 02 builds the
-decoder, 03 writes the checker, 05 runs the loop. Get each one pasted *before* you start the
-block it belongs to, then talk over it.
+| Prompt | Agent time | What it produced |
+|---|---|---|
+| 01 start | 3 min | Astro project, dev server, commit, push |
+| 02 design | 23 min | plan 4, decoder 18, answers 1 · `npm run design`, seven JSON files, images |
+| 03 checker | 20 min | plan 6, checker 14 · eight checks, red on the empty project, report file |
+| 04 build | 24 min | plan 9, build 15 · the whole page, 2 of 8 checks still red |
+| 05 loop | 4 min | two rounds green (13 a11y failures, then the skip link), stopped on the third |
+| 06 deploy | 5 min | site created without questions, live URL, `check --url` against it |
 
-**The order is tests first, deploy last:** export from the .fig (02) → the verifier (03) → the
-page (04) → the loop (05) → review (06) → deploy (07). Prompts 02, 03 and 04 start in plan mode;
-every prompt ends with a commit and push; the room types /clear before the next one.
+**Seventy-nine minutes of agent time.** A person cannot do 02 and 03 in the room and still
+reach a URL, so the rescue packs are the plan, not the fallback: at 15:30 everyone without
+`design/data` takes `design-data.zip`, at 15:50 everyone without a working `npm run check`
+takes `checker.zip`. Announce both from the stage, by the clock, whether or not anyone asks.
 
 ---
 
@@ -20,35 +27,41 @@ every prompt ends with a commit and push; the room types /clear before the next 
 | Clock | Elapsed | Block | Room is… | You must be… |
 |---|---|---|---|---|
 | 14:55 | 0:00 | **The case** | listening | On the finished site within 90 seconds |
-| 15:03 | 0:08 | **Setup** | opening a terminal, cd into the repository, agent up | On "Every step runs the same way" |
-| 15:06 | 0:11 | | **pasting 01** (≈2 min), then /clear | On the terminal slide |
-| 15:10 | 0:15 | **Design in** | **plan mode + 02** — plan, then the decoder runs 10–16 min | "Plan mode, then prompt 02" slide up *before* you speak |
-| 15:20 | 0:25 | **The verifier, tests first** | answering 02's point 6, /clear, **plan mode + 03** — ≈8 min, red on the empty page | "Plan mode, then prompt 03" slide up before you speak |
-| 15:28 | 0:33 | **LIVE DEMO** | watching | Break contrast, show red, show green — under 3 min |
-| 15:35 | 0:40 | **Sprint 1: build** | /clear, **plan mode + 04**, then reviewing the page | Timer visible |
-| 15:47 | 0:52 | | | Two-minute warning, regardless |
-| 15:50 | 0:55 | **The loop, and workflows** | /clear, **pasting 05** — the loop runs alone | Loops running before you say another word |
-| 16:05 | 1:10 | **Review, then ship** | /clear + **06** (review), /clear + **07** (deploy) | Shared URL board on the projector |
-| 16:17 | 1:22 | **Honesty + Monday** | listening | — |
+| 15:03 | 0:08 | **Setup** | terminal, `cd turbine`, agent up, **01** | On "Every prompt runs the same way" |
+| 15:08 | 0:13 | **Design in** | plan mode, **02**, approving the plan | "Plan mode, then prompt 02" slide up *before* you speak |
+| 15:30 | 0:35 | **RESCUE 1** | `design-data.zip`, then `/clear` | Saying the clock time out loud, twice |
+| 15:33 | 0:38 | **The verifier, tests first** | plan mode, **03**, approving | Live demo at 15:40, under 3 minutes |
+| 15:50 | 0:55 | **RESCUE 2** | `checker.zip`, then `/clear` | Same again: by the clock, not by hands |
+| 15:53 | 0:58 | **Sprint: build** | plan mode, **04**, then reviewing the page | Timer visible; workflows block runs over it |
+| 16:08 | 1:13 | **The loop** | Esc, commit, `/clear`, **05** running | Loops started before you say another word |
+| 16:16 | 1:21 | **Ship it** | Esc, `/clear`, **06** deploys | Shared URL board on the projector |
+| 16:22 | 1:27 | **Honesty + Monday** | listening, URLs appearing | — |
 | 16:25 | 1:30 | Done | photographing the address | Closing slide up through questions |
 
-**08 is not run in the room.** It is the whole workshop as one message, with `ultracode` and
-subagents. Show it on the adversarial-review slide and tell them to take it home.
+**07 and 08 are homework.** 07 is the fresh-session review; 08 is the whole run as one
+message. Show them, do not run them.
 
 ---
 
-## The three sprints
+## What the trial run did that you should tell them
 
-**Sprint 1, build — 15 min.** The checker from 03 exists and is red. 04 plans the page from
-design/data, builds all of it and runs the check once: fewer failures, still red. They review the
-page beside Figma, section by section. Success: something of theirs renders and the report shrank.
+**Prompt 05 stopped instead of passing.** Round 1 cleared thirteen axe failures (a `<ul>` given
+`role="tabpanel"` had stopped being a list). Round 2 moved the skip link inside the `<nav>`.
+Round 3 it would not do: the checker wanted copy from Figma layers that are switched off, and
+both ways to green were lies — `sr-only` text telling a screen reader that the cheapest ticket
+is "Most popular", or `hidden` elements nobody ever reaches. It wrote the argument into
+`notes.md` and asked. If someone's agent does this, the answer is: *the layer is off, so the
+text is not on the page. Change the check to ignore switched-off layers, and write in notes.md
+that you did.*
 
-**Sprint 2 — runs in the background.** Needs 03 to have finished: npm run check is created
-there. Check by show of hands that two thirds have 05 looping before you move on.
+**It found a real bug.** The mobile menu at 390px has five links the checker sees in the DOM and
+never rendered after the menu opens. Nobody had looked at that width by hand.
 
-**Sprint 3, review and ship — 12 min.** 06 in a fresh session attacks the page; they fix what is
-real. 07 deploys and checks that the served page is the page that passed. Everyone gets a URL on
-the board. Short on time: skip 06.
+**The live check failed on Netlify's own widget.** `check --url` went red on two contrast
+failures in the HUD that Netlify injects at serve time — elements that are not in `dist`. The
+agent said so and changed nothing. Use this if anyone asks what a checker costs you.
+
+**It kept the checker.** No step edited `npm run check` to make a failure go away.
 
 ---
 
@@ -56,13 +69,11 @@ the board. Short on time: skip 06.
 
 - Finished site open in a tab — turbine-festival.netlify.app
 - waysconf.szymonpaluch.com on the room's screen as people come in
-- Terminal at a readable font size — **18pt minimum**, checked from the back row
-- A failing `checks/report.md` from this repository already open in an editor, for the demo
+- Terminal at 18pt minimum, checked from the back row
+- A failing `check-report.md` open in an editor, for the demo
 - Shared URL board open and tested
 - Phone hotspot on and tested
-- **Record the live contrast demo** — there is no recording yet. Screen-record one clean
-  run: change a class to the muted colour, `npm run check`, red, hand the report back,
-  green. Without it, a dead wifi means skipping the demo.
+- **Recording of the contrast repair**, in case the demo fails or the wifi dies
 
 ---
 
@@ -71,18 +82,17 @@ the board. Short on time: skip 06.
 Use these the moment you are five minutes down, not at the end.
 
 1. **"Why a fresh context beats a long one"** — the idea survives in "The whole loop is four sentences".
-2. **"Where loops actually fail"** — say it is on the workshop page, under the ideas.
-3. **The workflows block** — reduce to the two-shapes diagram and prompt 08 as take-home.
-   Costs 4 minutes.
-4. **The live demo** — show the failure report slide instead and move on. Costs 3 minutes.
-5. **Sprint 3 down to deploy only** — skip prompt 06, everyone runs 07. Costs 6 minutes. **Last resort
-   for the URL**: you deploy on screen, they run prompt 07 afterwards from the page.
+2. **"Where loops actually fail"** — it is on the workshop page, under the ideas.
+3. **Six workflow patterns** — the page has all six with drawings. Costs 3 minutes.
+4. **The live demo** — show the failing report slide instead. Costs 3 minutes.
+5. **Prompt 05 in the room** — deploy at 16:08 instead. Everyone still leaves with a URL,
+   and the loop is the one thing they can finish at home from the page.
 
-**Never cut prompt 03.** Without it prompts 04 and 05 have nothing to check against, and
-sprint 2 is dead for the whole room. Cut the demo first.
+**Never cut prompt 03 or the rescue announcements.** Without a checker, 04 and 05 have
+nothing to check against; without the rescue times, a third of the room silently falls out of
+the workshop between 15:30 and 16:00.
 
-Never cut: the fake-loop-vs-real-loop slide, prompt 03, or the honesty slide. Those three
-are the talk.
+Never cut: the fake-loop-vs-real-loop slide, the deploy, or the honesty slide.
 
 ---
 
@@ -90,11 +100,12 @@ are the talk.
 
 | What | Do |
 |---|---|
-| Prompt 02 still decoding at 0:35 for most of the room | Normal-ish — it is the long one. Start sprint 1 anyway; they read the findings when they land. |
-| Someone's decoder still fails after ten minutes | Tell them to download turbine.fig again and restart prompt 02 with /clear; if it fails twice, pair them with a neighbour's design/data. |
-| Claude Code asks before every command | Tell the room to pick the option that stops asking for that kind of command. |
-| Wifi dies | Play the recording if you made one. Otherwise switch to reading the prompts page together. |
+| Someone's decoder is still running at 15:30 | That is the normal case, not a failure. `design-data.zip`, `/clear`, prompt 03. |
+| Someone's checker is broken at 15:50 | `checker.zip`, `/clear`, prompt 04. It carries the design data it was written against. |
+| An agent asks before every command | Tell the room to choose "Yes, and don't ask again" once per kind of command, and to switch on accept edits before 05. |
+| Claude Code asks to approve a plan and nobody understands it | Three things only: it writes files where the prompt says, it does not touch the checker, it is one script. Approve. |
+| A page is not built by 16:08 | Esc, commit what exists, deploy it. A half-built page with a red report is the honest artefact. |
+| The Netlify CLI fights someone | Drag `dist` onto app.netlify.com/drop, claim the site, then `netlify link --name <site>`. |
+| Wifi dies | Play the recording. Then read the prompts page together and talk through what each step would do. |
 | An agent provider is down | Everyone to the other one. The prompts are identical on both. |
-| The live demo fails | Say so, run it once more. If it fails twice, show the report slide and move on. Do not debug on stage. |
-| More than five people stuck on the same thing | Stop the room, fix it together, cut sprint 1 to the hero. |
-| Ten minutes over at 16:10 | Skip to deploy. The URL matters more than the workflows block. |
+| Ten minutes over at 16:10 | Skip 05. Go straight to deploy. The URL matters more than the loop. |

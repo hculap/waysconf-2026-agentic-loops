@@ -6,15 +6,18 @@
 |---|---|---|
 | 14:55 | Wprowadzenie | Słuchasz. |
 | 15:03 | Start | Otwierasz terminal w folderze `turbine`, uruchamiasz agenta, wklejasz prompt 01. |
-| 15:10 | Projekt | Wkładasz `turbine.fig` do `design/`. Plan mode, prompt 02: agent planuje i buduje dekoder `npm run design`, który zapisuje dane projektu w JSON. Odpowiadasz na jego otwarte pytania. |
-| 15:25 | Checker, najpierw testy | Plan mode, prompt 03: agent pisze `npm run check` z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport. |
-| 15:40 | Budowa | Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. Przeglądasz stronę sekcja po sekcji. |
-| 15:55 | Pętla | Prompt 05: agent poprawia stronę, aż test przejdzie. |
-| 16:05 | Publikacja | `/clear`, prompt 06: strona trafia na produkcję, a test uruchamia się na adresie na żywo. |
-| 16:12 | Review | `/clear`, prompt 07: agent ze świeżym kontekstem próbuje zepsuć stronę. Wybierasz prawdziwe uwagi; agent je poprawia, test dalej przechodzi, a strona jest publikowana ponownie. |
-| 16:20 | Ograniczenia i pytania | Słuchasz, pytasz. |
+| 15:08 | Projekt | Wkładasz `turbine.fig` do `design/`. Plan mode, prompt 02: agent planuje i buduje dekoder `npm run design`, który zapisuje dane projektu w JSON. Odpowiadasz na jego otwarte pytania. |
+| **15:30** | **Ratunek 1** | Cokolwiek agent robi, naciskasz `Esc`. Jeśli nie ma `design/data`, bierzesz `design-data.zip` poniżej. Potem `/clear`. |
+| 15:33 | Checker, najpierw testy | Plan mode, prompt 03: agent pisze `npm run check` z danych projektu, zanim powstanie jakakolwiek strona. Test nie przechodzi. Pokaz: test, który nie przechodzi, i jego raport. |
+| **15:50** | **Ratunek 2** | Znowu `Esc`. Jeśli `npm run check` nie działa, bierzesz `checker.zip` poniżej. Potem `/clear`. |
+| 15:53 | Budowa | Plan mode, prompt 04: agent buduje całą stronę i raz uruchamia test. W tym czasie przeglądasz stronę sekcja po sekcji. |
+| 16:08 | Pętla | `Esc`, commit tego, co jest, `/clear`, prompt 05: agent poprawia stronę, aż test przejdzie. |
+| 16:16 | Publikacja | `Esc`, `/clear`, prompt 06: strona trafia na produkcję, a test uruchamia się na adresie na żywo. |
+| 16:22 | Ograniczenia i pytania | Słuchasz, pytasz. |
 
-Prompty od 02 do 05 zależą od siebie: checker potrzebuje danych projektu, a strona checkera. Jeśli krok nie skończy się na czas, użyj paczki awaryjnej poniżej i idź dalej. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.
+Obie godziny ratunkowe są z zegara, nie na życzenie. W pełnym, zmierzonym przebiegu tych promptów agentowi zeszło 23 minuty na prompt 02 i 20 na prompt 03 — dłużej, niż mamy w sali. Paczki są sposobem, żeby mimo to każdy wyszedł z działającym adresem, a wzięcie paczki nic nie kosztuje: to dokładnie to, co produkuje dany krok.
+
+Prompty od 02 do 05 zależą od siebie: checker potrzebuje danych projektu, a strona checkera. Prompt 07 — agent ze świeżym kontekstem atakujący stronę — i prompt 08, czyli całość w jednej wiadomości, są na po warsztacie.
 
 ## Paczki awaryjne
 
@@ -22,8 +25,8 @@ Dwie paczki z pełnego przebiegu tych promptów. Każda zastępuje jeden krok.
 
 | Jeśli o | Nie masz | Pobierz | Potem |
 |---|---|---|---|
-| RESCUE_TIME_1 | `design/data` z promptu 02 | [design-data.zip](../../design-data.zip) | Napisz agentowi `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 03. |
-| RESCUE_TIME_2 | działającego `npm run check` z promptu 03 | [checker.zip](../../checker.zip) | Napisz agentowi `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 04. |
+| 15:30 | `design/data` z promptu 02 | [design-data.zip](../../design-data.zip) | Napisz agentowi `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 03. |
+| 15:50 | działającego `npm run check` z promptu 03 | [checker.zip](../../checker.zip) | Napisz agentowi `Rozpakuj checker.zip z mojego folderu Pobrane do tego projektu, uruchom npm install i zrób commit.` Potem `/clear` i prompt 04. |
 
 ---
 

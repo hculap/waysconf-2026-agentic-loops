@@ -106,7 +106,7 @@ How to tell a checker that fails on purpose from a broken one:
 | Codex asks to use the network | Answer yes. Installing the browser and the accessibility tools needs it. |
 | The report says the page will not load | `The checker must build the site and serve it itself. Do not rely on a development server.` |
 | `npm run check -- --url https://example.com` does nothing different | `The checker must accept --url and run the same checks against that address.` |
-| It is RESCUE_TIME_2 and the checker is broken (an error, no report file) | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **checker.zip** from the workshop page and tell the agent: `Unzip checker.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` It contains its own `design/data`, which replaces yours. Then `/clear` and prompt 04. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip checker.zip in this project, follow RESCUE.md inside it, and commit.` |
+| It is 15:50 and the checker is broken (an error, no report file) | Press Esc. If the footer says plan mode, press Shift+Tab until it does not (Codex: leave /plan with /plan again or Esc). Download **checker.zip** from the workshop page and tell the agent: `Unzip checker.zip from my Downloads folder into this project, follow RESCUE.md inside it, and commit.` It contains its own `design/data`, which replaces yours. Then `/clear` and prompt 04. In a Codespace, drag the zip from your computer into the file list on the left, then say `Unzip checker.zip in this project, follow RESCUE.md inside it, and commit.` |
 
 ---
 

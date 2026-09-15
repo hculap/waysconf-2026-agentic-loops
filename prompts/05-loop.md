@@ -91,7 +91,7 @@ line per round. When `npm run check` exits 0, the agent commits and pushes.
 | The same failure keeps coming back | `You have tried that three times. Stop. Tell me what you tried and what happened each time.` |
 | It says it is done but the check is red | `Run npm run check and paste the last five lines, unedited.` |
 | It gets slower and vaguer | The context is full. Say `Write what is left into notes.md in ten lines`, type `/clear`, then paste this prompt again. |
-| It is LOOP_END and the check still fails | Press Esc (and type `/goal clear` if you used `/goal`), then say `Stop. Write where you are into notes.md, commit and push.` Then `/clear` and prompt 06. |
+| It is 16:16 and the check still fails | Press Esc (and type `/goal clear` if you used `/goal`), then say `Stop. Write where you are into notes.md, commit and push.` Then `/clear` and prompt 06. |
 
 ---
 

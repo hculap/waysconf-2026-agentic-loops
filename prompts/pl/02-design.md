@@ -103,7 +103,7 @@ wyczyścić sesję.
 
 **Oczekiwany wynik.** Najpierw plan: jak skrypt czyta plik, jakiej paczki używa i jaki kształt
 ma każdy plik JSON. Przeczytaj go, popraw zwykłymi słowami albo zatwierdź. Potem agent pisze
-i uruchamia dekoder. Może to potrwać dłużej, niż pozwala warsztat: o RESCUE_TIME_1 każdy,
+i uruchamia dekoder. Może to potrwać dłużej, niż pozwala warsztat: o 15:30 każdy,
 kto nie ma jeszcze `design/data`, bierze paczkę awaryjną (ostatni wiersz tabeli niżej). Na końcu
 jest `npm run design`, w `design/data` siedem plików JSON, w `design/images` zdjęcia, a w czacie
 lista z sześcioma punktami.
@@ -145,7 +145,7 @@ Po twoich odpowiedziach agent robi commit i push.
 | Każda karta artysty ma to samo imię | `Czytasz komponent, a nie instancje. Rozwiąż w skrypcie właściwości komponentu i nadpisania.` |
 | Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli skrypt nie potrafi ich odczytać, powiedz to.` |
 | `git push` nie działa | Uruchom `gh auth status` w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz `Zrób push jeszcze raz.` |
-| Jest RESCUE_TIME_1, a nie masz `design/data` | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **design-data.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Potem `/clear` i prompt 03. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj design-data.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
+| Jest 15:30, a nie masz `design/data` | Naciśnij Esc. Jeśli stopka pokazuje plan mode, naciskaj Shift+Tab, aż zniknie (Codex: wyjdź z /plan, wpisując /plan jeszcze raz albo Esc). Pobierz **design-data.zip** ze strony warsztatu i powiedz agentowi: `Rozpakuj design-data.zip z mojego folderu Pobrane do tego projektu, zrób to, co mówi RESCUE.md w środku, i zrób commit.` Potem `/clear` i prompt 03. W Codespace przeciągnij zip ze swojego komputera na listę plików po lewej, potem powiedz `Rozpakuj design-data.zip w tym projekcie, zrób to, co mówi RESCUE.md w środku, i zrób commit.` |
 
 ---
 

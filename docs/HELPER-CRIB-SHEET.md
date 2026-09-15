@@ -13,7 +13,7 @@ rather than in a setup problem.
 
 **Rescue A — skip forward.** They have fallen behind. Prompts 02 to 05 build on each other,
 so skipping a step means taking its result from a rescue pack on the workshop page: at
-RESCUE_TIME_1, `design-data.zip` replaces prompt 02; at RESCUE_TIME_2, `checker.zip` replaces
+15:30, `design-data.zip` replaces prompt 02; at 15:50, `checker.zip` replaces
 prompt 03 and brings its own `design/data`. The last row of the table in prompt 02 and in
 prompt 03 has the exact words to say. A half-built page with a working checker teaches more
 than a finished page with none.
@@ -24,7 +24,7 @@ Press Esc, then say to their agent:
 Then type /clear and paste the next prompt.
 ```
 
-At BUILD_END (prompt 04) and LOOP_END (prompt 05) the last row of the prompt's table says
+At 16:08 (prompt 04) and 16:16 (prompt 05) the last row of the prompt's table says
 the same. The current prompt number is always on the slide in the corner. Reassure them
 that moving on is the designed path, not giving up.
 

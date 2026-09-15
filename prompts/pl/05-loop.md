@@ -94,7 +94,7 @@ na rundę. Kiedy `npm run check` zwróci kod 0, agent robi commit i push.
 | Ten sam błąd wraca w kółko | `Próbowałeś tego trzy razy. Stop. Powiedz mi, co próbowałeś i co się stało za każdym razem.` |
 | Mówi, że skończone, a test jest czerwony | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
 | Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. Powiedz `Zapisz do notes.md, co zostało, w dziesięciu linijkach`, wpisz `/clear`, potem wklej ten prompt jeszcze raz. |
-| Jest LOOP_END, a test dalej nie przechodzi | Naciśnij Esc (i wpisz `/goal clear`, jeśli użyłeś `/goal`), potem powiedz `Stop. Zapisz do notes.md, gdzie jesteś, zrób commit i push.` Potem `/clear` i prompt 06. |
+| Jest 16:16, a test dalej nie przechodzi | Naciśnij Esc (i wpisz `/goal clear`, jeśli użyłeś `/goal`), potem powiedz `Stop. Zapisz do notes.md, gdzie jesteś, zrób commit i push.` Potem `/clear` i prompt 06. |
 
 ---
 
