@@ -8,13 +8,11 @@ wygenerowanego kodu — później.
 
 ## Najpierw włóż plik do projektu
 
-1. Otwórz plik TURBINE i wybierz **Duplicate to your drafts**. Teraz jest twój, możesz w nim grzebać.
-2. Menu główne (ikona Figmy w lewym górnym rogu) → **File** → **Save local copy…**
-3. Figma zapisze jeden plik z końcówką **`.fig`**. W folderze projektu załóż folder `design`
-   i włóż go tam.
+1. Na stronie warsztatu kliknij **Pobierz turbine.fig**.
+2. W folderze projektu załóż folder `design` i włóż do niego plik.
 
-Nie masz konta w Figmie? Na stronie warsztatu jest ten sam plik do pobrania. Włóż go w to
-samo miejsce.
+Druga karta na tej stronie otwiera ten sam projekt w Figmie, żeby oglądać go, kiedy agent
+pracuje.
 
 **W projekcie, nie obok niego.** Agent pracuje wewnątrz folderu projektu. Claude Code pyta,
 zanim przeczyta cokolwiek spoza tego folderu, a plik piętro wyżej zamienia się w pytanie
@@ -124,7 +122,6 @@ nową sesję, te dwa miejsca razem to wszystko, co nowa sesja wie.
 | Zaczyna budować | `Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.` |
 | Zostawia wszystko na jeden wielki opis na końcu | `Zapisz teraz docs/colours.md z tego, co już przeczytałeś, i jedź dalej.` |
 | Dokument jest ubogi albo brakuje w nim wartości | `W docs/typography.md nie ma interlinii. Odczytaj je z pliku i dopisz.` |
-| W menu nie ma „Save local copy" | Jesteś w pliku, który możesz tylko oglądać. Najpierw zduplikuj go do swoich draftów i zapisz ze swojej kopii. |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
 | Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
 | „Nie mogę otworzyć pliku binarnego" | `To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |

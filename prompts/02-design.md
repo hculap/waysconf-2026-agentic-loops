@@ -8,13 +8,11 @@ here, and twenty minutes of generated code to fix later.
 
 ## First, put the file in your project
 
-1. Open the TURBINE file and **Duplicate to your drafts**. It is yours now; poke at it.
-2. Main menu (the Figma icon, top left) → **File** → **Save local copy…**
-3. Figma saves one file ending in **`.fig`**. Inside your project folder, make a folder
-   called `design` and put the file in it.
+1. On the workshop page, click **Download turbine.fig**.
+2. Inside your project folder, make a folder called `design` and put the file in it.
 
-No Figma account? The workshop page has the same file ready to download. Put it in the
-same place.
+The other card on that page opens the same design in Figma, for looking at while the agent
+works.
 
 **Inside the project, not beside it.** Your agent works inside the project folder. Claude
 Code asks before it reads anything outside that folder, and a file one level up turns into
@@ -127,7 +125,6 @@ fresh session, the two together are what the new one knows.
 | It starts building | `Stop. I asked what you found, not for code. Undo anything you wrote.` |
 | It keeps everything for one big write-up at the end | `Write docs/colours.md now, from what you have read so far, then carry on.` |
 | A document is thin, or a value is missing from it | `docs/typography.md has no line heights. Read them from the file and add them.` |
-| There is no "Save local copy" in the menu | You are in a file you can only view. Duplicate it to your drafts first and save from your copy. |
 | It asks to read a file outside the folder | The `.fig` is beside the project, not in it. Move it into `design` inside the project and say `It is in design now.` |
 | It searches your disk, or reads another project | `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
 | "I cannot open binary files" | `It is a zip. Unzip it and decode canvas.fig as described in my last message.` |

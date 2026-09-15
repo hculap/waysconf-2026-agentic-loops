@@ -193,8 +193,8 @@ The moment an agent is up, prompt 01 goes in. It takes about two minutes.
 
 ### The design
 
-The TURBINE file in Figma, saved as one **`.fig`** that your agent reads by itself. No
-Figma account? The same file is on the page.
+**`turbine.fig`**, downloaded from the page — the file your agent reads. The same page
+opens the design in Figma, to look at.
 
 ### The prompts
 
@@ -230,9 +230,8 @@ Anyone who skipped the preparation page has no turbine repository: gh repo creat
 --private --clone, then cd turbine. That page ends with a prompt that has the agent check the
 whole setup — the people who ran it will not be the ones with their hands up.
 
-The .fig is on the page too, for anyone without a Figma account. Say it is the same file,
-not a lesser route — people who take it because they have to will otherwise spend the
-session feeling behind.
+Everyone downloads the same turbine.fig from the page; nobody needs a Figma account to take
+part. The Figma link is for looking at the design, not for getting it out.
 -->
 
 ---
@@ -417,7 +416,7 @@ free account that budget is 20 calls a month — gone before the design is read.
 ### So you hand over the file
 
 ```txt
-File → Save local copy → turbine.fig
+turbine.fig    from the workshop page
   canvas.fig   the whole document
   images/      every photo
 ```

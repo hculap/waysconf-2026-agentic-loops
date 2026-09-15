@@ -345,37 +345,16 @@ do poprawienia.`,
     ],
   ],
 
-  exportSteps: {
-    steps: [
-      '<b>Zduplikuj.</b> Otwórz plik i wybierz <strong>Duplicate to your drafts</strong>. W pliku, który możesz tylko oglądać, zapisu lokalnej kopii może nie być.',
-      '<b>Zapisz lokalną kopię.</b> Otwórz menu główne (ikona Figmy w lewym górnym rogu), potem <strong>File</strong> → <strong>Save local copy…</strong>',
-      '<b>Dostajesz jeden plik <code>.fig</code>.</b> W folderze projektu załóż folder <code>design</code> i włóż do niego plik — po tym, jak prompt 01 utworzy projekt.',
-    ],
-    rules: [
-      '<b>Plik, a nie jego zdjęcie.</b> <code>.fig</code> to sam design — tekst jako tekst, kolory jako wartości, zmienne, komponenty i zdjęcia — więc agent czyta design, zamiast zgadywać ze zdjęcia.',
-      '<b>Agent sam go rozkoduje i może do tego potrzebować internetu.</b> Poza Figmą nic nie otwiera plików <code>.fig</code>, więc agent rozgryza format sam, czasem z małą paczką, którą instaluje. Na sali jest sieć. Jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.',
-      '<b>W projekcie, nie obok niego.</b> Agent pracuje wewnątrz folderu projektu, a Claude Code pyta, zanim przeczyta cokolwiek spoza niego — plik piętro wyżej zamienia się w pytanie, na którym agent musi się zatrzymać.',
-    ],
-  },
-
   during: {
     promptsHeading: 'Osiem promptów',
-    figmaTitle: 'Design, w Figmie',
-    figmaReady:
-      'Otwórz i wybierz <strong>Duplicate to your drafts</strong>. Jest twój — grzeb w nim, psuj, nic się nie stanie.',
-    figmaReadyCta: 'Otwórz w Figmie',
-    figmaPending:
-      'Link pojawi się tutaj w dniu warsztatu. Zduplikujesz plik do siebie i zapiszesz lokalną kopię ze swojej wersji.',
-    figmaPendingCta: 'Link w dniu warsztatu',
-    exportTitle: 'Potem zapisz kopię',
-    exportBody:
-      'File → Save local copy — Figma daje ci jeden plik <code>.fig</code>. Ten plik czyta twój agent.',
-    exportCta: 'Dwa kliknięcia · niżej',
-    packAlt: (href, figHref) =>
-      `Nie masz konta w Figmie albo coś nie idzie? <a href="${figHref}" download>Pobierz turbine.fig</a> (5&nbsp;MB) — ten sam plik, już zapisany. <a href="${href}" download>Gotowa paczka</a> (7&nbsp;MB) to ten sam design jako obrazy, tokeny i teksty — <em>opcjonalna</em>, na wypadek gdyby agent nie dał rady z plikiem.`,
-    exportHeading: 'Jak wyciągnąć design z Figmy',
-    exportIntro:
-      'Twój agent nie widzi twojego ekranu. Potrzebuje designu jako pliku, a Figma zapisze cały design w jednym.',
+    designTitle: 'Zobacz projekt',
+    designBody: 'Otwiera plik TURBINE w Figmie. Możesz w nim oglądać projekt, kiedy agent pracuje.',
+    designCta: 'Otwórz w Figmie',
+    fileTitle: 'Pobierz turbine.fig',
+    fileBody: (size) => `Ten sam projekt jako jeden plik (${size}). Ten plik czyta agent.`,
+    fileCta: 'Pobierz',
+    fileNote:
+      'Kiedy prompt 01 utworzy projekt, załóż w folderze projektu folder <code>design</code> i włóż do niego <code>turbine.fig</code>. Nie obok projektu: Claude Code pyta o zgodę, zanim przeczyta plik spoza folderu projektu.',
   },
 
   pages: {

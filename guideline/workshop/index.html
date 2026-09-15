@@ -219,7 +219,6 @@ footer p{font-size:14px;color:var(--fg-3)}
 <nav class="toc" aria-label="On this page">
   <p class="toc__t">On this page</p>
   <ol>
-    <li><a href="#getting-the-design-out-of-figma">Getting the design out of Figma</a></li>
     <li><a href="#the-ninety-minutes">The ninety minutes</a></li>
     <li><a href="#most-ai-demos-stop-at-wow">Most AI demos stop at wow</a></li>
     <li><a href="#the-loop">The loop</a></li>
@@ -260,28 +259,11 @@ footer p{font-size:14px;color:var(--fg-3)}
 <h1>During the workshop</h1>
 <p class="lede">You need the design and this page. There is nothing to clone and no code to read — everything else, your agent makes for itself.</p>
 <div class="need">
-  <a href="https://github.com/hculap/waysconf-2026-agentic-loops"><b>The design, in Figma</b><span>The link goes here on the day. You will duplicate it to your own drafts and save a local copy from there.</span><em>Link on the day</em></a>
-  <a href="#getting-the-design-out-of-figma"><b>Then save a copy</b><span>File → Save local copy, and Figma gives you one <code>.fig</code> file. That file is what your agent reads.</span><em>Two clicks · below</em></a>
+  <a href="https://www.figma.com/design/OeDnL6CcJ0zFlWSEO8YfWD/Turbine?node-id=1-3"><b>View the design</b><span>Opens the TURBINE file in Figma. Use it to look at the design while your agent works.</span><em>Open in Figma</em></a>
+  <a href="../turbine.fig" download><b>Download turbine.fig</b><span>The same design as one file (4.7&nbsp;MB). This is the file your agent reads.</span><em>Download</em></a>
 </div>
 
-<p class="need__alt">No Figma account, or it is being difficult? <a href="../turbine.fig" download>Download turbine.fig</a> (5&nbsp;MB), the same file already saved. The <a href="../design-pack.zip" download>ready-made pack</a> (7&nbsp;MB) is the same design as pictures, tokens and copy — <em>optional</em>, for an agent that cannot read the file.</p>
-
-<h2 id="getting-the-design-out-of-figma">Getting the design out of Figma</h2>
-
-<p>Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.</p>
-
-
-<ol class="steps">
-  <li><b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. In a file you can only view, saving a local copy may not be offered.</li>
-  <li><b>Save a local copy.</b> Open the main menu (the Figma icon, top left), then <strong>File</strong> → <strong>Save local copy…</strong></li>
-  <li><b>You get one <code>.fig</code> file.</b> Inside your project folder, make a folder called <code>design</code> and put the file in it — after prompt 01 has created the project.</li>
-</ol>
-
-<div class="rules">
-  <div><b>The file, not a picture of it.</b> A <code>.fig</code> is the design itself — the text as text, the colours as values, the variables, the components and the photos — so the agent reads the design instead of guessing at a photograph of it.</div>
-  <div><b>Your agent decodes it, and may need the internet to do so.</b> Nothing outside Figma opens a <code>.fig</code>, so the agent works the format out itself, sometimes with a small package it installs. The room has network. If Codex asks to go online, say yes.</div>
-  <div><b>Inside the project, not beside it.</b> Your agent works inside the project folder, and Claude Code asks before it reads anything outside it — a file one level up turns into a question the agent has to stop for.</div>
-</div>
+<p class="need__alt">After prompt 01 has created the project, make a folder named <code>design</code> inside the project folder and put <code>turbine.fig</code> in it. Not next to the project: Claude Code asks for permission before reading files outside the project folder.</p>
 <p>Paste each prompt whole. The rules in them matter as much as the request, and cutting a prompt down to its first sentence is the commonest way to get a disappointing answer.</p>
 <hr>
 <p>Everything on the slides, on one page, so you can read it back afterwards instead of photographing a screen. The pictures are the same ones on the wall, and they are yours to reuse.</p>
@@ -443,9 +425,8 @@ before and I would like to follow along.</code></pre></div>
   <p>The agent reads the design and tells you what it found. It writes no page yet. This is the cheapest correction you will get all day: a wrong assumption costs one sentence to fix here, and twenty minutes of generated code to fix later.</p>
 <hr>
 <h2 id="first-put-the-file-in-your-project">First, put the file in your project</h2>
-<ol><li>Open the TURBINE file and <strong>Duplicate to your drafts</strong>. It is yours now; poke at it.</li><li>Main menu (the Figma icon, top left) → <strong>File</strong> → <strong>Save local copy…</strong></li><li>Figma saves one file ending in <strong><code>.fig</code></strong>. Inside your project folder, make a folder</li></ol>
-<p>   called <code>design</code> and put the file in it.</p>
-<p>No Figma account? The workshop page has the same file ready to download. Put it in the same place.</p>
+<ol><li>On the workshop page, click <strong>Download turbine.fig</strong>.</li><li>Inside your project folder, make a folder called <code>design</code> and put the file in it.</li></ol>
+<p>The other card on that page opens the same design in Figma, for looking at while the agent works.</p>
 <p><strong>Inside the project, not beside it.</strong> Your agent works inside the project folder. Claude Code asks before it reads anything outside that folder, and a file one level up turns into a permission question the agent has to stop for.</p>
 <p><strong>The file, not a picture of it.</strong> A PNG is a picture of the design: the agent has to infer every colour and every measurement from pixels, and it will be <em>nearly</em> right — which is exactly what fails a contrast check and looks subtly wrong next to the real thing. The <code>.fig</code> is the design itself: the text as text, the colours as values, the variables, the components and the photos. There is nothing left to infer.</p>
 <p>Your agent has no program that opens a <code>.fig</code>, so it decodes the file itself. That takes it ten to fifteen minutes, and it may install a small package from the internet to do it. <strong>The room has network, so let it</strong> — if Codex asks before going online, say yes.</p>
@@ -524,7 +505,7 @@ Then stop and wait for me to answer point 6.</code></pre></div>
 <p><code>docs</code> matters later. It is the design written down: every prompt after this one builds and checks against those documents, not against the <code>.fig</code>, and you can open them yourself — they are plain text. <code>notes.md</code> holds the open questions, and if you ever have to start a fresh session, the two together are what the new one knows.</p>
 <hr>
 <h3>If it goes wrong</h3>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>It keeps everything for one big write-up at the end</td><td><code>Write docs/colours.md now, from what you have read so far, then carry on.</code></td></tr><tr><td>A document is thin, or a value is missing from it</td><td><code>docs/typography.md has no line heights. Read them from the file and add them.</code></td></tr><tr><td>There is no &quot;Save local copy&quot; in the menu</td><td>You are in a file you can only view. Duplicate it to your drafts first and save from your copy.</td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building</td><td><code>Stop. I asked what you found, not for code. Undo anything you wrote.</code></td></tr><tr><td>It keeps everything for one big write-up at the end</td><td><code>Write docs/colours.md now, from what you have read so far, then carry on.</code></td></tr><tr><td>A document is thin, or a value is missing from it</td><td><code>docs/typography.md has no line heights. Read them from the file and add them.</code></td></tr><tr><td>It asks to read a file outside the folder</td><td>The <code>.fig</code> is beside the project, not in it. Move it into <code>design</code> inside the project and say <code>It is in design now.</code></td></tr><tr><td>It searches your disk, or reads another project</td><td><code>Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.</code></td></tr><tr><td>&quot;I cannot open binary files&quot;</td><td><code>It is a zip. Unzip it and decode canvas.fig as described in my last message.</code></td></tr><tr><td>It describes a small, blurry page</td><td>It read <code>thumbnail.png</code>. <code>That is the preview picture. Work from canvas.fig.</code></td></tr><tr><td><code>zstd</code> is not supported, or decompression fails</td><td>Your Node is older than 22.15. <code>Install a package that reads zstd and carry on.</code></td></tr><tr><td>Codex asks to use the network</td><td>Say yes. Installing a package needs it, and the room has it.</td></tr><tr><td>Claude Code asks before every command</td><td>Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command.</td></tr><tr><td>Every artist card has the same name</td><td><code>You are reading the component, not the instances. Resolve the component properties and overrides.</code></td></tr><tr><td>Colours come back as &quot;a dark grey&quot;</td><td><code>Give me exact values. If you cannot read exact values, say so — do not describe them.</code></td></tr><tr><td>Ten minutes in, it still cannot read the file</td><td>Download the ready-made pack from the workshop page, put it in <code>design</code>, and say <code>Use the pack in the design folder instead.</code></td></tr></tbody></table></div>
 <hr>
 <h3>Why this prompt exists at all</h3>
 <p>It produces no page. That is the point.</p>

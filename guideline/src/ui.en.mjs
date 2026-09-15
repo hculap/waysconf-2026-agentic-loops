@@ -347,37 +347,16 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
     ],
   ],
 
-  exportSteps: {
-    steps: [
-      '<b>Duplicate it.</b> Open the file, then <strong>Duplicate to your drafts</strong>. In a file you can only view, saving a local copy may not be offered.',
-      '<b>Save a local copy.</b> Open the main menu (the Figma icon, top left), then <strong>File</strong> → <strong>Save local copy…</strong>',
-      '<b>You get one <code>.fig</code> file.</b> Inside your project folder, make a folder called <code>design</code> and put the file in it — after prompt 01 has created the project.',
-    ],
-    rules: [
-      '<b>The file, not a picture of it.</b> A <code>.fig</code> is the design itself — the text as text, the colours as values, the variables, the components and the photos — so the agent reads the design instead of guessing at a photograph of it.',
-      '<b>Your agent decodes it, and may need the internet to do so.</b> Nothing outside Figma opens a <code>.fig</code>, so the agent works the format out itself, sometimes with a small package it installs. The room has network. If Codex asks to go online, say yes.',
-      '<b>Inside the project, not beside it.</b> Your agent works inside the project folder, and Claude Code asks before it reads anything outside it — a file one level up turns into a question the agent has to stop for.',
-    ],
-  },
-
   during: {
     promptsHeading: 'The eight prompts',
-    figmaTitle: 'The design, in Figma',
-    figmaReady:
-      'Open it, then <strong>Duplicate to your drafts</strong>. It is yours — poke at it, break it, it does not matter.',
-    figmaReadyCta: 'Open in Figma',
-    figmaPending:
-      'The link goes here on the day. You will duplicate it to your own drafts and save a local copy from there.',
-    figmaPendingCta: 'Link on the day',
-    exportTitle: 'Then save a copy',
-    exportBody:
-      'File → Save local copy, and Figma gives you one <code>.fig</code> file. That file is what your agent reads.',
-    exportCta: 'Two clicks · below',
-    packAlt: (href, figHref) =>
-      `No Figma account, or it is being difficult? <a href="${figHref}" download>Download turbine.fig</a> (5&nbsp;MB), the same file already saved. The <a href="${href}" download>ready-made pack</a> (7&nbsp;MB) is the same design as pictures, tokens and copy — <em>optional</em>, for an agent that cannot read the file.`,
-    exportHeading: 'Getting the design out of Figma',
-    exportIntro:
-      'Your agent cannot see your screen. It needs the design as a file, and Figma will save the whole design as one.',
+    designTitle: 'View the design',
+    designBody: 'Opens the TURBINE file in Figma. Use it to look at the design while your agent works.',
+    designCta: 'Open in Figma',
+    fileTitle: 'Download turbine.fig',
+    fileBody: (size) => `The same design as one file (${size}). This is the file your agent reads.`,
+    fileCta: 'Download',
+    fileNote:
+      'After prompt 01 has created the project, make a folder named <code>design</code> inside the project folder and put <code>turbine.fig</code> in it. Not next to the project: Claude Code asks for permission before reading files outside the project folder.',
   },
 
   pages: {
