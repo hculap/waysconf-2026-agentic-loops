@@ -178,19 +178,13 @@ w kontekście.** To dzięki nim iteracja 7 wie, że iteracja 3 próbowała już 
 
 ## Dać agentowi design, a nie jego zdjęcie
 
-::diagram:04-mcp-topology::
-
 Agent, który dostaje zrzut ekranu, wyprowadza każdy kolor i każdy wymiar z pikseli. Będzie
 *prawie* trafiał — jakiś pomarańczowy, jakieś odstępy — a prawie to dokładnie to, co oblewa
 test kontrastu i wygląda subtelnie źle obok prawdziwego designu.
 
 Kiedy dostaje plik `.fig`, nie wyprowadza niczego. `#FF6A1A` jest w pliku.
 
-To jest cały argument za daniem agentowi samego pliku. Pewnie słyszałeś o **MCP** —
-standardowym sposobie, w jaki agent woła narzędzia spoza siebie, w tym żywe połączenie z
-Figmą. Dziś nie używamy go do designu: wymaga płatnego miejsca, a na darmowym koncie jego
-budżet to dwadzieścia wywołań miesięcznie, zużytych, zanim agent przeczyta jedną stronę.
-Plik nie potrzebuje ani jednego, ani drugiego.
+To jest cały argument za daniem agentowi samego pliku.
 
 ---
 

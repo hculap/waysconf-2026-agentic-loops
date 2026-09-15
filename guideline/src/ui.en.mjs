@@ -379,7 +379,6 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
     '01-the-loop': 'The loop: generate, verify, repair, with a deploy exit',
     '02-fake-loop-vs-real-loop': 'A model grading its own output, beside a model judged by a separate program',
     '03-verification-tiers': 'Three tiers of checking: deterministic gates, measured comparison, adversarial review',
-    '04-mcp-topology': 'An agent connected to a design file, a browser and a deploy target',
     '05-dynamic-workflow': 'Three review passes fanning out, every finding sent to be refuted, and a majority filter',
     '06-ninety-minutes': 'The ninety minutes: three hands-on stretches between four blocks of talking',
     '07-loop-vs-workflow': 'Two shapes: a loop defined by its exit condition, and a workflow defined by its phases',

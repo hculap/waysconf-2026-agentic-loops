@@ -334,10 +334,9 @@ what did not, and why.</code></pre></div>
 <p>Then start a fresh session, paste <code>notes.md</code>, and carry on. <strong>Notes on disk beat memory in context.</strong> It is how iteration 7 knows that iteration 3 already tried the obvious thing.</p>
 <hr>
 <h2 id="giving-the-agent-the-design-not-a-picture-of-it">Giving the agent the design, not a picture of it</h2>
-<figure class="fig"><img src="../diagrams/04-mcp-topology.svg" alt="An agent connected to a design file, a browser and a deploy target" loading="lazy" width="1600" height="980"></figure>
 <p>An agent given a screenshot infers every colour and every measurement from pixels. It will be <em>nearly</em> right — an orange, some spacing — and nearly right is what fails a contrast check and looks subtly wrong beside the real design.</p>
 <p>Given the <code>.fig</code>, it infers nothing. <code>#FF6A1A</code> is in the file.</p>
-<p>That is the whole argument for handing the agent the file itself. You may have heard of <strong>MCP</strong>, the standard way for a coding agent to call tools outside itself — a live Figma connection among them. Today we do not use it for the design: it needs a paid seat, and on a free account its budget is twenty calls a month, gone before one page is read. The file needs neither.</p>
+<p>That is the whole argument for handing the agent the file itself.</p>
 <hr>
 <h2 id="when-one-agent-is-not-enough">When one agent is not enough</h2>
 <figure class="fig"><img src="../diagrams/05-dynamic-workflow.svg" alt="Three review passes fanning out, every finding sent to be refuted, and a majority filter" loading="lazy" width="1800" height="1000"></figure>

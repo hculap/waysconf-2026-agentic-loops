@@ -178,19 +178,13 @@ context.** It is how iteration 7 knows that iteration 3 already tried the obviou
 
 ## Giving the agent the design, not a picture of it
 
-::diagram:04-mcp-topology::
-
 An agent given a screenshot infers every colour and every measurement from pixels. It will
 be *nearly* right — an orange, some spacing — and nearly right is what fails a contrast
 check and looks subtly wrong beside the real design.
 
 Given the `.fig`, it infers nothing. `#FF6A1A` is in the file.
 
-That is the whole argument for handing the agent the file itself. You may have heard of
-**MCP**, the standard way for a coding agent to call tools outside itself — a live Figma
-connection among them. Today we do not use it for the design: it needs a paid seat, and on a
-free account its budget is twenty calls a month, gone before one page is read. The file needs
-neither.
+That is the whole argument for handing the agent the file itself.
 
 ---
 

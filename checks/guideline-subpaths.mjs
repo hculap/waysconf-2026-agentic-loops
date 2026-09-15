@@ -27,8 +27,8 @@ const argUrl = process.argv.includes('--url') && process.argv[process.argv.index
 
 const PAGES = [
   ['/deck/1', 'the first slide'],
-  ['/deck/9', 'a slide with a diagram'],
-  ['/deck/43', 'the last slide, by its history route'],
+  ['/deck/6', 'a slide with a diagram (the loop)'],
+  ['/deck/42', 'the last slide, by its history route'],
   ['/site/', 'the festival site'],
 ]
 
@@ -110,12 +110,16 @@ for (const [path, what] of PAGES) {
     text: document.body.innerText.trim().length,
     styled: getComputedStyle(document.body).backgroundColor !== 'rgba(0, 0, 0, 0)',
     fonts: [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family),
+    images: [...document.querySelectorAll('img')].filter((i) => i.complete && i.naturalWidth > 0 && i.getBoundingClientRect().width > 100).length,
   }))
 
   const before = failures.length
   for (const b of [...new Set(bad)]) fail(`${path}: ${b}`)
   for (const e of errors) fail(`${path}: console — ${e.slice(0, 160)}`)
   if (shape.text < 20) fail(`${path}: nothing on the page (${shape.text} characters)`)
+  // A route named for a diagram has to show one: otherwise a removed slide shifts the numbers
+  // and this line keeps passing on whatever slide now sits there.
+  if (/diagram/.test(what) && shape.images === 0) fail(`${path}: ${what}, but no image is showing`)
   if (!shape.styled) fail(`${path}: the page has no background — its stylesheet did not arrive`)
   if (failures.length === before) {
     ok(`${path}  ${what} — ${shape.text} characters, fonts loaded: ${[...new Set(shape.fonts)].join(', ') || 'none'}`)

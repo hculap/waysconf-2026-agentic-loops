@@ -14,7 +14,6 @@ Nothing here is generated. Open any of them in a text editor and the geometry is
 | File | Slide in `deck/slides.md` | Section, elapsed |
 |---|---|---|
 | `01-the-loop.svg` | **The loop** | 0:00 — 0:08 · The case |
-| `04-mcp-topology.svg` | **MCP, in one sentence** | 0:15 — 0:25 · Design in, not screenshots in |
 | `02-fake-loop-vs-real-loop.svg` | **A real loop and a fake one** | 0:40 — 0:55 · The verifier |
 | `03-verification-tiers.svg` | **Three tiers of checking** | 0:40 — 0:55 · The verifier |
 | `05-dynamic-workflow.svg` | **When one agent is not enough** | 0:55 — 1:10 · The loop, and workflows |
@@ -98,26 +97,6 @@ exists; a tier drawn without its limits is an advertisement.
 **What not to claim from it:** the 30-to-40-per-cent figure in the footnote is the commonly cited
 estimate of automated rule coverage across WCAG in general. It is not a measurement of the TURBINE page,
 and the diagram says so in the same breath.
-
----
-
-### `04-mcp-topology.svg` — 1600 × 980
-
-**The idea:** MCP is not magic, it is three connections, and the arrows carry different things.
-
-The agent sits in the middle. Figma is above left and the arrow from it is violet and labelled **design
-data** — frames, variables, measured spacing, with the committed export pack named as the route that
-works without a paid seat. A browser driven by Playwright is above right, with two teal arrows: one out
-carrying instructions, one back carrying **evidence**. Netlify is on the right and its green arrow
-carries **the deployment**, after the gates and not before. Underneath all of it, spanning the full
-width, is the repository: the agent writes in `src/`, `public/` and `loop/`, and only reads `design/`,
-`brief/` and `checks/`. `checks/` is the one it may never write, which is the rule the slide exists to
-plant.
-
-The legend distinguishes the three payloads. The line at the top right is the honest one: no MCP server
-takes part in a pass or fail decision.
-
-**Also worth embedding in:** `docs/CONNECTING-FIGMA.md`, at the top.
 
 ---
 

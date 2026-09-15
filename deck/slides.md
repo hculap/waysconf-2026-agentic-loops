@@ -321,35 +321,11 @@ It writes no page. It will stop and tell you what it found.
 
 <!--
 This is the longest thing any agent does all afternoon: sixteen minutes in the Claude Code
-trial. Starting it now is what makes sprint 1 fit — it decodes while you talk about MCP and
-the file, and the findings are waiting when sprint 1 starts.
+trial. Starting it now is what makes sprint 1 fit — it decodes while you talk about handing
+over the file, and the findings are waiting when sprint 1 starts.
 
 Claude Code in its default mode asks before each command. Tell the room to pick the option
 that stops asking for that kind of command, or they will spend the time clicking yes.
--->
-
----
-
-# MCP, in one sentence
-
-<p class="text-2xl mt-6" style="color: var(--sp-fg)">
-A standard way for a coding agent to call tools that are not inside it.
-</p>
-
-<p class="mt-2" style="color: var(--sp-accent-2)">
-Worth knowing. Not how the design reaches your agent today — that is the file.
-</p>
-
-<div class="mt-3">
-  <img src="/diagrams/04-mcp-topology.svg" alt="agent connected to Figma, a browser and a deploy target, over a shared repository" class="w-full" style="max-height: 340px !important">
-</div>
-
-<!--
-Resist explaining the protocol. Nobody in this room needs the protocol.
-
-Be explicit that nobody connects Figma over MCP today. It needs a paid seat and runs on a
-tiny budget; the honest-Figma slide gives the numbers. Every participant takes the .fig route
-— there is one route in prompt 02, not two.
 -->
 
 ---
@@ -395,20 +371,11 @@ Nothing is guessed, so nothing is guessed wrong.
 
 <!--
 This is the slide the designers in the room came for. Spend a moment on it.
-Then be honest about the Figma seat requirement on the next slide — they will
-find out anyway, and finding out from you costs nothing.
 -->
 
 ---
 
-# The honest bit about Figma
-
-<div class="mt-8 text-xl">
-
-The official Figma MCP server needs a paid seat, and even then it runs on a budget. On a
-free account that budget is 20 calls a month — gone before the design is read.
-
-</div>
+# The file, and what happens to it
 
 <div class="cols mt-8">
 <div>
@@ -436,9 +403,7 @@ package to do it, so let it use the network.
 </div>
 
 <!--
-This is the moment to say the file is enough. Figma's own limits: Starter 20 MCP calls
-a month; View or Collab seats 6 a month on paid plans; Dev or Full 200 a day on
-Professional, 600 on Organization. A page read takes dozens.
+This is the moment to say the file is enough: one download, and nobody needs a Figma account to use it.
 
 The plugin in figma-plugin/ built this file from the same tokens the code uses. Worth
 ten seconds if someone asks where the file came from, not a slide.
