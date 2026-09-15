@@ -1,7 +1,7 @@
 # 01 — Start
 
-Na wejściu pusty folder, na wyjściu strona działająca na twoim komputerze. Nic jeszcze nie
-jest zaprojektowane; to tylko warsztat pracy.
+Zakłada w bieżącym folderze projekt Astro z Tailwindem i uruchamia serwer deweloperski. Bez
+stron i bez treści.
 
 ---
 
@@ -22,15 +22,12 @@ terminala i chcę nadążać.
 
 ---
 
-**Codex zapyta, czy ufa temu folderowi.** Odpowiedz tak. Nie pracuje w katalogu, o którym mu nie powiedziano, więc w nowym, pustym folderze pierwsze, co zrobi, to zatrzyma się i zapyta. To narzędzie jest ostrożne, a nie coś się psuje.
+**Oczekiwany wynik.** Kilka minut instalacji, potem linijka w rodzaju
+`Local http://localhost:4321/`. Pod tym adresem jest strona zastępcza Astro. Agent trzyma
+serwer uruchomiony; możesz dalej pisać do niego w tym samym oknie.
 
-**Co powinieneś zobaczyć.** Kilka minut instalowania, potem linijkę w rodzaju
-`Local http://localhost:4321/`. Otwórz ją. Dostaniesz stronę zastępczą Astro — prostą,
-brzydką, poprawną.
-
-**Terminal jest teraz zajęty.** To okno uruchamia stronę i nie przyjmie kolejnej komendy.
-Zostaw je i otwórz drugie. W Claude Code i w Codeksie możesz po prostu pisać dalej; one to
-ogarniają.
+**Codex pyta, czy ufasz folderowi.** Odpowiedz tak. Codex nie pracuje w folderze, któremu
+nie kazano mu ufać.
 
 ---
 
@@ -38,22 +35,16 @@ ogarniają.
 
 | Co widzisz | Powiedz to |
 |---|---|
-| I tak zaczyna budować landing page | `Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.` |
-| `Not inside a trusted directory` | To Codex pyta o zgodę. Odpowiedz tak albo najpierw uruchom w folderze `git init`. |
-| `command not found: npm` | Node nie jest zainstalowany. Wróć na zakładkę **Przed** albo przejdź tam na wersję w przeglądarce. |
+| Zaczyna budować landing page | `Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.` |
+| `Not inside a trusted directory` | Codex pyta o zgodę. Odpowiedz tak. |
+| `command not found: npm` | Node nie jest zainstalowany. Wróć na stronę Przygotowanie. |
 | Prosi o wybór szablonu | `Wybierz minimalny albo pusty szablon. Bez przykładowej treści.` |
-| „Katalog nie jest pusty" | Włożyłeś folder z designem przed tym promptem. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02. |
-| Przez dwie minuty nic się nie dzieje | Instaluje. Instalowanie wygląda dokładnie jak zawieszenie. Daj mu pięć. |
+| „Katalog nie jest pusty" | W folderze jest coś poza plikami gita, na przykład folder `design`. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02. |
+| Przez dwie minuty nic się nie wypisuje | Instaluje. Poczekaj do pięciu minut. |
 
 ---
 
-### Dlaczego to jest tak sformułowane
+### Dlaczego jest tak napisany
 
-**„Nie buduj jeszcze żadnych stron."** Zostawiony sam sobie agent zapełni ciszę — wymyśli
-hero, siatkę funkcji i trzy opinie klientów, zanim powiesz słowo o tym, czego chcesz.
-Mówienie, czego *nie* robić, to połowa promptowania, i to jest ta połowa, którą ludzie
-pomijają.
-
-**„Mów mi jedną linijką, co robi każda komenda."** Możesz o to prosić. Agent to nie tylko
-maszyna produkująca pliki; to jedyny cierpliwy tłumacz, jakiego będziesz miał przez całe
-popołudnie.
+- „Nie buduj jeszcze żadnych stron": bez tego agent wymyśla hero, siatkę funkcji i opinie klientów, zanim zobaczy design.
+- „Mów mi jedną linijką, co robi każda komenda": agent tłumaczy swoje komendy, kiedy go o to poprosisz.

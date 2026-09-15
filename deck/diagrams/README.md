@@ -17,11 +17,14 @@ Nothing here is generated. Open any of them in a text editor and the geometry is
 | `02-fake-loop-vs-real-loop.svg` | **A real loop and a fake one** | 0:40 — 0:55 · The verifier |
 | `03-verification-tiers.svg` | **Three tiers of checking** | 0:40 — 0:55 · The verifier |
 | `05-dynamic-workflow.svg` | **When one agent is not enough** | 0:55 — 1:10 · The loop, and workflows |
-| `06-ninety-minutes.svg` | not on a slide — speaker and participant asset | the whole session |
+| `07-loop-vs-workflow.svg` | **Two shapes, and neither is a script** | 0:55 — 1:10 · The loop, and workflows |
+| `08-workflow-patterns.svg` | **Six workflow patterns** | 0:55 — 1:10 · The loop, and workflows |
+| `08-pattern-<n>-<slug>.svg` | not on a slide: one per pattern, on the workshop page | — |
 
 The timings above are the section kickers in `deck/slides.md`, which match `deck/notes/TIMING.md`.
-If either of those moves, `06` has to move with it: it is the only diagram here that encodes the
-schedule, and a timeline that disagrees with the timing card is worse than no timeline.
+The schedule itself is a table on the workshop page, not a drawing.
+
+The `08-*` files are generated: `node scripts/build-pattern-diagrams.mjs`. Edit the script, not the SVGs.
 
 `slides.md` references them as `/diagrams/<file>.svg`, and Slidev serves static files only from
 `deck/public/`. The source stays here; `npm run dev`, `present`, `build` and `export` in `deck/` each
@@ -35,39 +38,31 @@ generated and gitignored. If you start Slidev with a bare `slidev slides.md` rat
 
 ### `01-the-loop.svg` — 1600 × 900
 
-**The idea:** a loop is four steps and one exit, and the step that decides is a program.
+**The idea:** a loop is three steps, plan, implement and verify, and the step that decides is a program.
 
-Generate, verify, gate, repair, with deploy as the only way out. The arrow that goes backwards leaves
-a document — `checks/report.md`, shown holding two real failure messages with the measured ratios from
-`design/tokens/CONTRAST.md` — rather than leaving the model's opinion. That is the whole point of the
-drawing: the return path carries a file, and the file was written by something that cannot be argued
-with.
+Plan states a hypothesis: what to change, and why. Implement writes the code: it generates the page the
+first time and fixes it every time after, so generate and repair are one step with different input.
+Verify runs `npm run check`. Exit 0 leads to deploy, the only way out; exit 1 writes `report.md`, and the
+arrow back to plan carries that file. The return path is a document written by a program, not the
+model's opinion.
 
-**Also worth embedding in:** `README.md`, beside the ASCII loop; `docs/TIPS.md` §3.
-
-**What not to claim from it:** the picture shows the mechanism, not that the mechanism converges. A
-loop that cannot go green is still a loop, and a loop that runs out of attempts ends red, not green.
+**What not to claim from it:** the picture shows the mechanism, not that it converges. A loop that cannot
+go green is still a loop, and one that runs out of attempts ends red.
 
 ---
 
 ### `02-fake-loop-vs-real-loop.svg` — 1600 × 960
 
-**The idea:** the asymmetry, carried by the shape rather than by a caption.
+**The idea:** an agent can check work; the same agent, in the same context, grading itself cannot.
 
-Left, the fake loop: a model writes a page, the same model is asked to grade it, and the grade comes
-out drawn in the same orange fill as the model that produced it. A dashed boundary encloses the whole
-arrangement and nothing crosses it. Right, the real loop: the identical model writes the identical
-page, and then the work crosses a hard line into a separate column where a verifier, fed by a contract
-written before the page existed, returns `exit 0` or `exit 1`.
+Left, the fake loop: an agent writes the page, the same agent with the same context grades it, and the
+grade goes back into the loop. One dashed boundary, nothing external. Right, the real loop: the page goes
+to two checks at once. The verifier is a program, `npm run check`, exit 0 or 1, off limits to the agent.
+The adversarial review is several agents with a fresh context, told to attack, with a separate agent
+refuting each finding. Failures and surviving findings go into one report; an empty report ships.
 
-Both sides open with the same two boxes at the same size in the same colour, deliberately. The model is
-not the variable.
-
-**Also worth embedding in:** `docs/TIPS.md` §4.
-
-**What to say over it:** the test from TIPS — ask what would have to be true for the loop to say *fail*
-forever. On the left the answer is "the model would have to keep deciding it is not good enough".
-`deck/notes/TIMING.md` lists this slide as one of the three that must never be cut.
+**What to say over it:** the variable is not the model. It is whether whoever says "done" shares the
+context that did the work.
 
 ---
 
@@ -127,26 +122,21 @@ pass or fail; it opens items for a person to triage.
 
 ---
 
-### `06-ninety-minutes.svg` — 1800 × 700
+### `07-loop-vs-workflow.svg` — 1600 × 1000
 
-**The idea:** where the ninety minutes go, and which parts are hands-on.
+**The idea:** the two shapes, and that a workflow branches.
 
-Two lanes against a 0-to-90-minute axis. The upper lane is the eight blocks of the deck, in the order
-and at the elapsed times its section kickers give. The lower lane is what runs on each person's machine:
-sprint 1 from 0:25, fifteen minutes to plan and build the nav and hero; sprint 3 from 1:10, twelve
-minutes to deploy. Sprint 2 is hatched and bracketed, because from 0:55 to 1:10 it occupies exactly the
-same span as *The loop, and workflows* on stage. That is where its fifteen minutes come from, and it is
-the scheduling trick the session depends on, so it is drawn rather than mentioned.
+Left, the loop of `01` drawn vertically with its exit condition. Right, the seven phases of prompt 08 with
+the bar between each, and the three phases that branch: 03 fans out to one agent per section and merges,
+05 is the loop, 07 sends the page to fresh-context reviewers and every finding to a refuter.
 
-Checkpoint marks sit at the end of each sprint — `step-1`, `step-4` and `step-5`, which are the
-branches [`CHECKPOINTS.md`](../../CHECKPOINTS.md) §2 expects at 0:40, 1:10 and 1:22. They are not
-sprint numbers. A participant who falls behind reads a branch name off this timeline and checks it
-out, so if §2 changes, these three labels change with it. A bracket under the last block marks where
-the eight-minute buffer lives.
+---
 
-**Not a slide.** It is the lectern and participant view of the session: print it next to
-`deck/notes/TIMING.md`, and use it in `README.md` or the setup page in `guideline/` so people arrive
-knowing when they will be typing.
+### `08-workflow-patterns.svg` — 1980 × 1120, and `08-pattern-<n>-<slug>.svg` — 600 × 440
+
+**The idea:** six ways to arrange agents inside a workflow: classify and act, fan out and synthesize,
+adversarial verification, generate and filter, tournament, loop until done. The sheet is the slide; the
+six single panels illustrate each pattern on the workshop page. Both come from one script.
 
 ---
 

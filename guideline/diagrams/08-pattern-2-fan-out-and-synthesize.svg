@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440" role="img" aria-labelledby="t d">
+  <title id="t">Fan out and synthesize</title>
+  <desc id="d">A task is split into four parts handled by parallel agents; their results meet at a bar and are merged into one result.</desc>
+  <defs>
+    <marker id="ah-0" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker><marker id="ah-0-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-1" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#6B7280"/></marker><marker id="ah-1-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#6B7280"/></marker>
+    <marker id="ah-2" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker><marker id="ah-2-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-3" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#D1D5DB"/></marker><marker id="ah-3-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#D1D5DB"/></marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="440" fill="#0A0A0A"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <g transform="translate(0 0)">
+    <rect x="0" y="0" width="600" height="440" rx="14" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
+    <rect x="28" y="26" width="38" height="38" rx="6" fill="#10B981"/>
+    <text x="47" y="53" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">2</text>
+    <text x="82" y="54" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="start">Fan out and synthesize</text>
+    <line x1="28" y1="82" x2="572" y2="82" stroke="#2E2E2E" stroke-width="2"/>
+    <rect x="40" y="205" width="100" height="56" rx="6" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <text x="90" y="240" font-size="20" font-weight="400" fill="#FFFFFF" text-anchor="middle">task</text>
+    <line x1="140.0" y1="233.0" x2="281.2" y2="146.5" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="140.0" y1="233.0" x2="278.5" y2="204.4" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="140.0" y1="233.0" x2="278.4" y2="260.7" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="140.0" y1="233.0" x2="281.2" y2="318.6" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <circle cx="300" cy="135" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="300" cy="200" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="300" cy="265" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="300" cy="330" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <line x1="318.6" y1="142.4" x2="404.4" y2="176.9" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="319.8" y1="202.7" x2="404.1" y2="214.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="319.8" y1="262.4" x2="404.1" y2="251.4" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="318.6" y1="322.6" x2="404.4" y2="288.6" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <rect x="410" y="120" width="10" height="225" rx="5" fill="#10B981"/>
+    <line x1="420.0" y1="233.0" x2="469.0" y2="233.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <circle cx="505" cy="233" r="34" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="505" y="300" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">synthesize</text>
+    <text x="300" y="372" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">parallel agents</text>
+  </g>
+  </g>
+</svg>

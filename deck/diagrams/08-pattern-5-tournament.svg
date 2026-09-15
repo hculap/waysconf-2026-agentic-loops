@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440" role="img" aria-labelledby="t d">
+  <title id="t">Tournament</title>
+  <desc id="d">Four attempts are compared in pairs by two judges; the two winners meet a final judge, which picks one winner.</desc>
+  <defs>
+    <marker id="ah-0" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker><marker id="ah-0-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-1" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#6B7280"/></marker><marker id="ah-1-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#6B7280"/></marker>
+    <marker id="ah-2" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker><marker id="ah-2-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-3" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#D1D5DB"/></marker><marker id="ah-3-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#D1D5DB"/></marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="440" fill="#0A0A0A"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <g transform="translate(0 0)">
+    <rect x="0" y="0" width="600" height="440" rx="14" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
+    <rect x="28" y="26" width="38" height="38" rx="6" fill="#10B981"/>
+    <text x="47" y="53" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">5</text>
+    <text x="82" y="54" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="start">Tournament</text>
+    <line x1="28" y1="82" x2="572" y2="82" stroke="#2E2E2E" stroke-width="2"/>
+    <text x="55" y="112" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="start">attempts</text>
+    <circle cx="75" cy="140" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="75" cy="198" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="75" cy="282" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <circle cx="75" cy="340" r="20" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <line x1="94.6" y1="143.9" x2="186.7" y2="162.3" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="94.6" y1="194.1" x2="186.7" y2="175.7" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="94.6" y1="285.9" x2="186.7" y2="304.3" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="94.6" y1="336.1" x2="186.7" y2="317.7" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <polygon points="220,137 252,169 220,201 188,169" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <polygon points="220,279 252,311 220,343 188,311" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <text x="250" y="116" font-size="18" font-weight="400" fill="#34D399" text-anchor="middle">pairwise judges</text>
+    <line x1="248.7" y1="183.1" x2="334.5" y2="225.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <line x1="248.7" y1="296.9" x2="334.5" y2="255.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <polygon points="365,208 397,240 365,272 333,240" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <text x="365" y="300" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">final</text>
+    <line x1="397.0" y1="240.0" x2="446.0" y2="240.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <rect x="452" y="214" width="110" height="52" rx="6" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="507" y="247" font-size="20" font-weight="400" fill="#FFFFFF" text-anchor="middle">winner</text>
+  </g>
+  </g>
+</svg>

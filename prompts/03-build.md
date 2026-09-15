@@ -1,7 +1,7 @@
 # 03 — Build it
 
-Now it writes the page: all of it, in one go. Then you review it, section by section, at your
-own pace. The building does not need you; the reviewing does.
+The agent builds the whole page from the documents in `docs`, in one run, and gives you the
+local address.
 
 ---
 
@@ -33,18 +33,15 @@ one assumption than discover six.
 
 ---
 
-**What you should see.** A few minutes of work, then a list of sections and an address. Open
-it. Put it beside the design in Figma and go down the page one section at a time. For each
-thing that is wrong, say so — in plain words, the way you would to a junior designer:
+**Expected result.** A few minutes of work, then a list of the sections it built and the
+address. Open the page beside the design in Figma and review it one section at a time.
+Report each problem in plain words, for example:
 
 > The gap under the heading is too tight, and the orange is the wrong orange.
 
-That is a perfectly good bug report. You do not need the vocabulary. Send them one at a time
-or several in one message; either works.
-
 ---
 
-### If it goes wrong
+### If something goes wrong
 
 | What you see | Say this |
 |---|---|
@@ -55,17 +52,12 @@ or several in one message; either works.
 | It starts decoding the .fig again | `Stop. Everything you need is in docs and notes.md.` |
 | It needs a value the documents do not have | `Find it in design-data, add it to the right document in docs, then use it.` |
 | It says it is done and it clearly is not | `Which sections have you built, and which are still missing? List both.` |
-| It gets slower and vaguer as it goes | It is running low on context. Say `Update notes.md with where we are`, start a fresh session, say `Read docs and notes.md and continue building`, and carry on. |
+| It gets slower and vaguer | The context is full. Say `Update notes.md with where we are`, start a new session, say `Read docs and notes.md and continue building`. |
 
 ---
 
-### Two things worth noticing while it works
+### Why it is written this way
 
-**It is faster than you, and that is not the same as better.** The whole page appears in the
-time it takes you to properly look at one section. Do not let the speed of the building set
-the pace of the looking: take the sections one at a time, and say what is wrong before you
-move to the next.
-
-**Nothing here has checked anything yet.** The page may look finished at the end of this
-prompt. It has been judged by exactly one thing so far: your eyes, on your screen, at your
-window size. Prompt 04 is where that changes.
+- Every value comes from `docs`: a value the agent picks itself is one the checker from prompt 04 will report.
+- Questions go into `notes.md`: the agent keeps building, and you correct its assumptions afterwards.
+- Nothing is checked yet. The only review so far is yours.

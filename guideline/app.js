@@ -113,4 +113,30 @@ function fb(t,ok){var a=document.createElement('textarea');a.value=t;a.setAttrib
    It is set at the very end, outside every other block, on purpose: nested inside the
    picker's IIFE it was never reached on the During tab, which has no picker — so the rail
    was dead there and the flag said nothing about it. */
+/* Every figure opens full-width in a dialog. The link underneath points at the drawing, so
+   without JavaScript a click still shows it at full size. */
+(function(){
+  var box = document.querySelector('dialog.lightbox');
+  if (!box || typeof box.showModal !== 'function') return;
+  var close = box.querySelector('.lightbox__close');
+  /* The <img> exists only while the dialog is open. Shipped empty, or left behind empty, it is
+     an image that never loads, and the accessibility gate is right to count it. */
+  var img = null;
+  document.querySelectorAll('a.fig__zoom').forEach(function(a){
+    a.addEventListener('click', function(e){
+      e.preventDefault();
+      var inner = a.querySelector('img');
+      img = document.createElement('img');
+      img.src = a.getAttribute('href');
+      img.alt = inner ? inner.alt : '';
+      box.appendChild(img);
+      box.showModal();
+      close.focus();
+    });
+  });
+  close.addEventListener('click', function(){ box.close(); });
+  box.addEventListener('click', function(e){ if (e.target === box) box.close(); });
+  box.addEventListener('close', function(){ if (img) { img.remove(); img = null; } });
+})();
+
 document.documentElement.setAttribute('data-sp-ready','1');

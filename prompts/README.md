@@ -28,7 +28,7 @@ created before the workshop (`cd turbine`), and paste them in order. Each
 one is written to be pasted whole: the agent needs the rules as much as the request, and
 trimming a prompt to its first sentence is the commonest way to get a disappointing answer.
 
-After each prompt there is a **what you should see** line. If you see something else, that
+After each prompt there is an **Expected result** line. If you see something else, that
 is not a failure — it is the moment to say so to the agent, in your own words. The whole
 point of this session is that you are allowed to.
 
@@ -40,17 +40,17 @@ point of this session is that you are allowed to.
 | 02 | [Look at the design](02-design.md) | The agent decodes the Figma file, writes it down as documents in `docs`, and tells you what it found, before writing any page | 15 min |
 | 03 | [Build it](03-build.md) | The whole page in one go, from the documents 02 wrote; you review it section by section | 15 min |
 | 04 | **[Write the checker](04-checker.md)** | The agent writes the program that will judge its own work | 6 min |
-| 05 | **[The loop](05-loop.md)** | Check, fix, check again, until the program says yes | 10 min |
+| 05 | **[The loop](05-loop.md)** | Plan a fix, make it, run the checker; repeat until `npm run check` exits 0 | 10 min |
 | 06 | [Ship it](06-deploy.md) | A public URL you can send to someone | 4 min |
-| 07 | [Try to break it](07-review.md) | Find what the checker cannot see | 5 min |
+| 07 | [Try to break it](07-review.md) | A review in a new session: find what the checker cannot see | 5 min |
 | 08 | **[The same job, as a workflow](08-workflow.md)** | Prompts 01–07 as one message — phase 01 is prompt 01, word for word — with subagents | — |
 
 Prompts 04 and 05 are the workshop. Prompt 08 is what you do with it on Monday.
 
 Prompt 08 is not a summary of the others. Its seven phases are the seven prompts, in the same
-words, so anything you learned from one prompt is true of its phase. Two things differ, and 08
-says both: phase 03 builds the sections in parallel instead of stopping after each, and the run
-waits for you only after phase 02. `scripts/build-workflow-prompt.mjs` writes 08 from 01–07,
+words, so anything you learned from one prompt is true of its phase. Three things differ, and 08
+says all three: phase 03 builds the sections in parallel, phase 07 reviews with subagents that
+start with an empty context, and the run waits for you only after phase 02. `scripts/build-workflow-prompt.mjs` writes 08 from 01–07,
 so they cannot drift apart.
 
 ## The one idea

@@ -1,9 +1,8 @@
 # 05 — The loop
 
-You have a page and you have something that can say no to it. This is the sentence that
-puts them in a circle.
-
-There is no script here, and there is nothing to install. The loop is a paragraph.
+The agent runs the checker it wrote in prompt 04 (`npm run check`), reads the report file the
+checker writes, fixes the first failure and runs the checker again, until it exits 0. Each
+round has three steps: plan the fix, make it, run the checker.
 
 ---
 
@@ -14,6 +13,10 @@ If it exits 0, stop and tell me — we are finished.
 
 If it does not, read the report it wrote and fix what it names. Then run npm run check again.
 Repeat until it exits 0.
+
+Each round has three steps. Plan: take the first failure in the report and write one line
+into notes.md: the failure, what you think causes it, and what you will change. Implement:
+make that change. Verify: run npm run check.
 
 Work in the order the report lists things. Fix the cause, not the symptom: if a colour is
 wrong, use the one from the design, do not nudge it until the number moves. Make the
@@ -36,58 +39,40 @@ could pick this up. Keep going on your own. Do not ask me to confirm each round.
 
 ---
 
-## Claude Code: make it stick
+## Claude Code: `/goal`
 
-Claude Code has this built in. Instead of trusting the agent to keep going, you can make
-it structurally unable to stop:
+Paste the prompt above first, then this line:
 
 ```text
 /goal npm run check exits 0
 ```
 
-The session will not end until that is true. Not "until the agent believes it is true" —
-the command actually runs, and its exit code decides. Paste the prompt above first, then
-the `/goal` line.
-
-**Codex does not have this.** There, the paragraph is the mechanism: it works, it just
-relies on the agent doing as it was told rather than on the harness enforcing it. Watch
-the output and say `keep going` if it stops early.
+The session does not end until the command exits 0: the command runs, and its exit code
+decides. **Codex has no `/goal`.** There the prompt is the mechanism; if the agent stops
+early, say `keep going`.
 
 ---
 
-**What you should see.** Several minutes of check → fix → check. The failure count comes
-down. Somewhere in the middle it will probably go *up* by one — a fix that broke something
-else — and then come down again.
-
-Then:
-
-```
-✓ all checks passed
-```
-
-Nobody decided that. A program exited 0.
+**Expected result.** Several rounds of check, fix, check. The number of failures goes down,
+can rise by one when a fix breaks something else, and goes down again. `notes.md` gets one
+line per round. The run ends when `npm run check` exits 0.
 
 ---
 
-### If it goes wrong
+### If something goes wrong
 
 | What you see | Say this |
 |---|---|
-| **It edited the checker** | `Put the checker back exactly as it was, and fix the page instead.` Then look at what it changed — that is the most instructive thing that will happen to you today. |
+| **It edited the checker** | `Put the checker back exactly as it was, and fix the page instead.` Then look at what it changed in the checker. |
 | It stops after one round | `Keep going. Do not stop until npm run check exits 0.` Or use `/goal`. |
 | The same failure keeps coming back | `You have tried that three times. Stop. Tell me what you tried and what happened each time.` |
 | It says it is done but the check is red | `Run npm run check and paste the last five lines, unedited.` |
-| It gets slower and vaguer | Context is filling. `Write what is left into notes.md in ten lines`, start a fresh session, paste the notes, continue. |
+| It gets slower and vaguer | The context is full. `Write what is left into notes.md in ten lines`, start a new session, paste the notes, continue. |
 
 ---
 
-### The two things to take home
+### Why it is written this way
 
-**Fresh beats long.** If you have to restart the session, you lose nothing as long as the
-state is in files — the report and your notes. An agent with a short memory and good notes
-outperforms one with a long conversation and none. That is why the checker writes
-`check-report.md` to disk instead of only printing it.
-
-**The rule is the design.** "Never change the checker" sounds like discipline. It is
-architecture. The moment the thing being judged can edit the judge, every green result
-afterwards means nothing — and it will still look exactly as reassuring.
+- The agent may never edit the checker. If it could, a pass would mean nothing.
+- One line per round in `notes.md`, and the report on disk: a new session continues from the files.
+- Three failed attempts at one failure means stop: usually two requirements that cannot both be true.

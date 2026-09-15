@@ -1,37 +1,19 @@
 # Idee
 
-Wszystko ze slajdów, na jednej stronie, żebyś mógł to przeczytać później, zamiast
-fotografować ekran. Obrazki są te same, co na ścianie, i możesz ich używać u siebie.
+## Plan warsztatu
 
----
+| Godzina | Część | Co robisz |
+|---|---|---|
+| 14:55 | Wprowadzenie | Słuchasz. |
+| 15:03 | Start | Otwierasz terminal w folderze `turbine`, uruchamiasz agenta, wklejasz prompt 01. |
+| 15:10 | Projekt | Wkładasz `turbine.fig` do `design/` i wklejasz prompt 02. Agent dekoduje plik przez 10 do 16 minut. |
+| 15:20 | Budowa | Czytasz ustalenia agenta, odpowiadasz na jego otwarte pytania, wklejasz prompt 03. Przeglądasz stronę sekcja po sekcji. |
+| 15:35 | Checker | Wklejasz prompt 04. Agent pisze `npm run check`. Pokaz: test, który nie przechodzi, i jego raport. |
+| 15:50 | Pętla | Wklejasz prompt 05. Agent poprawia stronę, aż test przejdzie. |
+| 16:05 | Publikacja | Wklejasz prompt 06, potem prompt 07. |
+| 16:17 | Ograniczenia i pytania | Słuchasz, pytasz. |
 
-## Dziewięćdziesiąt minut
-
-::diagram:06-ninety-minutes::
-
-Trzy odcinki pracy własnej, a ten środkowy chodzi na twoim komputerze, kiedy ja mówię.
-Nic tutaj nie wymaga, żeby poprzednia rzecz się udała — **każdy prompt stoi sam**, a
-zostanie w tyle nie kosztuje cię nic poza tym, co pominąłeś.
-
-**Z czym wychodzisz:** adres działający w internecie, folder ze stroną i programem, który
-ją sprawdza, oraz osiem promptów, które w poniedziałek zadziałają na czymś, co nie jest
-stroną festiwalu.
-
----
-
-## Większość dem AI kończy się na *wow*
-
-Wchodzi prompt. Wychodzi coś efektownego. Wszyscy biją brawo. A potem ktoś zadaje pytanie,
-na które demo nie było przygotowane:
-
-*Czy to zgadza się z designem? Czy kontrast jest legalny? Czy działa na telefonie? Czy to
-są prawdziwe teksty, czy wymyślone?*
-
-Brak odpowiedzi. Nie zła odpowiedź — **brak mechanizmu, który mógłby jakąkolwiek
-wyprodukować.**
-
-> Pętla ma sens tylko wtedy, gdy coś w niej potrafi powiedzieć **nie**, nie pytając o zgodę
-> modelu językowego.
+Każdy prompt działa samodzielnie. Jeśli któryś się nie uda, każ agentowi przerwać i wklej następny. Prompt 08 to prompty od 01 do 07 w jednej wiadomości, do użycia po warsztacie.
 
 ---
 
@@ -39,290 +21,192 @@ wyprodukować.**
 
 ::diagram:01-the-loop::
 
-Ciekawa nie jest strzałka, która generuje kod. Ciekawe jest pudełko, które odmawia.
+- **Plan.** Agent mówi, co zmieni i dlaczego. Od drugiej rundy plan zaczyna się od raportu.
+- **Implementacja.** Agent pisze kod. Za pierwszym razem generuje stronę, potem poprawia to, co wskazuje raport.
+- **Weryfikacja.** Program `npm run check` testuje stronę w prawdziwej przeglądarce i kończy się kodem 0 (zaliczone) albo 1 (niezaliczone). Przy 1 zapisuje raport.
 
-Strzałkę powrotną napędza **plik** — raport napisany przez program — a nie wrażenie agenta
-na temat własnej pracy. Na tym polega cała różnica.
+Pętla kończy się, gdy test zwraca 0. Wtedy strona idzie na produkcję.
 
 ---
 
-## Prawdziwa pętla i udawana
+## Kto sprawdza pracę
 
 ::diagram:02-fake-loop-vs-real-loop::
 
-Udawana pętla sprawia wrażenie produktywnej. Produkuje zdania w rodzaju *„przejrzałem swoją
-pracę i ją poprawiłem"*, nie do odróżnienia od prawdziwej aż do momentu, w którym coś
-zewnętrznego się nie zgodzi.
+Agent może sprawdzać pracę pod dwoma warunkami: nie wykonywał jej w tym samym kontekście i ma szukać błędów, a nie potwierdzać wynik.
 
-Na obu diagramach ten sam model pisze tę samą stronę. Zmienia się **to, kto ma prawo
-powiedzieć nie.**
-
----
-
-## Gdzie samoocena wystarcza, a gdzie nie
-
-| Wystarcza | Nie wystarcza |
+| Kto sprawdza | Do czego się nadaje |
 |---|---|
-| Czy to zdanie jest dobre | Czy to jest poprawne |
-| Które z tych pięciu znalezisk jest najważniejsze | Czy to jest dostępne |
-| Czy to brzmi jak ta sama marka | Czy to zgadza się z designem |
-| Czy hierarchia jest czytelna | Czy to jest skończone |
+| Ten sam agent, w tym samym kontekście | Do niczego. Powtarza rozumowanie, które stworzyło pracę. |
+| Program: `npm run check` | Do wszystkiego, co ma dokładną odpowiedź: sekcje, kolory, teksty, kontrast, przewijanie w poziomie. |
+| Agenci ze świeżym kontekstem, którzy mają atakować (adversarial review) | Do tego, czego program nie zmierzy: kolejność czytania, bezużyteczny tekst alternatywny, tekst na zdjęciach, teksty niepasujące do marki. |
 
-Lewa kolumna nie ma zewnętrznej prawdy do sprawdzenia, więc przemyślana opinia jest
-najlepszym dostępnym narzędziem. Prawa kolumna ją ma — więc jej użyj i nie przyjmuj opinii
-w zamian.
+Program i review uruchamiaj równolegle. Błędy i potwierdzone uwagi trafiają do jednego raportu, a strona idzie na produkcję, gdy raport jest pusty. Na warsztacie review to prompt 07, wklejany w nowej sesji.
 
 ---
 
-## Dwa kształty
+## Najpierw plan, potem kod
 
-::diagram:07-loop-vs-workflow::
-
-**Pętla** to *rób to znowu, aż warunek będzie spełniony*. Ty definiujesz warunek wyjścia.
-→ prompt 05 i `/goal` w Claude Code.
-
-**Workflow** to *zrób te rzeczy, w tej kolejności, z poprzeczką między każdą*. Ty definiujesz
-fazy i to, co musi być prawdą, zanim zacznie się następna. → prompt 08.
-
-Żadne z tego nie jest skryptem. Oba są rzeczami, które **mówisz** — i dlatego zmiana
-któregokolwiek to jedno zdanie, a nie edycja, test i ponowny deploy.
-
-Zagnieżdżają się. Workflow doprowadza cię od zera do prawie-dobrze; pętla w jednej z jego
-faz domyka resztę.
-
----
-
-## Najpierw plan, potem budowanie
-
-Najtańsza poprawka w całej pętli to ta zrobiona, zanim powstanie jakikolwiek kod.
-
-W **Claude Code** naciskaj `Shift+Tab`, aż stopka powie *plan mode on*. Agent nie może wtedy
-niczego edytować, dopóki nie zaakceptujesz. W **Codeksie** poproś o plan i nie przyjmuj
-kodu, dopóki go nie przeczytasz:
+W Claude Code naciskaj `Shift+Tab`, aż w stopce pojawi się *plan mode on*. Agent nie może edytować plików, dopóki nie zatwierdzisz planu. W Codeksie poproś o plan wprost:
 
 ```text
-Nie pisz jeszcze żadnego kodu. Powiedz mi, co znalazłeś i co zamierzasz zbudować,
-sekcja po sekcji, i poczekaj.
+Nie pisz jeszcze żadnego kodu. Powiedz mi, co znalazłeś i co zamierzasz zbudować, i czekaj.
 ```
 
-Tym właśnie jest prompt 02. Nie pisze zupełnie nic — patrzy na design i zdaje relację.
-Projektant, który przeczyta trzy akapity i powie *„nie, lineup jest przed biletami"*, właśnie
-oszczędził dwadzieścia minut pewnego siebie budowania nie tego, co trzeba.
-
-> Najlepszy moment na wyłapanie nieporozumienia jest wtedy, kiedy jest ono jeszcze zdaniem.
+Prompt 02 działa tak samo: agent czyta projekt i nie pisze kodu strony.
 
 ---
 
-## Trzy poziomy sprawdzania
+## Poziomy sprawdzania
 
 ::diagram:03-verification-tiers::
 
-Dolny poziom jest tani, pewny i wąski. Górny łapie to, czego pozostałe nie potrafią, i jest
-najmniej niezawodną rzeczą w całym stosie. Żaden nie zastępuje drugiego, a system złożony
-z samego górnego poziomu to system, który zgadza się sam ze sobą.
+1. **Testy deterministyczne.** Build, błędy w konsoli, sekcje, kolory, teksty, kontrast, przewijanie w poziomie. Za każdym razem ten sam wynik.
+2. **Porównanie mierzone.** Zrzuty ekranu porównane z projektem. Wykrywa zmianę, ale jej nie ocenia.
+3. **Adversarial review.** Agenci ze świeżym kontekstem szukają tego, czego poziomy 1 i 2 nie zmierzą. Każda uwaga musi wskazać konkretny element i przetrwać próbę obalenia.
 
 ---
 
-## Raport błędów jest interfejsem
+## Raport z błędami
 
-To jest część, którą ludzie pomijają, i to ona sprawia, że pętla działa. Z checkera wraca
-**plik**, napisany jednocześnie dla dwóch czytelników: człowieka o drugiej w nocy i agenta,
-który nie pamięta poprzedniej iteracji.
+Test zapisuje każdy błąd do pliku. Przykład:
 
 ```md
-**3. [check 07] kolor na stronie nie występuje w designie**
+**3. [check 07] kolor na stronie nie pochodzi z projektu**
 
-- Gdzie: linia opisowa w każdej karcie w sekcji lineup
-- Oczekiwano: „text / secondary" z designu
-- Jest: „text / muted" z designu — zmierzone 4,07:1 względem tła strony,
-        a tekst ciągły potrzebuje 4,5:1
-- Wskazówka: muted jest zdefiniowany wyłącznie dla stopki i tekstów prawnych
+- Gdzie: linijka pod nazwą w każdej karcie sekcji lineup
+- Oczekiwane: kolor projektu "text / secondary"
+- Faktyczne: kolor projektu "text / muted", 4.07:1 do tła strony;
+             tekst podstawowy wymaga 4.5:1
+- Wskazówka: muted jest przeznaczony tylko na tekst prawny i stopkę
 ```
 
-Tego nie napisał żaden model. Zmierzył to i wypisał program. Każda linijka jest czymś, na
-czym agent może działać bez zgadywania: które kryterium, który element, czego oczekiwano,
-co faktycznie było.
+Każdy błąd ma cztery pola: co nie przeszło, gdzie, czego oczekuje projekt, co jest na stronie. W następnej rundzie agent czyta ten plik, a nie swoją pamięć poprzedniej rundy.
 
-Porównaj to z tym, co model mówi o własnej pracy — *„poprawiłem kontrast w sekcji lineup"* —
-i masz różnicę między raportem a zapewnieniem.
-
-**Reguła, która trzyma to wszystko:** agent nigdy nie może edytować checkera. Powiedz to
-wprost w prompcie i tak to traktuj. W momencie, w którym sądzony może edytować sędziego,
-każdy kolejny zielony wynik nic nie znaczy.
+Agent nigdy nie może edytować checkera. Jeśli może zmienić test, zaliczenie nic nie znaczy.
 
 ---
 
-## Dlaczego świeży kontekst bije długi
+## Kontekst i notatki
 
-Okno kontekstu to bufor, nie pamięć. Po czterdziestu minutach trzyma trzy porzucone
-podejścia, oryginalny brief sprzed sześćdziesięciu tysięcy tokenów i każdy zły zakręt, który
-pętla już zrobiła — a model wciąż waży własne wcześniejsze rozumowanie.
+Długa sesja zbiera porzucone próby i stare rozumowanie. Kiedy agent zwalnia albo odpowiada ogólnikami, przenieś stan do plików i zacznij nową sesję.
 
-| Długa rozmowa | Świeże przejście |
+| Długa sesja | Nowa sesja |
 |---|---|
-| Pamięta wszystko, źle | Czyta raport — aktualne błędy |
-| Waży własne stare rozumowanie | Czyta `notes.md` — co już próbowano i ile to kosztowało |
-| Robi się mętna i wolna | Czyta notatki z designu |
-
-Więc kiedy zaczyna dryfować:
+| Trzyma wszystkie wcześniejsze próby | Czyta raport: aktualne błędy |
+| Powtarza własne wcześniejsze rozumowanie | Czyta `notes.md`: co próbowano i z jakim skutkiem |
+| Zwalnia | Czyta `docs/`: projekt spisany w prompcie 02 |
 
 ```text
-Zapisz do notes.md, co zostało do zrobienia, w dziesięciu linijkach. Co próbowałeś,
+Zapisz do notes.md, co zostało do zrobienia, w dziesięciu linijkach: co próbowałeś,
 co zadziałało, co nie i dlaczego.
 ```
 
-Potem zacznij nową sesję, wklej `notes.md` i jedź dalej. **Notatki na dysku biją pamięć
-w kontekście.** To dzięki nim iteracja 7 wie, że iteracja 3 próbowała już oczywistej rzeczy.
+Potem zacznij nową sesję i każ agentowi przeczytać `docs` i `notes.md`.
 
 ---
 
-## Dać agentowi design, a nie jego zdjęcie
+## Pętle i workflow
 
-Agent, który dostaje zrzut ekranu, wyprowadza każdy kolor i każdy wymiar z pikseli. Będzie
-*prawie* trafiał — jakiś pomarańczowy, jakieś odstępy — a prawie to dokładnie to, co oblewa
-test kontrastu i wygląda subtelnie źle obok prawdziwego designu.
+::diagram:07-loop-vs-workflow::
 
-Kiedy dostaje plik `.fig`, nie wyprowadza niczego. `#FF6A1A` jest w pliku.
+- **Pętla:** plan, implementacja i weryfikacja powtarzane, aż warunek będzie spełniony. Ty definiujesz warunek wyjścia. Prompt 05; w Claude Code także `/goal npm run check exits 0`.
+- **Workflow:** fazy w ustalonej kolejności, z warunkiem, który musi być spełniony przed następną fazą. Faza może uruchomić kilku agentów jednocześnie. Ty definiujesz fazy. Prompt 08.
 
-To jest cały argument za daniem agentowi samego pliku.
+Workflow może zawierać pętlę: faza 05 promptu 08 to pętla z promptu 05.
+
+### Wzorce workflow
+
+Sześć sposobów układania kilku agentów w workflow. Prompt 08 używa trzech: rozgałęzienie i scalenie (faza 03), pętla do skutku (faza 05) i adversarial verification (faza 07).
+
+#### 1. Klasyfikuj i działaj
+
+::diagram:08-pattern-1-classify-and-act::
+
+**Jak działa:** jeden agent czyta zadanie i przekazuje je dokładnie jednemu wyspecjalizowanemu agentowi.
+
+**Kiedy użyć:** zadania różnego rodzaju, które wymagają różnych instrukcji. Przykład: zgłoszenia błędów kierowane do agenta od projektu, od tekstów albo od dostępności.
+
+#### 2. Rozgałęzienie i scalenie
+
+::diagram:08-pattern-2-fan-out-and-synthesize::
+
+**Jak działa:** zadanie dzieli się na niezależne części, każdą obsługuje osobny agent równolegle, a ostatni krok scala wyniki.
+
+**Kiedy użyć:** części, które od siebie nie zależą. Przykład: faza 03 promptu 08 buduje każdą sekcję strony osobnym agentem i składa je w kolejności.
+
+#### 3. Adversarial verification
+
+::diagram:08-pattern-3-adversarial-verification::
+
+**Jak działa:** jeden agent daje wynik, kilku agentów ze świeżym kontekstem próbuje go podważyć, a ich uwagi wracają do pierwszego agenta.
+
+**Kiedy użyć:** do wszystkiego, czego nie sprawdzi program. Przykład: prompt 07 i faza 07 promptu 08.
+
+#### 4. Generuj i filtruj
+
+::diagram:08-pattern-4-generate-and-filter::
+
+**Jak działa:** kilku agentów tworzy wiele propozycji, a filtr z kryteriami usuwa duplikaty i słabe propozycje.
+
+**Kiedy użyć:** potrzebujesz opcji, a nie jednej odpowiedzi. Przykład: dziesięć wersji nagłówka hero, z których trzy trafiają do projektanta.
+
+#### 5. Turniej
+
+::diagram:08-pattern-5-tournament::
+
+**Jak działa:** agenci-sędziowie porównują propozycje parami, a zwycięzcy przechodzą dalej, aż zostanie jedna.
+
+**Kiedy użyć:** wybór między kompletnymi wersjami, gdy nie ma liczbowej oceny. Przykład: cztery wersje sekcji lineup porównywane po dwie.
+
+#### 6. Pętla do skutku
+
+::diagram:08-pattern-6-loop-until-done::
+
+**Jak działa:** agent pracuje, test sprawdza, czy pojawiło się coś nowego, i zaczyna się kolejna runda, aż nic nowego się nie pojawi.
+
+**Kiedy użyć:** poprawianie, aż test przejdzie, albo review, aż runda nie znajdzie nic nowego. Przykład: prompt 05.
 
 ---
 
-## Kiedy jeden agent to za mało
-
-::diagram:05-dynamic-workflow::
-
-Górny poziom tej piramidy to model sprawdzający model, a model zapytany *„czy to jest
-dobre?"* powie, że tak. Lekarstwo jest strukturalne: **kilka przebiegów o różnych zadaniach
-i runda, której jedynym celem jest obalanie znalezisk.**
-
-Jeden przebieg szuka problemów z designem, jeden z dostępnością, jeden z tekstami. Każdy
-kandydat musi wskazać konkretny element — twierdzenie, które nie umie na nic wskazać, ląduje
-w koszu bez czytania. Potem każde znalezisko idzie z powrotem, żeby zostać *obalone*, i
-raportowane jest tylko to, co przeżyje.
-
-Prompt 07 to jednoagentowa wersja dokładnie tego, zwinięta do jednej wiadomości: popatrz
-przez kilka soczewek, a potem argumentuj przeciwko każdemu znalezisku z trzech stron — **czy
-to prawda, czy to ma znaczenie, czy to już jest obsłużone** — zanim powiesz je na głos.
-Słabsze niż trzy niezależne agenty i nie wymaga niczego instalować.
-
-Nadal jest to najmniej niezawodna rzecz, jaką zrobisz tego dnia. Warto ją robić, bo
-alternatywą jest nie patrzeć.
-
----
-
-## Publikacja: strona, która poszła, musi być tą, która przeszła
+## Publikacja i sprawdzenie strony na żywo
 
 ```bash
 npm run build
-npx netlify deploy --prod --dir=dist
+netlify deploy --prod --dir=dist
 ```
 
-Poprosi o zalogowanie, potem o wybór albo utworzenie strony, a na końcu wypisze adres. Ten
-adres jest sensem całych dziewięćdziesięciu minut.
-
-Jeszcze jeden krok, i tego akurat nikt nie robi:
-
-```text
-Pobierz adres, który przed chwilą opublikowałeś, i porównaj to, co zwrócił serwer,
-ze stroną w dist/. Jeśli się różnią, powiedz mi dokładnie czym.
-```
-
-Wszystko wcześniej dowodzi, że *jakaś* strona przeszła. Dopiero to dowodzi, że strona, która
-przeszła, jest stroną, która poszła. Rozjeżdżają się częściej, niż by się wydawało — stary
-build, nie ten folder, host dokładający własny kod.
+Po publikacji porównaj serwowaną stronę z plikami w `dist` i uruchom `npm run check -- --url <adres>` na adresie na żywo. Zaliczony test lokalny nie dowodzi, że strona na żywo jest ta sama: stary build, zły folder albo kod dodany przez hosting mogą ją zmienić. Prompt 06 robi oba kroki.
 
 ---
 
-## To, co przydarzy się tobie
+## Ograniczenia automatycznych testów
 
-Test dostępności na stronie referencyjnej tego warsztatu był zielony. Zero naruszeń, trzy
-szerokości, dwa razy pod rząd. Perfekcyjny wynik Lighthouse.
-
-Pięć z dziewięciu fragmentów tekstu w hero było **poniżej legalnego minimum kontrastu**
-względem zdjęcia za nimi. Największy, pierwszy, najczęściej czytany tekst na stronie.
-
-Powód: axe nie ocenia tekstu na tle obrazu. Nie oblewa go — oznacza parę jako *incomplete*,
-a w teście, którego reguła brzmi „zero naruszeń", incomplete jest nie do odróżnienia od
-poprawnego.
-
-Czytanie CSS też by tego nie znalazło. Tłem było tam zdjęcie, dwie półprzezroczyste
-nakładki i gradient złożone razem, a żadna linijka CSS nigdzie nie mówi, jaki kolor z tego
-wychodzi.
-
-**Zielony znaczy: brak znanego defektu. Wiedzieć, gdzie kończą się twoje testy — to jest
-robota.**
+- Automatyczne reguły dostępności obejmują około 30 do 40% WCAG. Zaliczenie oznacza brak znanych błędów, a nie dostępną stronę.
+- axe nie ocenia tekstu na zdjęciach ani gradientach. Oznacza takie pary jako *incomplete*, a test z regułą „zero naruszeń” traktuje incomplete jak zaliczenie. Twój checker musi liczyć incomplete jako błąd.
+- Porównanie zrzutów ekranu wykrywa zmianę. Nie mówi, czy zmiana jest lepsza.
+- Żaden z tych testów nie ocenia, czy sam projekt jest dobry.
 
 ---
 
-## Gdzie pętle naprawdę zawodzą
+## Częste problemy
 
-| Wygląda jak | Jest | Co zrobić |
+| Objaw | Przyczyna | Co zrobić |
 |---|---|---|
-| Test robi się zielony, a nic nie zostało naprawione | Agent zedytował test | Powiedz to wprost, przywróć plik i przeczytaj diff — to najbardziej pouczająca rzecz, jaką zobaczysz tego dnia |
-| Dwa złe stany, na przemian | Dwa wymagania, które nie mogą być jednocześnie spełnione | Zatrzymaj to. Sprzeczność jest w briefie, nie w kodzie |
-| Nie przestaje, choć jest gotowe | Nic nie uruchamia testu *najpierw* | Sprawdzaj przed naprawianiem, w każdej rundzie |
-| Robi się mętne i wolne | Kontekst się zapełnił | Zapisz stan do pliku, zacznij od nowa, wklej plik |
-| „Teraz działa", a nie działa | Raportuje, zamiast mierzyć | Wierz wyłącznie kodowi wyjścia |
-| Nic, przez dłuższą chwilę | Czeka na coś, co nie ma terminu | Każdy krok potrzebuje limitu czasu. Ten projekt wpadł w to trzy razy: sześć minut, siedem i godzina |
+| Test zmienia się na zielony, a nic nie zostało poprawione | Agent edytował test | Przywróć test i przeczytaj różnice |
+| Dwa błędne stany na zmianę | Dwa wymagania, które nie mogą być spełnione naraz | Zatrzymaj pętlę. Sprzeczność jest w projekcie albo w briefie |
+| Pracuje dalej, choć zadanie jest skończone | Nic nie uruchamia testu na początku | Uruchamiaj test przed każdą poprawką |
+| Zwalnia i odpowiada ogólnikami | Kontekst jest pełny | Zapisz stan do `notes.md`, zacznij nową sesję |
+| „Już działa”, a nie działa | Agent relacjonuje zamiast mierzyć | Ufaj tylko kodowi wyjścia `npm run check` |
+| Długo nic się nie dzieje | Krok czeka na dane bez limitu czasu | Daj każdemu krokowi limit czasu |
 
 ---
 
-## Co się stało, kiedy uruchomiłem te prompty
+## Po warsztacie
 
-Nie wyreżyserowane demo. Pusty folder poza jakimkolwiek repozytorium, Codex, prompty
-wklejone po kolei, nic więcej w zasięgu.
+Zacznij od jednego testu, nie od całej strony:
 
-| Prompt | Czas | Co z tego wyszło |
-|---|---|---|
-| 01 — start | 107 s | projekt Astro + Tailwind, działający dev server |
-| 03 — buduj | 41 s | hero, z wartości, które dostał |
-| 04 — **napisz checker** | 495 s | `check.mjs`, 264 linijki — plus testy do checkera i dokument opisujący go, o które nikt nie prosił |
-| 05 — pętla | 46 s | ruszyła i zatrzymała się z właściwego powodu |
-
-Jedenaście minut, bez nadzoru, od zera. Decyzja warta uwagi to ta, o którą nikt nie prosił:
-agent sam postanowił traktować wyniki *incomplete* z axe jako błędy. Wzięło się to z jednego
-zdania w prompcie 04 — **„test, który nie może się wykonać, jest porażką, nigdy pominięciem"**
-— i jest to dokładnie ta ślepa plamka opisana wyżej, którą człowiekowi zajęło popołudnie.
-
----
-
-## I co poszło nie tak przy budowaniu tego
-
-Trzynaście incydentów. Dziewięć było awariami *weryfikatora* albo oprzyrządowania, nie strony.
-
-| Co się stało | Dlaczego warto o tym wiedzieć |
-|---|---|
-| Dziewięć bramek przez cały przebieg mierzyło **cudzą stronę** — 427 pewnych siebie, poprawnie sformatowanych błędów | Weryfikator, który jest pewny i nie ma racji, jest gorszy niż żaden |
-| **axe przepuścił pustą stronę.** Zero naruszeń, trzy szerokości, zielono | Pomiar niczego wygląda dokładnie jak pomiar doskonałości |
-| Pętla wisiała godzinę na wejściu, którego nikt nie zamknął | Każdy krok potrzebuje terminu. Trzeci raz w jednym projekcie |
-| Oprzyrządowanie dowodowe **wymyśliło cztery czyste iteracje** z przebiegu, który został zabity | Brak wyniku odczytany jako sukces — i jedyny przypadek, który wyprodukował tabelkę |
-| Bramka była zielona, a hero nieczytelne | Narzędzie działało dokładnie zgodnie z dokumentacją, a dokumentacja leżała tam, gdzie nikt nie zagląda |
-
-Wzór pod tym wszystkim to jedno zdanie: **brak wyniku nie jest wynikiem pozytywnym.**
-Wpisz to do swojego checkera, zanim napiszesz cokolwiek innego.
-
----
-
-## Weź to do pracy w poniedziałek
-
-Nie zaczynaj od całej strony. Zacznij od **jednej bramki**.
-
-1. Wybierz test, który twój zespół i tak robi ręcznie i którego nie znosi.
-2. Zrób z niego program, który kończy się kodem 0 albo 1.
-3. Wystaw jego wynik tam, gdzie agent może go przeczytać — plik, nie terminal, który musi
-   zapamiętać.
-4. *Dopiero wtedy* postaw przed nim agenta.
-
-> Pętla jest łatwa. Robotą jest wyrocznia.
-
----
-
-## Część uczciwa
-
-- Automatyczne narzędzia do dostępności sięgają jakichś **30–40%** tego, czego naprawdę
-  wymaga WCAG. Zielony znaczy *brak znanego defektu*, nigdy *dostępne*.
-- Porównanie pikseli wykrywa, że coś się zmieniło. Nie ma pojęcia, czy zmiana była poprawą.
-- Nic z tego wszystkiego nie ma zdania na temat tego, czy design jest dobry.
-- Prompt 07 używa modelu do sprawdzania modelu. Łapie to, czego programy nie potrafią, i jest
-  najmniej niezawodną częścią całości. Druga opinia, nie wyrocznia.
+1. Wybierz test, który twój zespół robi ręcznie.
+2. Zamień go w program, który kończy się kodem 0 albo 1.
+3. Zapisuj jego wynik do pliku, który agent może przeczytać.
+4. Dopiero wtedy postaw przed nim agenta.

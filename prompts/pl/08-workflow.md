@@ -1,16 +1,9 @@
 # 08 — Ta sama robota, jako workflow
 
-Przeszedłeś właśnie siedem promptów ręcznie. To ty byłeś tym, co między nimi: czytałeś
-output, decydowałeś, że jest wystarczająco dobrze, wklejałeś następny.
-
-**Faza 01 to prompt 01, faza 07 to prompt 07, i słowa są te same.** Wszystko, czego
-nauczyłeś się z promptu, jest prawdą o jego fazie. Dwie rzeczy się zmieniają, bo to jeden
-przebieg zamiast siedmiu wiadomości, i prompt mówi obie na głos.
-
-Tę rolę da się opisać. **Fazy, co się dzieje w każdej i co musi być prawdą, zanim zacznie
-się następna** — zapisz to, a agent przejdzie sekwencję sam.
-
-Żadnego skryptu. Żadnego narzędzia. To jest wiadomość.
+Prompty 01 do 07 wklejone jako jedna wiadomość. Wiadomość jest podzielona na siedem faz,
+ponumerowanych od 01 do 07, a każda faza zawiera tekst promptu o tym samym numerze: faza 03
+robi to, co prompt 03. Agent sam przechodzi fazy po kolei i zatrzymuje się dla ciebie tylko po
+fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.
 
 ---
 
@@ -204,6 +197,10 @@ Jeśli kończy się kodem 0, zatrzymaj się i powiedz mi — skończyliśmy.
 Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
 npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
 
+Każda runda ma trzy kroki. Plan: weź pierwszy błąd z raportu i zapisz do notes.md jedną
+linijkę: co nie przechodzi, co według ciebie jest przyczyną i co zmienisz. Implementacja:
+wprowadź tę zmianę. Weryfikacja: uruchom npm run check.
+
 Pracuj w kolejności, w jakiej raport wymienia rzeczy. Naprawiaj przyczynę, nie objaw:
 jeśli kolor jest zły, użyj tego z designu, nie przesuwaj go, aż liczba drgnie. Rób
 najmniejszą zmianę, która usuwa dany błąd, i nie ruszaj niczego, co już przechodziło.
@@ -246,9 +243,12 @@ FAZA 07 — ATAKUJ
 
 Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
 
+Nie budowałeś tej strony. Oceniaj ją wyłącznie po tym, co pokazuje przeglądarka, i po tym,
+co jest w tym projekcie, a nie po czymkolwiek, co padło wcześniej w tej rozmowie.
+
 Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
-rzeczy, które są ze stroną nie tak, a których twój checker nie potrafi złapać, i dla
-każdej powiedz mi:
+rzeczy, które są ze stroną nie tak, a których checker w tym projekcie nie potrafi złapać,
+i dla każdej powiedz mi:
 
 - dokładnie który element, opisany tak, jak go widzę na ekranie
 - co jest z nim nie tak
@@ -273,9 +273,10 @@ Zanim powiesz mi którąkolwiek z nich, sam argumentuj przeciwko każdej, z trze
   czy to ma znaczenie  - czy odwiedzający to zauważy, czy tylko checklista?
   czy to obsłużone     - czy już gdzieś jest, tam gdzie nie patrzyłem?
 
-W tej fazie zrób to subagentami: po jednym na każde miejsce z listy powyżej, szukających
-równolegle, a potem, dla każdego kandydata, którego znajdą, osobny subagent, którego
-jedynym zadaniem jest argumentować przeciwko niemu z tych trzech stron.
+W tej fazie zrób to subagentami, z których każdy zaczyna ze świeżym kontekstem, który nie
+widział budowania strony: po jednym na każde miejsce z listy powyżej, szukających równolegle,
+a potem, dla każdego kandydata, którego znajdą, osobny subagent, którego jedynym zadaniem
+jest argumentować przeciwko niemu z tych trzech stron.
 
 Zgłoś tylko te znaleziska, które przeżyją wszystkie trzy. W razie wątpliwości domyślnie
 wyrzucaj i powiedz mi, ile wyrzuciłeś. Cztery prawdziwe znaleziska są warte więcej niż
@@ -296,65 +297,61 @@ Reguły na cały przebieg:
 
 ---
 
-**Co powinieneś zobaczyć.** `FAZA 01 — START`, a potem pracę, bez nadzoru, przez długi
-czas. Zatrzyma się dla ciebie raz, po fazie 02, żeby usłyszeć odpowiedź na punkt 6 — a poza
-tym tylko wtedy, gdy reguła każe mu się zatrzymać i zapytać.
+**Oczekiwany wynik.** Agent ogłasza `FAZA 01 — START` i pracuje bez nadzoru. Zatrzymuje się
+raz, po fazie 02, na twoją odpowiedź na punkt 6 jego listy. Na końcu: adres na żywo
+i znaleziska z fazy 07.
 
 ---
 
-## Dwa słowa z góry
+## Subagenci
 
-**`ultracode`** to słowo kluczowe, które rozpoznaje Claude Code: sygnalizuje, że zlecenie
-jest duże i strukturalne, i to ono odblokowuje orkiestrację wieloagentową na czas przebiegu.
-**Codex nie ma odpowiednika** — żadnego słowa, żadnej flagi. Zostaw je mimo to. W Codeksie
-jest to jeden nieszkodliwy token na początku długiej instrukcji, a prawdziwą robotę na obu
-narzędziach robi zdanie po nim:
+Subagent to osobny agent, którego główny agent uruchamia do jednej części roboty. Zaczyna
+z pustym kontekstem: zna tylko zadanie, które dostał, a nie dotychczasową rozmowę. Główny
+agent zbiera to, co zwrócą jego subagenci.
 
-> powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle, decydując
-> o liczbie na podstawie tego, co zastaniesz
+## Czym różni się od siedmiu promptów
 
-To jest instrukcja. Słowo kluczowe to skrót w jednym narzędziu, nie mechanizm.
+- Faza 03 buduje sekcje strony jednocześnie, po jednym subagencie na sekcję, zamiast jedna po drugiej.
+- Faza 07 robi przegląd subagentami: po jednym na każde miejsce do sprawdzenia i osobny, który argumentuje przeciwko każdemu znalezisku. Każdy zaczyna z pustym kontekstem, więc żaden nie widział budowania strony.
+- Przebieg czeka na ciebie tylko po fazie 02 i tam, gdzie reguła każe zatrzymać się i zapytać.
 
-**Po co w ogóle się rozgałęziać.** Sześć sekcji budowanych jedna po drugiej to sześć razy
-tyle czasu, co sześć budowanych naraz — a sekcje nie zależą od siebie. To samo dotyczy
-soczewek review: przebieg szukający problemów z dostępnością i przebieg szukający dryfu
-w tekstach nie mają ze sobą nic wspólnego, a puszczenie ich w jednym kontekście sprawia, że
-każdy niesie szum drugiego.
+`scripts/build-workflow-prompt.mjs` generuje ten prompt z promptów 01 do 07, a jego `--check`
+nie przechodzi, jeśli różnią się w czymkolwiek innym.
 
-**Gdzie to naprawdę zarabia, to faza 07.** Pojedynczy agent zapytany „czy ta strona jest
-dobra?" powie, że tak. Kilku agentów z różnymi soczewkami produkuje kandydatów, a osobny
-agent, którego jedyną robotą jest *obalić* każdego kandydata, usuwa tych, którzy tego nie
-przeżyją. Znajdź, potem zaatakuj, potem zatrzymaj resztę. To inny kształt niż zapytanie raz
-i uwierzenie w odpowiedź, i jest to jedyne miejsce w tym zestawie, gdzie model sprawdza
-model.
+## `ultracode`
 
-**Jest to też najmniej niezawodna część przebiegu.** Więcej agentów to pewniejszy output,
-nie poprawniejszy. Decyduje deterministyczny checker z fazy 04; faza 07 otwiera pozycje do
-oceny przez człowieka.
+Pierwsze słowo promptu. Claude Code traktuje je jako sygnał, że zadanie jest duże i może
+używać subagentów. Codex nie ma takiego słowa. Zostaw je w obu narzędziach: zdanie po nim,
+„powołuj tyle subagentów, ile wymaga robota, i uruchamiaj je równolegle", daje tę samą
+instrukcję każdemu z nich.
 
----
+## Wzorce workflow w tym prompcie
 
-## Pętla i workflow to różne rzeczy
+Strona warsztatu opisuje sześć wzorców workflow. Ten prompt używa trzech:
 
-Ludzie używają tych słów zamiennie. To nie jest ten sam kształt, a wiedza, którego
-potrzebujesz, to większość umiejętności.
-
-| Aspekt | **Pętla** | **Workflow** |
+| Faza | Wzorzec | Co się dzieje |
 |---|---|---|
-| Kształt | Rób to znowu, aż warunek będzie spełniony | Zrób te rzeczy, w tej kolejności, z poprzeczką między każdą |
+| 03 | Rozgałęzienie i scalenie | robota dzielona na części robione jednocześnie, po jednym subagencie na sekcję, potem scalana w jedną stronę |
+| 05 | Pętla do skutku | plan, implementacja, weryfikacja, powtarzane, aż `npm run check` zwróci kod 0 |
+| 07 | Adversarial verification | subagenci z pustym kontekstem szukają problemów, osobni subagenci argumentują przeciwko każdemu |
+
+Przegląd w fazie 07 działa obok `npm run check`. Checker rozstrzyga to, co da się zmierzyć;
+przegląd szuka tego, czego zmierzyć się nie da.
+
+## Pętla i workflow
+
+| | **Pętla** | **Workflow** |
+|---|---|---|
+| Kształt | rób to znowu, aż warunek będzie spełniony | wykonaj kroki po kolei, z warunkiem między każdym |
 | Ty definiujesz | **warunek wyjścia** | **fazy** |
-| Kończy się, gdy | program mówi „tak" | ostatnia faza się skończy |
-| Dobre do | zbiegania do poprawności | pracy z etapami, które od siebie zależą |
+| Kończy się, gdy | program mówi „tak" | skończy się ostatnia faza |
 | W tym zestawie | prompt 05 | ten prompt |
 
-Faza 05 powyżej jest pętlą mieszkającą w workflow. To zwykły układ: workflow doprowadza cię
-od zera do prawie-dobrze, a pętla w jednej fazie domyka resztę.
-
----
+Faza 05 jest pętlą wewnątrz workflow.
 
 ## Sparametryzuj to
 
-Lista faz jest programem. Zmień ją i zmieniłeś robotę, nie pisząc ani linijki:
+Zmień listę faz, a zmienisz robotę:
 
 > Faza 03 buduje tylko hero i lineup. Resztę zostaw.
 
@@ -363,24 +360,12 @@ Lista faz jest programem. Zmień ją i zmieniłeś robotę, nie pisząc ani lini
 
 > Pomiń fazę 06. Dziś nie publikuję.
 
-> W fazie 07 użyj sześciu soczewek zamiast trzech i patrz tylko na szerokości, których
-> design nie określa.
+> W fazie 07 patrz tylko na szerokości, których design nie określa.
 
-To właśnie znaczy w praktyce „nie trzeba skryptu". Skrypt trzeba by zedytować, przetestować
-i puścić ponownie. To edytuje się w zdaniu, które i tak zamierzałeś powiedzieć.
+## Kiedy go użyć
 
----
-
-## Kiedy po to sięgać, a kiedy nie
-
-**Sięgnij po workflow**, kiedy znasz kształt roboty i chcesz odejść od komputera: jest
-długa, etapy są prawdziwe, a wolisz wrócić do wyniku niż go niańczyć.
-
-**Sięgnij po siedem promptów**, kiedy się uczysz, kiedy chcesz sterować albo kiedy design
-jest niejasny i spodziewasz się, że w połowie zmienisz zdanie. Każde zatrzymanie to szansa,
-żeby się nie zgodzić, a niezgadzanie się wcześnie jest tańsze niż wszystko inne w tej sesji.
-
-Pierwszy raz rób robotę ręcznie. Za drugim razem już wiesz, jakie są fazy.
+- **Workflow**: znasz etapy i chcesz wyniku bez pilnowania każdego kroku.
+- **Siedem promptów**: uczysz się, chcesz sterować albo spodziewasz się zmiany designu w połowie.
 
 ---
 
@@ -389,10 +374,10 @@ Pierwszy raz rób robotę ręcznie. Za drugim razem już wiesz, jakie są fazy.
 | Co widzisz | Powiedz to |
 |---|---|
 | Ogłasza fazę 04, zanim faza 03 jest zbudowana | `Pominąłeś część fazy 03. Wróć i skończ ją przed fazą 04.` |
-| Przelatuje przez „poczekaj na mnie" | `Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.` |
-| Robi się mętny koło fazy 05 | `Streść stan do notes.md.` Potem zacznij nową sesję, wklej ten prompt jeszcze raz i powiedz `docs i notes.md mają stan. Kontynuuj od fazy 05.` |
+| Nie czeka po fazie 02 | `Faza 02 mówiła: poczekaj na moją odpowiedź na punkt 6. Zatrzymaj się i pokaż mi notes.md.` |
+| Robi się mniej konkretny koło fazy 05 | `Streść stan do notes.md.` Potem zacznij nową sesję, wklej ten prompt jeszcze raz i powiedz `docs i notes.md mają stan. Kontynuuj od fazy 05.` |
 | Ogłasza, że całość skończona | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
 | Faza się wywala, a on idzie dalej | `Miałeś zatrzymać się na nieudanej fazie. Co się wywaliło i dlaczego kontynuowałeś?` |
 | Buduje sekcje jedną po drugiej | `Faza 03 to niezależne sekcje. Zbuduj je równolegle, po jednym subagencie na każdą.` |
-| Faza 07 zgłasza pięć znalezisk i wszystkie pięć jest prawdziwych | Dobrze, i podejrzanie. `Ilu kandydatów odrzuciłeś i dlaczego?` Runda obalania, która nie obaliła niczego, się nie odbyła. |
-| Powołuje dwudziestu subagentów do małej strony | `Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.` |
+| Faza 07 zgłasza znaleziska i żadnego nie odrzuciła | `Ilu kandydatów odrzuciłeś i dlaczego?` |
+| Uruchamia dwudziestu subagentów do małej strony | `Używaj tylu, ilu wymaga robota. Podaj mi liczbę i uzasadnienie, zanim zaczniesz.` |

@@ -1,7 +1,6 @@
 # 03 — Zbuduj to
 
-Teraz pisze stronę: całą, za jednym razem. Potem ty ją przeglądasz, sekcja po sekcji, we
-własnym tempie. Budowanie cię nie potrzebuje; przeglądanie tak.
+Agent buduje całą stronę z dokumentów w `docs`, w jednym przebiegu, i podaje lokalny adres.
 
 ---
 
@@ -35,14 +34,11 @@ jedno założenie niż odkryć sześć.
 
 ---
 
-**Co powinieneś zobaczyć.** Kilka minut pracy, potem listę sekcji i adres. Otwórz go. Postaw
-obok designu w Figmie i idź w dół strony, sekcja po sekcji. Każdą rzecz, która jest nie tak,
-nazwij — po ludzku, tak jak powiedziałbyś juniorowi:
+**Oczekiwany wynik.** Kilka minut pracy, potem lista zbudowanych sekcji i adres. Otwórz
+stronę obok designu w Figmie i przeglądaj ją sekcja po sekcji. Każdy problem zgłoś zwykłymi
+słowami, na przykład:
 
 > Odstęp pod nagłówkiem jest za ciasny, a pomarańczowy to nie ten pomarańczowy.
-
-To jest całkowicie dobre zgłoszenie błędu. Nie potrzebujesz słownictwa. Możesz wysyłać uwagi
-po jednej albo kilka w jednej wiadomości; jedno i drugie działa.
 
 ---
 
@@ -57,16 +53,12 @@ po jednej albo kilka w jednej wiadomości; jedno i drugie działa.
 | Znowu zaczyna rozkodowywać .fig | `Stop. Wszystko, czego potrzebujesz, jest w docs i notes.md.` |
 | Potrzebuje wartości, której dokumenty nie mają | `Znajdź ją w design-data, dopisz do właściwego dokumentu w docs, potem jej użyj.` |
 | Mówi, że skończył, a wyraźnie nie | `Które sekcje zbudowałeś, a których jeszcze nie ma? Wypisz jedne i drugie.` |
-| Z każdą chwilą jest wolniejszy i mętniejszy | Kończy mu się kontekst. Powiedz `Zaktualizuj notes.md tym, gdzie jesteśmy`, zacznij nową sesję, powiedz `Przeczytaj docs i notes.md i buduj dalej` i jedź dalej. |
+| Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. Powiedz `Zaktualizuj notes.md tym, gdzie jesteśmy`, zacznij nową sesję, powiedz `Przeczytaj docs i notes.md i buduj dalej`. |
 
 ---
 
-### Dwie rzeczy warte zauważenia, kiedy pracuje
+### Dlaczego jest tak napisany
 
-**Jest szybszy od ciebie, a to nie to samo co lepszy.** Cała strona pojawi się w czasie,
-w którym porządnie obejrzysz jedną sekcję. Nie pozwól, żeby tempo budowania narzuciło tempo
-oglądania: bierz sekcje po jednej i mów, co jest nie tak, zanim przejdziesz do następnej.
-
-**Nic tutaj jeszcze niczego nie sprawdziło.** Na koniec tego promptu strona może wyglądać na
-skończoną. Do tej pory oceniła ją dokładnie jedna rzecz: twoje oczy, na twoim ekranie, przy
-twojej szerokości okna. Prompt 04 jest tym, co to zmienia.
+- Każda wartość pochodzi z `docs`: wartość, którą agent wybierze sam, checker z promptu 04 zgłosi jako błąd.
+- Pytania trafiają do `notes.md`: agent buduje dalej, a ty poprawiasz jego założenia potem.
+- Nic nie jest jeszcze sprawdzone. Jedyny przegląd to twój.

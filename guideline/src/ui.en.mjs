@@ -28,15 +28,17 @@ export default {
     preparationTitle: 'Preparation · WaysConf 2026 masterclass',
     preparationDesc:
       'Set up your computer before the workshop: accounts, tools, sign-in, a GitHub repository and an automated setup check.',
-    duringTitle: 'The workshop · WaysConf 2026 masterclass',
+    duringTitle: 'Workshop · WaysConf 2026 masterclass',
     duringDesc:
-      'The ideas, the diagrams and the eight prompts that take an empty folder to a deployed, verified website.',
+      'Workshop materials: the design file, the plan, the ideas and the eight prompts.',
   },
 
   chrome: {
     skip: 'Skip to main content',
     home: 'WaysConf 2026: workshop materials',
     tocTitle: 'On this page',
+    zoom: 'Enlarge',
+    close: 'Close',
     footerSession:
       '<strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 September, 14:55, ROOM-PM · Szymon Paluch',
     footerRepo: 'Workshop repository:',
@@ -44,7 +46,7 @@ export default {
       'TURBINE is a fictional festival created as teaching material. Artist names, imagery and copy are invented.',
   },
 
-  copy: { button: 'Copy', aria: 'Copy the command: ', done: 'Copied' },
+  copy: { button: 'Copy', aria: 'Copy: ', done: 'Copied', paste: 'Paste this to your agent' },
 
   hub: {
     kicker: 'WaysConf 2026 · masterclass',
@@ -365,22 +367,27 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
       'Complete these steps before 16 September, on the computer you will bring to the workshop. Time required: about 30 minutes.',
       'The last step is a prompt: your coding agent checks the setup and lists anything that is missing.',
     ],
-    duringH1: 'During the workshop',
+    duringH1: 'Workshop',
     duringLede:
-      'You need the design and this page. There is nothing to clone and no code to read — everything else, your agent makes for itself.',
+      'The workshop is eight prompts: messages you paste to your coding agent, in order. They are at the bottom of this page, each with a Copy button. Above them: the design file, the plan of the workshop, and the ideas the prompts are built on.',
     pasteNote:
-      'Paste each prompt whole. The rules in them matter as much as the request, and cutting a prompt down to its first sentence is the commonest way to get a disappointing answer.',
+      'Paste each prompt whole. The rules inside a prompt matter as much as the request.',
     promptsIntro:
-      'In order. Each one stands alone, so if one is going badly you can say <em>&ldquo;stop where you are, I want to move on&rdquo;</em> and paste the next.',
+      'Paste them in order, one at a time. Each prompt works on its own: if one fails, tell the agent to stop and paste the next.',
     promptLabel: (n) => `Prompt ${n}`,
   },
 
   diagrams: {
-    '01-the-loop': 'The loop: generate, verify, repair, with a deploy exit',
-    '02-fake-loop-vs-real-loop': 'A model grading its own output, beside a model judged by a separate program',
-    '03-verification-tiers': 'Three tiers of checking: deterministic gates, measured comparison, adversarial review',
-    '05-dynamic-workflow': 'Three review passes fanning out, every finding sent to be refuted, and a majority filter',
-    '06-ninety-minutes': 'The ninety minutes: three hands-on stretches between four blocks of talking',
-    '07-loop-vs-workflow': 'Two shapes: a loop defined by its exit condition, and a workflow defined by its phases',
+    '01-the-loop': 'The loop: plan, implement, verify, repeated until the check passes, then deploy',
+    '02-fake-loop-vs-real-loop': 'Fake loop: the same agent grades its own work. Real loop: a program and a fresh-context adversarial review check the page in parallel',
+    '03-verification-tiers': 'Three levels of checking: deterministic checks, measured comparison, adversarial review',
+    '05-dynamic-workflow': 'Review lenses fanning out, every finding sent to be refuted, and only what survives reported',
+    '07-loop-vs-workflow': 'The loop of plan, implement and verify, beside the seven phases of prompt 08 and the phases that branch',
+    '08-pattern-1-classify-and-act': 'Classify and act: a classifier sends the task to one of three agents',
+    '08-pattern-2-fan-out-and-synthesize': 'Fan out and synthesize: parallel agents, results merged into one',
+    '08-pattern-3-adversarial-verification': 'Adversarial verification: one worker, three fresh-context verifiers trying to break the result',
+    '08-pattern-4-generate-and-filter': 'Generate and filter: many candidates, a rubric keeps the best',
+    '08-pattern-5-tournament': 'Tournament: candidates compared in pairs until one wins',
+    '08-pattern-6-loop-until-done': 'Loop until done: another round while there are new findings',
   },
 }

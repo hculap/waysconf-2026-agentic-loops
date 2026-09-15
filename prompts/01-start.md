@@ -1,7 +1,7 @@
 # 01 — Start
 
-Empty folder in, a website running on your own machine out. Nothing is designed yet; this
-is just the workbench.
+Creates an Astro and Tailwind project in the current folder and starts the development
+server. No pages and no content yet.
 
 ---
 
@@ -22,38 +22,29 @@ before and I would like to follow along.
 
 ---
 
-**Codex will ask whether it trusts this folder.** Say yes. It refuses to work in a directory it has not been told about, which in a brand-new empty folder means the very first thing it does is stop and ask. That is the tool being careful, not something going wrong.
+**Expected result.** A few minutes of installing, then a line like
+`Local http://localhost:4321/`. That address shows Astro's placeholder page. The agent keeps
+the server running; you can keep typing to it in the same window.
 
-**What you should see.** A few minutes of installing, then a line like
-`Local http://localhost:4321/`. Open it. You get Astro's placeholder page — plain, ugly,
-correct.
-
-**The terminal is now busy.** That window is running the site and will not take another
-command. Leave it alone and open a second one. In Claude Code and Codex you can simply
-keep talking; they handle it.
+**Codex asks whether it trusts the folder.** Answer yes. Codex does not work in a folder it
+has not been told to trust.
 
 ---
 
-### If it goes wrong
+### If something goes wrong
 
 | What you see | Say this |
 |---|---|
-| It starts building a landing page anyway | `Stop. Undo the pages you created. I want an empty project until I give you the design.` |
-| `Not inside a trusted directory` | This is Codex asking permission. Answer yes, or run `git init` in the folder first. |
-| `command not found: npm` | Node is not installed. Follow the setup page, or switch to the browser option on it. |
+| It starts building a landing page | `Stop. Undo the pages you created. I want an empty project until I give you the design.` |
+| `Not inside a trusted directory` | Codex is asking for permission. Answer yes. |
+| `command not found: npm` | Node is not installed. Go back to the Preparation page. |
 | It asks you to choose a template | `Pick the minimal or empty template. No example content.` |
-| "The directory is not empty" | You put the design folder in before this prompt. Move it out, run this prompt, then put it back for prompt 02. |
-| Nothing happens for two minutes | It is installing. Installing looks exactly like being stuck. Give it five. |
+| "The directory is not empty" | Something other than git's files is in the folder, for example the `design` folder. Move it out, run this prompt, put it back before prompt 02. |
+| No output for two minutes | It is installing. Wait up to five minutes. |
 
 ---
 
-### Why it is worded like that
+### Why it is written this way
 
-**"Do not build any pages yet."** Left to itself an agent will fill the silence — it will
-invent a hero, a features grid and three testimonials before you have said a word about
-what you want. Saying what *not* to do is half of prompting, and it is the half people
-leave out.
-
-**"Tell me in one line what each command is doing."** You can ask for this. The agent is
-not only a machine that produces files; it is the only patient explainer you will have all
-afternoon.
+- "Do not build any pages yet": without it, the agent invents a hero, a feature grid and testimonials before it has seen the design.
+- "Tell me in one line what each command is doing": the agent explains its own commands when asked.

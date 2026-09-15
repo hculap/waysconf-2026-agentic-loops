@@ -1,31 +1,15 @@
 # 02 — Popatrz na design
 
-Agent czyta design i mówi ci, co znalazł. Strony jeszcze nie pisze. To najtańsza poprawka,
-jaką dostaniesz tego dnia: błędne założenie kosztuje tu jedno zdanie, a dwadzieścia minut
-wygenerowanego kodu — później.
+Agent dekoduje plik Figmy, spisuje design jako dokumenty w `docs` i wypisuje, co znalazł. Nie
+pisze kodu strony.
 
----
-
-## Najpierw włóż plik do projektu
+## Zanim wkleisz
 
 1. Na stronie warsztatu kliknij **Pobierz turbine.fig**.
 2. W folderze projektu załóż folder `design` i włóż do niego plik.
 
-Druga karta na tej stronie otwiera ten sam projekt w Figmie, żeby oglądać go, kiedy agent
-pracuje.
-
-**W projekcie, nie obok niego.** Agent pracuje wewnątrz folderu projektu. Claude Code pyta,
-zanim przeczyta cokolwiek spoza tego folderu, a plik piętro wyżej zamienia się w pytanie
-o zgodę, na którym agent musi się zatrzymać.
-
-**Plik, a nie jego zdjęcie.** PNG to zdjęcie designu: agent musi wyprowadzić każdy kolor i
-każdy wymiar z pikseli, i będzie *prawie* trafiał — a prawie to dokładnie to, co oblewa test
-kontrastu i wygląda subtelnie źle obok oryginału. Plik `.fig` to sam design: tekst jako
-tekst, kolory jako wartości, zmienne, komponenty i zdjęcia. Nie ma czego zgadywać.
-
-Twój agent nie ma programu, który otwiera `.fig`, więc rozkoduje plik sam. Zajmie mu to
-dziesięć do piętnastu minut i może przy tym zainstalować z internetu małą paczkę. **Na sali
-jest sieć, więc mu na to pozwól** — jeśli Codex zapyta o dostęp do sieci, odpowiedz tak.
+Plik musi leżeć w folderze projektu: Claude Code pyta o zgodę, zanim przeczyta plik spoza
+niego.
 
 ---
 
@@ -98,20 +82,14 @@ Potem zatrzymaj się i poczekaj, aż odpowiem na punkt 6.
 
 ---
 
-**Co powinieneś zobaczyć.** Dziesięć do piętnastu minut, w których agent rozgryza plik.
-W trakcie zapełnia się folder `docs` — kolory, typografia, layout, komponenty, teksty,
-obrazy — a na końcu w czacie jest lista. Przeczytaj ją. Dwie rzeczy są warte twojej uwagi:
+**Oczekiwany wynik.** Od 10 do 16 minut dekodowania. W `docs` pojawia się siedem dokumentów
+(sekcje, kolory, typografia, layout, komponenty, teksty, obrazy), a w `design-data`
+rozkodowane dane i zdjęcia. Na końcu w czacie jest lista z sześcioma punktami.
 
-- **Czy to opisuje twój design?** Jeśli mówi „hero, trzy kafle i tabela cennika", a twój
-  design ma lineup dwunastu artystów, to patrzy na coś innego albo na nic.
-- **Co jest w punkcie 6?** Ta lista to brief, którego zapomniałeś napisać. Odpowiedz na nią
-  teraz, własnymi słowami. Jeśli punkt 6 jest pusty, agent zgaduje i nie powiedział ci o
-  tym — zapytaj: `co z tego przeczytałeś, a co wywnioskowałeś?`
+Sprawdź w liście dwie rzeczy:
 
-`docs` będzie ważny później. To design spisany na piśmie: każdy kolejny prompt buduje
-i sprawdza według tych dokumentów, a nie według pliku `.fig`, i możesz je otworzyć sam —
-to zwykły tekst. W `notes.md` są otwarte pytania, a jeśli kiedyś będziesz musiał zacząć
-nową sesję, te dwa miejsca razem to wszystko, co nowa sesja wie.
+- Sekcje zgadzają się z designem: dwanaście kart artystów z dwunastoma różnymi nazwami, a nie ogólny landing page.
+- Punkt 6 nie jest pusty. Odpowiedz na każdą pozycję własnymi słowami. Jeśli jest pusty, zapytaj `co z tego przeczytałeś, a co wywnioskowałeś?`
 
 ---
 
@@ -120,35 +98,22 @@ nową sesję, te dwa miejsca razem to wszystko, co nowa sesja wie.
 | Co widzisz | Powiedz to |
 |---|---|
 | Zaczyna budować | `Stop. Pytałem, co znalazłeś, nie o kod. Cofnij wszystko, co napisałeś.` |
-| Zostawia wszystko na jeden wielki opis na końcu | `Zapisz teraz docs/colours.md z tego, co już przeczytałeś, i jedź dalej.` |
-| Dokument jest ubogi albo brakuje w nim wartości | `W docs/typography.md nie ma interlinii. Odczytaj je z pliku i dopisz.` |
+| Zostawia dokumenty na koniec | `Zapisz teraz docs/colours.md z tego, co już przeczytałeś, i jedź dalej.` |
+| W dokumencie brakuje wartości | `W docs/typography.md nie ma interlinii. Odczytaj je z pliku i dopisz.` |
 | Prosi o przeczytanie pliku spoza folderu | Plik `.fig` leży obok projektu, nie w nim. Przenieś go do `design` w projekcie i powiedz `Jest teraz w design.` |
 | Przeszukuje dysk albo czyta inny projekt | `Stop. Design to plik .fig w design i nic więcej. Nie używaj niczego, co znalazłeś poza tym projektem.` |
 | „Nie mogę otworzyć pliku binarnego" | `To jest zip. Rozpakuj go i rozkoduj canvas.fig tak, jak opisałem w poprzedniej wiadomości.` |
 | Opisuje małą, rozmytą stronę | Przeczytał `thumbnail.png`. `To jest podgląd. Pracuj na canvas.fig.` |
-| `zstd` nieobsługiwany albo dekompresja się sypie | Twój Node jest starszy niż 22.15. `Zainstaluj paczkę, która czyta zstd, i działaj dalej.` |
-| Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja paczki go wymaga, a sieć na sali jest. |
-| Claude Code pyta przed każdą komendą | Rozkodowanie to dziesiątki małych komend. Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend. |
+| `zstd` nieobsługiwany albo dekompresja się sypie | Node jest starszy niż 22.15. `Zainstaluj paczkę, która czyta zstd, i działaj dalej.` |
+| Codex pyta o dostęp do sieci | Odpowiedz tak. Instalacja paczki go wymaga. |
+| Claude Code pyta przed każdą komendą | Odpowiedz tak i wybierz opcję, która przestaje pytać o ten rodzaj komend. |
 | Każda karta artysty ma to samo imię | `Czytasz komponent, a nie instancje. Rozwiąż właściwości komponentu i nadpisania.` |
-| Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli nie potrafisz odczytać dokładnych, powiedz to — nie opisuj ich.` |
-| Po dziesięciu minutach dalej nie umie przeczytać pliku | Pobierz gotową paczkę ze strony warsztatu, włóż ją do `design` i powiedz `Użyj paczki z folderu design.` |
+| Kolory wracają jako „ciemny szary" | `Podaj dokładne wartości. Jeśli nie potrafisz ich odczytać, powiedz to.` |
 
 ---
 
-### Po co ten prompt w ogóle istnieje
+### Dlaczego jest tak napisany
 
-Nie produkuje strony. I o to chodzi.
-
-Wszystko, co psuje się później w pętli design→kod, popsuło się właśnie tutaj, niewidocznie:
-agent zgadł kolor, założył breakpoint, wymyślił słowo. Zmuszenie go, żeby powiedział, co
-zobaczył — *zanim* zdąży ukryć zgadywankę w czterystu linijkach kodu — to najwyższy zwrot
-z sekundy w całej sesji.
-
-To jest też pierwsza pętla tego dnia, i nie musiałeś jej ustawiać. Agent nigdy nie otwierał
-pliku `.fig`. Dałeś mu pięć faktów o formacie; napisał dekoder, spojrzał, co wyszło, i
-próbował dalej, aż imiona na kartach były prawdziwymi imionami. Tak wygląda wszystko po
-prompcie 04.
-
-W Claude Code ten sam pomysł jest wbudowany jako **plan mode** (`Shift+Tab`, aż stopka powie
-*plan mode on*): najpierw popatrz, powiedz, co znalazłeś, niczego nie zmieniaj. Ten prompt to
-ten pomysł wypisany ręcznie, żeby działał w dowolnym agencie.
+- Bez kodu strony: błędne założenie poprawiasz tu jednym zdaniem, zanim rozejdzie się po całej stronie.
+- Dokumenty w `docs`: każdy kolejny prompt czyta je zamiast dekodować plik od nowa, a ty możesz je otworzyć.
+- Punkt 6: lista rzeczy, których plik nie określa, to ta część briefu, której nikt nie napisał.

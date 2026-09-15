@@ -1,16 +1,9 @@
 # 08 — The same job, as a workflow
 
-You have just run seven prompts by hand. You were the thing between them: you read the
-output, you decided it was good enough, you pasted the next one.
-
-**Phase 01 is prompt 01, phase 07 is prompt 07, and the words are the same.** Anything you
-learned from a prompt is true of its phase. Two things change because it is one run instead
-of seven messages, and the prompt says both out loud.
-
-That role is describable. **Phases, what happens in each, and what has to be true before
-the next one starts** — write those down and the agent runs the sequence itself.
-
-No script. No tool. It is a message.
+Prompts 01 to 07 pasted as one message. The message is split into seven phases, numbered 01
+to 07, and each phase contains the text of the prompt with the same number: phase 03 does what
+prompt 03 does. The agent works through the phases in order on its own, and stops for you only
+after phase 02 and wherever a rule says to stop and ask.
 
 ---
 
@@ -202,6 +195,10 @@ If it exits 0, stop and tell me — we are finished.
 If it does not, read the report it wrote and fix what it names. Then run npm run check again.
 Repeat until it exits 0.
 
+Each round has three steps. Plan: take the first failure in the report and write one line
+into notes.md: the failure, what you think causes it, and what you will change. Implement:
+make that change. Verify: run npm run check.
+
 Work in the order the report lists things. Fix the cause, not the symptom: if a colour is
 wrong, use the one from the design, do not nudge it until the number moves. Make the
 smallest change that clears each failure, and leave alone anything that was already
@@ -244,8 +241,12 @@ PHASE 07 — ATTACK
 
 The checks pass. Now try to prove the page is still wrong.
 
+You did not build this page. Judge it only by what a browser shows and what is in this
+project, not by anything said earlier in this conversation.
+
 Your job now is to attack, not to defend and not to fix. Find five things that
-are wrong with this page that your checker cannot catch, and for each one tell me:
+are wrong with this page that the checker in this project cannot catch, and for each one
+tell me:
 
 - exactly which element, by what I would see on screen
 - what is wrong with it
@@ -269,9 +270,10 @@ Before you tell me any of them, argue against each one yourself, from three angl
   does it matter  - would a visitor notice, or only a checklist?
   is it handled   - is it already covered somewhere I have not looked?
 
-In this phase, do it with subagents: one per place in the list above, looking in
-parallel, and then, for every candidate they find, a separate subagent whose only job is
-to argue against it from those three angles.
+In this phase, do it with subagents, each starting with a fresh context that has not seen
+the page being built: one per place in the list above, looking in parallel, and then, for
+every candidate they find, a separate subagent whose only job is to argue against it from
+those three angles.
 
 Report only the findings that survive all three. Default to discarding when you are
 unsure, and tell me how many you threw away. Four real findings beat five with a guess in
@@ -291,65 +293,61 @@ Rules for the whole run:
 
 ---
 
-**What you should see.** `PHASE 01 — START`, and then work, unattended, for a long time.
-It stops for you once, after phase 02, to hear your answer to point 6 — and otherwise only
-if a rule tells it to stop and ask.
+**Expected result.** The agent announces `PHASE 01 — START` and works without supervision.
+It stops once, after phase 02, for your answer to point 6 of its list. At the end: a live
+address and the findings from phase 07.
 
 ---
 
-## The two words at the top
+## Subagents
 
-**`ultracode`** is a keyword Claude Code recognises: it signals that the request is large
-and structural, and it is what unlocks multi-agent orchestration for the run. **Codex has
-no equivalent** — no keyword, no flag. Leave the word in anyway. On Codex it is one
-harmless token at the start of a long instruction, and the sentence after it does the real
-work on both tools:
+A subagent is a separate agent that the main agent starts for one part of the work. It
+begins with an empty context: it knows only the task it was given, not the conversation so
+far. The main agent collects what its subagents return.
 
-> spawn as many subagents as the work needs and run them in parallel, deciding how many
-> from what you find
+## What differs from the seven prompts
 
-That is the instruction. The keyword is a shortcut on one tool, not the mechanism.
+- Phase 03 builds the sections of the page at the same time, one subagent per section, instead of one after another.
+- Phase 07 runs the review with subagents: one per place to look, and a separate one to argue against each finding. Because each starts with an empty context, none of them saw the page being built.
+- The run waits for you only after phase 02 and where a rule says to stop and ask.
 
-**Why fan out at all.** Six sections built one after another is six times the wall-clock of
-six built at once, and the sections do not depend on each other. The same is true of review
-lenses: a pass looking for accessibility problems and a pass looking for copy drift share
-nothing, and running them in one context means each one carries the other's noise.
+`scripts/build-workflow-prompt.mjs` generates this prompt from prompts 01 to 07, and its
+`--check` fails if they differ in anything else.
 
-**Where it earns its keep is phase 07.** A single agent asked "is this page good?" will say
-yes. Several agents with different lenses produce candidates, and a separate agent whose
-only job is to *refute* each candidate removes the ones that do not survive. Find, then
-attack, then keep what is left. That is a different shape from asking once and believing
-the answer, and it is the only part of this pack where a model checks a model.
+## `ultracode`
 
-**It is also the least reliable part of the run.** More agents is more confident output,
-not more correct output. The deterministic checker from phase 04 is what decides; phase 07
-opens items for a person to judge.
+The first word of the prompt. Claude Code treats it as a signal that the task is large and
+may use subagents. Codex has no such keyword. Keep the word on both tools: the sentence after
+it, "spawn as many subagents as the work needs and run them in parallel", gives the same
+instruction to either.
 
----
+## Workflow patterns in this prompt
 
-## Loop and workflow are different things
+The workshop page describes six workflow patterns. This prompt uses three:
 
-People use the words interchangeably. They are not the same shape, and knowing which one
-you need is most of the skill.
-
-| Aspect | **Loop** | **Workflow** |
+| Phase | Pattern | What happens |
 |---|---|---|
-| Shape | Do this again until a condition holds | Do these things, in this order, with a bar between each |
+| 03 | Fan out and synthesize | the work is split into parts done at the same time, one subagent per section, then merged into one page |
+| 05 | Loop until done | plan, implement, verify, repeated until `npm run check` exits 0 |
+| 07 | Adversarial verification | subagents with an empty context look for problems, separate subagents argue against each one |
+
+The review in phase 07 runs alongside `npm run check`. The checker decides what can be
+measured; the review looks for what cannot.
+
+## Loop and workflow
+
+| | **Loop** | **Workflow** |
+|---|---|---|
+| Shape | do this again until a condition holds | do these steps in order, with a condition between each |
 | You define | the **exit condition** | the **phases** |
 | Ends when | a program says yes | the last phase finishes |
-| Good for | converging on correctness | work with stages that depend on each other |
 | In this pack | prompt 05 | this prompt |
 
-Phase 05 above is a loop, living inside a workflow. That is the usual arrangement: the
-workflow gets you from nothing to nearly-right, and a loop inside one phase closes the
-last gap.
-
----
+Phase 05 is a loop inside the workflow.
 
 ## Parameterise it
 
-The phase list is the program. Change it and you have changed the job, without writing a
-line of anything:
+Change the phase list and you change the job:
 
 > Phase 03 builds only the hero and the lineup. Leave the rest.
 
@@ -358,37 +356,24 @@ line of anything:
 
 > Skip phase 06. I am not deploying today.
 
-> In phase 07, use six lenses instead of three, and look only at widths the design does
-> not specify.
+> In phase 07, look only at widths the design does not specify.
 
-That is what "no script needed" means in practice. A script would have to be edited,
-tested and re-run. This gets edited in the sentence you were about to say anyway.
+## When to use it
 
----
-
-## When to reach for this, and when not
-
-**Use the workflow** when you know the shape of the work and want to walk away: it is
-long, the stages are real, and you would rather come back to a result than babysit.
-
-**Use the seven prompts** when you are learning, when you want to steer, or when the design
-is unclear and you expect to change your mind halfway. Every stop is a chance to disagree,
-and disagreeing early is cheaper than everything else in this session.
-
-The first time you do a piece of work, do it by hand. The second time, you know what the
-phases are.
+- **The workflow**: you know the stages and want a result without supervising each step.
+- **The seven prompts**: you are learning, want to steer, or expect to change the design halfway.
 
 ---
 
-### If it goes wrong
+### If something goes wrong
 
 | What you see | Say this |
 |---|---|
 | It announces phase 04 before phase 03 is built | `You skipped part of phase 03. Go back and finish it before phase 04.` |
-| It blows through the "wait for me" bar | `Phase 02 said wait for my answer to point 6. Stop and show me notes.md.` |
-| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then start a fresh session, paste this prompt again, and say `docs and notes.md have the state. Continue from phase 05.` |
+| It does not wait after phase 02 | `Phase 02 said wait for my answer to point 6. Stop and show me notes.md.` |
+| It gets vaguer around phase 05 | `Summarise the state into notes.md.` Then start a new session, paste this prompt again, and say `docs and notes.md have the state. Continue from phase 05.` |
 | It declares the whole thing done | `Run npm run check and paste the last five lines, unedited.` |
 | A phase fails and it continues anyway | `You were told to stop on a failed phase. What failed, and why did you continue?` |
 | It builds the sections one at a time | `Phase 03 is independent sections. Build them in parallel, one subagent each.` |
-| Phase 07 reports five findings and all five are real | Good, and suspicious. `How many candidates did you discard, and why?` A refutation round that refutes nothing did not happen. |
-| It spawns twenty subagents for a small page | `Use as many as the work needs. Tell me the number and your reason before you start.` |
+| Phase 07 reports findings and discarded none | `How many candidates did you discard, and why?` |
+| It starts twenty subagents for a small page | `Use as many as the work needs. Tell me the number and your reason before you start.` |

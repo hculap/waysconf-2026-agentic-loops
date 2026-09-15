@@ -1,15 +1,8 @@
 # 04 — Write the checker
 
-**This is the workshop.** Everything before it was getting a page onto a screen. Everything
-after it depends on what happens here.
-
-You are about to ask the agent to build the thing that will judge its own work — and then,
-in the next prompt, forbid it from ever touching that thing again.
-
-Notice what this prompt does *not* say. It does not name a colour, a width, a font size or
-a section. All of that is in the design, and the agent read the design in prompt 02. A
-prompt that repeats the design has two copies of the truth, and the day they disagree is
-the day the checker starts lying.
+The agent writes `npm run check`: a program that tests the page in a real browser against the
+documents in `docs` and writes a report file. The prompt names no colour, width or section;
+the agent takes them from the design.
 
 ---
 
@@ -61,40 +54,26 @@ When it is written, run it and show me the output.
 
 ---
 
-**What you should see.** Red. Quite a lot of it.
-
-That is the correct outcome and it is worth sitting with for a second. A page you were
-fairly happy with two minutes ago has just been told, by a program, exactly what is wrong
-with it — with element names and measured numbers.
-
-You did not tell it which numbers. It went and got them from the design.
+**Expected result.** The checker runs and fails, with a list of failures. Each failure names
+the element, the expected value, the measured value and the threshold. A checker that passes
+on its first run is not checking anything.
 
 ---
 
-### Why this prompt names nothing specific
+### If something goes wrong
 
-Every check in that list is a *question*, and the answer lives in the design file. Ask for
-"zero accessibility violations at every width the design specifies" and the agent has to go
-and find out what those widths are. Ask for them by number and you have quietly moved the
-design into the prompt, where nobody will remember to update it.
+| What you see | Say this |
+|---|---|
+| It passes on the first run | `It passed first time. Show me which checks ran and what each one measured.` |
+| A check is skipped or marked incomplete | `A check that cannot run is a failure. Make it fail and say why it could not run.` |
+| The report says "contrast issue" with no details | `Every failure needs the element, the expected value, the measured value and the threshold.` |
+| It asks which testing library to use | `Your choice. Pick one that drives a real browser and tests accessibility.` |
+| `npm run check -- --url https://example.com` does nothing different | `The checker must accept --url and run the same checks against that address.` |
 
-This is the same reason the prompt does not name a testing library or a file name. Those
-are the agent's decisions, and the agent is better at them than a message written in
-advance for a machine that might be either of two different tools.
+---
 
-What the prompt *does* fix is the part no tool can decide for you:
+### Why it is written this way
 
-- it must be a program, and its answer must not come from a model
-- the report is for a reader who was not there — element, expected, actual, threshold
-- a check that cannot run is a failure
-- lenient checks are worse than no checks
-- it takes an address, because prompt 06 is going to point it at the live site
-
-### The sentence that does the most work
-
-> A check that cannot run is a FAILURE, never a pass and never a silent skip.
-
-In a trial run of these prompts, an agent given that one line decided on its own to treat
-its accessibility tool's *inconclusive* results as failures rather than passes. That
-decision catches a whole class of defect that a "zero violations" gate cannot see, and
-nobody asked for it. It fell out of one sentence about what absence means.
+- A program, not an opinion: exit code 0 or not, the same answer on every run, no language model involved.
+- A check that cannot run is a failure: accessibility tools report text over images as "incomplete", and a rule of "zero violations" would otherwise count that as a pass.
+- It takes `--url`: prompt 06 runs the same checks against the live site.

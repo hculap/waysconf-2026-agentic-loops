@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440" role="img" aria-labelledby="t d">
+  <title id="t">Adversarial verification</title>
+  <desc id="d">One worker produces a result; three independent verifiers with fresh context each try to break it and send findings back.</desc>
+  <defs>
+    <marker id="ah-0" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker><marker id="ah-0-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-1" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#6B7280"/></marker><marker id="ah-1-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#6B7280"/></marker>
+    <marker id="ah-2" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker><marker id="ah-2-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-3" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#D1D5DB"/></marker><marker id="ah-3-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#D1D5DB"/></marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="440" fill="#0A0A0A"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <g transform="translate(0 0)">
+    <rect x="0" y="0" width="600" height="440" rx="14" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
+    <rect x="28" y="26" width="38" height="38" rx="6" fill="#10B981"/>
+    <text x="47" y="53" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">3</text>
+    <text x="82" y="54" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="start">Adversarial verification</text>
+    <line x1="28" y1="82" x2="572" y2="82" stroke="#2E2E2E" stroke-width="2"/>
+    <circle cx="150" cy="233" r="32" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="150" y="296" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">worker</text>
+    <line x1="180.7" y1="223.8" x2="435.1" y2="147.5" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)" marker-start="url(#ah-0-start)"/>
+    <line x1="182.0" y1="233.0" x2="434.0" y2="233.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)" marker-start="url(#ah-0-start)"/>
+    <line x1="180.7" y1="242.2" x2="435.1" y2="318.5" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)" marker-start="url(#ah-0-start)"/>
+    <circle cx="460" cy="140" r="24" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <circle cx="460" cy="233" r="24" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <circle cx="460" cy="326" r="24" fill="#0A0A0A" stroke="#10B981" stroke-width="3"/>
+    <text x="460" y="104" font-size="18" font-weight="400" fill="#34D399" text-anchor="middle">verifiers</text>
+    <text x="460" y="378" font-size="16" font-weight="400" fill="#9CA3AF" text-anchor="middle">fresh context, told to attack</text>
+  </g>
+  </g>
+</svg>

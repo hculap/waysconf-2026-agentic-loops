@@ -1,32 +1,15 @@
 # 02 — Look at the design
 
-The agent reads the design and tells you what it found. It writes no page yet. This is the
-cheapest correction you will get all day: a wrong assumption costs one sentence to fix
-here, and twenty minutes of generated code to fix later.
+The agent decodes the Figma file, writes the design down as documents in `docs`, and lists
+what it found. It writes no page code.
 
----
-
-## First, put the file in your project
+## Before you paste
 
 1. On the workshop page, click **Download turbine.fig**.
-2. Inside your project folder, make a folder called `design` and put the file in it.
+2. Inside the project folder, create a folder named `design` and put the file in it.
 
-The other card on that page opens the same design in Figma, for looking at while the agent
-works.
-
-**Inside the project, not beside it.** Your agent works inside the project folder. Claude
-Code asks before it reads anything outside that folder, and a file one level up turns into
-a permission question the agent has to stop for.
-
-**The file, not a picture of it.** A PNG is a picture of the design: the agent has to infer
-every colour and every measurement from pixels, and it will be *nearly* right — which is
-exactly what fails a contrast check and looks subtly wrong next to the real thing. The
-`.fig` is the design itself: the text as text, the colours as values, the variables, the
-components and the photos. There is nothing left to infer.
-
-Your agent has no program that opens a `.fig`, so it decodes the file itself. That takes it
-ten to fifteen minutes, and it may install a small package from the internet to do it.
-**The room has network, so let it** — if Codex asks before going online, say yes.
+The file must be inside the project folder: Claude Code asks for permission before it reads
+files outside it.
 
 ---
 
@@ -100,58 +83,38 @@ Then stop and wait for me to answer point 6.
 
 ---
 
-**What you should see.** Ten to fifteen minutes of the agent working the file out. A
-`docs` folder fills up as it goes — colours, type, layout, components, copy, images — and
-at the end there is a list in the chat. Read the list. Two things are worth your attention:
+**Expected result.** 10 to 16 minutes of decoding. `docs` fills with seven documents
+(sections, colours, typography, layout, components, copy, images) and `design-data` with the
+decoded data and the photos. At the end, a six-point list in the chat.
 
-- **Does it describe your design?** If it says "a hero, three feature cards and a pricing
-  table" and your design has a lineup of twelve artists, it is looking at something else,
-  or at nothing.
-- **What is in point 6?** That list is the brief you forgot to write. Answer it now, in
-  your own words. If point 6 is empty, the agent is guessing and has not said so — ask it
-  `which of those did you read, and which did you infer?`
+Check two things in the list:
 
-`docs` matters later. It is the design written down: every prompt after this one builds and
-checks against those documents, not against the `.fig`, and you can open them yourself —
-they are plain text. `notes.md` holds the open questions, and if you ever have to start a
-fresh session, the two together are what the new one knows.
+- The sections match the design: twelve artist cards with twelve different names, not a generic landing page.
+- Point 6 is not empty. Answer each item in your own words. If it is empty, ask `which of those did you read, and which did you infer?`
 
 ---
 
-### If it goes wrong
+### If something goes wrong
 
 | What you see | Say this |
 |---|---|
 | It starts building | `Stop. I asked what you found, not for code. Undo anything you wrote.` |
-| It keeps everything for one big write-up at the end | `Write docs/colours.md now, from what you have read so far, then carry on.` |
-| A document is thin, or a value is missing from it | `docs/typography.md has no line heights. Read them from the file and add them.` |
+| It leaves the documents for the end | `Write docs/colours.md now, from what you have read so far, then carry on.` |
+| A document is missing values | `docs/typography.md has no line heights. Read them from the file and add them.` |
 | It asks to read a file outside the folder | The `.fig` is beside the project, not in it. Move it into `design` inside the project and say `It is in design now.` |
 | It searches your disk, or reads another project | `Stop. The design is the .fig in design and nothing else. Do not use anything you found outside this project.` |
 | "I cannot open binary files" | `It is a zip. Unzip it and decode canvas.fig as described in my last message.` |
 | It describes a small, blurry page | It read `thumbnail.png`. `That is the preview picture. Work from canvas.fig.` |
-| `zstd` is not supported, or decompression fails | Your Node is older than 22.15. `Install a package that reads zstd and carry on.` |
-| Codex asks to use the network | Say yes. Installing a package needs it, and the room has it. |
-| Claude Code asks before every command | Decoding is dozens of small commands. Say yes, and pick the option that stops it asking again for that kind of command. |
+| `zstd` is not supported, or decompression fails | Node is older than 22.15. `Install a package that reads zstd and carry on.` |
+| Codex asks to use the network | Answer yes. Installing a package needs it. |
+| Claude Code asks before every command | Answer yes and pick the option that stops asking for that kind of command. |
 | Every artist card has the same name | `You are reading the component, not the instances. Resolve the component properties and overrides.` |
-| Colours come back as "a dark grey" | `Give me exact values. If you cannot read exact values, say so — do not describe them.` |
-| Ten minutes in, it still cannot read the file | Download the ready-made pack from the workshop page, put it in `design`, and say `Use the pack in the design folder instead.` |
+| Colours come back as "a dark grey" | `Give me exact values. If you cannot read exact values, say so.` |
 
 ---
 
-### Why this prompt exists at all
+### Why it is written this way
 
-It produces no page. That is the point.
-
-Everything that goes wrong later in a design-to-code loop went wrong here, invisibly: the
-agent guessed a colour, assumed a breakpoint, invented a word. Forcing it to say what it
-saw — *before* it can hide the guess inside four hundred lines of markup — is the highest
-return per second of anything in this session.
-
-It is also the first loop of the day, and you did not have to set it up. The agent has
-never opened a `.fig`. You gave it five facts about the format; it wrote a decoder, looked
-at what came out, and tried again until the names on the cards were real names. That is
-the shape of everything after prompt 04.
-
-In Claude Code, **plan mode** is the same idea built in (`Shift+Tab` until the footer says
-*plan mode on*): look first, say what you found, change nothing. This prompt is that idea
-written out by hand, so that it works in any agent.
+- No page code: a wrong assumption is corrected here in one sentence, before it is spread across the page.
+- Documents in `docs`: every later prompt reads them instead of decoding the file again, and you can open them yourself.
+- Point 6: the list of things the file does not specify is the part of the brief nobody wrote.

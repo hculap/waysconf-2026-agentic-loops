@@ -1,15 +1,8 @@
 # 04 — Napisz checker
 
-**To jest ten warsztat.** Wszystko wcześniej było doprowadzaniem strony na ekran. Wszystko
-później zależy od tego, co stanie się tutaj.
-
-Za chwilę poprosisz agenta, żeby zbudował rzecz, która będzie oceniać jego własną pracę —
-a w następnym prompcie zabronisz mu jej kiedykolwiek dotykać.
-
-Zauważ, czego ten prompt *nie* mówi. Nie podaje koloru, szerokości, rozmiaru czcionki ani
-sekcji. To wszystko jest w designie, a design agent przeczytał w prompcie 02. Prompt, który
-powtarza design, ma dwie kopie prawdy — a dzień, w którym się rozjadą, jest dniem, w którym
-checker zaczyna kłamać.
+Agent pisze `npm run check`: program, który testuje stronę w prawdziwej przeglądarce względem
+dokumentów w `docs` i zapisuje raport do pliku. Prompt nie podaje żadnego koloru, szerokości
+ani sekcji; agent bierze je z designu.
 
 ---
 
@@ -62,40 +55,26 @@ Kiedy będzie gotowe, uruchom to i pokaż mi wynik.
 
 ---
 
-**Co powinieneś zobaczyć.** Czerwień. Sporo czerwieni.
-
-To jest poprawny wynik i warto z nim posiedzieć chwilę. Strona, z której dwie minuty temu
-byłeś w miarę zadowolony, właśnie usłyszała od programu dokładnie, co jest z nią nie tak —
-z nazwami elementów i zmierzonymi liczbami.
-
-Nie podałeś mu tych liczb. Poszedł po nie do designu.
+**Oczekiwany wynik.** Checker się uruchamia i nie przechodzi, z listą błędów. Każdy błąd
+podaje element, wartość oczekiwaną, wartość zmierzoną i próg. Checker, który przechodzi przy
+pierwszym uruchomieniu, niczego nie sprawdza.
 
 ---
 
-### Dlaczego ten prompt nie nazywa niczego konkretnego
+### Jeśli coś pójdzie nie tak
 
-Każdy punkt z tej listy jest *pytaniem*, a odpowiedź leży w pliku designu. Poproś
-o „zero naruszeń dostępności przy każdej szerokości, którą design określa", a agent musi
-pójść i sprawdzić, jakie to szerokości. Poproś o nie po numerach, a właśnie po cichu
-przeniosłeś design do promptu, gdzie nikt nie pamięta, żeby go aktualizować.
+| Co widzisz | Powiedz to |
+|---|---|
+| Przechodzi przy pierwszym uruchomieniu | `Przeszło za pierwszym razem. Pokaż mi, które testy się wykonały i co każdy zmierzył.` |
+| Test jest pominięty albo oznaczony jako incomplete | `Test, który nie może się wykonać, to porażka. Niech nie przechodzi i niech powie, dlaczego się nie wykonał.` |
+| Raport mówi „problem z kontrastem" bez szczegółów | `Każdy błąd musi podać element, wartość oczekiwaną, wartość zmierzoną i próg.` |
+| Pyta, jakiej biblioteki testowej użyć | `Twój wybór. Weź taką, która steruje prawdziwą przeglądarką i testuje dostępność.` |
+| `npm run check -- --url https://example.com` niczego nie zmienia | `Checker musi przyjmować --url i uruchamiać te same testy na tym adresie.` |
 
-Z tego samego powodu prompt nie nazywa biblioteki testowej ani pliku. To są decyzje agenta,
-a agent radzi sobie z nimi lepiej niż wiadomość napisana z wyprzedzeniem dla maszyny, która
-może być jednym z dwóch różnych narzędzi.
+---
 
-To, co prompt *ustala*, to część, której żadne narzędzie nie wybierze za ciebie:
+### Dlaczego jest tak napisany
 
-- musi to być program, a jego odpowiedź nie może pochodzić od modelu
-- raport jest dla czytelnika, którego przy tym nie było — element, oczekiwane, faktyczne, próg
-- test, który nie może się wykonać, jest porażką
-- rozluźnione testy są gorsze niż żadne
-- przyjmuje adres, bo prompt 06 skieruje go na stronę na żywo
-
-### Zdanie, które robi najwięcej roboty
-
-> Test, który nie może się wykonać, jest PORAŻKĄ, nigdy zaliczeniem i nigdy cichym pominięciem.
-
-W próbnym przebiegu tych promptów agent, który dostał tę jedną linijkę, sam postanowił
-traktować *niejednoznaczne* wyniki swojego narzędzia do dostępności jako błędy, a nie
-zaliczenia. Ta decyzja łapie całą klasę defektów, których bramka „zero naruszeń" nie widzi,
-i nikt o nią nie prosił. Wypadła z jednego zdania o tym, co znaczy brak wyniku.
+- Program, nie opinia: kod wyjścia 0 albo nie, ta sama odpowiedź przy każdym uruchomieniu, bez modelu językowego.
+- Test, który nie może się wykonać, to porażka: narzędzia do dostępności zgłaszają tekst na zdjęciu jako „incomplete", a reguła „zero naruszeń" liczyłaby to jako zaliczenie.
+- Przyjmuje `--url`: prompt 06 uruchamia te same testy na stronie na żywo.

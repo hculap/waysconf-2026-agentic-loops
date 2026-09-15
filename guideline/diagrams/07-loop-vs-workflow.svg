@@ -1,106 +1,118 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t07 d07">
-  <title id="t07">The two shapes: a loop and a workflow</title>
-  <desc id="d07">Two diagrams side by side on a near-black ground. On the left, THE LOOP: a box marked DO THE WORK feeds into a diamond marked CHECK, which is labelled "a program, not an opinion". From the diamond an arrow marked "not yet" curves back up into DO THE WORK, and an arrow marked "exit 0" leaves to the right into DONE. A caption underneath reads "You define the exit condition". On the right, THE WORKFLOW: four stacked boxes marked PHASE 1 LOOK, PHASE 2 BUILD, PHASE 3 ARM, PHASE 4 REPAIR, each joined to the next by a short arrow passing through a horizontal bar labelled with what must be true before the next phase starts: "docs written", "it builds", "the checker runs", "checks pass". The fourth phase, REPAIR, contains a small circular arrow showing that a loop lives inside it. A caption underneath reads "You define the phases". Across the bottom, a single line: neither of these is a script. Both are things you say.</desc>
-
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" width="1600" height="1000" role="img" aria-labelledby="t07 d07">
+  <title id="t07">Two shapes: a loop and a workflow</title>
+  <desc id="d07">On the left, THE LOOP: PLAN, a hypothesis from the report, leads to IMPLEMENT, generate or fix, which leads to VERIFY, npm run check. Exit 0 leads to DONE; exit 1 sends the report back to PLAN. You define the exit condition; prompt 05, or /goal in Claude Code. On the right, THE WORKFLOW of prompt 08: seven phases in order, START, LOOK, BUILD, ARM, REPAIR, SHIP, ATTACK, each joined to the next by a bar naming what must be true first. Three phases branch: LOOK waits for your answer; BUILD fans out to one agent per section and merges them in order; REPAIR runs the loop on the left; ATTACK sends the page to several reviewers with a fresh context, and every finding to a refuter. The two nest: phase 05 of the workflow is the loop.</desc>
   <defs>
-    <marker id="a7" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/>
-    </marker>
-    <marker id="a7g" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M0 0 L12 5 L0 10 Z" fill="#34D399"/>
-    </marker>
-    <marker id="a7o" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/>
-    </marker>
-    <marker id="a7c" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="15" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
-      <path d="M0 0 L12 5 L0 10 Z" fill="#F59E0B"/>
-    </marker>
+    <marker id="m-n" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="m-s" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#34D399"/></marker>
+    <marker id="m-r" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#F87171"/></marker>
+    <marker id="m-a" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#F59E0B"/></marker>
+    <marker id="m-g" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="16" markerHeight="13" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker>
   </defs>
-
-  <rect width="1600" height="900" fill="#0A0A0A"/>
-
-  <text x="60" y="72" font-family="system-ui,sans-serif" font-size="40" font-weight="700" fill="#FFFFFF">Two shapes</text>
-  <text x="60" y="112" font-family="system-ui,sans-serif" font-size="24" fill="#9CA3AF">Almost everything you will build on an agent is one of these. Neither is a script.</text>
-
-  <line x1="800" y1="160" x2="800" y2="790" stroke="#2E2E2E" stroke-width="2" stroke-dasharray="6 8"/>
-
-  <!-- ─────────────── LEFT: THE LOOP ─────────────── -->
-  <text x="60" y="190" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#10B981" letter-spacing="2">THE LOOP</text>
-  <text x="60" y="222" font-family="ui-monospace,monospace" font-size="17" fill="#9CA3AF">do this again until a condition holds</text>
-
-  <!-- do the work -->
-  <rect x="180" y="266" width="330" height="92" rx="10" fill="#10B981"/>
-  <text x="345" y="303" text-anchor="middle" font-family="system-ui,sans-serif" font-size="23" font-weight="700" fill="#0A0A0A">DO THE WORK</text>
-  <text x="345" y="332" text-anchor="middle" font-family="system-ui,sans-serif" font-size="18" fill="#0A0A0A">the agent writes the page</text>
-
-  <path d="M345 358 L345 418" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
-
-  <!-- check diamond -->
-  <path d="M345 428 L560 512 L345 596 L130 512 Z" fill="#161616" stroke="#F59E0B" stroke-width="3"/>
-  <text x="345" y="500" text-anchor="middle" font-family="system-ui,sans-serif" font-size="24" font-weight="700" fill="#FFFFFF">CHECK</text>
-  <text x="345" y="528" text-anchor="middle" font-family="ui-monospace,monospace" font-size="16" fill="#F59E0B">npm run check</text>
-  <text x="345" y="552" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">a program, not an opinion</text>
-
-  <!-- back arrow -->
-  <path d="M130 512 L72 512 L72 312 L170 312" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#a7o)"/>
-  <text x="86" y="418" font-family="ui-monospace,monospace" font-size="16" fill="#10B981" transform="rotate(-90 86 418)" text-anchor="middle">not yet — fix and repeat</text>
-
-  <!-- exit -->
-  <path d="M560 512 L640 512" stroke="#34D399" stroke-width="3" marker-end="url(#a7g)"/>
-  <rect x="648" y="480" width="112" height="64" rx="8" fill="#34D399"/>
-  <text x="704" y="519" text-anchor="middle" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#0A0A0A">DONE</text>
-  <text x="600" y="496" text-anchor="middle" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">exit 0</text>
-
-  <rect x="72" y="646" width="656" height="104" rx="10" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
-  <text x="100" y="682" font-family="system-ui,sans-serif" font-size="19" fill="#FFFFFF">You define the <tspan font-weight="700" fill="#10B981">exit condition</tspan>.</text>
-  <text x="100" y="712" font-family="system-ui,sans-serif" font-size="18" fill="#9CA3AF">&#8220;Run the check. Fix what it names. Repeat until it exits 0.&#8221;</text>
-  <text x="100" y="738" font-family="ui-monospace,monospace" font-size="16" fill="#F59E0B">prompt 05 &#183; /goal in Claude Code</text>
-
-  <!-- ─────────────── RIGHT: THE WORKFLOW ─────────────── -->
-  <text x="872" y="190" font-family="system-ui,sans-serif" font-size="22" font-weight="700" fill="#FBBF24" letter-spacing="2">THE WORKFLOW</text>
-  <text x="872" y="222" font-family="ui-monospace,monospace" font-size="17" fill="#9CA3AF">do these, in order, with a bar between each</text>
-
-  <!-- phase 1 -->
-  <rect x="872" y="256" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="288" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 02</text>
-  <text x="1000" y="290" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">LOOK</text>
-  <text x="1000" y="312" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">read the .fig, write docs</text>
-  <path d="M1082 322 L1082 348" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
-  <line x1="940" y1="352" x2="1224" y2="352" stroke="#34D399" stroke-width="2"/>
-  <text x="1240" y="358" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">docs written</text>
-
-  <!-- phase 2 -->
-  <rect x="872" y="366" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="398" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 03</text>
-  <text x="1000" y="400" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">BUILD</text>
-  <text x="1000" y="422" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">the whole page, from docs</text>
-  <path d="M1082 432 L1082 458" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
-  <line x1="940" y1="462" x2="1224" y2="462" stroke="#34D399" stroke-width="2"/>
-  <text x="1240" y="468" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">it builds</text>
-
-  <!-- phase 3 -->
-  <rect x="872" y="476" width="420" height="66" rx="8" fill="#161616" stroke="#FBBF24" stroke-width="2"/>
-  <text x="896" y="508" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 04</text>
-  <text x="1000" y="510" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">ARM</text>
-  <text x="1000" y="532" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">write the checker that will judge it</text>
-  <path d="M1082 542 L1082 568" stroke="#9CA3AF" stroke-width="3" marker-end="url(#a7)"/>
-  <line x1="940" y1="572" x2="1224" y2="572" stroke="#34D399" stroke-width="2"/>
-  <text x="1240" y="578" font-family="ui-monospace,monospace" font-size="15" fill="#34D399">the checker runs</text>
-
-  <!-- phase 4, containing a loop -->
-  <rect x="872" y="586" width="420" height="86" rx="8" fill="#1F1F1F" stroke="#10B981" stroke-width="2"/>
-  <text x="896" y="618" font-family="ui-monospace,monospace" font-size="15" fill="#FBBF24">PHASE 05</text>
-  <text x="1000" y="620" font-family="system-ui,sans-serif" font-size="21" font-weight="700" fill="#FFFFFF">REPAIR</text>
-  <text x="1000" y="642" font-family="system-ui,sans-serif" font-size="16" fill="#9CA3AF">check, fix, repeat until green</text>
-  <path d="M1348 622 a 24 24 0 1 1 -12 -20" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#a7o)"/>
-  <text x="1324" y="672" font-family="ui-monospace,monospace" font-size="15" fill="#10B981">a loop lives here</text>
-
-  <rect x="872" y="696" width="656" height="54" rx="10" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
-  <text x="898" y="720" font-family="system-ui,sans-serif" font-size="19" fill="#FFFFFF">You define the <tspan font-weight="700" fill="#FBBF24">phases</tspan>, and the bar between them.</text>
-  <text x="898" y="742" font-family="ui-monospace,monospace" font-size="16" fill="#F59E0B">prompt 08</text>
-
-  <!-- ─────────────── FOOTER ─────────────── -->
-  <line x1="60" y1="800" x2="1540" y2="800" stroke="#2E2E2E" stroke-width="1"/>
-  <text x="60" y="842" font-family="system-ui,sans-serif" font-size="23" fill="#FFFFFF">Neither of these is a script. Both are things you <tspan font-style="italic" fill="#10B981">say</tspan> &#8212; which is why changing one is a sentence, not an edit.</text>
-  <text x="60" y="874" font-family="system-ui,sans-serif" font-size="19" fill="#9CA3AF">They nest: the workflow gets you to nearly-right, and a loop inside one phase closes the last gap.</text>
+  <rect x="0" y="0" width="1600" height="1000" fill="#0A0A0A"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <text x="60" y="72" font-size="40" font-weight="700" fill="#FFFFFF" text-anchor="start">Two shapes</text>
+  <text x="60" y="110" font-size="22" font-weight="400" fill="#9CA3AF" text-anchor="start">A loop repeats until a condition holds. A workflow runs phases in order, and a phase can branch.</text>
+  <line x1="780" y1="140" x2="780" y2="900" stroke="#2E2E2E" stroke-width="2" stroke-dasharray="6 8"/>
+  <text x="80" y="170" font-size="22" font-weight="700" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">THE LOOP</text>
+  <text x="80" y="198" font-size="16" font-weight="400" fill="#9CA3AF" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">repeat until a condition holds</text>
+  <rect x="160" y="240" width="300" height="90" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <text x="310" y="280" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">PLAN</text>
+  <text x="310" y="310" font-size="17" font-weight="400" fill="#9CA3AF" text-anchor="middle">a hypothesis from the report</text>
+  <path d="M310 334 V368" fill="none" stroke="#9CA3AF" stroke-width="3" marker-end="url(#m-n)"/>
+  <rect x="160" y="375" width="300" height="90" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <text x="310" y="415" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">IMPLEMENT</text>
+  <text x="310" y="445" font-size="17" font-weight="400" fill="#9CA3AF" text-anchor="middle">generate, or fix</text>
+  <path d="M310 469 V503" fill="none" stroke="#9CA3AF" stroke-width="3" marker-end="url(#m-n)"/>
+  <polygon points="160,590 310,510 460,590 310,670" fill="#161616" stroke="#F59E0B" stroke-width="3"/>
+  <text x="310" y="585" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle">VERIFY</text>
+  <text x="310" y="614" font-size="17" font-weight="400" fill="#F59E0B" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run check</text>
+  <path d="M464 590 H572" fill="none" stroke="#34D399" stroke-width="3" marker-end="url(#m-s)"/>
+  <text x="518" y="576" font-size="17" font-weight="400" fill="#34D399" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">exit 0</text>
+  <rect x="580" y="555" width="150" height="70" rx="8" fill="#34D399" stroke="#34D399" stroke-width="3"/>
+  <text x="655" y="598" font-size="24" font-weight="700" fill="#0A0A0A" text-anchor="middle">DONE</text>
+  <path d="M156 590 H100 V285 H152" fill="none" stroke="#F87171" stroke-width="3" marker-end="url(#m-r)"/>
+  <text x="88" y="440" font-size="16" font-weight="400" fill="#F87171" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" transform="rotate(-90 88 440)">exit 1: the report goes back</text>
+  <rect x="80" y="720" width="650" height="130" rx="8" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
+  <text x="104" y="758" font-size="21" font-weight="400" fill="#FFFFFF" text-anchor="start">You define the exit condition.</text>
+  <text x="104" y="790" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="start">Plan, implement, verify, until the check exits 0.</text>
+  <text x="104" y="826" font-size="16" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">prompt 05 · /goal npm run check exits 0</text>
+  <text x="820" y="170" font-size="22" font-weight="700" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">THE WORKFLOW</text>
+  <text x="820" y="198" font-size="16" font-weight="400" fill="#9CA3AF" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">phases in order, a bar between each</text>
+  <rect x="820" y="222" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="838" y="260" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 01</text>
+  <text x="938" y="252" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">START</text>
+  <text x="938" y="274" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">project and dev server</text>
+  <path d="M880 286 V310" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="306" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">server runs</text>
+  <rect x="820" y="316" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="838" y="354" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 02</text>
+  <text x="938" y="346" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">LOOK</text>
+  <text x="938" y="368" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">decode the .fig, write docs</text>
+  <path d="M880 380 V404" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="400" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">docs written, you answered</text>
+  <rect x="820" y="410" width="330" height="62" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <text x="838" y="448" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 03</text>
+  <text x="938" y="440" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">BUILD</text>
+  <text x="938" y="462" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">the whole page</text>
+  <path d="M880 474 V498" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="494" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">it builds</text>
+  <rect x="820" y="504" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="838" y="542" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 04</text>
+  <text x="938" y="534" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">ARM</text>
+  <text x="938" y="556" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">write the checker</text>
+  <path d="M880 568 V592" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="588" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">the check runs</text>
+  <rect x="820" y="598" width="330" height="62" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <text x="838" y="636" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 05</text>
+  <text x="938" y="628" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">REPAIR</text>
+  <text x="938" y="650" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">the loop, until exit 0</text>
+  <path d="M880 662 V686" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="682" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">check exits 0</text>
+  <rect x="820" y="692" width="330" height="62" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2.5"/>
+  <text x="838" y="730" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 06</text>
+  <text x="938" y="722" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">SHIP</text>
+  <text x="938" y="744" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">deploy, check the live URL</text>
+  <path d="M880 756 V780" fill="none" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#m-n)"/>
+  <text x="894" y="776" font-size="14" font-weight="400" fill="#34D399" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">live check passes</text>
+  <rect x="820" y="786" width="330" height="62" rx="8" fill="#161616" stroke="#10B981" stroke-width="3"/>
+  <text x="838" y="824" font-size="14" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">PHASE 07</text>
+  <text x="938" y="816" font-size="20" font-weight="700" fill="#FFFFFF" text-anchor="start">ATTACK</text>
+  <text x="938" y="838" font-size="15" font-weight="400" fill="#9CA3AF" text-anchor="start">adversarial review</text>
+  <path d="M1154 347 H1200" fill="none" stroke="#F59E0B" stroke-width="2.5" marker-end="url(#m-a)"/>
+  <rect x="1206" y="325" width="250" height="44" rx="8" fill="#161616" stroke="#F59E0B" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="1331" y="353" font-size="16" font-weight="400" fill="#F59E0B" text-anchor="middle">waits for your answer</text>
+  <path d="M1154 441 L1247 411" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="411" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 411 L1318 426" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <path d="M1154 441 L1247 441" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="441" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 441 L1318 441" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <path d="M1154 441 L1247 471" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="471" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 471 L1318 456" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <rect x="1320" y="403" width="8" height="76" rx="4" fill="#10B981"/>
+  <text x="1344" y="437" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">one agent per section,</text>
+  <text x="1344" y="459" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">merged in order</text>
+  <path d="M1232 621 A 24 24 0 1 0 1218 649" fill="none" stroke="#10B981" stroke-width="3" marker-end="url(#m-g)"/>
+  <text x="1254" y="627" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">plan, implement, verify</text>
+  <text x="1254" y="649" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">the loop on the left</text>
+  <path d="M1154 817 L1248 787" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="787" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 787 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,776 1333,787 1322,798 1311,787" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <path d="M1154 817 L1248 817" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="817" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 817 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,806 1333,817 1322,828 1311,817" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <path d="M1154 817 L1248 847" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <circle cx="1260" cy="847" r="10" fill="#0A0A0A" stroke="#10B981" stroke-width="2.5"/>
+  <path d="M1271 847 H1310" fill="none" stroke="#9CA3AF" stroke-width="2"/>
+  <polygon points="1322,836 1333,847 1322,858 1311,847" fill="#0A0A0A" stroke="#F87171" stroke-width="2.5"/>
+  <text x="1350" y="813" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">reviewers, fresh context,</text>
+  <text x="1350" y="835" font-size="15" font-weight="400" fill="#D1D5DB" text-anchor="start">each finding refuted</text>
+  <rect x="820" y="850" width="700" height="0" rx="8" fill="#161616" stroke="none" stroke-width="0"/>
+  <text x="820" y="888" font-size="18" font-weight="400" fill="#FFFFFF" text-anchor="start">You define the phases, what branches inside them, and the bar between.</text>
+  <text x="820" y="916" font-size="16" font-weight="400" fill="#F59E0B" text-anchor="start" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">prompt 08</text>
+  <text x="60" y="966" font-size="20" font-weight="400" fill="#D1D5DB" text-anchor="start">They nest: phase 05 of the workflow is the loop. Both are written as instructions, not code.</text>
+  </g>
 </svg>

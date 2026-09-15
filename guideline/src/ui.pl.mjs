@@ -26,13 +26,15 @@ export default {
       'Przygotuj komputer przed warsztatem: konta, narzędzia, logowanie, repozytorium na GitHubie i automatyczne sprawdzenie konfiguracji.',
     duringTitle: 'Warsztat · masterclass WaysConf 2026',
     duringDesc:
-      'Idee, diagramy i osiem promptów, które prowadzą od pustego folderu do zweryfikowanej strony w internecie.',
+      'Materiały warsztatu: plik projektu, plan, idee i osiem promptów.',
   },
 
   chrome: {
     skip: 'Przejdź do treści',
     home: 'WaysConf 2026: materiały do warsztatu',
     tocTitle: 'Na tej stronie',
+    zoom: 'Powiększ',
+    close: 'Zamknij',
     footerSession:
       '<strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 września, 14:55, ROOM-PM · Szymon Paluch',
     footerRepo: 'Repozytorium warsztatu:',
@@ -40,7 +42,7 @@ export default {
       'TURBINE to zmyślony festiwal, stworzony jako materiał szkoleniowy. Nazwy artystów, zdjęcia i teksty są wymyślone.',
   },
 
-  copy: { button: 'Kopiuj', aria: 'Skopiuj komendę: ', done: 'Skopiowane' },
+  copy: { button: 'Kopiuj', aria: 'Skopiuj: ', done: 'Skopiowane', paste: 'Wklej to agentowi' },
 
   hub: {
     kicker: 'WaysConf 2026 · masterclass',
@@ -363,22 +365,27 @@ do poprawienia.`,
       'Wykonaj te kroki przed 16 września, na komputerze, który przyniesiesz na warsztat. Zajmie to około 30 minut.',
       'Ostatni krok to prompt: agent sprawdza konfigurację i wypisuje, czego brakuje.',
     ],
-    duringH1: 'W trakcie warsztatu',
+    duringH1: 'Warsztat',
     duringLede:
-      'Potrzebujesz designu i tej strony. Nie ma czego klonować ani czytać — całą resztę agent robi sobie sam.',
+      'Warsztat to osiem promptów: wiadomości, które wklejasz agentowi po kolei. Są na dole tej strony, każdy z przyciskiem Kopiuj. Nad nimi: plik projektu, plan warsztatu i idee, na których prompty są oparte.',
     pasteNote:
-      'Wklejaj każdy prompt w całości. Reguły w środku znaczą tyle samo co samo polecenie, a skrócenie promptu do pierwszego zdania to najczęstszy sposób na rozczarowującą odpowiedź.',
+      'Wklejaj każdy prompt w całości. Reguły w prompcie znaczą tyle samo co samo polecenie.',
     promptsIntro:
-      'Po kolei. Każdy stoi sam, więc jeśli któryś idzie źle, możesz powiedzieć <em>&bdquo;przestań, idziemy dalej&rdquo;</em> i wkleić następny.',
+      'Wklejaj je po kolei, po jednym. Każdy prompt działa samodzielnie: jeśli któryś się nie uda, każ agentowi przerwać i wklej następny.',
     promptLabel: (n) => `Prompt ${n}`,
   },
 
   diagrams: {
-    '01-the-loop': 'Pętla: generuj, sprawdź, napraw, z wyjściem przez publikację',
-    '02-fake-loop-vs-real-loop': 'Model oceniający własną pracę obok modelu ocenianego przez osobny program',
-    '03-verification-tiers': 'Trzy poziomy sprawdzania: deterministyczne bramki, mierzone porównanie, adversarial review',
-    '05-dynamic-workflow': 'Trzy przebiegi review rozchodzące się równolegle, każde znalezisko wysłane do obalenia, na końcu filtr większościowy',
-    '06-ninety-minutes': 'Dziewięćdziesiąt minut: trzy odcinki pracy własnej między czterema blokami mówienia',
-    '07-loop-vs-workflow': 'Dwa kształty: pętla zdefiniowana warunkiem wyjścia i workflow zdefiniowany fazami',
+    '01-the-loop': 'Pętla: plan, implementacja, weryfikacja, powtarzane aż test przejdzie, potem publikacja',
+    '02-fake-loop-vs-real-loop': 'Fałszywa pętla: ten sam agent ocenia własną pracę. Prawdziwa pętla: program i adversarial review ze świeżym kontekstem sprawdzają stronę równolegle',
+    '03-verification-tiers': 'Trzy poziomy sprawdzania: testy deterministyczne, porównanie mierzone, adversarial review',
+    '05-dynamic-workflow': 'Soczewki review rozchodzące się równolegle, każda uwaga wysłana do obalenia, zgłoszone tylko te, które przetrwały',
+    '07-loop-vs-workflow': 'Pętla planu, implementacji i weryfikacji obok siedmiu faz promptu 08 i faz, które się rozgałęziają',
+    '08-pattern-1-classify-and-act': 'Klasyfikuj i działaj: klasyfikator przekazuje zadanie jednemu z trzech agentów',
+    '08-pattern-2-fan-out-and-synthesize': 'Rozgałęzienie i scalenie: agenci równolegle, wyniki scalone w jeden',
+    '08-pattern-3-adversarial-verification': 'Adversarial verification: jeden wykonawca, trzech weryfikatorów ze świeżym kontekstem próbuje podważyć wynik',
+    '08-pattern-4-generate-and-filter': 'Generuj i filtruj: wiele propozycji, kryteria zostawiają najlepsze',
+    '08-pattern-5-tournament': 'Turniej: propozycje porównywane parami, aż jedna wygra',
+    '08-pattern-6-loop-until-done': 'Pętla do skutku: kolejna runda, dopóki są nowe uwagi',
   },
 }

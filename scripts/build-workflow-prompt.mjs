@@ -73,9 +73,10 @@ tell me which sections you built, one line each, and the address to open.`,
       7: [
         {
           before: `Report only the findings that survive all three.`,
-          text: `In this phase, do it with subagents: one per place in the list above, looking in
-parallel, and then, for every candidate they find, a separate subagent whose only job is
-to argue against it from those three angles.`,
+          text: `In this phase, do it with subagents, each starting with a fresh context that has not seen
+the page being built: one per place in the list above, looking in parallel, and then, for
+every candidate they find, a separate subagent whose only job is to argue against it from
+those three angles.`,
         },
       ],
     },
@@ -130,9 +131,10 @@ skończysz, powiedz mi, które sekcje zbudowałeś, po jednej linijce, i podaj a
       7: [
         {
           before: `Zgłoś tylko te znaleziska, które przeżyją wszystkie trzy.`,
-          text: `W tej fazie zrób to subagentami: po jednym na każde miejsce z listy powyżej, szukających
-równolegle, a potem, dla każdego kandydata, którego znajdą, osobny subagent, którego
-jedynym zadaniem jest argumentować przeciwko niemu z tych trzech stron.`,
+          text: `W tej fazie zrób to subagentami, z których każdy zaczyna ze świeżym kontekstem, który nie
+widział budowania strony: po jednym na każde miejsce z listy powyżej, szukających równolegle,
+a potem, dla każdego kandydata, którego znajdą, osobny subagent, którego jedynym zadaniem
+jest argumentować przeciwko niemu z tych trzech stron.`,
         },
       ],
     },

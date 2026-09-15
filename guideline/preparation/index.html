@@ -88,6 +88,16 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;color:var(--fg-2);vertic
 
 .fig{margin:26px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface)}
 .fig img{display:block;width:100%;height:auto}
+.fig__zoom{display:block;cursor:zoom-in}
+h4{font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:17px;color:var(--fg);margin:26px 0 6px}
+
+/* The enlarged figure: the whole viewport, the drawing scaled to fit, one close button. A
+   native <dialog> brings Escape, the focus trap and the backdrop with it. */
+.lightbox{width:100vw;max-width:100vw;height:100vh;max-height:100vh;margin:0;padding:64px 16px 16px;border:0;background:rgb(10 10 10 / .97);color:var(--fg)}
+.lightbox::backdrop{background:rgb(0 0 0 / .75)}
+.lightbox img{display:block;width:100%;height:100%;object-fit:contain}
+.lightbox__close{position:fixed;top:12px;right:16px;width:44px;height:44px;border-radius:999px;border:1px solid var(--line-2);background:var(--raised);color:var(--fg);font:400 28px/1 Inter,system-ui,sans-serif;cursor:pointer}
+.lightbox__close:hover{border-color:var(--accent)}
 
 .cards{display:grid;gap:14px;margin:22px 0}
 @media(min-width:700px){.cards{grid-template-columns:1fr 1fr}}
@@ -240,7 +250,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <ul><li>A laptop with macOS, Windows or Linux on which you can install software. If you cannot install software, use a GitHub Codespace instead, as described at the end of this page.</li><li>A paid <strong>Claude Pro or Max</strong> or <strong>ChatGPT Plus</strong> subscription. The free plans do not include the command-line agents.</li><li>No programming experience is required.</li></ul>
 <hr>
 <h2 id="what-the-workshop-covers">What the workshop covers</h2>
-<figure class="fig"><img src="../diagrams/01-the-loop.svg" alt="The loop: generate, verify, repair, with a deploy exit" loading="lazy" width="1600" height="900"></figure>
+<figure class="fig"><a class="fig__zoom" href="../diagrams/01-the-loop.svg" aria-label="Enlarge: The loop: plan, implement, verify, repeated until the check passes, then deploy"><img src="../diagrams/01-the-loop.svg" alt="The loop: plan, implement, verify, repeated until the check passes, then deploy" loading="lazy" width="1600" height="900"></a></figure>
 <p>A coding agent builds a page from the Figma design. A separate program, which the agent also writes, checks the page against the design and reports every difference. The agent fixes the reported problems and runs the program again until it passes. The page is then published on Netlify.</p>
 <hr>
 <h2 id="accounts">Accounts</h2>
@@ -340,7 +350,7 @@ footer p{font-size:14px;color:var(--fg-3)}
   <h3>Node, Git and GitHub CLI on macOS</h3>
   <div class="cmd">
   <pre id="cmd-1"><code>brew install node gh</code></pre>
-  <button class="copy copy--sm" data-for="cmd-1" aria-label="Copy the command: brew install node gh">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-1" aria-label="Copy: brew install node gh">Copy</button>
 </div>
   <p>Requires Homebrew. Without it, first run the install command from <a href="https://brew.sh">brew.sh</a>; it asks for your Mac password, and typing shows nothing. Homebrew installs Git. Afterwards, close the terminal and open a new one.</p>
 </div>
@@ -349,19 +359,19 @@ footer p{font-size:14px;color:var(--fg-3)}
   <h3>Node, Git and GitHub CLI on Windows</h3>
   <div class="cmd">
   <pre id="cmd-2"><code>winget install --id OpenJS.NodeJS.LTS</code></pre>
-  <button class="copy copy--sm" data-for="cmd-2" aria-label="Copy the command: winget install --id OpenJS.NodeJS.LTS">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-2" aria-label="Copy: winget install --id OpenJS.NodeJS.LTS">Copy</button>
 </div>
   <div class="cmd">
   <pre id="cmd-3"><code>winget install --id Git.Git</code></pre>
-  <button class="copy copy--sm" data-for="cmd-3" aria-label="Copy the command: winget install --id Git.Git">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-3" aria-label="Copy: winget install --id Git.Git">Copy</button>
 </div>
   <div class="cmd">
   <pre id="cmd-4"><code>winget install --id GitHub.cli</code></pre>
-  <button class="copy copy--sm" data-for="cmd-4" aria-label="Copy the command: winget install --id GitHub.cli">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-4" aria-label="Copy: winget install --id GitHub.cli">Copy</button>
 </div>
   <div class="cmd">
   <pre id="cmd-5"><code>Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code></pre>
-  <button class="copy copy--sm" data-for="cmd-5" aria-label="Copy the command: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-5" aria-label="Copy: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned">Copy</button>
 </div>
   <p>Run the commands one at a time. The last one allows PowerShell to run npm and the agent; without it they fail with <em>running scripts is disabled on this system</em>. If asked, type <code>Y</code> and press Enter. Afterwards, close PowerShell and open a new one.</p>
 </div>
@@ -370,15 +380,15 @@ footer p{font-size:14px;color:var(--fg-3)}
   <h3>Node, Git and GitHub CLI on Linux</h3>
   <div class="cmd">
   <pre id="cmd-6"><code>sudo apt install -y curl git gh</code></pre>
-  <button class="copy copy--sm" data-for="cmd-6" aria-label="Copy the command: sudo apt install -y curl git gh">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-6" aria-label="Copy: sudo apt install -y curl git gh">Copy</button>
 </div>
   <div class="cmd">
   <pre id="cmd-7"><code>curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash</code></pre>
-  <button class="copy copy--sm" data-for="cmd-7" aria-label="Copy the command: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-7" aria-label="Copy: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.7/install.sh | bash">Copy</button>
 </div>
   <div class="cmd">
   <pre id="cmd-8"><code>nvm install --lts</code></pre>
-  <button class="copy copy--sm" data-for="cmd-8" aria-label="Copy the command: nvm install --lts">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-8" aria-label="Copy: nvm install --lts">Copy</button>
 </div>
   <p>The first command asks for your password; typing shows nothing. Before the third command, close the terminal and open a new one. Node is installed with nvm because distribution packages are often older than the required 20.11, and because global npm installs then need no <code>sudo</code>. Other distributions: install <code>curl</code>, <code>git</code> and <code>gh</code> with your package manager (<a href="https://github.com/cli/cli#installation">gh instructions</a>).</p>
 </div>
@@ -391,14 +401,14 @@ footer p{font-size:14px;color:var(--fg-3)}
     <p class="picktwo__t">Claude Pro or Max</p>
     <div class="cmd">
   <pre id="cmd-9"><code>npm install -g @anthropic-ai/claude-code</code></pre>
-  <button class="copy copy--sm" data-for="cmd-9" aria-label="Copy the command: npm install -g @anthropic-ai/claude-code">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-9" aria-label="Copy: npm install -g @anthropic-ai/claude-code">Copy</button>
 </div>
   </div>
   <div class="picktwo__col">
     <p class="picktwo__t">ChatGPT Plus</p>
     <div class="cmd">
   <pre id="cmd-10"><code>npm install -g @openai/codex</code></pre>
-  <button class="copy copy--sm" data-for="cmd-10" aria-label="Copy the command: npm install -g @openai/codex">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-10" aria-label="Copy: npm install -g @openai/codex">Copy</button>
 </div>
   </div>
 </div>
@@ -407,7 +417,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>Publishes the site at the end of the workshop.</p>
 <div class="cmd">
   <pre id="cmd-11"><code>npm install -g netlify-cli</code></pre>
-  <button class="copy copy--sm" data-for="cmd-11" aria-label="Copy the command: npm install -g netlify-cli">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-11" aria-label="Copy: npm install -g netlify-cli">Copy</button>
 </div>
 
 <p class="cmd__note">If a command reports <code>command not found</code> right after installation, close the terminal and open a new one.</p>
@@ -419,12 +429,12 @@ footer p{font-size:14px;color:var(--fg-3)}
 <h3>GitHub</h3>
 <div class="cmd">
   <pre id="cmd-12"><code>gh auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-12" aria-label="Copy the command: gh auth login">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-12" aria-label="Copy: gh auth login">Copy</button>
 </div>
 <p>Answer with the arrow keys and <kbd>Enter</kbd>: <strong>GitHub.com</strong> → <strong>HTTPS</strong> → <strong>Yes</strong> (authenticate Git) → <strong>Login with a web browser</strong>. Copy the one-time code, press <kbd>Enter</kbd>, paste the code in the browser and click <strong>Authorize</strong>.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-13"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-13" aria-label="Copy the command: gh auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-13"><code>gh auth status</code></pre><span>Logged in to github.com</span><button class="copy copy--sm" data-for="cmd-13" aria-label="Copy: gh auth status">Copy</button></div>
 </div>
 
 <h3>Coding agent</h3>
@@ -433,24 +443,24 @@ footer p{font-size:14px;color:var(--fg-3)}
     <p class="picktwo__t">Claude Pro or Max</p>
     <div class="cmd">
   <pre id="cmd-14"><code>claude auth login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-14" aria-label="Copy the command: claude auth login">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-14" aria-label="Copy: claude auth login">Copy</button>
 </div>
 <p>Sign in on claude.ai in the browser and click <strong>Authorize</strong>. If the terminal asks for a code, copy it from the browser and paste it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-15"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Copy the command: claude auth status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-15"><code>claude auth status</code></pre><span>&quot;loggedIn&quot;: true</span><button class="copy copy--sm" data-for="cmd-15" aria-label="Copy: claude auth status">Copy</button></div>
 </div>
   </div>
   <div class="picktwo__col">
     <p class="picktwo__t">ChatGPT Plus</p>
     <div class="cmd">
   <pre id="cmd-16"><code>codex login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-16" aria-label="Copy the command: codex login">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-16" aria-label="Copy: codex login">Copy</button>
 </div>
 <p>Sign in to ChatGPT in the browser and allow access. The terminal confirms when sign-in is complete.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-17"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Copy the command: codex login status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-17"><code>codex login status</code></pre><span>Logged in using ChatGPT</span><button class="copy copy--sm" data-for="cmd-17" aria-label="Copy: codex login status">Copy</button></div>
 </div>
   </div>
 </div>
@@ -458,12 +468,12 @@ footer p{font-size:14px;color:var(--fg-3)}
 <h3>Netlify</h3>
 <div class="cmd">
   <pre id="cmd-18"><code>netlify login</code></pre>
-  <button class="copy copy--sm" data-for="cmd-18" aria-label="Copy the command: netlify login">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-18" aria-label="Copy: netlify login">Copy</button>
 </div>
 <p>Click <strong>Authorize</strong> in the browser, then return to the terminal.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-19"><code>netlify status</code></pre><span>your email address</span><button class="copy copy--sm" data-for="cmd-19" aria-label="Copy the command: netlify status">Copy</button></div>
+  <div class="check__row"><pre id="cmd-19"><code>netlify status</code></pre><span>your email address</span><button class="copy copy--sm" data-for="cmd-19" aria-label="Copy: netlify status">Copy</button></div>
 </div>
 <hr>
 <h2 id="create-the-repository">Create the repository</h2>
@@ -471,16 +481,16 @@ footer p{font-size:14px;color:var(--fg-3)}
 <p>This command creates a private repository named <code>turbine</code> on your GitHub account and clones it into a <code>turbine</code> folder in the current directory.</p>
 <div class="cmd">
   <pre id="cmd-20"><code>gh repo create turbine --private --clone</code></pre>
-  <button class="copy copy--sm" data-for="cmd-20" aria-label="Copy the command: gh repo create turbine --private --clone">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-20" aria-label="Copy: gh repo create turbine --private --clone">Copy</button>
 </div>
 <div class="cmd">
   <pre id="cmd-21"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-21" aria-label="Copy the command: cd turbine">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-21" aria-label="Copy: cd turbine">Copy</button>
 </div>
 <p>The workshop starts in this folder: <code>cd turbine</code>, then start the agent. Do not add files to it.</p>
 <p class="cmd__note">Check:</p>
 <div class="check">
-  <div class="check__row"><pre id="cmd-22"><code>git remote -v</code></pre><span>github.com/your-username/turbine</span><button class="copy copy--sm" data-for="cmd-22" aria-label="Copy the command: git remote -v">Copy</button></div>
+  <div class="check__row"><pre id="cmd-22"><code>git remote -v</code></pre><span>github.com/your-username/turbine</span><button class="copy copy--sm" data-for="cmd-22" aria-label="Copy: git remote -v">Copy</button></div>
 </div>
 <p class="cmd__note">If a repository named turbine already exists on your account, choose another name and use it wherever this page says turbine.</p>
 <hr>
@@ -490,14 +500,14 @@ footer p{font-size:14px;color:var(--fg-3)}
 <ol class="steps">
   <li>Go to the project folder:<div class="cmd">
   <pre id="cmd-23"><code>cd turbine</code></pre>
-  <button class="copy copy--sm" data-for="cmd-23" aria-label="Copy the command: cd turbine">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-23" aria-label="Copy: cd turbine">Copy</button>
 </div></li>
   <li>Start the agent: <code>claude</code> or <code>codex</code>. If it asks whether to trust the folder, answer yes.</li>
   <li>Paste the prompt below and press <kbd>Enter</kbd>.</li>
 </ol>
 <div class="prompt"><div class="prompt__bar">
   <span class="prompt__label">Paste this to your agent</span>
-  <button class="copy" type="button" data-for="ready-en" aria-label="Copy the command: Paste this to your agent">Copy</button></div>
+  <button class="copy" type="button" data-for="ready-en" aria-label="Copy: Paste this to your agent">Copy</button></div>
   <pre id="ready-en"><code>Check that this computer is ready for a workshop. Do not install, sign in to or change
 anything: only inspect, and run whatever commands you need to do that.
 
@@ -525,12 +535,12 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
   <li>On the repository page, click <strong>Code</strong> → <strong>Codespaces</strong> → <strong>Create codespace on main</strong>. The terminal is the panel at the bottom, already in the repository folder.</li>
   <li>Delete the README so the folder is empty:<div class="cmd">
   <pre id="cmd-24"><code>rm README.md</code></pre>
-  <button class="copy copy--sm" data-for="cmd-24" aria-label="Copy the command: rm README.md">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-24" aria-label="Copy: rm README.md">Copy</button>
 </div></li>
   <li>Install the agent and the Netlify CLI with the commands from <a href="#install-the-tools">Install the tools</a>. Node, Git and GitHub CLI are already installed.</li>
   <li>Sign in to the agent and to Netlify as described in <a href="#sign-in">Sign in</a>. The terminal prints a link instead of opening the browser: hold <kbd>Ctrl</kbd> or <kbd>Cmd</kbd> and click it. For Codex, use the device sign-in:<div class="cmd">
   <pre id="cmd-25"><code>codex login --device-auth</code></pre>
-  <button class="copy copy--sm" data-for="cmd-25" aria-label="Copy the command: codex login --device-auth">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-25" aria-label="Copy: codex login --device-auth">Copy</button>
 </div><p class="cmd__note">If Codex reports that device code login is not enabled, turn it on in ChatGPT → Settings → Security and run the command again.</p></li>
   <li>Run <a href="#check-the-setup">Check the setup</a> in the Codespace terminal. Skip <code>cd turbine</code>: the terminal is already in the project folder.</li>
 </ol>
@@ -542,6 +552,7 @@ if there is one. End with one line: READY, or NOT READY and the number of items 
 <h2 id="on-the-day">On the day</h2>
 <ul><li>Bring your laptop and charger.</li><li>If the setup check did not report READY, come 15 minutes before the start.</li></ul>
 </div></main>
+<dialog class="lightbox" aria-label="Enlarge"><button class="lightbox__close" type="button" aria-label="Close">×</button></dialog>
 <footer><div class="wrap">
   <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 September, 14:55, ROOM-PM · Szymon Paluch</p>
   <p>Workshop repository:

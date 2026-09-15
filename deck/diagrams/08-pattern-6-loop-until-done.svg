@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 440" width="600" height="440" role="img" aria-labelledby="t d">
+  <title id="t">Loop until done</title>
+  <desc id="d">An agent runs, then a check asks whether there are new findings. If yes, another round starts; if no, the loop ends.</desc>
+  <defs>
+    <marker id="ah-0" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker><marker id="ah-0-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="ah-1" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#6B7280"/></marker><marker id="ah-1-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#6B7280"/></marker>
+    <marker id="ah-2" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker><marker id="ah-2-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#10B981"/></marker>
+    <marker id="ah-3" viewBox="0 0 12 10" refX="11" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#D1D5DB"/></marker><marker id="ah-3-start" viewBox="0 0 12 10" refX="1" refY="5" markerWidth="14" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M12 0 L0 5 L12 10 Z" fill="#D1D5DB"/></marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="440" fill="#0A0A0A"/>
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <g transform="translate(0 0)">
+    <rect x="0" y="0" width="600" height="440" rx="14" fill="#161616" stroke="#2E2E2E" stroke-width="2"/>
+    <rect x="28" y="26" width="38" height="38" rx="6" fill="#10B981"/>
+    <text x="47" y="53" font-size="22" font-weight="700" fill="#0A0A0A" text-anchor="middle">6</text>
+    <text x="82" y="54" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="start">Loop until done</text>
+    <line x1="28" y1="82" x2="572" y2="82" stroke="#2E2E2E" stroke-width="2"/>
+    <circle cx="110" cy="250" r="32" fill="#0A0A0A" stroke="#FFFFFF" stroke-width="3"/>
+    <text x="110" y="312" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">agent</text>
+    <line x1="142.0" y1="250.0" x2="286.0" y2="250.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <polygon points="330,208 372,250 330,292 288,250" fill="#0A0A0A" stroke="#D1D5DB" stroke-width="3"/>
+    <text x="330" y="326" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">new findings?</text>
+    <line x1="372.0" y1="250.0" x2="486.0" y2="250.0" stroke="#9CA3AF" stroke-width="2.5" marker-end="url(#ah-0)"/>
+    <text x="430" y="236" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">no</text>
+    <rect x="492" y="226" width="48" height="48" fill="#FFFFFF"/>
+    <text x="516" y="312" font-size="18" font-weight="400" fill="#9CA3AF" text-anchor="middle">done</text>
+    <path d="M330 208 C 300 120, 150 120, 118 206" fill="none" stroke="#10B981" stroke-width="3.5" marker-end="url(#ah-2)"/>
+    <text x="224" y="128" font-size="18" font-weight="400" fill="#34D399" text-anchor="middle">yes: another round</text>
+  </g>
+  </g>
+</svg>

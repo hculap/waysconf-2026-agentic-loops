@@ -1,9 +1,8 @@
 # 05 — Pętla
 
-Masz stronę i masz coś, co potrafi jej powiedzieć „nie". To jest zdanie, które ustawia je
-w kółko.
-
-Nie ma tu skryptu i nie ma czego instalować. Pętla to akapit.
+Agent uruchamia checker napisany w prompcie 04 (`npm run check`), czyta plik z raportem, który
+checker zapisuje, naprawia pierwszy błąd i uruchamia checker ponownie, aż zakończy się kodem 0.
+Każda runda ma trzy kroki: zaplanuj poprawkę, wprowadź ją, uruchom checker.
 
 ---
 
@@ -14,6 +13,10 @@ Jeśli kończy się kodem 0, zatrzymaj się i powiedz mi — skończyliśmy.
 
 Jeśli nie, przeczytaj raport, który zapisał, i napraw to, co wymienia. Potem uruchom
 npm run check jeszcze raz. Powtarzaj, aż skończy się kodem 0.
+
+Każda runda ma trzy kroki. Plan: weź pierwszy błąd z raportu i zapisz do notes.md jedną
+linijkę: co nie przechodzi, co według ciebie jest przyczyną i co zmienisz. Implementacja:
+wprowadź tę zmianę. Weryfikacja: uruchom npm run check.
 
 Pracuj w kolejności, w jakiej raport wymienia rzeczy. Naprawiaj przyczynę, nie objaw:
 jeśli kolor jest zły, użyj tego z designu, nie przesuwaj go, aż liczba drgnie. Rób
@@ -36,36 +39,23 @@ podjąć. Pracuj dalej sam. Nie proś mnie o potwierdzenie po każdej rundzie.
 
 ---
 
-## Claude Code: zrób z tego strukturę
+## Claude Code: `/goal`
 
-Claude Code ma to wbudowane. Zamiast ufać, że agent nie przestanie, możesz sprawić, żeby
-strukturalnie nie mógł:
+Najpierw wklej prompt powyżej, potem tę linijkę:
 
 ```text
 /goal npm run check exits 0
 ```
 
-Sesja się nie skończy, dopóki to nie będzie prawdą. Nie „dopóki agent nie uwierzy, że jest
-prawdą" — komenda faktycznie się uruchamia, a decyduje jej kod wyjścia. Wklej najpierw
-prompt powyżej, potem linijkę z `/goal`.
-
-**Codex tego nie ma.** Tam mechanizmem jest akapit: działa, tylko opiera się na tym, że
-agent robi, co mu powiedziano, a nie na tym, że wymusza to narzędzie. Patrz na output i
-powiedz `jedź dalej`, jeśli zatrzyma się za wcześnie.
+Sesja nie skończy się, dopóki komenda nie zakończy się kodem 0: komenda się uruchamia,
+a decyduje jej kod wyjścia. **Codex nie ma `/goal`.** Tam mechanizmem jest sam prompt; jeśli
+agent zatrzyma się za wcześnie, powiedz `jedź dalej`.
 
 ---
 
-**Co powinieneś zobaczyć.** Kilka minut: sprawdź → napraw → sprawdź. Liczba błędów spada.
-Gdzieś w środku prawdopodobnie *wzrośnie* o jeden — naprawa, która zepsuła coś innego — i
-znowu zacznie spadać.
-
-Potem:
-
-```
-✓ all checks passed
-```
-
-Nikt tego nie zdecydował. Program zakończył się kodem 0.
+**Oczekiwany wynik.** Kilka rund: sprawdź, napraw, sprawdź. Liczba błędów spada, może wzrosnąć
+o jeden, kiedy naprawa zepsuje coś innego, i znowu spada. W `notes.md` przybywa jedna linijka
+na rundę. Przebieg kończy się, gdy `npm run check` zwróci kod 0.
 
 ---
 
@@ -73,21 +63,16 @@ Nikt tego nie zdecydował. Program zakończył się kodem 0.
 
 | Co widzisz | Powiedz to |
 |---|---|
-| **Zedytował checkera** | `Przywróć checkera dokładnie tak, jak był, i napraw stronę zamiast niego.` Potem zobacz, co zmienił — to najbardziej pouczająca rzecz, jaka spotka cię tego dnia. |
+| **Zedytował checker** | `Przywróć checker dokładnie tak, jak był, i napraw stronę zamiast niego.` Potem zobacz, co zmienił w checkerze. |
 | Przestaje po jednej rundzie | `Jedź dalej. Nie zatrzymuj się, dopóki npm run check nie skończy się kodem 0.` Albo użyj `/goal`. |
 | Ten sam błąd wraca w kółko | `Próbowałeś tego trzy razy. Stop. Powiedz mi, co próbowałeś i co się stało za każdym razem.` |
 | Mówi, że skończone, a test jest czerwony | `Uruchom npm run check i wklej pięć ostatnich linijek, bez poprawiania.` |
-| Robi się wolniejszy i mętniejszy | Kontekst się zapełnia. `Zapisz do notes.md, co zostało, w dziesięciu linijkach`, zacznij nową sesję, wklej notatki, jedź dalej. |
+| Jest coraz wolniejszy i mniej konkretny | Kontekst jest pełny. `Zapisz do notes.md, co zostało, w dziesięciu linijkach`, zacznij nową sesję, wklej notatki, jedź dalej. |
 
 ---
 
-### Dwie rzeczy do zabrania
+### Dlaczego jest tak napisany
 
-**Świeże bije długie.** Jeśli musisz zrestartować sesję, nie tracisz nic, dopóki stan jest
-w plikach — raport i twoje notatki. Agent z krótką pamięcią i dobrymi notatkami wygrywa
-z agentem z długą rozmową i bez notatek. Dlatego checker zapisuje raport na dysk, a nie
-tylko wypisuje go na ekran.
-
-**Ta reguła to architektura.** „Nigdy nie zmieniaj checkera" brzmi jak dyscyplina. Jest
-architekturą. W momencie, w którym sądzony może edytować sędziego, każdy kolejny zielony
-wynik nic nie znaczy — i nadal będzie wyglądał dokładnie tak samo uspokajająco.
+- Agent nigdy nie edytuje checkera. Gdyby mógł, zaliczenie nic by nie znaczyło.
+- Jedna linijka na rundę w `notes.md` i raport na dysku: nowa sesja kontynuuje z plików.
+- Trzy nieudane próby przy jednym błędzie to sygnał stop: zwykle dwa wymagania, które nie mogą być jednocześnie spełnione.

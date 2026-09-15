@@ -158,11 +158,13 @@ the one they wrote themselves, in prompt 04.
 # The loop
 
 <div class="mt-6">
-  <img src="/diagrams/01-the-loop.svg" alt="generate, verify, repair, gate, deploy" class="w-full">
+  <img src="/diagrams/01-the-loop.svg" alt="plan, implement, verify, repeated until the check exits 0, then deploy" class="w-full">
 </div>
 
 <!--
-Point at the arrow going back. Say: that arrow is driven by a file, not by a feeling.
+Three steps. Plan: what to change and why. Implement: generate the first time, fix every
+time after. Verify: a program, exit 0 or 1. Point at the arrow going back: it carries a file,
+and the next plan starts from that file.
 -->
 
 ---
@@ -540,63 +542,41 @@ skip it to save time — cut the demo before you cut this.
 # A real loop and a fake one
 
 <div class="mt-6">
-  <img src="/diagrams/02-fake-loop-vs-real-loop.svg" alt="a model grading its own output, beside a model judged by a separate program" class="w-full">
+  <img src="/diagrams/02-fake-loop-vs-real-loop.svg" alt="the same agent grading its own work, beside a program and a fresh-context adversarial review checking the page in parallel" class="w-full">
 </div>
 
 <!--
 Do not rush this. It is the second most important slide in the deck.
 
-The fake loop feels productive. It produces text that says "I have reviewed my work
-and improved it", which is indistinguishable from the real thing until something
-external disagrees.
+An agent can check work. The fake loop is the same agent, in the same context, asked whether
+its own work is good: it repeats the reasoning that produced it. The real loop runs two checks
+side by side: the program for what can be measured, and agents with a fresh context, told to
+attack, for what cannot. Both go into one report.
 -->
 
 ---
 
-# Where self-assessment is fine, and where it is not
+# Who checks the work
 
-<div class="cols mt-8">
-<div>
+<div class="mt-8">
 
-### Fine
-
-Is this sentence any good.
-
-Which of these five findings matters most.
-
-Does this read as the same brand.
-
-Is the hierarchy clear.
-
-<p class="mt-4" style="color: var(--sp-fg-3)">
-Taste, prioritisation, judgement.
-</p>
+| Who checks | Good for |
+|---|---|
+| The same agent, same context | Nothing. It repeats its own reasoning |
+| A program: `npm run check` | Anything with an exact answer: sections, colours, copy, contrast |
+| Fresh-context agents, told to attack | What a program cannot measure: reading order, alt text, text over photos, tone |
 
 </div>
-<div>
 
-### Not fine
-
-Is this correct.
-
-Is it accessible.
-
-Does it match the design.
-
-Is it finished.
-
-<p class="mt-4" style="color: var(--sp-fg-3)">
-Anything with an external truth.<br>
-Use the external truth.
-</p>
-
-</div>
+<div class="mt-8 text-xl">
+Run the last two <b>side by side</b>. One report. It ships when the report is empty.
 </div>
 
 <!--
-People will push back here, usually with "but the model is very good at this now".
-The answer is not that it is bad at it. The answer is that it has no way to be
-reliably right, and you have no way to tell which time it was.
+The objection is usually "but the model is very good at reviewing now". Agreed, and that is
+the third row. What does not work is the first row: the agent that did the work, in the
+context where it decided everything, grading itself. In the workshop, prompt 07 is the third
+row, pasted in a new session.
 -->
 
 ---
@@ -610,7 +590,7 @@ reliably right, and you have no way to tell which time it was.
 <!--
 Bottom tier: cheap, certain, narrow.
 Middle tier: measurable but needs interpretation.
-Top tier: catches what the others cannot, least reliable, never the only gate.
+Top tier: fresh-context agents attack the page; it runs alongside the program, and what survives goes into the same report.
 -->
 
 ---
@@ -928,7 +908,7 @@ The three things that make it work, in order of how often they are missed:
 # Two shapes, and neither is a script
 
 <div class="mt-4">
-  <img src="/diagrams/07-loop-vs-workflow.svg" alt="A loop defined by its exit condition, beside a workflow defined by its phases" class="w-full">
+  <img src="/diagrams/07-loop-vs-workflow.svg" alt="the loop of plan, implement and verify, beside the seven phases of prompt 08, three of which branch" class="w-full">
 </div>
 
 <!--
@@ -939,8 +919,23 @@ A loop: you define the exit condition. A workflow: you define the phases and the
 between them. Both are things you SAY. That is why changing one is a sentence rather
 than an edit, a test run and a redeploy.
 
-Point at phase 4 and say: a loop lives inside a workflow. That nesting is the usual
-arrangement and nobody draws it.
+Point at phase 05 and say: a loop lives inside a workflow. Then at 03 and 07: a phase can run
+several agents at once. That is the next slide.
+-->
+
+---
+
+# Six workflow patterns
+
+<div class="mt-2">
+  <img src="/diagrams/08-workflow-patterns.svg" alt="classify and act, fan out and synthesize, adversarial verification, generate and filter, tournament, loop until done" class="w-full" style="max-height: 430px !important; object-fit: contain">
+</div>
+
+<!--
+Prompt 08 uses three: fan out and synthesize in phase 03, loop until done in phase 05,
+adversarial verification in phase 07. The other three are for later: classify and act routes
+different kinds of task, generate and filter gives options, tournament picks between complete
+attempts. Each one, with when to use it, is on the workshop page.
 -->
 
 ---
@@ -1026,7 +1021,7 @@ job is to argue against it from those three angles.
 
 <div class="mt-6 text-lg">
 That is <b>prompt 08</b>: prompts 01–07 as one message, phase for phase, word for word.
-Take it home. Today, if there is time, <b>prompt 07</b> is the one-agent version.
+Take it home. Today, if there is time, <b>prompt 07</b> in a new session is the one-agent version.
 </div>
 
 <!--
@@ -1039,9 +1034,9 @@ That last one is real. It is in evidence/INCIDENTS.md and it is worth telling.
 equivalent; the word is harmless there, and the sentence after it does the work on both.
 
 Say the 1:1 out loud: phase 03 of prompt 08 is prompt 03. Everything they did by hand today
-is in it, in the same words. Two differences, and 08 names both: phase 03 builds sections in
-parallel, and the run waits only after phase 02. A script writes 08 from 01–07, so the two
-cannot drift apart.
+is in it, in the same words. The differences are named in 08: phase 03 builds sections in
+parallel, the run waits only after phase 02, and phase 07 runs its reviewers as subagents with
+a fresh context. A script writes 08 from 01–07, so the two cannot drift apart.
 -->
 
 ---
@@ -1165,7 +1160,7 @@ class: section
 |---|---|
 | The a11y gate is green | Automated rules reach maybe 30–40% of real WCAG failures |
 | The pixel diff passes | It saw no change. It has no idea whether a change would be better |
-| Adversarial review found nothing | Models checking models. Least reliable tier, never the only one |
+| Adversarial review found nothing | A review finds what it looks for. It runs beside the program, never instead of it |
 | All sixty-one criteria pass | Nothing here has an opinion about whether the design is good |
 
 </div>

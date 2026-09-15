@@ -88,6 +88,16 @@ td{border-bottom:1px solid var(--line);padding:9px 10px;color:var(--fg-2);vertic
 
 .fig{margin:26px 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface)}
 .fig img{display:block;width:100%;height:auto}
+.fig__zoom{display:block;cursor:zoom-in}
+h4{font-family:Inter,system-ui,sans-serif;font-weight:600;font-size:17px;color:var(--fg);margin:26px 0 6px}
+
+/* The enlarged figure: the whole viewport, the drawing scaled to fit, one close button. A
+   native <dialog> brings Escape, the focus trap and the backdrop with it. */
+.lightbox{width:100vw;max-width:100vw;height:100vh;max-height:100vh;margin:0;padding:64px 16px 16px;border:0;background:rgb(10 10 10 / .97);color:var(--fg)}
+.lightbox::backdrop{background:rgb(0 0 0 / .75)}
+.lightbox img{display:block;width:100%;height:100%;object-fit:contain}
+.lightbox__close{position:fixed;top:12px;right:16px;width:44px;height:44px;border-radius:999px;border:1px solid var(--line-2);background:var(--raised);color:var(--fg);font:400 28px/1 Inter,system-ui,sans-serif;cursor:pointer}
+.lightbox__close:hover{border-color:var(--accent)}
 
 .cards{display:grid;gap:14px;margin:22px 0}
 @media(min-width:700px){.cards{grid-template-columns:1fr 1fr}}
@@ -249,6 +259,7 @@ footer p{font-size:14px;color:var(--fg-3)}
       <em>Dostępne 16 września</em></div></li>
 </ol>
 </div></main>
+<dialog class="lightbox" aria-label="Powiększ"><button class="lightbox__close" type="button" aria-label="Zamknij">×</button></dialog>
 <footer><div class="wrap">
   <p><strong>Build an AI that checks and fixes its own work</strong> · WaysConf 2026 · 16 września, 14:55, ROOM-PM · Szymon Paluch</p>
   <p>Repozytorium warsztatu:

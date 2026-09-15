@@ -407,6 +407,50 @@ for (const path of ['/preparation/', '/workshop/', '/pl/preparation/', '/pl/work
   await context.close()
 }
 
+// ── every figure opens full-width in a dialog, and closes ───────────────────
+//
+// Measured, not assumed: the dialog must be open, the drawing inside it must actually have
+// loaded and fill the width it was given, and both the close button and Escape must close it.
+for (const path of ['/preparation/', '/workshop/', '/pl/workshop/']) {
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
+  const page = await context.newPage()
+  await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
+  const figures = await page.locator('a.fig__zoom').count()
+  const bare = await page.evaluate(() => [...document.querySelectorAll('main figure img')].filter((i) => !i.closest('a.fig__zoom')).length)
+  if (figures === 0) { fail(`${path}: no figure can be enlarged`); await context.close(); continue }
+  if (bare) fail(`${path}: ${bare} figure image(s) cannot be enlarged`)
+
+  const last = page.locator('a.fig__zoom').last()
+  await last.scrollIntoViewIfNeeded()
+  await last.click()
+  await page.waitForTimeout(400)
+  const opened = await page.evaluate(() => {
+    const d = document.querySelector('dialog.lightbox')
+    const img = d && d.querySelector('img')
+    const r = img ? img.getBoundingClientRect() : null
+    return { open: !!(d && d.open), loaded: !!(img && img.complete && img.naturalWidth > 0), width: r ? r.width : 0, vw: window.innerWidth, focus: document.activeElement && document.activeElement.className }
+  })
+  if (!opened.open) fail(`${path}: clicking a figure did not open the dialog`)
+  else if (!opened.loaded) fail(`${path}: the dialog opened with no drawing in it`)
+  else if (opened.width < opened.vw * 0.9) fail(`${path}: the enlarged drawing is ${Math.round(opened.width)}px wide in a ${opened.vw}px window`)
+  else if (opened.focus !== 'lightbox__close') fail(`${path}: focus did not move to the close button`)
+
+  await page.locator('.lightbox__close').click()
+  await page.waitForTimeout(200)
+  const closedByButton = await page.evaluate(() => !document.querySelector('dialog.lightbox').open)
+  await last.click()
+  await page.waitForTimeout(300)
+  await page.keyboard.press('Escape')
+  await page.waitForTimeout(200)
+  const closedByEscape = await page.evaluate(() => !document.querySelector('dialog.lightbox').open)
+  if (!closedByButton) fail(`${path}: the close button did not close the dialog`)
+  if (!closedByEscape) fail(`${path}: Escape did not close the dialog`)
+  if (opened.open && opened.loaded && opened.width >= opened.vw * 0.9 && closedByButton && closedByEscape) {
+    ok(`${path}: ${figures} figures enlarge to ${Math.round(opened.width)}px of ${opened.vw}, close with the button and with Escape`)
+  }
+  await context.close()
+}
+
 // ── the picker, without JavaScript ───────────────────────────────────────────
 {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1280, height: 900 } })

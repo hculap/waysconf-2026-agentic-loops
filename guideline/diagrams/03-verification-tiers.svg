@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 980" width="1600" height="980" role="img" aria-labelledby="t03 d03">
   <title id="t03">Three tiers of verification, widest at the bottom</title>
-  <desc id="d03">A pyramid of three stacked trapezoids on a near-black ground, with annotations to the right of each. The bottom and widest tier, outlined in teal, is DETERMINISTIC GATES: build, runtime, structure, a11y, tokens, content, links and perf, run by npm run check, which returns exit 0 or exit 1 and in which no model takes part. It catches a broken build, a missing section, an axe violation, an off-palette hex and a dead link; it cannot tell you whether the page is any good. The middle tier, outlined in violet, is MEASURABLE COMPARISON: a pixel diff at 390, 768 and 1440 pixels against the design export, blocking, judged against a budget rather than an opinion: 1.5 per cent of pixels, and 0.5 per cent in the hero. It catches drift from the design; it cannot say which of the two images is right, and a zero per cent diff against a bad export still passes. The top and narrowest tier, outlined in a dashed orange, is ADVERSARIAL REVIEW: models refuting models, never blocking, opening items but never closing them. It catches meaning, such as alt text that says nothing or ARIA that lies; it cannot close anything, and two runs give two lists. A note underneath records that the build gate runs first and alone, that the seven browser gates then run together in one parallel run with Lighthouse last, that only the bottom two tiers can fail the build, that adversarial review runs after npm run check exits 0 and never blocks, and that the thirty to forty per cent figure is a widely cited estimate of automated rule coverage across WCAG rather than a measurement of this page.</desc>
+  <desc id="d03">A pyramid of three stacked trapezoids on a near-black ground, with annotations to the right of each. The bottom and widest tier, outlined in teal, is DETERMINISTIC GATES: build, runtime, structure, a11y, tokens, content, links and perf, run by npm run check, which returns exit 0 or exit 1 and in which no model takes part. It catches a broken build, a missing section, an axe violation, an off-palette hex and a dead link; it cannot tell you whether the page is any good. The middle tier, outlined in violet, is MEASURABLE COMPARISON: a pixel diff at 390, 768 and 1440 pixels against the design export, blocking, judged against a budget rather than an opinion: 1.5 per cent of pixels, and 0.5 per cent in the hero. It catches drift from the design; it cannot say which of the two images is right, and a zero per cent diff against a bad export still passes. The top and narrowest tier, outlined in a dashed orange, is ADVERSARIAL REVIEW: agents with a fresh context attack the page and refute each other’s findings, and the findings that survive go into the same report as the failures. It catches meaning, such as alt text that says nothing or ARIA that lies; it cannot close anything, and two runs give two lists. A note underneath records that the build gate runs first and alone, that the seven browser gates then run together in one parallel run with Lighthouse last, that only the bottom two tiers can fail the build, that adversarial review runs alongside npm run check, and that the thirty to forty per cent figure is a widely cited estimate of automated rule coverage across WCAG rather than a measurement of this page.</desc>
 
   <rect x="0" y="0" width="1600" height="980" fill="#0A0A0A"/>
 
@@ -11,9 +11,9 @@
 
     <polygon points="355,170 725,170 808,370 272,370" fill="#161616" stroke="#10B981" stroke-width="4" stroke-dasharray="12 9"/>
     <text x="540" y="232" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">ADVERSARIAL REVIEW</text>
-    <text x="540" y="268" font-size="21" fill="#9CA3AF" text-anchor="middle">models refuting models</text>
+    <text x="540" y="268" font-size="21" fill="#9CA3AF" text-anchor="middle">fresh-context agents refute findings</text>
     <text x="540" y="300" font-size="21" fill="#9CA3AF" text-anchor="middle">every claim cites a selector</text>
-    <text x="540" y="336" font-size="21" fill="#10B981" text-anchor="middle">never blocking</text>
+    <text x="540" y="336" font-size="21" fill="#10B981" text-anchor="middle">survivors go into the report</text>
 
     <polygon points="259,400 821,400 904,600 176,600" fill="#161616" stroke="#FBBF24" stroke-width="4"/>
     <text x="540" y="462" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">MEASURABLE COMPARISON</text>
@@ -61,7 +61,7 @@
     </g>
 
     <text x="60" y="880" font-size="24" fill="#FFFFFF">The build gate runs first and alone; the seven browser gates then run together, and Lighthouse last.</text>
-    <text x="60" y="916" font-size="22" fill="#9CA3AF">Only the bottom two tiers can fail the build. Adversarial review runs after npm run check exits 0, and never blocks.</text>
+    <text x="60" y="916" font-size="22" fill="#9CA3AF">Only the bottom two tiers can fail the build. Adversarial review runs alongside npm run check; what survives goes into the report.</text>
     <text x="60" y="952" font-size="22" fill="#9CA3AF">Automated accessibility rules reach roughly 30 to 40 per cent of WCAG — a widely cited estimate, not a measurement of this page.</text>
   </g>
 </svg>

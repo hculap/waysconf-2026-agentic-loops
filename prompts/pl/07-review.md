@@ -1,20 +1,26 @@
 # 07 — Spróbuj to zepsuć
 
-Twój checker jest zielony. To znaczy *brak znanego defektu* — nigdy nie znaczyło
-skończone.
+Przegląd gotowej strony przez agenta, który jej nie budował. Agent szuka problemów, których
+checker z promptu 04 nie wyłapie, argumentuje przeciwko każdemu i zgłasza tylko te, które to
+przetrwają. Uzupełnia `npm run check`, nie zastępuje go.
 
-Ten prompt idzie szukać tego, czego checker strukturalnie nie widzi. To model sprawdzający
-model, czyli najmniej niezawodna rzecz, jaką dziś zrobisz — i nadal warto ją zrobić, bo
-alternatywą jest nie patrzeć.
+## Zanim wkleisz
+
+Zacznij nową sesję, żeby recenzent nie widział budowania strony: otwórz nowy terminal, przejdź
+do folderu projektu (`cd turbine`) i uruchom tam `claude` albo `codex`. Agent, który ocenia
+własną pracę w tej samej sesji, pamięta powody każdej decyzji i ich broni; to nie jest przegląd.
 
 ---
 
 ```text
 Testy przechodzą. Teraz udowodnij, że strona i tak jest zła.
 
+Nie budowałeś tej strony. Oceniaj ją wyłącznie po tym, co pokazuje przeglądarka, i po tym,
+co jest w tym projekcie, a nie po czymkolwiek, co padło wcześniej w tej rozmowie.
+
 Twoim zadaniem teraz jest atakować, nie bronić i nie naprawiać. Znajdź pięć
-rzeczy, które są ze stroną nie tak, a których twój checker nie potrafi złapać, i dla
-każdej powiedz mi:
+rzeczy, które są ze stroną nie tak, a których checker w tym projekcie nie potrafi złapać,
+i dla każdej powiedz mi:
 
 - dokładnie który element, opisany tak, jak go widzę na ekranie
 - co jest z nim nie tak
@@ -49,10 +55,9 @@ Nie naprawiaj jeszcze niczego. Najpierw chcę zdecydować, które z nich są pra
 
 ---
 
-**Co powinieneś zobaczyć.** Krótką listę, z której kilka pozycji naprawdę warto naprawić —
-i przynajmniej jedną, która jest błędna albo z którą się nie zgadzasz. Oba wyniki są lekcją.
-
-Wybierz dwa, w które wierzysz, i powiedz:
+**Oczekiwany wynik.** Do pięciu znalezisk, każde z elementem, problemem i powodem, dla którego
+checker go nie wyłapał, oraz liczba odrzuconych kandydatów. Zdecyduj, które znaleziska są
+prawdziwe, potem wklej:
 
 ```text
 Napraw znaleziska 2 i 4. Resztę zostaw. Potem uruchom npm run check jeszcze raz — chcę
@@ -61,48 +66,19 @@ wiedzieć, czy naprawa zepsuła coś, co przechodziło.
 
 ---
 
-### Dlaczego każesz mu kłócić się ze sobą
+### Jeśli coś pójdzie nie tak
 
-Recenzent poproszony o „znalezienie problemów" znajduje problemy — wyprodukuje pięć, bo
-poprosiłeś o pięć. Recenzent poproszony o *zniszczenie konkretnej tezy* albo ją niszczy,
-albo mu się nie udaje, a nieudanie się jest informacją.
-
-Te trzy strony robią robotę, którą zrobiłaby druga osoba. Są słabsze niż druga osoba i dużo
-lepsze niż nic, a kosztują jeden akapit.
-
-### Gdzie samoocena wystarcza, a gdzie nie
-
-| Wystarcza | Nie wystarcza |
+| Co widzisz | Powiedz to |
 |---|---|
-| Czy to zdanie jest dobre | Czy to jest poprawne |
-| Które z tych pięciu znalezisk jest najważniejsze | Czy to jest dostępne |
-| Czy to brzmi jak ta sama marka | Czy to zgadza się z designem |
-| Czy hierarchia jest czytelna | Czy to jest skończone |
-
-Lewa kolumna nie ma zewnętrznej prawdy do sprawdzenia, więc przemyślana opinia jest
-najlepszym dostępnym narzędziem. Prawa kolumna ją ma — więc jej użyj i nie przyjmuj opinii
-w zamian.
-
-Ten prompt mieszka w całości w lewej kolumnie. Dlatego produkuje listę do twojej oceny, a
-nigdy werdykt.
+| Znalezisko bez konkretnego elementu | `Nazwij element tak, jak widzę go na ekranie, albo usuń to znalezisko.` |
+| Pięć znalezisk i nic nie odrzucił | `Ilu kandydatów odrzuciłeś i dlaczego?` Jeśli argumentowanie przeciwko znaleziskom niczego nie usunęło, w praktyce się nie odbyło. |
+| Zaczyna naprawiać | `Stop. Jeszcze bez poprawek. Najpierw ja decyduję, które znaleziska są prawdziwe.` |
+| Wspomina decyzje z budowania | Jesteś wciąż w sesji, w której budowano stronę. Zacznij nową i wklej prompt jeszcze raz. |
 
 ---
 
-### Jeden prawdziwy przykład
+### Dlaczego jest tak napisany
 
-Kiedy powstawał ten warsztat, test dostępności był zielony. Zero naruszeń, trzy szerokości,
-dwa razy pod rząd, perfekcyjny wynik Lighthouse.
-
-Pięć z dziewięciu fragmentów tekstu w hero było poniżej legalnego minimum kontrastu
-względem zdjęcia za nimi. Największy, pierwszy, najczęściej czytany tekst na stronie.
-
-Checker nie był zepsuty i nie kłamał. axe nie ocenia tekstu na tle obrazu — zgłasza parę
-jako *incomplete*, a w bramce, której regułą jest „zero naruszeń", incomplete jest nie do
-odróżnienia od poprawnego.
-
-Kod źródłowy też by ci tego nie powiedział. Tłem było tam zdjęcie, dwie półprzezroczyste
-nakładki i gradient złożone razem, a żadna linijka CSS nigdzie nie mówi, jaki kolor z tego
-wychodzi. Trzeba było człowieka, który postanowił popatrzeć.
-
-**Zielony znaczy: brak znanego defektu. Wiedzieć, gdzie kończą się twoje testy — to jest
-robota.**
+- Nowa sesja: recenzent, który nie budował strony, nie ma czego bronić.
+- Znajdź, potem argumentuj przeciwko każdemu znalezisku z trzech stron (czy to prawda, czy to ma znaczenie, czy to już obsłużone): dostajesz to, co przetrwało, a nie wszystko, co znalazł.
+- Szuka tam, gdzie program nie sięga: tekst na zdjęciach, kolejność czytania, alt, który jest i nic nie mówi, szerokości pomiędzy tymi z designu.
