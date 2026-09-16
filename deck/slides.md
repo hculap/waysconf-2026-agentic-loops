@@ -1220,7 +1220,7 @@ server returns is the page that passed. Take the URL it prints.
 
 <div class="mt-6 text-xl">
 
-<code>/clear</code>, then **prompt 07**. An agent that never saw the build tries to break the page on your machine. Pick the findings that are real; it fixes them, the check still passes, and it deploys again.
+**Prompt 07 is tonight's.** An agent that never saw the build tries to break the page. You pick the findings that are real; it fixes them, the check still passes, and it deploys again. Half an hour, and you do not have to watch it.
 
 </div>
 
@@ -1236,7 +1236,10 @@ Put your URL on the board. We are going to look at all of them.
 Have the shared board open on the projector. Thirty URLs appearing one at a time
 is the best ending this session has, and it costs nothing to arrange.
 
-Short on time: skip prompt 07. The URL is already on the board.
+Sell 07 properly, because it is the prompt they are most likely to actually run at home: in
+the trial it took 30 minutes and found four things no check in the project could ask about —
+including six third-level headings for three ticket tiers, which axe passes because no level
+is skipped and a copy check cannot fail on a duplicate.
 
 If the Netlify CLI keeps failing for someone: drag the dist folder onto app.netlify.com/drop.
 -->

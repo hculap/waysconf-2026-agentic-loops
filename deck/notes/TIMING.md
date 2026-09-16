@@ -39,7 +39,9 @@ takes `checker.zip`. Announce both from the stage, by the clock, whether or not 
 | 16:25 | 1:30 | Done | photographing the address | Closing slide up through questions |
 
 **07 and 08 are homework.** 07 is the fresh-session review; 08 is the whole run as one
-message. Show them, do not run them.
+message. Show them, do not run them. For reference: 07 took **30 minutes** in the trial —
+25 attacking, 5 fixing and redeploying — and it is the most interesting half hour of the
+seven prompts. Tell them that, and tell them it is free to run while they make coffee.
 
 ---
 
@@ -62,6 +64,14 @@ failures in the HUD that Netlify injects at serve time — elements that are not
 agent said so and changed nothing. Use this if anyone asks what a checker costs you.
 
 **It kept the checker.** No step edited `npm run check` to make a failure go away.
+
+**Prompt 07 found what the checker cannot ask.** Asked for five findings, it reported four and
+said how many it threw away. The best one: at phone width the tickets block has six `<h3>`s for
+three tiers, three of them word-for-word repeats — because axe only asks whether a heading level
+is skipped, and a copy check can only ever be helped by a second copy of a string. It also
+caught the checker lying in the other direction: five "mobile links never render" failures that
+are false, which it proved by opening the menu itself. Use that if anyone thinks a green check
+is the finish line.
 
 ---
 
