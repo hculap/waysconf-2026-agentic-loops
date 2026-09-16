@@ -342,26 +342,28 @@ frameworks. Say that and move on.
 
 ---
 
-# Three of the eight start with a plan
+# Plan mode: it cannot touch a file until you say so
 
 <div class="mt-5">
 
 | | What you do | Claude Code | Codex |
 |---|---|---|---|
-| **Plan** | **02, 03 and 04 only.** Switch to plan mode, paste, read the plan, approve it | `Shift+Tab` until *plan mode on* | `/plan` |
-| Implement | The agent builds. **01, 05, 06 and 07** start here: paste, and let them run | | |
+| **Plan mode** | Switch it on **before** you paste. The agent researches and writes a plan. **It changes nothing.** | `Shift+Tab` until *plan mode on* | `/plan` |
+| Approve | Read the plan, correct it in plain words, approve it. Now it builds | *Yes, auto-accept edits* | `/permissions` |
 | Commit | The agent commits the step and pushes it to your repository | written into the prompt | written into the prompt |
 | Clear | Empty the context before the next prompt | `/clear` | `/clear` |
 
 </div>
 
 <div class="mt-5 text-xl">
-Plan mode is for the three steps that build something new — the decoder, the checker, the page.
-The others have nothing to decide: they run a check, they deploy, they attack.
+A wrong plan costs one sentence to fix. The same mistake found after it has written forty files costs the step.
 </div>
 
 <!--
-Say this once, clearly, before prompt 02, and be precise about which prompts it applies to.
+This slide is about plan mode. Say which prompts use it — 02, 03 and 04, the three that build
+something new — out loud rather than putting it on the slide; they will see it on each card
+anyway, and a number on a slide invites the question of why, in the middle of the setup block.
+
 Telling thirty people to use plan mode for everything costs a minute per prompt and teaches
 them that the plan is a ceremony rather than a decision.
 
@@ -688,63 +690,6 @@ Do not skip it to save time — cut the demo before you cut this.
 
 ---
 
-# A real loop and a fake one
-
-<div class="mt-6">
-  <img src="/diagrams/02-fake-loop-vs-real-loop.svg" alt="the same agent grading its own work, beside a program and a fresh-context adversarial review checking the page in parallel" class="w-full">
-</div>
-
-<!--
-Do not rush this. It is the second most important slide in the deck.
-
-An agent can check work. The fake loop is the same agent, in the same context, asked whether
-its own work is good: it repeats the reasoning that produced it. The real loop runs two checks
-side by side: the program for what can be measured, and agents with a fresh context, told to
-attack, for what cannot. Both go into one report.
--->
-
----
-
-# Who checks the work
-
-<div class="mt-8">
-
-| Who checks | Good for |
-|---|---|
-| The same agent, same context | Nothing. It repeats its own reasoning |
-| A program: `npm run check` | Anything with an exact answer: sections, colours, copy, contrast |
-| Fresh-context agents, told to attack | What a program cannot measure: reading order, alt text, text over photos, tone |
-
-</div>
-
-<div class="mt-8 text-xl">
-Run the last two <b>side by side</b>. One report. It ships when the report is empty.
-</div>
-
-<!--
-The objection is usually "but the model is very good at reviewing now". Agreed, and that is
-the third row. What does not work is the first row: the agent that did the work, in the
-context where it decided everything, grading itself. In the room the page is deployed first so
-everyone has an address, and the review's fixes are deployed again. In the workshop, prompt 07 is the third
-row, pasted in a new session.
--->
-
----
-
-# Three tiers of checking
-
-<div class="mt-6">
-  <img src="/diagrams/03-verification-tiers.svg" alt="deterministic gates, measured comparison, adversarial review" class="w-full">
-</div>
-
-<!--
-Bottom tier: cheap, certain, narrow.
-Middle tier: measurable but needs interpretation.
-Top tier: fresh-context agents attack the page; it runs alongside the program, and what survives goes into the same report.
--->
-
----
-
 # The reference site: ten gates, no opinions
 
 <div class="mt-4">
@@ -944,6 +889,63 @@ The three things that make it work, in order of how often they are missed:
   1. the exit condition is a program
   2. state is in files, so a fresh context is not a handicap
   3. there is a limit, so it cannot run all night
+-->
+
+---
+
+# A real loop and a fake one
+
+<div class="mt-6">
+  <img src="/diagrams/02-fake-loop-vs-real-loop.svg" alt="the same agent grading its own work, beside a program and a fresh-context adversarial review checking the page in parallel" class="w-full">
+</div>
+
+<!--
+Do not rush this. It is the second most important slide in the deck.
+
+An agent can check work. The fake loop is the same agent, in the same context, asked whether
+its own work is good: it repeats the reasoning that produced it. The real loop runs two checks
+side by side: the program for what can be measured, and agents with a fresh context, told to
+attack, for what cannot. Both go into one report.
+-->
+
+---
+
+# Who checks the work
+
+<div class="mt-8">
+
+| Who checks | Good for |
+|---|---|
+| The same agent, same context | Nothing. It repeats its own reasoning |
+| A program: `npm run check` | Anything with an exact answer: sections, colours, copy, contrast |
+| Fresh-context agents, told to attack | What a program cannot measure: reading order, alt text, text over photos, tone |
+
+</div>
+
+<div class="mt-8 text-xl">
+Run the last two <b>side by side</b>. One report. It ships when the report is empty.
+</div>
+
+<!--
+The objection is usually "but the model is very good at reviewing now". Agreed, and that is
+the third row. What does not work is the first row: the agent that did the work, in the
+context where it decided everything, grading itself. In the room the page is deployed first so
+everyone has an address, and the review's fixes are deployed again. In the workshop, prompt 07 is the third
+row, pasted in a new session.
+-->
+
+---
+
+# Three tiers of checking
+
+<div class="mt-6">
+  <img src="/diagrams/03-verification-tiers.svg" alt="deterministic gates, measured comparison, adversarial review" class="w-full">
+</div>
+
+<!--
+Bottom tier: cheap, certain, narrow.
+Middle tier: measurable but needs interpretation.
+Top tier: fresh-context agents attack the page; it runs alongside the program, and what survives goes into the same report.
 -->
 
 ---

@@ -27,7 +27,7 @@ takes `checker.zip`. Announce both from the stage, by the clock, whether or not 
 | Clock | Elapsed | Block | Room is… | You must be… |
 |---|---|---|---|---|
 | 14:55 | 0:00 | **The case** | listening | On the finished site within 90 seconds |
-| 15:03 | 0:08 | **Setup** | terminal, `cd turbine`, agent up, **01** | On "Three of the eight start with a plan" |
+| 15:03 | 0:08 | **Setup** | terminal, `cd turbine`, agent up, **01** | On "Plan mode: it cannot touch a file until you say so" |
 | 15:08 | 0:13 | **Design in** | plan mode, **02**, approving the plan | "Plan mode, then prompt 02" slide up *before* you speak |
 | 15:30 | 0:35 | **RESCUE 1** | `design-data.zip`, then `/clear` | Saying the clock time out loud, twice |
 | 15:33 | 0:38 | **The verifier, tests first** | `/clear`, plan mode, **03**, approving | Live demo at 15:40, under 3 minutes |
@@ -38,9 +38,11 @@ takes `checker.zip`. Announce both from the stage, by the clock, whether or not 
 | 16:22 | 1:27 | **Monday** | listening, URLs appearing | — |
 | 16:25 | 1:30 | Done | photographing the address | Closing slide up through questions |
 
-The workflow slides — two shapes, the six patterns, prompt 08 — run **while prompt 05 loops**,
-between 16:08 and 16:16. That is the only block where you talk over working machines, and it is
-eight minutes: do not start it before their loops are running.
+Everything conceptual now runs **while prompt 05 loops**, between 16:08 and 16:16: the real
+loop against the fake one, who checks the work, the three tiers, multi-agent and adversarial
+review, prompt 08, the two shapes, the six patterns. **Ten slides in eight minutes.** That is
+forty-eight seconds each, so it only works if you have rehearsed it and if their loops are
+running before you say a word. Reach for the cut list early in this block, not at the end of it.
 
 **07 and 08 are homework.** 07 is the fresh-session review; 08 is the whole run as one
 message. Show them, do not run them. For reference: 07 took **30 minutes** in the trial —
@@ -97,10 +99,12 @@ Use these the moment you are five minutes down, not at the end.
 
 1. **"Why a fresh context beats a long one"** — the idea survives in "The whole loop is four sentences".
 2. **Six workflow patterns** — the page has all six with drawings. Costs 3 minutes.
-3. **"When one agent is not enough" + "Adversarial review"** — prompt 07 carries the same idea
+3. **"Three tiers of checking"** — the tiers are on the workshop page under the ideas, and
+   "Who checks the work" already makes the distinction that matters. Costs 2 minutes.
+4. **"When one agent is not enough" + "Adversarial review"** — prompt 07 carries the same idea
    and they take it home. Costs 3 minutes.
-4. **The live demo** — show the failing report slide instead. Costs 3 minutes.
-5. **Prompt 05 in the room** — deploy at 16:08 instead. Everyone still leaves with a URL,
+5. **The live demo** — show the failing report slide instead. Costs 3 minutes.
+6. **Prompt 05 in the room** — deploy at 16:08 instead. Everyone still leaves with a URL,
    and the loop is the one thing they can finish at home from the page.
 
 **Never cut prompt 03 or the rescue announcements.** Without a checker, 04 and 05 have
