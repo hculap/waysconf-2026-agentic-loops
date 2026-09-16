@@ -32,6 +32,10 @@ export default {
   chrome: {
     skip: 'Przejdź do treści',
     home: 'WaysConf 2026: materiały do warsztatu',
+    navLabel: 'Materiały do warsztatu',
+    // Na tyle krótkie, żeby zmieściły się w nagłówku na telefonie. Hub używa pełnych tytułów.
+    nav: { preparation: 'Przygotowanie', workshop: 'Warsztat', deck: 'Slajdy', site: 'Strona' },
+    newTab: 'otwiera się w nowej karcie',
     tocTitle: 'Na tej stronie',
     zoom: 'Powiększ',
     close: 'Zamknij',

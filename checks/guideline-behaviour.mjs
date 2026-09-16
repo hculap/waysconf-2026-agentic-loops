@@ -333,6 +333,66 @@ for (const path of ['/preparation/', '/workshop/', '/pl/preparation/', '/pl/work
   await context.close()
 }
 
+// ── the header nav: a way out of every page, and the right kind of link ──────
+//
+// The workshop page is thirty thousand pixels long. Without a nav in the header, the only way
+// off it is the browser's back button, and on a phone opened from a QR code there is no back
+// to go to. Which links replace the page and which open a tab is not decoration either:
+// Preparation and the workshop are two halves of one document, so they replace it; the slides
+// and the finished site are things you look at BESIDE the prompts, so losing your scroll
+// position in the prompts to glance at one of them is the bug this prevents.
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } })
+  const page = await context.newPage()
+  const SAME_TAB = ['preparation', 'workshop']
+  const NEW_TAB = ['deck', 'site']
+
+  for (const path of ['/', '/pl/', '/workshop/', '/pl/workshop/', '/preparation/', '/pl/preparation/']) {
+    await page.goto(base + path, { waitUntil: 'networkidle', timeout: 30_000 })
+
+    const links = await page.evaluate(() =>
+      [...document.querySelectorAll('header.top .nav a')].map((a) => ({
+        href: a.getAttribute('href'),
+        resolved: new URL(a.getAttribute('href'), location.href).pathname,
+        target: a.getAttribute('target'),
+        rel: a.getAttribute('rel') ?? '',
+        text: a.textContent.trim(),
+      })),
+    )
+    if (!links.length) {
+      fail(`${path}: the header has no nav — there is no way off this page but the back button`)
+      continue
+    }
+
+    const before = failures.length
+    for (const part of [...SAME_TAB, ...NEW_TAB]) {
+      const hit = links.find((l) => new RegExp(`/${part}/$`).test(l.resolved))
+      if (!hit) {
+        fail(`${path}: the nav does not link "${part}"`)
+        continue
+      }
+      if (NEW_TAB.includes(part)) {
+        if (hit.target !== '_blank') fail(`${path}: the nav link to "${part}" does not open in a new tab`)
+        if (!/noopener/.test(hit.rel)) fail(`${path}: the nav link to "${part}" opens a tab without rel="noopener"`)
+      } else if (hit.target) {
+        fail(`${path}: the nav link to "${part}" opens a new tab; it should replace the page`)
+      }
+    }
+
+    // …and the wordmark goes home, which is the other half of "a way out".
+    const home = await page.evaluate(() => {
+      const a = document.querySelector('header.top a.wordmark')
+      return a ? new URL(a.getAttribute('href'), location.href).pathname : null
+    })
+    const expectedHome = path.startsWith('/pl') ? '/pl/' : '/'
+    if (home !== expectedHome) fail(`${path}: the wordmark goes to ${home}, not the hub at ${expectedHome}`)
+
+    if (failures.length === before) ok(`${path}: nav — ${SAME_TAB.join(', ')} in place, ${NEW_TAB.join(' and ')} in a new tab, wordmark to ${expectedHome}`)
+  }
+
+  await context.close()
+}
+
 // ── the hub: open parts are links, locked parts are not, and nothing open leads to them ──
 //
 // "Locked" is a promise with two halves, and both are measured. The locked parts ARE

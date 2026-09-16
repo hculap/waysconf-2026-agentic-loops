@@ -36,6 +36,10 @@ export default {
   chrome: {
     skip: 'Skip to main content',
     home: 'WaysConf 2026: workshop materials',
+    navLabel: 'Workshop materials',
+    // Short enough to sit in a header on a phone. The hub uses the long titles.
+    nav: { preparation: 'Preparation', workshop: 'Workshop', deck: 'Slides', site: 'The site' },
+    newTab: 'opens in a new tab',
     tocTitle: 'On this page',
     zoom: 'Enlarge',
     close: 'Close',

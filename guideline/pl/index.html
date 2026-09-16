@@ -38,6 +38,27 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .wordmark span{letter-spacing:.14em;text-transform:uppercase;font-size:12px}
 .top .lang{margin-left:auto}
 
+/* Header nav. Scrolls sideways on a narrow screen rather than pushing the language switcher
+   onto a second row — a header that changes height when you resize is a header people stop
+   trusting. The arrow marks the two links that open a new tab. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+.nav{display:flex;gap:4px;align-items:center;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.nav::-webkit-scrollbar{display:none}
+.nav a{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;text-decoration:none;color:var(--fg-3);
+font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;font-weight:700;letter-spacing:.04em;
+padding:7px 11px;border-radius:999px;min-height:34px}
+.nav a:hover{color:var(--fg);background:var(--raised)}
+.nav a[aria-current="page"]{color:var(--accent);background:var(--raised)}
+.nav__ext{font-size:11px;opacity:.7}
+/* Narrow: the wordmark and the language switcher share the first row and the nav takes the
+   second, rather than each claiming one and making the sticky header a third of the screen. */
+@media(max-width:700px){
+.nav{order:3;flex-basis:100%;margin-top:2px}
+.top .lang{order:2;margin-left:auto}
+.nav a{padding:6px 9px;font-size:12px}
+[id]{scroll-margin-top:118px}
+}
+
 /* The hub: four doors, one open. A locked door is not a link and not a button — there is
    nothing to press — so it is a plain list item with the date it opens on, and a screen
    reader hears exactly that. */
@@ -229,6 +250,7 @@ footer p{font-size:14px;color:var(--fg-3)}
 <header class="top">
   <div class="wrap">
     <a class="wordmark" href="../pl/" title="WaysConf 2026: materiały do warsztatu"><b>SP.</b> <span>WaysConf 2026</span></a>
+    <nav class="nav" aria-label="Materiały do warsztatu"><a href="../pl/preparation/">Przygotowanie</a><a href="../pl/workshop/">Warsztat</a><a href="../deck/" target="_blank" rel="noopener">Slajdy<span class="nav__ext" aria-hidden="true">↗</span><span class="vh"> (otwiera się w nowej karcie)</span></a><a href="../site/" target="_blank" rel="noopener">Strona<span class="nav__ext" aria-hidden="true">↗</span><span class="vh"> (otwiera się w nowej karcie)</span></a></nav>
     <nav class="lang" aria-label="Język">
       <span aria-current="true">PL</span>
       <a href="../" lang="en" hreflang="en">EN</a>
