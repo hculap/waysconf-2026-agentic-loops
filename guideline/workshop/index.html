@@ -6,7 +6,6 @@
 <title>Workshop · WaysConf 2026 masterclass</title>
 <meta name="description" content="Workshop materials: the design file, the plan, the ideas, the rescue packs and the prompts.">
 <meta name="theme-color" content="#0A0A0A">
-<meta name="robots" content="noindex">
 <link rel="alternate" hreflang="en" href="../workshop/">
 <link rel="alternate" hreflang="pl" href="../pl/workshop/">
 <link rel="stylesheet" href="../fonts/fonts.css">
@@ -46,6 +45,16 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .hub__kicker::before{content:'// ';opacity:.75}
 .hub__kicker + h1{margin-top:12px}
 .hub__when{font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+/* The QR block. White plate on purpose: an inverted code is read by some phone cameras and
+   not others, and a room tries it for half a minute before giving up. */
+.qr{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:28px 0 0;padding:16px;
+border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.qr__code{background:#fff;border-radius:10px;padding:8px;line-height:0;flex:0 0 auto}
+.qr__code svg{width:124px;height:124px;display:block}
+.qr__text{display:flex;flex-direction:column;gap:4px;min-width:200px;flex:1}
+.qr__text b{font-size:17px}
+.qr__text span{color:var(--fg-3);font-size:15px}
+.qr__text code{align-self:start;font-family:'Space Grotesk',ui-monospace,monospace;color:var(--accent-2);font-size:15px;letter-spacing:.01em}
 .doors{list-style:none;margin:24px 0;padding:0;display:grid;gap:14px}
 @media(min-width:700px){.doors{grid-template-columns:1fr 1fr}}
 .door{display:flex;flex-direction:column;gap:6px;height:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;text-decoration:none;color:inherit}
@@ -380,10 +389,31 @@ what did not, and why.</code></pre></div>
 claude</code></pre>
   <button class="copy copy--sm" data-for="cmd-27" aria-label="Copy: cd turbine">Copy</button>
 </div>
-<p>With Codex, type <code>codex</code> instead of <code>claude</code>. If <code>cd turbine</code> says there is no such folder, type <code>ls</code> and look for <code>turbine</code> in the list.</p>
+<p>With Codex, type <code>codex</code> instead of <code>claude</code>. If <code>cd turbine</code> says there is no such folder, type <code>ls</code> and look for <code>turbine</code> in the list. If it is not there either, make one and go into it:</p>
+<div class="cmd">
+  <pre id="cmd-28"><code>mkdir turbine
+cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-28" aria-label="Copy: mkdir turbine">Copy</button>
+</div>
+<p>Nothing is lost by doing that: the prompt below checks whether you already have a <code>turbine</code> repository on GitHub and creates one if you do not.</p>
 <p><strong>Esc stops the agent mid-task.</strong> Ctrl+C twice closes it; start it again with <code>claude --continue</code> or <code>codex resume --last</code>.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Paste this to your agent</span><button class="copy" type="button" data-for="p2" aria-label="Copy: Paste this to your agent">Copy</button></div><pre id="p2"><code>Set up a new website project in this folder.
+
+First make sure this folder is a git repository that pushes to GitHub, because every step
+after this one commits its work and pushes it.
+
+1. Run gh auth status. If I am not signed in, stop and tell me.
+2. Run gh repo view turbine. If a repository called turbine already exists on my account,
+   make this folder a git repository whose origin remote is that repository, and pull
+   whatever is already in it.
+3. If there is no turbine repository, create one from this folder: git init -b main if this
+   is not a git repository yet, then
+   gh repo create turbine --private --source . --remote origin
+4. Tell me in one line what you found and what you did.
+
+Then set up the site itself.
 
 Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
 database. Node is already installed.
@@ -399,15 +429,15 @@ before and I would like to follow along.
 Then commit everything with a message that says what this step did, and push. Tell me the
 step is done, so I can clear the session.</code></pre></div>
 <hr>
-<p><strong>Expected result.</strong> A few minutes of installing, then a line like <code>Local http://localhost:4321/</code>. That address shows Astro's placeholder page. The agent keeps the server running. Then it commits the project and pushes it: the commit is visible in your repository on github.com.</p>
+<p><strong>Expected result.</strong> First one line about your repository — found, or created. Then a few minutes of installing, then a line like <code>Local http://localhost:4321/</code>. That address shows Astro's placeholder page. The agent keeps the server running. Then it commits the project and pushes it: the commit is visible in your repository on github.com.</p>
 <p><strong>The agent asks before it runs a command.</strong> Choose the option that allows this kind of command without asking again. <strong>Codex also asks whether it trusts the folder.</strong> Answer yes.</p>
 <p><strong>After this prompt: type <code>/clear</code> and press Enter.</strong> <code>/clear</code> ends the conversation and starts a new one with an empty context, in Claude Code and in Codex. Nothing is lost: the next prompt reads what it needs from the files in the project.</p>
 <hr>
 <h4>If something goes wrong</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building a landing page</td><td>Press Esc, then say <code>Stop. Undo the pages you created. I want an empty project until I give you the design.</code></td></tr><tr><td>It asks before a command</td><td>Choose the option that allows this kind of command without asking again.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex is asking for permission. Answer yes.</td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing packages and pushing need it.</td></tr><tr><td><code>command not found: npm</code></td><td>Node is not installed. Go back to the Preparation page.</td></tr><tr><td>It asks you to choose a template</td><td><code>Pick the minimal or empty template. No example content.</code></td></tr><tr><td>&quot;The directory is not empty&quot;</td><td>Something other than git's files is in the folder, for example the <code>design</code> folder. Move it out, run this prompt, put it back before prompt 02.</td></tr><tr><td>No output for two minutes</td><td>It is installing. Wait up to five minutes.</td></tr><tr><td><code>git push</code> fails or asks for a password</td><td>Run <code>gh auth status</code> in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>What you see</th><th>Say this</th></tr></thead><tbody><tr><td>It starts building a landing page</td><td>Press Esc, then say <code>Stop. Undo the pages you created. I want an empty project until I give you the design.</code></td></tr><tr><td>It asks before a command</td><td>Choose the option that allows this kind of command without asking again.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex is asking for permission. Answer yes.</td></tr><tr><td>Codex asks to use the network</td><td>Answer yes. Installing packages and pushing need it.</td></tr><tr><td><code>command not found: npm</code></td><td>Node is not installed. Go back to the Preparation page.</td></tr><tr><td>It asks you to choose a template</td><td><code>Pick the minimal or empty template. No example content.</code></td></tr><tr><td>&quot;The directory is not empty&quot;</td><td>Something other than git's files is in the folder, for example the <code>design</code> folder. Move it out, run this prompt, put it back before prompt 02.</td></tr><tr><td>No output for two minutes</td><td>It is installing. Wait up to five minutes.</td></tr><tr><td><code>git push</code> fails or asks for a password</td><td>Run <code>gh auth status</code> in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say <code>Push again.</code></td></tr><tr><td>It stops because <code>gh auth status</code> says you are not signed in</td><td>Run <code>gh auth login</code> in a new terminal window, choose GitHub.com and a browser, then say <code>Try again.</code></td></tr><tr><td><code>Name already exists on this account</code></td><td>You already have the repository. Say <code>Use the turbine repository that already exists as origin.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Why it is written this way</h4>
-<ul><li>&quot;Do not build any pages yet&quot;: without it, the agent invents a hero, a feature grid and testimonials before it has seen the design.</li><li>A commit at the end of every step: each step is saved in the repository, and any later step can be undone back to it.</li><li><code>/clear</code> between steps: every prompt starts with an empty context and reads the state from files, not from a long conversation.</li></ul>
+<ul><li>The repository check comes first: every later step ends in a commit and a push, so a folder with no <code>origin</code> remote turns every one of them into a small argument. Checking costs one command; discovering it at prompt 04 costs the step.</li><li>&quot;Do not build any pages yet&quot;: without it, the agent invents a hero, a feature grid and testimonials before it has seen the design.</li><li>A commit at the end of every step: each step is saved in the repository, and any later step can be undone back to it.</li><li><code>/clear</code> between steps: every prompt starts with an empty context and reads the state from files, not from a long conversation.</li></ul>
 </section>
 <section class="step" id="p02">
   <p class="step__no">Prompt 02</p>
@@ -819,9 +849,9 @@ run npm run check -- --url against the live address.</code></pre></div>
 <h3>Before you paste</h3>
 <p>You need a new, empty GitHub repository cloned on your computer, and <code>turbine.fig</code>. Open a terminal, go into the repository folder and start your agent in a new session, in normal mode, not plan mode:</p>
 <div class="cmd">
-  <pre id="cmd-28"><code>cd turbine
+  <pre id="cmd-29"><code>cd turbine
 claude</code></pre>
-  <button class="copy copy--sm" data-for="cmd-28" aria-label="Copy: cd turbine">Copy</button>
+  <button class="copy copy--sm" data-for="cmd-29" aria-label="Copy: cd turbine">Copy</button>
 </div>
 <p>With Codex, type <code>codex</code> instead of <code>claude</code>. The phases that ask for a plan write it into <code>notes.md</code> and continue.</p>
 <p>In Claude Code, type <code>/effort ultracode</code> first. The prompt starts with the keyword <code>ultracode</code>, which turns on a multi-agent workflow for that one message only; <code>/effort ultracode</code> keeps it on for the whole session, including your answer to point 6. More under <code>ultracode</code> below.</p>
@@ -852,6 +882,20 @@ Because this is one run rather than seven messages, these things change:
 PHASE 01 — START
 
 Set up a new website project in this folder.
+
+First make sure this folder is a git repository that pushes to GitHub, because every step
+after this one commits its work and pushes it.
+
+1. Run gh auth status. If I am not signed in, stop and tell me.
+2. Run gh repo view turbine. If a repository called turbine already exists on my account,
+   make this folder a git repository whose origin remote is that repository, and pull
+   whatever is already in it.
+3. If there is no turbine repository, create one from this folder: git init -b main if this
+   is not a git repository yet, then
+   gh repo create turbine --private --source . --remote origin
+4. Tell me in one line what you found and what you did.
+
+Then set up the site itself.
 
 Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
 database. Node is already installed.

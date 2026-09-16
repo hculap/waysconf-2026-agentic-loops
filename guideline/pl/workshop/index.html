@@ -6,7 +6,6 @@
 <title>Warsztat · masterclass WaysConf 2026</title>
 <meta name="description" content="Materiały warsztatu: plik projektu, plan, idee, paczki awaryjne i prompty.">
 <meta name="theme-color" content="#0A0A0A">
-<meta name="robots" content="noindex">
 <link rel="alternate" hreflang="pl" href="../../pl/workshop/">
 <link rel="alternate" hreflang="en" href="../../workshop/">
 <link rel="stylesheet" href="../../fonts/fonts.css">
@@ -46,6 +45,16 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .hub__kicker::before{content:'// ';opacity:.75}
 .hub__kicker + h1{margin-top:12px}
 .hub__when{font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+/* The QR block. White plate on purpose: an inverted code is read by some phone cameras and
+   not others, and a room tries it for half a minute before giving up. */
+.qr{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:28px 0 0;padding:16px;
+border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.qr__code{background:#fff;border-radius:10px;padding:8px;line-height:0;flex:0 0 auto}
+.qr__code svg{width:124px;height:124px;display:block}
+.qr__text{display:flex;flex-direction:column;gap:4px;min-width:200px;flex:1}
+.qr__text b{font-size:17px}
+.qr__text span{color:var(--fg-3);font-size:15px}
+.qr__text code{align-self:start;font-family:'Space Grotesk',ui-monospace,monospace;color:var(--accent-2);font-size:15px;letter-spacing:.01em}
 .doors{list-style:none;margin:24px 0;padding:0;display:grid;gap:14px}
 @media(min-width:700px){.doors{grid-template-columns:1fr 1fr}}
 .door{display:flex;flex-direction:column;gap:6px;height:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;text-decoration:none;color:inherit}
@@ -376,14 +385,35 @@ co zadziałało, co nie i dlaczego.</code></pre></div>
 <h3>Zanim wkleisz</h3>
 <p>Otwórz terminal, wejdź do folderu projektu i uruchom agenta:</p>
 <div class="cmd">
-  <pre id="cmd-55"><code>cd turbine
+  <pre id="cmd-56"><code>cd turbine
 claude</code></pre>
-  <button class="copy copy--sm" data-for="cmd-55" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+  <button class="copy copy--sm" data-for="cmd-56" aria-label="Skopiuj: cd turbine">Kopiuj</button>
 </div>
-<p>W Codeksie wpisz <code>codex</code> zamiast <code>claude</code>. Jeśli <code>cd turbine</code> mówi, że nie ma takiego folderu, wpisz <code>ls</code> i poszukaj <code>turbine</code> na liście.</p>
+<p>W Codeksie wpisz <code>codex</code> zamiast <code>claude</code>. Jeśli <code>cd turbine</code> mówi, że nie ma takiego folderu, wpisz <code>ls</code> i poszukaj <code>turbine</code> na liście. Jeśli tam też go nie ma, załóż go i wejdź do środka:</p>
+<div class="cmd">
+  <pre id="cmd-57"><code>mkdir turbine
+cd turbine
+claude</code></pre>
+  <button class="copy copy--sm" data-for="cmd-57" aria-label="Skopiuj: mkdir turbine">Kopiuj</button>
+</div>
+<p>Nic przez to nie tracisz: prompt poniżej sprawdza, czy masz już na GitHubie repozytorium <code>turbine</code>, i zakłada je, jeśli go nie masz.</p>
 <p><strong>Esc zatrzymuje agenta w trakcie pracy.</strong> Ctrl+C dwa razy go zamyka; uruchomisz go ponownie przez <code>claude --continue</code> albo <code>codex resume --last</code>.</p>
 <hr>
 <div class="prompt"><div class="prompt__bar"><span class="prompt__label">Wklej to agentowi</span><button class="copy" type="button" data-for="p2" aria-label="Skopiuj: Wklej to agentowi">Kopiuj</button></div><pre id="p2"><code>Załóż w tym folderze nowy projekt strony internetowej.
+
+Najpierw upewnij się, że ten folder jest repozytorium gita, które wypycha zmiany na GitHuba,
+bo każdy kolejny krok kończy się commitem i pushem.
+
+1. Uruchom gh auth status. Jeśli nie jestem zalogowany, zatrzymaj się i powiedz mi to.
+2. Uruchom gh repo view turbine. Jeśli na moim koncie jest już repozytorium turbine, zrób
+   z tego folderu repozytorium gita, którego zdalne origin wskazuje na tamto repozytorium,
+   i pobierz to, co już w nim jest.
+3. Jeśli repozytorium turbine nie ma, załóż je z tego folderu: git init -b main, jeśli to
+   jeszcze nie jest repozytorium gita, a potem
+   gh repo create turbine --private --source . --remote origin
+4. Powiedz mi jedną linijką, co zastałeś i co zrobiłeś.
+
+Potem zajmij się samą stroną.
 
 Użyj Astro z Tailwind CSS. Statyczny output — bez Reacta, Vue ani Svelte, bez serwera, bez
 bazy danych. Node jest już zainstalowany.
@@ -399,15 +429,15 @@ terminala i chcę nadążać.
 Potem zrób commit wszystkiego z opisem, co zrobił ten krok, i zrób push. Powiedz mi, że krok
 jest skończony, żebym mógł wyczyścić sesję.</code></pre></div>
 <hr>
-<p><strong>Oczekiwany wynik.</strong> Kilka minut instalacji, potem linijka w rodzaju <code>Local http://localhost:4321/</code>. Pod tym adresem jest strona zastępcza Astro. Agent trzyma serwer uruchomiony. Potem robi commit projektu i push: commit widać w twoim repozytorium na github.com.</p>
+<p><strong>Oczekiwany wynik.</strong> Najpierw jedna linijka o repozytorium — zastane albo założone. Potem kilka minut instalacji i linijka w rodzaju <code>Local http://localhost:4321/</code>. Pod tym adresem jest strona zastępcza Astro. Agent trzyma serwer uruchomiony. Potem robi commit projektu i push: commit widać w twoim repozytorium na github.com.</p>
 <p><strong>Agent pyta, zanim uruchomi komendę.</strong> Wybierz opcję, która pozwala na ten rodzaj komend bez pytania. <strong>Codex pyta też, czy ufasz folderowi.</strong> Odpowiedz tak.</p>
 <p><strong>Po tym prompcie wpisz <code>/clear</code> i naciśnij Enter.</strong> <code>/clear</code> kończy rozmowę i zaczyna nową, z pustym kontekstem, w Claude Code i w Codeksie. Nic nie przepada: kolejny prompt czyta to, czego potrzebuje, z plików w projekcie.</p>
 <hr>
 <h4>Jeśli coś pójdzie nie tak</h4>
-<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować landing page</td><td>Naciśnij Esc, potem powiedz <code>Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.</code></td></tr><tr><td>Pyta, zanim uruchomi komendę</td><td>Wybierz opcję, która pozwala na ten rodzaj komend bez pytania.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex pyta o zgodę. Odpowiedz tak.</td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczek i push go wymagają.</td></tr><tr><td><code>command not found: npm</code></td><td>Node nie jest zainstalowany. Wróć na stronę Przygotowanie.</td></tr><tr><td>Prosi o wybór szablonu</td><td><code>Wybierz minimalny albo pusty szablon. Bez przykładowej treści.</code></td></tr><tr><td>„Katalog nie jest pusty&quot;</td><td>W folderze jest coś poza plikami gita, na przykład folder <code>design</code>. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02.</td></tr><tr><td>Przez dwie minuty nic się nie wypisuje</td><td>Instaluje. Poczekaj do pięciu minut.</td></tr><tr><td><code>git push</code> nie działa albo prosi o hasło</td><td>Uruchom <code>gh auth status</code> w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr></tbody></table></div>
+<div class="scroll-x" tabindex="0"><table><thead><tr><th>Co widzisz</th><th>Powiedz to</th></tr></thead><tbody><tr><td>Zaczyna budować landing page</td><td>Naciśnij Esc, potem powiedz <code>Stop. Cofnij strony, które utworzyłeś. Chcę pusty projekt, dopóki nie dam ci designu.</code></td></tr><tr><td>Pyta, zanim uruchomi komendę</td><td>Wybierz opcję, która pozwala na ten rodzaj komend bez pytania.</td></tr><tr><td><code>Not inside a trusted directory</code></td><td>Codex pyta o zgodę. Odpowiedz tak.</td></tr><tr><td>Codex pyta o dostęp do sieci</td><td>Odpowiedz tak. Instalacja paczek i push go wymagają.</td></tr><tr><td><code>command not found: npm</code></td><td>Node nie jest zainstalowany. Wróć na stronę Przygotowanie.</td></tr><tr><td>Prosi o wybór szablonu</td><td><code>Wybierz minimalny albo pusty szablon. Bez przykładowej treści.</code></td></tr><tr><td>„Katalog nie jest pusty&quot;</td><td>W folderze jest coś poza plikami gita, na przykład folder <code>design</code>. Wyjmij go, uruchom ten prompt i włóż go z powrotem przed promptem 02.</td></tr><tr><td>Przez dwie minuty nic się nie wypisuje</td><td>Instaluje. Poczekaj do pięciu minut.</td></tr><tr><td><code>git push</code> nie działa albo prosi o hasło</td><td>Uruchom <code>gh auth status</code> w nowym oknie terminala (w dowolnym folderze). Jeśli nie jesteś zalogowany, powtórz krok Zaloguj się ze strony Przygotowanie, potem powiedz <code>Zrób push jeszcze raz.</code></td></tr><tr><td>Zatrzymuje się, bo <code>gh auth status</code> mówi, że nie jesteś zalogowany</td><td>Uruchom <code>gh auth login</code> w nowym oknie terminala, wybierz GitHub.com i przeglądarkę, potem powiedz <code>Spróbuj jeszcze raz.</code></td></tr><tr><td><code>Name already exists on this account</code></td><td>Repozytorium już masz. Powiedz <code>Użyj repozytorium turbine, które już istnieje, jako origin.</code></td></tr></tbody></table></div>
 <hr>
 <h4>Dlaczego jest tak napisany</h4>
-<ul><li>„Nie buduj jeszcze żadnych stron&quot;: bez tego agent wymyśla hero, siatkę funkcji i opinie klientów, zanim zobaczy design.</li><li>Commit na końcu każdego kroku: każdy krok jest zapisany w repozytorium i do każdego da się wrócić.</li><li><code>/clear</code> między krokami: każdy prompt zaczyna z pustym kontekstem i czyta stan z plików, a nie z długiej rozmowy.</li></ul>
+<ul><li>Sprawdzenie repozytorium jest pierwsze: każdy kolejny krok kończy się commitem i pushem, więc folder bez zdalnego <code>origin</code> zamienia każdy z nich w małą kłótnię. Sprawdzenie kosztuje jedną komendę; odkrycie tego przy prompcie 04 kosztuje cały krok.</li><li>„Nie buduj jeszcze żadnych stron&quot;: bez tego agent wymyśla hero, siatkę funkcji i opinie klientów, zanim zobaczy design.</li><li>Commit na końcu każdego kroku: każdy krok jest zapisany w repozytorium i do każdego da się wrócić.</li><li><code>/clear</code> między krokami: każdy prompt zaczyna z pustym kontekstem i czyta stan z plików, a nie z długiej rozmowy.</li></ul>
 </section>
 <section class="step" id="p02">
   <p class="step__no">Prompt 02</p>
@@ -828,9 +858,9 @@ npm run check -- --url na adresie na żywo.</code></pre></div>
 <h3>Zanim wkleisz</h3>
 <p>Potrzebujesz nowego, pustego repozytorium na GitHubie, sklonowanego na komputer, i pliku <code>turbine.fig</code>. Otwórz terminal, wejdź do folderu repozytorium i uruchom agenta w nowej sesji, w zwykłym trybie, nie w plan mode:</p>
 <div class="cmd">
-  <pre id="cmd-56"><code>cd turbine
+  <pre id="cmd-58"><code>cd turbine
 claude</code></pre>
-  <button class="copy copy--sm" data-for="cmd-56" aria-label="Skopiuj: cd turbine">Kopiuj</button>
+  <button class="copy copy--sm" data-for="cmd-58" aria-label="Skopiuj: cd turbine">Kopiuj</button>
 </div>
 <p>W Codeksie wpisz <code>codex</code> zamiast <code>claude</code>. Fazy, które proszą o plan, zapisują go do <code>notes.md</code> i jadą dalej.</p>
 <p>W Claude Code najpierw wpisz <code>/effort ultracode</code>. Prompt zaczyna się od słowa kluczowego <code>ultracode</code>, które włącza workflow z wieloma agentami tylko dla tej jednej wiadomości; <code>/effort ultracode</code> zostawia go włączonego na całą sesję, także dla twojej odpowiedzi na punkt 6. Więcej w części <code>ultracode</code> niżej.</p>
@@ -861,6 +891,20 @@ Ponieważ to jeden przebieg zamiast siedmiu wiadomości, zmieniają się te rzec
 FAZA 01 — START
 
 Załóż w tym folderze nowy projekt strony internetowej.
+
+Najpierw upewnij się, że ten folder jest repozytorium gita, które wypycha zmiany na GitHuba,
+bo każdy kolejny krok kończy się commitem i pushem.
+
+1. Uruchom gh auth status. Jeśli nie jestem zalogowany, zatrzymaj się i powiedz mi to.
+2. Uruchom gh repo view turbine. Jeśli na moim koncie jest już repozytorium turbine, zrób
+   z tego folderu repozytorium gita, którego zdalne origin wskazuje na tamto repozytorium,
+   i pobierz to, co już w nim jest.
+3. Jeśli repozytorium turbine nie ma, załóż je z tego folderu: git init -b main, jeśli to
+   jeszcze nie jest repozytorium gita, a potem
+   gh repo create turbine --private --source . --remote origin
+4. Powiedz mi jedną linijką, co zastałeś i co zrobiłeś.
+
+Potem zajmij się samą stroną.
 
 Użyj Astro z Tailwind CSS. Statyczny output — bez Reacta, Vue ani Svelte, bez serwera, bez
 bazy danych. Node jest już zainstalowany.

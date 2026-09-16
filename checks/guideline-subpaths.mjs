@@ -25,10 +25,14 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const SITE = join(ROOT, 'guideline')
 const argUrl = process.argv.includes('--url') && process.argv[process.argv.indexOf('--url') + 1]
 
+// ":last" is resolved from the deck itself before the run. It used to be a number here, and
+// that is how this line came to claim it was measuring "the last slide" while the deck had
+// shrunk and the route was quietly falling back to slide 1 — a check that passes on the wrong
+// thing, which is the failure this whole repository is about.
 const PAGES = [
   ['/deck/1', 'the first slide'],
   ['/deck/6', 'a slide with a diagram (the loop)'],
-  ['/deck/53', 'the last slide, by its history route'],
+  ['/deck/:last', 'the last slide, by its history route'],
   ['/site/', 'the festival site'],
 ]
 
@@ -82,6 +86,30 @@ try {
 
 console.log(`Measuring ${argUrl ? 'the DEPLOYED site' : 'the local folder'}: ${base}\n`)
 
+// How many slides does the deck have? Ask the deck, never a number typed in this file.
+const counterOf = (page) =>
+  page.evaluate(() => {
+    const m = document.body.innerText.match(/(\d+)\s*\/\s*(\d+)\s*$/m)
+    return m ? { current: Number(m[1]), total: Number(m[2]) } : null
+  })
+
+let slideCount = 0
+{
+  const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
+  const page = await context.newPage()
+  await page.goto(`${base}/deck/1`, { waitUntil: 'networkidle', timeout: 45_000 }).catch(() => {})
+  await page.waitForTimeout(800)
+  slideCount = (await counterOf(page))?.total ?? 0
+  await context.close()
+}
+if (!slideCount) {
+  console.error('FAIL — the deck does not say how many slides it has, so "the last slide" cannot be found.')
+  await browser.close()
+  server?.close()
+  process.exit(1)
+}
+for (const entry of PAGES) if (entry[0] === '/deck/:last') entry[0] = `/deck/${slideCount}`
+
 for (const [path, what] of PAGES) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 800 } })
   const page = await context.newPage()
@@ -120,6 +148,13 @@ for (const [path, what] of PAGES) {
   // A route named for a diagram has to show one: otherwise a removed slide shifts the numbers
   // and this line keeps passing on whatever slide now sits there.
   if (/diagram/.test(what) && shape.images === 0) fail(`${path}: ${what}, but no image is showing`)
+  // …and the route called "the last slide" has to BE the last slide, not whatever the deck
+  // falls back to when the number is past the end.
+  if (/last slide/.test(what)) {
+    const counter = await counterOf(page)
+    if (!counter) fail(`${path}: the slide has no counter, so there is no proof this is the last one`)
+    else if (counter.current !== slideCount) fail(`${path}: shows slide ${counter.current} of ${counter.total}, not the last one`)
+  }
   if (!shape.styled) fail(`${path}: the page has no background — its stylesheet did not arrive`)
   if (failures.length === before) {
     ok(`${path}  ${what} — ${shape.text} characters, fonts loaded: ${[...new Set(shape.fonts)].join(', ') || 'none'}`)

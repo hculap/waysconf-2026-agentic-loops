@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-labelledby="t04 d04">
+  <title id="t04">What the agent does with the Figma file: unpack it, read it, pull out the data, write JSON, then run it and check what came out</title>
+  <desc id="d04">A pipeline on a near-black ground, left to right in five steps. First turbine.fig, one download, labelled a ZIP and not a picture. Then UNPACK: the document and every photo come out of it. Then READ: walk the tree of pages, frames, layers, variables and components. Then PULL OUT: sections, colours, typography, layout, components, copy and images. Then design/data, seven JSON files written into the project. Below, an amber return path runs from the JSON files back to READ, labelled run npm run design and look at what came out — twelve artist cards must carry twelve different names — and if they do not, the decoder is wrong, not the file, so fix the decoder and run it again. A band across the bottom says design/data is what prompt 03 checks against and what prompt 04 builds from, and that no page code exists yet.</desc>
+
+  <defs>
+    <marker id="d4-neutral" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#9CA3AF"/></marker>
+    <marker id="d4-emerald" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#10B981"/></marker>
+    <marker id="d4-amber" viewBox="0 0 12 10" refX="12" refY="5" markerWidth="18" markerHeight="14" markerUnits="userSpaceOnUse" orient="auto"><path d="M0 0 L12 5 L0 10 Z" fill="#F59E0B"/></marker>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="#0A0A0A"/>
+
+  <g font-family="Inter, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+
+    <text x="60" y="78" font-size="40" font-weight="700" fill="#FFFFFF">What it is doing while you listen</text>
+    <text x="60" y="118" font-size="24" fill="#9CA3AF">Prompt 02: one file in, seven JSON files out — and the agent checks its own output before it stops.</text>
+
+    <!-- 1. the file -->
+    <rect x="50" y="200" width="260" height="170" rx="10" fill="#161616" stroke="#3F3F46" stroke-width="3"/>
+    <text x="180" y="262" font-size="26" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">turbine.fig</text>
+    <text x="180" y="300" font-size="20" fill="#9CA3AF" text-anchor="middle">one download,</text>
+    <text x="180" y="328" font-size="20" fill="#9CA3AF" text-anchor="middle">no Figma account</text>
+    <line x1="310" y1="285" x2="345" y2="285" stroke="#9CA3AF" stroke-width="4" marker-end="url(#d4-neutral)"/>
+
+    <!-- 2. unpack -->
+    <rect x="360" y="200" width="260" height="170" rx="10" fill="#161616" stroke="#10B981" stroke-width="4"/>
+    <text x="490" y="252" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">UNPACK</text>
+    <text x="490" y="290" font-size="18" fill="#9CA3AF" text-anchor="middle">it is a ZIP, not a picture:</text>
+    <text x="490" y="316" font-size="18" fill="#9CA3AF" text-anchor="middle">the document inside it,</text>
+    <text x="490" y="342" font-size="18" fill="#9CA3AF" text-anchor="middle">and every photo</text>
+    <line x1="620" y1="285" x2="655" y2="285" stroke="#10B981" stroke-width="4" marker-end="url(#d4-emerald)"/>
+
+    <!-- 3. read -->
+    <rect x="670" y="200" width="260" height="170" rx="10" fill="#161616" stroke="#10B981" stroke-width="4"/>
+    <text x="800" y="252" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">READ</text>
+    <text x="800" y="290" font-size="18" fill="#9CA3AF" text-anchor="middle">walk the tree: pages,</text>
+    <text x="800" y="316" font-size="18" fill="#9CA3AF" text-anchor="middle">frames, layers,</text>
+    <text x="800" y="342" font-size="18" fill="#9CA3AF" text-anchor="middle">variables, components</text>
+    <line x1="930" y1="285" x2="965" y2="285" stroke="#10B981" stroke-width="4" marker-end="url(#d4-emerald)"/>
+
+    <!-- 4. pull out -->
+    <rect x="980" y="200" width="260" height="170" rx="10" fill="#161616" stroke="#10B981" stroke-width="4"/>
+    <text x="1110" y="252" font-size="28" font-weight="700" fill="#FFFFFF" text-anchor="middle">PULL OUT</text>
+    <text x="1110" y="290" font-size="18" fill="#9CA3AF" text-anchor="middle">sections · colours · type</text>
+    <text x="1110" y="316" font-size="18" fill="#9CA3AF" text-anchor="middle">layout · components</text>
+    <text x="1110" y="342" font-size="18" fill="#9CA3AF" text-anchor="middle">copy · images</text>
+    <line x1="1240" y1="285" x2="1275" y2="285" stroke="#10B981" stroke-width="4" marker-end="url(#d4-emerald)"/>
+
+    <!-- 5. write -->
+    <rect x="1290" y="200" width="260" height="170" rx="10" fill="#161616" stroke="#34D399" stroke-width="4"/>
+    <text x="1420" y="252" font-size="24" font-weight="700" fill="#FFFFFF" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">design/data</text>
+    <text x="1420" y="290" font-size="18" fill="#9CA3AF" text-anchor="middle">seven JSON files,</text>
+    <text x="1420" y="316" font-size="18" fill="#9CA3AF" text-anchor="middle">committed to</text>
+    <text x="1420" y="342" font-size="18" fill="#9CA3AF" text-anchor="middle">the project</text>
+
+    <!-- the return path: run it and look -->
+    <path d="M1420 370 L1420 470 L800 470 L800 400" fill="none" stroke="#F59E0B" stroke-width="4" stroke-dasharray="10 7" marker-end="url(#d4-amber)"/>
+
+    <rect x="560" y="520" width="900" height="170" rx="10" fill="#161616" stroke="#F59E0B" stroke-width="3"/>
+    <text x="1010" y="572" font-size="26" font-weight="700" fill="#F59E0B" text-anchor="middle" font-family="'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">npm run design — then look at what came out</text>
+    <text x="1010" y="614" font-size="22" fill="#FFFFFF" text-anchor="middle">Twelve artist cards must carry twelve different names.</text>
+    <text x="1010" y="650" font-size="21" fill="#9CA3AF" text-anchor="middle">Twelve copies of one name means the decoder is wrong, not the file.</text>
+    <line x1="1010" y1="470" x2="1010" y2="516" stroke="#F59E0B" stroke-width="4" marker-end="url(#d4-amber)"/>
+
+    <!-- what it is all for -->
+    <rect x="50" y="740" width="1500" height="110" rx="10" fill="#131519" stroke="#2A2E36" stroke-width="3"/>
+    <text x="800" y="790" font-size="24" fill="#FFFFFF" text-anchor="middle">This is the whole step. <tspan font-weight="700">No page code exists yet.</tspan></text>
+    <text x="800" y="826" font-size="22" fill="#9CA3AF" text-anchor="middle">design/data is what prompt 03 writes its checks against, and what prompt 04 builds the page from.</text>
+
+  </g>
+</svg>

@@ -59,6 +59,20 @@ PHASE 01 — START
 
 Set up a new website project in this folder.
 
+First make sure this folder is a git repository that pushes to GitHub, because every step
+after this one commits its work and pushes it.
+
+1. Run gh auth status. If I am not signed in, stop and tell me.
+2. Run gh repo view turbine. If a repository called turbine already exists on my account,
+   make this folder a git repository whose origin remote is that repository, and pull
+   whatever is already in it.
+3. If there is no turbine repository, create one from this folder: git init -b main if this
+   is not a git repository yet, then
+   gh repo create turbine --private --source . --remote origin
+4. Tell me in one line what you found and what you did.
+
+Then set up the site itself.
+
 Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
 database. Node is already installed.
 

@@ -53,8 +53,11 @@ export default {
     h1: 'Build an AI that checks and fixes its own work',
     lede: 'In the workshop you build a website from a Figma file. A coding agent, Claude Code or Codex, does the building. It also writes a program that checks the page against the design, and fixes every problem that program reports.',
     when: '16 September 2026 · 14:55 · ROOM-PM · EXPO Kraków',
+    qrHeading: 'Open this page on your phone',
+    qrBody: 'Point the camera at the code. Everything below is behind that one address.',
+    qrUrl: 'waysconf.szymonpaluch.com',
     partsHeading: 'Materials',
-    partsIntro: 'Complete the preparation before 16 September. I will open the other materials on the day of the workshop.',
+    partsIntro: 'Everything from the workshop is here: what you installed beforehand, the ideas and the eight prompts, the slides, and the finished site.',
     open: 'Open',
     locked: 'Available on 16 September',
     parts: [

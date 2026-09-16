@@ -45,6 +45,16 @@ header.top{border-bottom:1px solid var(--line);background:var(--surface);positio
 .hub__kicker::before{content:'// ';opacity:.75}
 .hub__kicker + h1{margin-top:12px}
 .hub__when{font-family:'Space Grotesk',ui-monospace,monospace;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+/* The QR block. White plate on purpose: an inverted code is read by some phone cameras and
+   not others, and a room tries it for half a minute before giving up. */
+.qr{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:28px 0 0;padding:16px;
+border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.qr__code{background:#fff;border-radius:10px;padding:8px;line-height:0;flex:0 0 auto}
+.qr__code svg{width:124px;height:124px;display:block}
+.qr__text{display:flex;flex-direction:column;gap:4px;min-width:200px;flex:1}
+.qr__text b{font-size:17px}
+.qr__text span{color:var(--fg-3);font-size:15px}
+.qr__text code{align-self:start;font-family:'Space Grotesk',ui-monospace,monospace;color:var(--accent-2);font-size:15px;letter-spacing:.01em}
 .doors{list-style:none;margin:24px 0;padding:0;display:grid;gap:14px}
 @media(min-width:700px){.doors{grid-template-columns:1fr 1fr}}
 .door{display:flex;flex-direction:column;gap:6px;height:100%;border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:20px;text-decoration:none;color:inherit}

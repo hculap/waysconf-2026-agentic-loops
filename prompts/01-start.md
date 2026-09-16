@@ -13,7 +13,16 @@ claude
 ```
 
 With Codex, type `codex` instead of `claude`. If `cd turbine` says there is no such folder, type
-`ls` and look for `turbine` in the list.
+`ls` and look for `turbine` in the list. If it is not there either, make one and go into it:
+
+```bash
+mkdir turbine
+cd turbine
+claude
+```
+
+Nothing is lost by doing that: the prompt below checks whether you already have a `turbine`
+repository on GitHub and creates one if you do not.
 
 **Esc stops the agent mid-task.** Ctrl+C twice closes it; start it again with
 `claude --continue` or `codex resume --last`.
@@ -22,6 +31,20 @@ With Codex, type `codex` instead of `claude`. If `cd turbine` says there is no s
 
 ```text
 Set up a new website project in this folder.
+
+First make sure this folder is a git repository that pushes to GitHub, because every step
+after this one commits its work and pushes it.
+
+1. Run gh auth status. If I am not signed in, stop and tell me.
+2. Run gh repo view turbine. If a repository called turbine already exists on my account,
+   make this folder a git repository whose origin remote is that repository, and pull
+   whatever is already in it.
+3. If there is no turbine repository, create one from this folder: git init -b main if this
+   is not a git repository yet, then
+   gh repo create turbine --private --source . --remote origin
+4. Tell me in one line what you found and what you did.
+
+Then set up the site itself.
 
 Use Astro with Tailwind CSS. Static output — no React, Vue or Svelte, no server, no
 database. Node is already installed.
@@ -40,10 +63,10 @@ step is done, so I can clear the session.
 
 ---
 
-**Expected result.** A few minutes of installing, then a line like
-`Local http://localhost:4321/`. That address shows Astro's placeholder page. The agent keeps
-the server running. Then it commits the project and pushes it: the commit is visible in your
-repository on github.com.
+**Expected result.** First one line about your repository — found, or created. Then a few
+minutes of installing, then a line like `Local http://localhost:4321/`. That address shows
+Astro's placeholder page. The agent keeps the server running. Then it commits the project and
+pushes it: the commit is visible in your repository on github.com.
 
 **The agent asks before it runs a command.** Choose the option that allows this kind of
 command without asking again. **Codex also asks whether it trusts the folder.** Answer yes.
@@ -67,11 +90,14 @@ next prompt reads what it needs from the files in the project.
 | "The directory is not empty" | Something other than git's files is in the folder, for example the `design` folder. Move it out, run this prompt, put it back before prompt 02. |
 | No output for two minutes | It is installing. Wait up to five minutes. |
 | `git push` fails or asks for a password | Run `gh auth status` in a new terminal window (any folder). If it is not signed in, repeat Sign in from the Preparation page, then say `Push again.` |
+| It stops because `gh auth status` says you are not signed in | Run `gh auth login` in a new terminal window, choose GitHub.com and a browser, then say `Try again.` |
+| `Name already exists on this account` | You already have the repository. Say `Use the turbine repository that already exists as origin.` |
 
 ---
 
 ### Why it is written this way
 
+- The repository check comes first: every later step ends in a commit and a push, so a folder with no `origin` remote turns every one of them into a small argument. Checking costs one command; discovering it at prompt 04 costs the step.
 - "Do not build any pages yet": without it, the agent invents a hero, a feature grid and testimonials before it has seen the design.
 - A commit at the end of every step: each step is saved in the repository, and any later step can be undone back to it.
 - `/clear` between steps: every prompt starts with an empty context and reads the state from files, not from a long conversation.

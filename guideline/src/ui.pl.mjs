@@ -49,8 +49,11 @@ export default {
     h1: 'Build an AI that checks and fixes its own work',
     lede: 'Na warsztacie budujesz stronę internetową z pliku Figmy. Robi to agent, Claude Code albo Codex. Pisze też program, który porównuje stronę z projektem, i poprawia każdy błąd, który ten program zgłosi.',
     when: '16 września 2026 · 14:55 · ROOM-PM · EXPO Kraków',
+    qrHeading: 'Otwórz tę stronę na telefonie',
+    qrBody: 'Skieruj aparat na kod. Wszystko poniżej jest pod tym jednym adresem.',
+    qrUrl: 'waysconf.szymonpaluch.com/pl',
     partsHeading: 'Materiały',
-    partsIntro: 'Przygotowanie zrób przed 16 września. Pozostałe materiały otworzę w dniu warsztatu.',
+    partsIntro: 'Wszystko z warsztatu jest tutaj: to, co instalowałeś wcześniej, idee i osiem promptów, slajdy oraz gotowa strona.',
     open: 'Otwórz',
     locked: 'Dostępne 16 września',
     parts: [

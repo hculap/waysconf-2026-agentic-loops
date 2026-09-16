@@ -59,6 +59,20 @@ FAZA 01 — START
 
 Załóż w tym folderze nowy projekt strony internetowej.
 
+Najpierw upewnij się, że ten folder jest repozytorium gita, które wypycha zmiany na GitHuba,
+bo każdy kolejny krok kończy się commitem i pushem.
+
+1. Uruchom gh auth status. Jeśli nie jestem zalogowany, zatrzymaj się i powiedz mi to.
+2. Uruchom gh repo view turbine. Jeśli na moim koncie jest już repozytorium turbine, zrób
+   z tego folderu repozytorium gita, którego zdalne origin wskazuje na tamto repozytorium,
+   i pobierz to, co już w nim jest.
+3. Jeśli repozytorium turbine nie ma, załóż je z tego folderu: git init -b main, jeśli to
+   jeszcze nie jest repozytorium gita, a potem
+   gh repo create turbine --private --source . --remote origin
+4. Powiedz mi jedną linijką, co zastałeś i co zrobiłeś.
+
+Potem zajmij się samą stroną.
+
 Użyj Astro z Tailwind CSS. Statyczny output — bez Reacta, Vue ani Svelte, bez serwera, bez
 bazy danych. Node jest już zainstalowany.
 

@@ -27,16 +27,20 @@ takes `checker.zip`. Announce both from the stage, by the clock, whether or not 
 | Clock | Elapsed | Block | Room is… | You must be… |
 |---|---|---|---|---|
 | 14:55 | 0:00 | **The case** | listening | On the finished site within 90 seconds |
-| 15:03 | 0:08 | **Setup** | terminal, `cd turbine`, agent up, **01** | On "Every prompt runs the same way" |
+| 15:03 | 0:08 | **Setup** | terminal, `cd turbine`, agent up, **01** | On "Three of the eight start with a plan" |
 | 15:08 | 0:13 | **Design in** | plan mode, **02**, approving the plan | "Plan mode, then prompt 02" slide up *before* you speak |
 | 15:30 | 0:35 | **RESCUE 1** | `design-data.zip`, then `/clear` | Saying the clock time out loud, twice |
-| 15:33 | 0:38 | **The verifier, tests first** | plan mode, **03**, approving | Live demo at 15:40, under 3 minutes |
+| 15:33 | 0:38 | **The verifier, tests first** | `/clear`, plan mode, **03**, approving | Live demo at 15:40, under 3 minutes |
 | 15:50 | 0:55 | **RESCUE 2** | `checker.zip`, then `/clear` | Same again: by the clock, not by hands |
-| 15:53 | 0:58 | **Sprint: build** | plan mode, **04**, then reviewing the page | Timer visible; workflows block runs over it |
-| 16:08 | 1:13 | **The loop** | Esc, commit, `/clear`, **05** running | Loops started before you say another word |
+| 15:53 | 0:58 | **Sprint: build** | plan mode, **04**, then reviewing the page | Timer visible; circulating, not talking |
+| 16:08 | 1:13 | **The loop + workflows** | Esc, commit, `/clear`, **05** running | Loops started before you say another word |
 | 16:16 | 1:21 | **Ship it** | Esc, `/clear`, **06** deploys | Shared URL board on the projector |
-| 16:22 | 1:27 | **Honesty + Monday** | listening, URLs appearing | — |
+| 16:22 | 1:27 | **Monday** | listening, URLs appearing | — |
 | 16:25 | 1:30 | Done | photographing the address | Closing slide up through questions |
+
+The workflow slides — two shapes, the six patterns, prompt 08 — run **while prompt 05 loops**,
+between 16:08 and 16:16. That is the only block where you talk over working machines, and it is
+eight minutes: do not start it before their loops are running.
 
 **07 and 08 are homework.** 07 is the fresh-session review; 08 is the whole run as one
 message. Show them, do not run them. For reference: 07 took **30 minutes** in the trial —
@@ -92,8 +96,9 @@ is the finish line.
 Use these the moment you are five minutes down, not at the end.
 
 1. **"Why a fresh context beats a long one"** — the idea survives in "The whole loop is four sentences".
-2. **"Where loops actually fail"** — it is on the workshop page, under the ideas.
-3. **Six workflow patterns** — the page has all six with drawings. Costs 3 minutes.
+2. **Six workflow patterns** — the page has all six with drawings. Costs 3 minutes.
+3. **"When one agent is not enough" + "Adversarial review"** — prompt 07 carries the same idea
+   and they take it home. Costs 3 minutes.
 4. **The live demo** — show the failing report slide instead. Costs 3 minutes.
 5. **Prompt 05 in the room** — deploy at 16:08 instead. Everyone still leaves with a URL,
    and the loop is the one thing they can finish at home from the page.
@@ -102,7 +107,7 @@ Use these the moment you are five minutes down, not at the end.
 nothing to check against; without the rescue times, a third of the room silently falls out of
 the workshop between 15:30 and 16:00.
 
-Never cut: the fake-loop-vs-real-loop slide, the deploy, or the honesty slide.
+Never cut: the fake-loop-vs-real-loop slide, or the deploy.
 
 ---
 

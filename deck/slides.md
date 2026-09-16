@@ -181,13 +181,13 @@ layout: section
 class: section
 ---
 
-<div class="kicker">0:08 — 0:15</div>
+<div class="kicker">0:08 — 0:13</div>
 
 # Setup
 ## An agent running in an empty folder
 
 <!--
-Hard stop at 0:15. Anyone not working by then goes to Codespaces, no discussion — the
+Hard stop at 0:13. Anyone not working by then goes to Codespaces, no discussion — the
 click path is on the Preparation page.
 Ask for hands first: "who has a terminal open right now?" Send the rest to the browser
 path immediately rather than one at a time.
@@ -199,7 +199,37 @@ The moment an agent is up, prompt 01 goes in. It takes about two minutes.
 
 # The terminal, in one slide
 
-<div class="cols mt-6">
+<div class="mt-5" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem">
+<div>
+
+### macOS
+
+<kbd>Cmd</kbd> + <kbd>Space</kbd>, type **Terminal**, <kbd>Enter</kbd>.
+
+<p class="mt-2" style="color: var(--sp-fg-3)">Paste with <kbd>Cmd</kbd> + <kbd>V</kbd></p>
+
+</div>
+<div>
+
+### Windows
+
+<kbd>Win</kbd>, type **PowerShell**, open **Windows PowerShell**. Not Command Prompt.
+
+<p class="mt-2" style="color: var(--sp-fg-3)">Paste with <kbd>Ctrl</kbd> + <kbd>V</kbd></p>
+
+</div>
+<div>
+
+### Linux
+
+<kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>, or search for **Terminal**.
+
+<p class="mt-2" style="color: var(--sp-fg-3)">Paste with <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>V</kbd></p>
+
+</div>
+</div>
+
+<div class="cols mt-5">
 <div>
 
 ```bash
@@ -209,23 +239,14 @@ cd turbine          # go in there
 claude              # or: codex
 ```
 
-<p class="mt-6">
-<b>Esc</b> stops the agent. <b>Ctrl+C</b> twice closes it: <code>claude --continue</code> brings it back.
-</p>
-
 </div>
 <div>
 
-It is a text field that runs programs.
+No feedback while it works reads as "broken" and is almost always **"busy"**. You know a
+command has finished when the cursor line comes back.
 
-It gives you no feedback while it works, which reads as "broken" and is almost always
-"busy".
-
-When a command finishes you get the prompt back. When you do not get the prompt back,
-it is still going.
-
-<p class="mt-4" style="color: var(--sp-fg-3)">
-Full version: the Preparation page, for your operating system
+<p class="mt-3">
+<b>Esc</b> stops the agent. <b>Ctrl+C</b> twice closes it: <code>claude --continue</code> brings it back.
 </p>
 
 </div>
@@ -234,6 +255,11 @@ Full version: the Preparation page, for your operating system
 <!--
 The "no feedback means busy" line is the one that saves you the most support
 questions. Say it twice.
+
+Windows: it must be PowerShell. Command Prompt has no ls, no pwd and a different quoting
+rule, and someone will be stuck on it for ten minutes without saying anything.
+
+The same three routes, with pictures, are on the Preparation page under Open a terminal.
 -->
 
 ---
@@ -259,18 +285,18 @@ Eight of them, with a copy button on each.
 </div>
 <div>
 
-### And your empty repository
+### And an empty folder
 
 ```bash
 cd turbine      # made at home
 claude          # or: codex
 ```
 
-<p class="mt-6 text-xl">
-It is <b>empty</b>, and there is no code to read.
+<p class="mt-4">
+No <code>turbine</code> folder? Make one: <code>mkdir turbine</code>, then <code>cd turbine</code>. Prompt 01 creates the GitHub repository for you.
 </p>
 
-<p class="mt-4" style="color: var(--sp-accent-2)">
+<p class="mt-4 text-xl" style="color: var(--sp-accent-2)">
 Agent up? Paste <b>prompt 01</b> now.
 </p>
 
@@ -278,9 +304,11 @@ Agent up? Paste <b>prompt 01</b> now.
 </div>
 
 <!--
-Anyone who skipped the preparation page has no turbine repository: gh repo create turbine
---private --clone, then cd turbine. That page ends with a prompt that has the agent check the
-whole setup — the people who ran it will not be the ones with their hands up.
+Anyone who skipped the preparation page has no turbine repository, and that is now handled in
+the prompt rather than from the stage: mkdir turbine, cd turbine, paste prompt 01, and its first
+four lines check gh auth, look for a turbine repository on their account and create one if there
+is none. Do not read those four lines out. Just say "prompt 01 makes the repository if you do
+not have one" and move on.
 
 Everyone downloads the same turbine.fig from the page; nobody needs a Figma account to take
 part. The Figma link is for looking at the design, not for getting it out.
@@ -295,7 +323,7 @@ part. The Figma link is for looking at the design, not for getting it out.
 </div>
 
 <p class="mt-5 text-xl">
-No plan mode for this one. It makes the project, starts the development server, commits and pushes.
+No plan mode for this one. It checks your GitHub repository — <b>and creates it if you do not have one</b> — then makes the project, starts the development server, commits and pushes.
 </p>
 
 <p class="mt-3" style="color: var(--sp-fg-3)">
@@ -314,28 +342,32 @@ frameworks. Say that and move on.
 
 ---
 
-# Every prompt runs the same way
+# Three of the eight start with a plan
 
-<div class="mt-6">
+<div class="mt-5">
 
 | | What you do | Claude Code | Codex |
 |---|---|---|---|
-| 1. Plan | Switch to plan mode, paste the prompt, read the plan, approve it | `Shift+Tab` until *plan mode on* | `/plan` |
-| 2. Implement | The agent builds what the plan says | | |
-| 3. Commit | The agent commits the step and pushes it to your repository | written into the prompt | written into the prompt |
-| 4. Clear | Empty the context before the next prompt | `/clear` | `/clear` |
+| **Plan** | **02, 03 and 04 only.** Switch to plan mode, paste, read the plan, approve it | `Shift+Tab` until *plan mode on* | `/plan` |
+| Implement | The agent builds. **01, 05, 06 and 07** start here: paste, and let them run | | |
+| Commit | The agent commits the step and pushes it to your repository | written into the prompt | written into the prompt |
+| Clear | Empty the context before the next prompt | `/clear` | `/clear` |
 
 </div>
 
-<div class="mt-6 text-xl">
-Prompts 02, 03 and 04 start in plan mode. The next prompt reads its state from files, not from the conversation.
+<div class="mt-5 text-xl">
+Plan mode is for the three steps that build something new — the decoder, the checker, the page.
+The others have nothing to decide: they run a check, they deploy, they attack.
 </div>
 
 <!--
-Say this once, clearly, before prompt 02. It is the same four moves three times: the decoder,
-the checker, the page. Clearing after each step is what keeps every step in a fresh context;
-the commit is what makes every step undoable. Codex: /plan switches to Plan mode, /clear
-starts a new chat. Claude Code: Shift+Tab cycles to plan mode, /clear empties the context.
+Say this once, clearly, before prompt 02, and be precise about which prompts it applies to.
+Telling thirty people to use plan mode for everything costs a minute per prompt and teaches
+them that the plan is a ceremony rather than a decision.
+
+Clearing after each step is what keeps every step in a fresh context; the commit is what makes
+every step undoable. Codex: /plan switches to Plan mode, /clear starts a new chat. Claude Code:
+Shift+Tab cycles to plan mode, /clear empties the context.
 -->
 
 ---
@@ -370,7 +402,7 @@ layout: section
 class: section
 ---
 
-<div class="kicker">0:15 — 0:25</div>
+<div class="kicker">0:13 — 0:38 · prompt 02 runs while we talk</div>
 
 # Design in, not screenshots in
 
@@ -487,36 +519,29 @@ This is the slide the designers in the room came for. Spend a moment on it.
 
 # The file, and what happens to it
 
-<div class="cols mt-8">
-<div>
-
-### So you hand over the file
-
-```txt
-turbine.fig    from the workshop page
-  canvas.fig   the whole document
-  images/      every photo
-```
-
-Nothing in this workshop is blocked by a free Figma account.
-
+<div class="mt-4">
+  <img src="/diagrams/04-decoder-at-work.svg" alt="turbine.fig is unpacked, the document is read, the design data is pulled out and written as seven JSON files; then npm run design is run and its output checked, and a wrong result sends the agent back to fix the decoder" class="w-full">
 </div>
-<div>
 
-### And the agent builds a decoder
-
-It has never seen a `.fig`. It plans a decoder, writes it, runs `npm run design`, and fixes
-it until twelve cards carry twelve names. The result stays in the project as JSON, for the
-checker and for the page.
-
-</div>
-</div>
+<p class="mt-3 text-lg">
+Your agent has never seen a <code>.fig</code>. It is <b>writing a program to read one</b>, right now, while I talk.
+</p>
 
 <!--
-This is the moment to say the file is enough: one download, and nobody needs a Figma account to use it.
+Talk over the picture; it is the only thing on screen for the next few minutes and their
+machines are doing exactly this.
 
-The plugin in figma-plugin/ built this file from the same tokens the code uses. Worth
-ten seconds if someone asks where the file came from, not a slide.
+Left to right, slowly: it is a ZIP, so the first thing it does is unpack it. Then it walks the
+document the way you would walk a Figma file — pages, frames, layers, variables. Then it pulls
+out the seven things the page and the checker need, and writes them as JSON.
+
+Then point at the amber loop and make the point of the whole workshop: it does not stop when
+the script runs. It stops when it has LOOKED at what came out. Twelve artist cards must carry
+twelve different names — the first trial run produced twelve copies of "KASIMIR VOLT", because
+a component's default text is easier to find than each instance's override. The decoder was
+wrong, not the file.
+
+This is the moment to say the file is enough: one download, nobody needs a Figma account.
 -->
 
 ---
@@ -524,10 +549,51 @@ layout: section
 class: section
 ---
 
-<div class="kicker">0:25 — 0:40 · tests first</div>
+<div class="kicker">0:38 — 0:58 · tests first</div>
 
 # The verifier
 ## Written before the page
+
+---
+
+# Why a fresh context beats a long one
+
+<div class="cols mt-8">
+<div>
+
+### One long conversation
+
+Forty minutes of history.
+
+Three abandoned approaches still in context.
+
+The original brief, sixty thousand tokens ago.
+
+Reasoning gets worse as it fills.
+
+</div>
+<div>
+
+### A fresh context each pass
+
+Reads the report — the current failures.
+
+Reads `notes.md` — what was already tried, and what it cost.
+
+Reads design/data.
+
+<p class="mt-4" style="color: var(--sp-accent-2)">
+Notes on disk beat memory in context.
+</p>
+
+</div>
+</div>
+
+<!--
+notes.md is the underrated artifact in the whole method, and the one nobody demos.
+It is how iteration 7 knows that iteration 3 already tried the obvious thing and why
+it did not work. Prompts 05 and 08 both tell the agent to keep it.
+-->
 
 ---
 
@@ -708,122 +774,6 @@ same: a program, the same answer twice, a report a stranger can act on.
 
 ---
 
-# Watch it catch something real
-
-<div class="mt-8 text-xl">
-
-The palette has a trap in it, on purpose.
-
-</div>
-
-<div class="cols mt-6">
-<div>
-
-```txt
-color.text.muted   #6B7280
-color.bg.base      #0A0B0D
-```
-
-<div class="mt-4">
-<span class="verdict fail">4.07 : 1</span>
-</div>
-
-<p class="mt-4">Under the 4.5:1 that body text requires.</p>
-
-</div>
-<div>
-
-```txt
-color.text.secondary  #A7AEBB
-color.bg.base         #0A0B0D
-```
-
-<div class="mt-4">
-<span class="verdict pass">8.83 : 1</span>
-</div>
-
-<p class="mt-4">Ask any model for "a muted grey for supporting copy" and watch which one it reaches for.</p>
-
-</div>
-</div>
-
-<!--
-LIVE DEMO. This is the money shot of the whole session.
-
-  1. change one class to text-text-muted
-  2. npm run check
-  3. show the red, and read the failure message out loud — it names the criterion,
-     the selector, the measured ratio and the required one
-  4. paste checks/report.md back to the agent
-  5. show the green
-
-Rehearse this until it takes under three minutes.
-
-There is no recording of this demo yet. Make one before the talk — deck/notes/TIMING.md,
-"Before you start". Without it, a dead wifi means skipping the demo and showing the
-report file instead, which still makes the point.
--->
-
----
-
-# The gate was green. The hero was illegible.
-
-<div class="mt-6 text-lg">
-
-Zero axe violations. Three breakpoints. Six page states. Twice, deterministically.
-Lighthouse accessibility **100**.
-
-</div>
-
-<div class="cols mt-6">
-<div>
-
-Then I measured the hero by hand — screenshot the page with every glyph made transparent,
-sample the brightest patch behind each line, compute the real ratio.
-
-| Text | Measured |
-|---|---|
-| "Fourth edition" | <span class="verdict fail">2.94:1</span> |
-| "Ambient, techno and modular…" | <span class="verdict fail">3.02:1</span> |
-| "The Powerhouse, Hall E" | <span class="verdict fail">4.25:1</span> |
-| "Friday 12 – Sunday 14 June" | <span class="verdict fail">4.41:1</span> |
-
-</div>
-<div>
-
-### Why axe said nothing
-
-It does not evaluate text over a background image. It does not fail it — it marks the pair
-**incomplete**, and in a zero-violations gate that is indistinguishable from correct.
-
-Reading the CSS would not have found it either. The background there is a photograph, two
-scrims and a gradient composited together. No computed style says what colour that is.
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-That is why prompt 03 says: measure text over images from the pixels, and fail if you cannot.
-</p>
-
-</div>
-</div>
-
-<!--
-This is the strongest slide in the deck and the one to slow down on.
-
-The gate was not lying. It was answering a narrower question than the word PASS suggests,
-and nobody had written down which question. That is the entire argument, found inside this
-repository's own verifier, on the most prominent element of the page.
-
-If someone asks how it was found: the repo's own asset checker flagged that 4.47% of tiles
-in the lower half of the hero photograph were too bright for white text. That is a check on
-the *image*. Whether it mattered on the *page* took a separate measurement.
-
-The fix took two attempts. The first darkened the whole frame and erased the photograph —
-worth mentioning, because "make the gate green" and "make the page good" pulled in opposite
-directions for about ten minutes.
--->
-
----
-
 # The failure report is the interface
 
 ```md
@@ -851,158 +801,11 @@ carries the criterion id, the selector, the expected value and the measured one.
 -->
 
 ---
-
-# The rule that holds it all up
-
-<div class="mt-10 text-2xl" style="color: var(--sp-fg)">
-
-The agent may never edit the verifier.
-
-</div>
-
-<div class="mt-8 text-xl">
-
-It is rule 1 of prompt 05, in capitals:
-
-</div>
-
-<div class="mt-6">
-
-```text
-1. NEVER change the checker to make a check pass. Not a threshold,
-   not a skipped assertion, not a rule switched off. If you believe
-   a check is wrong, STOP, tell me which one and why.
-```
-
-</div>
-
-<!--
-Somebody always asks whether the agent tries. Answer with evidence/INCIDENTS.md #8: the baseline
-tool refused to let an agent move the target it was being measured against.
--->
-
----
-
-# Here is what actually happened
-
-<div class="mt-4">
-
-**One agent. These prompts. An empty folder** outside every repository, nothing else. Last night.
-
-</div>
-
-<div class="mt-4">
-
-| Prompt | Agent time | What came out of it |
-|---|---|---|
-| 01 — a project exists | **3 min** | Astro, dev server, first commit pushed |
-| 02 — reads the `.fig` | **23 min** | `npm run design` → seven JSON files, every colour and width |
-| 03 — **the checker, before the page** | **20 min** | eight checks, red against an empty project |
-| 04 — the page | **24 min** | ten sections in design order; two checks still red |
-| 05 — the loop | **4 min** | cleared thirteen accessibility failures, then **stopped and asked** |
-| 06 — it goes live | **5 min** | a URL, and the same check run against that URL |
-
-</div>
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-Seventy-nine minutes of agent time. Your ninety minutes are not that.
-<b>That is what the rescue packs are for</b>, and why they are on the clock, not on demand.
-</p>
-
-<!--
-Numbers: one complete run of prompts 01–07, Claude Code, clean machine, 15 September
-(scripts/trial-workshop.mjs). Agent time only — plans approved as fast as a script can type.
-Re-measure before you quote them again; do not read them off memory.
-
-Say the caveats out loud, because they are what make the numbers credible:
-- one agent, one run. Codex could not be measured: its usage limit ran to 19 September
-- it ran on Opus. A Pro account gets Sonnet, so treat these as a floor, not a promise
-- a real person reads the plan before approving it, which the script did not
-
-The line that matters is 05. Four minutes, and it stopped. Tell that story next.
--->
-
----
-
-# Minute four of the loop, it stopped
-
-<div class="mt-6 text-lg">
-
-The checker wanted copy that the design has on **switched-off layers**. Two ways to make it green:
-
-</div>
-
-<div class="mt-4">
-
-| The cheat | What it would mean |
-|---|---|
-| `sr-only` text | A screen reader hears that the cheapest ticket is *"Most popular"*. It is not |
-| `hidden` elements | Markup no user and no assistive tech ever reaches, added so a counter reads 3 |
-
-</div>
-
-<p class="mt-6 text-xl" style="color: var(--sp-accent-2)">
-It took neither. It wrote the reasoning into <code>notes.md</code>, named the check it believed was wrong, and asked.
-</p>
-
-<p class="mt-4" style="color: var(--sp-fg-3)">
-It had already fixed thirteen real failures in the same four minutes. This is the one it would not fix.
-</p>
-
-<!--
-This is the whole talk in one incident, and it happened by itself the night before.
-
-Read the rule it was obeying out loud — it is one line in prompt 03, and it is in their prompt
-too: never change the checker to make a failure go away; if you think the check is wrong, stop
-and say so.
-
-If somebody's agent does this in the room, the answer is: the layer is off, so the text is not
-on the page. Change the check to ignore switched-off layers, and write in notes.md that you did
-and why. Changing a check you have argued with in the open is not cheating. Editing it quietly
-to turn a light green is.
--->
-
----
-
-# And here is what went wrong
-
-<div class="mt-6 text-lg">
-
-Thirteen incidents while building this. **Nine were failures of the verifier or the harness, not of the page.**
-
-</div>
-
-<div class="mt-6">
-
-| What | Why it is in the deck |
-|---|---|
-| Nine gates ran against **somebody else's website** for a whole run — 427 confident, correctly-formatted failures | A verifier that is confident and wrong is worse than none |
-| **axe passed a blank page.** Zero violations, three breakpoints, green | A measurement of nothing looks exactly like a measurement of perfection |
-| The loop hung for an hour on a stdin nobody closed | Third unbounded wait in one project |
-| The **evidence harness fabricated** four clean iterations out of a killed run | Absence read as success — fourth time, and the only one that invented a table |
-| The gate was green and **the hero was illegible** — five of nine pieces of text below the legal minimum | axe does not fail text over a photograph. It marks it *incomplete* |
-
-</div>
-
-<p class="mt-6" style="color: var(--sp-fg-3)">
-evidence/INCIDENTS.md — all thirteen, written down at the time
-</p>
-
-<!--
-Do not rush this slide and do not apologise for it. It is the most credible thing in
-the deck, and the "427 failures about someone else's site" story lands every time.
-
-The last row is the one to end on, because it is the only one a careful person could
-not have avoided. Everything above it was a bug. That one was the tool working exactly
-as documented, and the documentation being somewhere nobody reads.
--->
-
----
 layout: section
 class: section
 ---
 
-<div class="kicker">0:40 — 0:55 · sprint 1</div>
+<div class="kicker">0:58 — 1:13 · sprint 1</div>
 
 # Build the page
 
@@ -1076,7 +879,7 @@ layout: section
 class: section
 ---
 
-<div class="kicker">0:55 — 1:10 · sprint 2 runs in the background</div>
+<div class="kicker">1:13 — 1:21 · the loop runs while we talk</div>
 
 # The loop, and workflows
 
@@ -1141,82 +944,6 @@ The three things that make it work, in order of how often they are missed:
   1. the exit condition is a program
   2. state is in files, so a fresh context is not a handicap
   3. there is a limit, so it cannot run all night
--->
-
----
-
-# Two shapes, and neither is a script
-
-<div class="mt-4">
-  <img src="/diagrams/07-loop-vs-workflow.svg" alt="the loop of plan, implement and verify, beside the seven phases of prompt 08, three of which branch" class="w-full">
-</div>
-
-<!--
-This is the slide people will still be using in a year, when the tools have all
-changed names.
-
-A loop: you define the exit condition. A workflow: you define the phases and the bar
-between them. Both are things you SAY. That is why changing one is a sentence rather
-than an edit, a test run and a redeploy.
-
-Point at phase 05 and say: a loop lives inside a workflow. Then at 04 and 07: a phase can run
-several agents at once. That is the next slide.
--->
-
----
-
-# Six workflow patterns
-
-<div class="mt-2">
-  <img src="/diagrams/08-workflow-patterns.svg" alt="classify and act, fan out and synthesize, adversarial verification, generate and filter, tournament, loop until done" class="w-full" style="max-height: 430px !important; object-fit: contain">
-</div>
-
-<!--
-Prompt 08 uses three: fan out and synthesize in phase 04, loop until done in phase 05,
-adversarial verification in phase 07. The other three are for later: classify and act routes
-different kinds of task, generate and filter gives options, tournament picks between complete
-attempts. Each one, with when to use it, is on the workshop page.
--->
-
----
-
-# Why a fresh context beats a long one
-
-<div class="cols mt-8">
-<div>
-
-### One long conversation
-
-Forty minutes of history.
-
-Three abandoned approaches still in context.
-
-The original brief, sixty thousand tokens ago.
-
-Reasoning gets worse as it fills.
-
-</div>
-<div>
-
-### A fresh context each pass
-
-Reads the report — the current failures.
-
-Reads `notes.md` — what was already tried, and what it cost.
-
-Reads design/data.
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-Notes on disk beat memory in context.
-</p>
-
-</div>
-</div>
-
-<!--
-notes.md is the underrated artifact in the whole method, and the one nobody demos.
-It is how iteration 7 knows that iteration 3 already tried the obvious thing and why
-it did not work. Prompts 05 and 08 both tell the agent to keep it.
 -->
 
 ---
@@ -1302,11 +1029,46 @@ which is the same idea as the checker, applied to the teaching material.
 -->
 
 ---
+
+# Two shapes, and neither is a script
+
+<div class="mt-4">
+  <img src="/diagrams/07-loop-vs-workflow.svg" alt="the loop of plan, implement and verify, beside the seven phases of prompt 08, three of which branch" class="w-full">
+</div>
+
+<!--
+This is the slide people will still be using in a year, when the tools have all
+changed names.
+
+A loop: you define the exit condition. A workflow: you define the phases and the bar
+between them. Both are things you SAY. That is why changing one is a sentence rather
+than an edit, a test run and a redeploy.
+
+Point at phase 05 and say: a loop lives inside a workflow. Then at 04 and 07: a phase can run
+several agents at once. That is the next slide.
+-->
+
+---
+
+# Six workflow patterns
+
+<div class="mt-2">
+  <img src="/diagrams/08-workflow-patterns.svg" alt="classify and act, fan out and synthesize, adversarial verification, generate and filter, tournament, loop until done" class="w-full" style="max-height: 430px !important; object-fit: contain">
+</div>
+
+<!--
+Prompt 08 uses three: fan out and synthesize in phase 04, loop until done in phase 05,
+adversarial verification in phase 07. The other three are for later: classify and act routes
+different kinds of task, generate and filter gives options, tournament picks between complete
+attempts. Each one, with when to use it, is on the workshop page.
+-->
+
+---
 layout: section
 class: section
 ---
 
-<div class="kicker">1:10 — 1:22 · sprint 3</div>
+<div class="kicker">1:21 — 1:27 · sprint 3</div>
 
 # Ship, then break it
 
@@ -1395,66 +1157,9 @@ layout: section
 class: section
 ---
 
-<div class="kicker">1:22 — 1:30</div>
+<div class="kicker">1:27 — 1:30</div>
 
 # What this does not do
-
----
-
-# Honesty
-
-<div class="mt-8">
-
-| The claim | The limit |
-|---|---|
-| The a11y gate is green | Automated rules reach maybe 30–40% of real WCAG failures |
-| The pixel diff passes | It saw no change. It has no idea whether a change would be better |
-| Adversarial review found nothing | A review finds what it looks for. It runs beside the program, never instead of it |
-| `npm run check` exits 0 | Nothing here has an opinion about whether the design is good |
-
-</div>
-
-<div class="mt-8 text-xl">
-Green means <b>no known defect</b>. It has never meant finished.
-</div>
-
-<!--
-Do not soften this. A room of designers will trust the rest of the talk more
-because of this slide, not less.
--->
-
----
-
-# Where loops actually fail
-
-<div class="cols mt-6">
-<div>
-
-**It edits the test.** The gate goes green and nothing was fixed. Forbid it in writing,
-and check that the file did not change.
-
-**It oscillates.** Two wrong states, alternating. Usually two criteria that contradict
-each other. Cap the iterations and read the log.
-
-**It keeps going after it is done.** Run the verifier *first*, every pass.
-
-</div>
-<div>
-
-**It runs out of context mid-task.** Put the state in a file.
-
-**It reports success without running anything.** Only believe the exit code.
-
-**It hangs.** Not failing, just waiting. Every step needs a deadline — this project hung
-three times: six minutes, seven, and an hour.
-
-</div>
-</div>
-
-<!--
-Each of these has a line in docs/TIPS.md with the symptom and the fix. Tell them
-that, rather than reading the slide.
--->
 
 ---
 
