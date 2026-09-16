@@ -30,6 +30,7 @@
     "check:guideline:live": "node checks/guideline-behaviour.mjs --url https://waysconf.szymonpaluch.com",
     "check:handoff": "node checks/handoff.mjs",
     "check:deck": "node checks/deck.mjs",
+    "check:deck:prompts": "node checks/deck-prompts.mjs",
     "gen:images": "node scripts/generate-images.mjs --all",
     "baseline": "node checks/baseline.mjs",
     "deploy": "npx netlify deploy --prod --dir=dist",

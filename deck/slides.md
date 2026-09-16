@@ -120,34 +120,43 @@ If you only land one sentence in ninety minutes, land this one.
 
 # What you will have at 16:25
 
-<div class="cols mt-8">
+<div class="cols mt-6" style="grid-template-columns: 1.15fr 1fr; gap: 1.6rem">
 <div>
 
-A landing page for a music festival that does not exist, built from a Figma file by an
-agent you instructed, checked by a program that agent wrote and is not allowed to change,
-fixed when it failed, and deployed to a URL you can send to someone.
+<a href="https://turbine-festival.netlify.app/" target="_blank" rel="noopener">
+  <img src="/shots/turbine-hero.jpg" alt="The finished TURBINE festival page: the wordmark over a dark
+  photograph of an industrial hall, the dates, and two buttons." style="border-radius: 10px; border: 1px solid var(--sp-line); max-height: 300px" />
+</a>
 
-<div class="mt-6">
-<span class="verdict pass">exit 0</span>
-</div>
+<p class="mt-3">
+<a href="https://turbine-festival.netlify.app/" target="_blank" rel="noopener"><b>turbine-festival.netlify.app</b> ↗</a>
+<span style="color: var(--sp-fg-3)"> — open it, it is a real address</span>
+</p>
 
 </div>
 <div>
+
+Built from a Figma file by an agent you instructed, checked by a program that agent wrote and
+is not allowed to change, fixed when it failed, and deployed to a URL you can send to someone.
 
 ### You leave with
 
-A URL, live on the internet.
+A URL, live on the internet. A folder: the page, and the checker that judged it. Eight prompts
+that work on Monday, on something that is not a festival.
 
-A folder: the page, and the checker that judged it.
-
-Eight prompts that work on Monday, on something that is not a festival.
+<div class="mt-4">
+<span class="verdict pass">exit 0</span>
+</div>
 
 </div>
 </div>
 
 <!--
-Switch to the browser here and show the real deployed site for about twenty seconds.
-Scroll it. Then come back. Do not narrate the design; they can see it.
+Click the picture — it opens the real site in a new tab. Scroll it for about twenty seconds,
+then come back. Do not narrate the design; they can see it.
+
+The screenshot is there so this slide still works when the conference wifi does not. It is
+taken from the live site by scripts/build-deck-shot.mjs; if the two ever disagree, run it again.
 
 Their checker will be smaller than this repository's ten gates, and it should be. It is
 the one they wrote themselves, in prompt 03.
@@ -277,6 +286,31 @@ Everyone downloads the same turbine.fig from the page; nobody needs a Figma acco
 part. The Figma link is for looking at the design, not for getting it out.
 -->
 
+---
+
+# 01 — Start
+
+<div class="mt-5">
+<PromptCard n="01" />
+</div>
+
+<p class="mt-5 text-xl">
+No plan mode for this one. It makes the project, starts the development server, commits and pushes.
+</p>
+
+<p class="mt-3" style="color: var(--sp-fg-3)">
+Every prompt is on the page with its own Copy button. Nothing here is typed by hand.
+</p>
+
+<!--
+Leave this up while they paste. The only thing to say out loud: it will ask before it runs a
+command — choose the option that stops it asking for that kind of command, once.
+
+If someone reads the whole prompt and asks why it is so specific about Astro and Tailwind: a
+prompt that names its stack gets one project; a prompt that does not gets an argument about
+frameworks. Say that and move on.
+-->
+
 
 ---
 
@@ -381,6 +415,27 @@ pack at 15:30 whether or not anyone asks — most of the room will still be deco
 
 Claude Code in its default mode asks before each command. Tell the room to pick the option
 that stops asking for that kind of command, or they will spend the time clicking yes.
+-->
+
+---
+
+# 02 — Look at the design
+
+<div class="mt-5">
+<PromptCard n="02" />
+</div>
+
+<p class="mt-5 text-xl">
+Read the plan for three things: it is a script <code>npm run design</code> runs, it writes JSON into <code>design/data</code>, it writes no page code.
+</p>
+
+<!--
+Point at the third sentence of the preview — "work from that one file and nothing else". That
+line exists because an agent asked to find a design will find something: a screenshot, an old
+export, a README. Then it builds from that and the page is subtly not the design.
+
+Point 6 is the open questions. It is the part people skip, and it is where the decoder tells
+you what the .fig does not answer.
 -->
 
 ---
@@ -496,8 +551,29 @@ runs it on the empty project.
 </div>
 
 <p class="mt-6" style="color: var(--sp-fg-3)">
-About eight minutes. A check that passes on an empty page is not checking anything. It commits; then <code>/clear</code>.
+Twenty minutes in the trial. A check that passes on an empty page is not checking anything. It commits; then <code>/clear</code>.
 </p>
+
+---
+
+# 03 — Write the checker first
+
+<div class="mt-5">
+<PromptCard n="03" />
+</div>
+
+<p class="mt-5 text-xl">
+The rule at the end of this prompt is the one that matters: <b>never change the checker to make a check pass.</b>
+</p>
+
+<!--
+This is the prompt to read a few lines of out loud, because it is the one that makes the
+workshop different from a demo. It asks for a check written from the design data while there
+is no page, and it says what to do when the agent thinks a check is wrong: stop and say so.
+
+Last night that sentence did real work. Prompt 05 hit a check it believed was wrong, and
+instead of writing hidden text to satisfy it, it stopped and asked. That slide is coming.
+-->
 
 ---
 
@@ -975,6 +1051,27 @@ At 0:52 give a two-minute warning regardless of where anyone is.
 -->
 
 ---
+
+# 04 — Build it
+
+<div class="mt-5">
+<PromptCard n="04" />
+</div>
+
+<p class="mt-5 text-xl">
+It builds the page from <code>design/data</code>, not from a screenshot and not from taste. Then it runs the check once and stops.
+</p>
+
+<!--
+Twenty-four minutes in the trial, and it does not stop being red. That is the point: 04
+builds, 05 repairs. An agent that reports a green check here has either built very little or
+changed the checker.
+
+While it runs, review the page beside Figma and say what is wrong in plain words. The prompt
+writes your review into notes.md before it commits, so prompt 05 can read it after the clear.
+-->
+
+---
 layout: section
 class: section
 ---
@@ -992,41 +1089,26 @@ is where the fifteen minutes comes from.
 
 # Start your loop now, then listen
 
-<div class="mt-4 text-xl">
-<code>/clear</code>, then paste <b>prompt 05</b>. Then leave it alone — I will talk over it, and when it
-stops it commits. If it is still red at the end of this block: Esc, then /clear and prompt 06.
+<div class="mt-3 text-xl">
+<code>/clear</code>, paste it, then leave it alone. I will talk over it; when it stops, it commits.
 </div>
 
-<div class="mt-6">
-
-```text
-Run npm run check. If it exits 0, stop and tell me.
-If it does not, read the report it wrote, fix what it names,
-run it again. Repeat until it exits 0.
-
-NEVER change the checker to make a check pass.
-```
-
-<p class="text-sm" style="color: var(--sp-fg-3)">Shortened. Paste the full prompt 05 from the page.</p>
-
+<div class="mt-3">
+<PromptCard n="05" />
 </div>
 
-<div class="mt-6 text-xl">
-Both agents also have a goal command:
+<div class="mt-4 text-lg">
+Both agents also have a goal command — <code>/goal npm run check exits 0</code>. A separate check judges
+it after every turn and the agent keeps going until it is met; the exit code still decides. Stop early with <code>/goal clear</code>.
 </div>
-
-```text
-/goal npm run check exits 0
-```
-
-<p class="mt-4" style="color: var(--sp-accent-2)">
-After every turn a separate check judges whether the goal is met, and the agent keeps going until
-it is. The exit code still decides, because the agent has to run the check to show it. Stop early: <code>/goal clear</code>.
-</p>
 
 <!--
 Give them ninety seconds to get it started. Check that at least two thirds of the
 room has it running before you continue, by show of hands.
+
+Say the stop rule out loud now, because nobody will be looking at a slide when it matters: if
+the check is still red at the end of this block, press Esc, /clear, and go on to prompt 06. A
+red page with a URL beats a green page nobody can open.
 -->
 
 ---
@@ -1199,6 +1281,27 @@ and phase 07 runs its reviewers as subagents with a fresh context. A script writ
 -->
 
 ---
+
+# 08 — The same job, as a workflow
+
+<div class="mt-5">
+<PromptCard n="08" />
+</div>
+
+<p class="mt-5 text-xl">
+Everything you did today, in one message. Use it on Monday on something that is not a festival.
+</p>
+
+<!--
+Do not read this one. Show it, say it is long on purpose, and point at the Copy button: a
+workflow prompt is long because every phase names its own exit condition, and a phase without
+one is where a loop runs forever.
+
+It is generated from prompts 01 to 07 by a script that fails the build if the two drift apart —
+which is the same idea as the checker, applied to the teaching material.
+-->
+
+---
 layout: section
 class: section
 ---
@@ -1242,6 +1345,48 @@ including six third-level headings for three ticket tiers, which axe passes beca
 is skipped and a copy check cannot fail on a duplicate.
 
 If the Netlify CLI keeps failing for someone: drag the dist folder onto app.netlify.com/drop.
+-->
+
+---
+
+# 06 — Ship it
+
+<div class="mt-5">
+<PromptCard n="06" />
+</div>
+
+<p class="mt-5 text-xl">
+The last line is the one that makes it a check and not a hope: run the same checker <b>against the address the server returns</b>.
+</p>
+
+<!--
+Five minutes in the trial, no questions asked, site created by the CLI. It also caught
+something worth repeating: the live run went red on two contrast failures inside the widget
+Netlify injects when it serves a page — elements that are not in dist. The agent said so and
+changed nothing. A deployed page is not the page you built until something has compared them.
+-->
+
+---
+
+# 07 — Try to break it
+
+<div class="mt-5">
+<PromptCard n="07" />
+</div>
+
+<p class="mt-5 text-xl">
+Tonight, not now. Thirty minutes, a context that never saw the build, and a brief to <b>attack</b>.
+</p>
+
+<!--
+Sell this one. It is the cheapest thing on the list and the one that finds what no checker can
+ask about: last night, six third-level headings for three ticket tiers at phone width, three of
+them word-for-word repeats. axe passes it because no heading level is skipped, and a copy check
+can only ever be helped by a duplicate string.
+
+Note the three questions in the middle of the prompt — is it true, does it matter, is it
+handled. Asked for five findings it returned four and said how many it threw away. That is what
+an argument-first brief buys you.
 -->
 
 
