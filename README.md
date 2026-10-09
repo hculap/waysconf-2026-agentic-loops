@@ -1,7 +1,7 @@
 # Build an AI that checks and fixes its own work
 
 **WaysConf 2026 · masterclass · 16 September, 14:55, ROOM-PM · 90 minutes**
-Szymon Paluch — [waysconf.com](https://www.waysconf.com/masterclass/build-an-ai-that-checks-and-fixes-its-own-work)
+[Szymon Paluch](https://szymonpaluch.com) — [waysconf.com](https://www.waysconf.com/masterclass/build-an-ai-that-checks-and-fixes-its-own-work)
 
 Most AI demos stop at *wow*: a nice-looking output that falls apart the moment it meets a
 real requirement. In ninety minutes you will put a coding agent in a loop with a checker it
